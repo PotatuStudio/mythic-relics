@@ -1,0 +1,36 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:egypt/anubis_set",
+  "category": "mythicrelics:egypt",
+  "name": "book.mythicrelics.relics.anubis_set.name",
+  "icon": "mythicrelics:jackal_mask",
+  "x": 0,
+  "y": 7,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "set",
+      "title": "book.mythicrelics.relics.anubis_set.name",
+      "text": "book.mythicrelics.relics.entry.anubis_set.effect",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.anubis_set",
+      "show_title_separator": true
+    }
+  ],
+  "parents": [
+    {
+      "entry": "mythicrelics:egypt/anubis_scepter"
+    },
+    {
+      "entry": "mythicrelics:egypt/jackal_mask"
+    },
+    {
+      "entry": "mythicrelics:egypt/jackal_ring"
+    }
+  ]
+}

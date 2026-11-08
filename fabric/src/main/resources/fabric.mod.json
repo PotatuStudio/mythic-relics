@@ -28,6 +28,7 @@
 		"trinkets_updated": ">=4.2.1"
 	},
 	"suggests": {
-		"jei": "*"
+		"jei": "*",
+		"modonomicon": ">=2.20.1"
 	}
 }

@@ -58,8 +58,9 @@ Escarabajo aliado: entidad propia `mythicrelics:scarab` (`entity/Scarab.java`, `
 mundo) con modelo de cajas propio (`client/entity/ScarabModel.java`: caparazón con cúpula, pronoto, cabeza en pala,
 6 patas con marcha en trípode) y textura dorada con turquesa y lapislázuli, generada con
 `python tools/model-gen/scarab_texture.py common/src/main/resources/assets/mythicrelics/textures/entity/scarab.png`
-(requiere Pillow; el layout de la textura sigue los `texOffs` del modelo). Pendiente: el chacal con el mismo trato (lobo más delgado, orejas grandes,
-negro como Anubis).
+(requiere Pillow; el layout de la textura sigue los `texOffs` del modelo). El chacal del anillo también es entidad propia (`mythicrelics:jackal`, `JackalModel`: más delgado que el lobo,
+orejas altas, negro con collar de oro). Las reliquias se ven puestas sobre el jugador
+(`assets/mythicrelics/trinkets/*.json`). Libro de reliquias con Modonomicon (opcional) y wiki en `docs/wiki/`.
 
 Segunda tanda de Egipto: disco solar de Ra, amuleto de Bastet, tablilla de Thot, cayado y mayal de Osiris,
 garras de Sekhmet. Después: Grecia, Roma, nórdicos, celtas, folclore japonés, Mesoamérica, eslavos, China,
@@ -71,11 +72,17 @@ Mesopotamia (las ideas con sus efectos y estructuras están en la conversación 
   después de subir a `main`.
 - `tools/model-gen/egypt_icons.py`: genera los íconos 16x16 (con brillo animado) y el ícono del mod.
 - `tools/model-gen/scarab_texture.py`: textura del escarabajo aliado (requiere Pillow).
+- `tools/model-gen/make_codex.py`: genera el libro de Modonomicon (`data/mythicrelics/modonomicon/books/relics/`),
+  sus textos con los números ya puestos (claves `book.mythicrelics.relics.entry.*` en los lang) y la wiki
+  (`docs/wiki/`). El mito de cada reliquia se escribe a mano en los lang (`lore.mythicrelics.*`). **Correrlo cada vez que
+  cambien números, botín, tooltips o mito.**
+- `tools/model-gen/jackal_texture.py`: textura del chacal aliado (requiere Pillow).
 - `tools/model-gen/make_viewer.py <salida.html>`: visor three.js con la pestaña creativa, los tooltips, la página de
   JEI y el escarabajo en 3D, armado con los mismos archivos del mod. Se publica como Artifact para revisar sin el juego.
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
 ## Después
-1. Libro de reliquias con Modonomicon y generador de `docs/wiki/` desde los datos de las reliquias.
-2. Íconos de la tanda (estilo de Misfit Relics) e ícono del mod.
+1. Probar en el juego (en el PC del usuario) la tanda de Egipto completa: efectos, aliados, reliquias puestas, libro
+   y JEI.
+2. Segunda tanda de Egipto (diseño a revisar con el usuario antes de programar).
 3. Portar Misfit Relics a Architectury (mismo esquema de módulos).

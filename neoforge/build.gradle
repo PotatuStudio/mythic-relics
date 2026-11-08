@@ -29,6 +29,8 @@ dependencies {
 	// JEI: compila contra la API común; en desarrollo (runClient) corre JEI completo. No va dentro del jar.
 	compileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:$rootProject.jei_version"
 	localRuntime "mezz.jei:jei-${rootProject.minecraft_version}-neoforge:$rootProject.jei_version"
+	// Libro de reliquias (solo datos). Sin transitivas: el jar ya trae sus bibliotecas.
+	localRuntime("com.klikli_dev:modonomicon-${rootProject.minecraft_version}-neoforge:$rootProject.modonomicon_version") { transitive = false }
 
 	common(project(path: ":common")) { transitive false }
 	shadowBundle(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }

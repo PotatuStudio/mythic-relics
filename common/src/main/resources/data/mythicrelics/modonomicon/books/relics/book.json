@@ -1,0 +1,8 @@
+{
+  "name": "book.mythicrelics.relics.name",
+  "tooltip": "book.mythicrelics.relics.tooltip",
+  "display_mode": "node",
+  "generate_book_item": true,
+  "model": "modonomicon:modonomicon_blue",
+  "creative_tab": "mythicrelics:main"
+}
