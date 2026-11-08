@@ -1,0 +1,21 @@
+architectury {
+	common(rootProject.enabled_platforms.split(","))
+}
+
+dependencies {
+	// Solo por las anotaciones @Environment de Fabric Loader; no usar otras clases de Fabric aquí.
+	implementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+	implementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+	compileOnly "eu.pb4:trinkets:$rootProject.trinkets_version"
+}
+
+processResources {
+	// El español se traduce una sola vez (es_es) y se copia a las demás variantes: Minecraft no cae de
+	// es_cl a es_es, sino directo a inglés.
+	["es_ar", "es_cl", "es_ec", "es_mx", "es_uy", "es_ve"].each { locale ->
+		from("src/main/resources/assets/mythicrelics/lang/es_es.json") {
+			into "assets/mythicrelics/lang"
+			rename { "${locale}.json" }
+		}
+	}
+}

@@ -1,121 +1,63 @@
 plugins {
-	id 'net.fabricmc.fabric-loom' version "${loom_version}"
-	id 'maven-publish'
+	id "architectury-plugin" version "3.5-SNAPSHOT"
+	id "dev.architectury.loom-no-remap" version "1.17-SNAPSHOT" apply false
+	id "com.gradleup.shadow" version "9.4.3" apply false
 }
 
-repositories {
-	// Trinkets Updated (espacios de accesorios).
-	exclusiveContent {
-		forRepository {
-			maven {
-				name = "Nucleoid"
-				url = "https://maven.nucleoid.xyz/releases"
-			}
-		}
-		filter {
-			includeGroup "eu.pb4"
-		}
+architectury {
+	minecraft = project.minecraft_version
+}
+
+allprojects {
+	group = rootProject.maven_group
+	version = rootProject.mod_version
+}
+
+subprojects {
+	apply plugin: "java-library"
+	apply plugin: "architectury-plugin"
+	apply plugin: "dev.architectury.loom-no-remap"
+
+	base {
+		archivesName = "$rootProject.archives_name-$project.name"
 	}
 
-	// Maven de Modrinth, solo para mods (grupo maven.modrinth).
-	exclusiveContent {
-		forRepository {
-			maven {
-				name = "Modrinth"
-				url = "https://api.modrinth.com/maven"
-			}
-		}
-		filter {
-			includeGroup "maven.modrinth"
-		}
-	}
-}
-
-loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"mythicrelics" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-}
-
-dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-
-	// Solo para desarrollo (runClient): no se publican ni van dentro del jar.
-	// Trinkets Updated: espacios de accesorios.
-	implementation "eu.pb4:trinkets:${project.trinkets_version}"
-
-	localRuntime "maven.modrinth:modmenu:${project.modmenu_version}"
-	localRuntime "maven.modrinth:placeholder-api:${project.placeholder_api_version}"
-	// JEI para buscar ítems por mod (@mythicrelics); compileOnly para la página "dónde encontrarlo".
-	compileOnly "maven.modrinth:jei:${project.jei_version_id}"
-	localRuntime "maven.modrinth:jei:${project.jei_version_id}"
-	localRuntime "maven.modrinth:mezzconfig:${project.mezzconfig_version_id}"
-}
-
-processResources {
-	def version = project.version
-	inputs.property "version", version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": version
-	}
-
-	// El español se traduce una sola vez (es_es) y se copia a las demás variantes: Minecraft no cae de
-	// es_cl a es_es, sino directo a inglés.
-	["es_ar", "es_cl", "es_ec", "es_mx", "es_uy", "es_ve"].each { locale ->
-		from("src/main/resources/assets/mythicrelics/lang/es_es.json") {
-			into "assets/mythicrelics/lang"
-			rename { "${locale}.json" }
-		}
-	}
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 25
-}
-
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_25
-	targetCompatibility = JavaVersion.VERSION_25
-}
-
-jar {
-	def projectName = project.name
-	inputs.property "projectName", projectName
-
-	from("LICENSE") {
-		rename { "${it}_$projectName"}
-	}
-}
-
-// configure the maven publication
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+		maven { url "https://maven.neoforged.net/releases/" }
+		maven { url "https://maven.architectury.dev/" }
+		// Trinkets Updated (espacios de accesorios; un mismo jar para Fabric y NeoForge).
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "Nucleoid"
+					url = "https://maven.nucleoid.xyz/releases"
+				}
+			}
+			filter { includeGroup "eu.pb4" }
+		}
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "Modrinth"
+					url = "https://api.modrinth.com/maven"
+				}
+			}
+			filter { includeGroup "maven.modrinth" }
+		}
+	}
+
+	dependencies {
+		minecraft "com.mojang:minecraft:$rootProject.minecraft_version"
+	}
+
+	java {
+		withSourcesJar()
+		sourceCompatibility = JavaVersion.VERSION_25
+		targetCompatibility = JavaVersion.VERSION_25
+	}
+
+	tasks.withType(JavaCompile).configureEach {
+		options.encoding = "UTF-8"
+		options.release = 25
 	}
 }

@@ -1,0 +1,62 @@
+apply plugin: "com.gradleup.shadow"
+
+architectury {
+	platformSetupLoomIde()
+	fabric()
+}
+
+configurations {
+	common {
+		canBeResolved = true
+		canBeConsumed = false
+	}
+	compileClasspath.extendsFrom common
+	runtimeClasspath.extendsFrom common
+	developmentFabric.extendsFrom common
+
+	// Lo que se empaqueta dentro del jar del loader (el módulo común ya transformado).
+	shadowBundle {
+		canBeResolved = true
+		canBeConsumed = false
+	}
+}
+
+dependencies {
+	implementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+	implementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
+	implementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
+	implementation "eu.pb4:trinkets:$rootProject.trinkets_version"
+
+	// Solo desarrollo (runClient): no van dentro del jar.
+	localRuntime "maven.modrinth:modmenu:$rootProject.modmenu_version"
+	compileOnly "maven.modrinth:jei:$rootProject.jei_version_id"
+	localRuntime "maven.modrinth:jei:$rootProject.jei_version_id"
+	localRuntime "maven.modrinth:mezzconfig:$rootProject.mezzconfig_version_id"
+
+	common(project(path: ":common")) { transitive false }
+	shadowBundle(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+}
+
+processResources {
+	inputs.property "version", project.version
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+// Como en Architectury API: el jar "raw" es solo de este módulo; el jar final (sin clasificador) lo arma Shadow
+// juntando este módulo con el común ya transformado para el loader.
+jar {
+	archiveClassifier = "raw"
+}
+
+shadowJar {
+	dependsOn jar
+	mainSpec.sourcePaths.clear()
+	from(zipTree(jar.archiveFile))
+	configurations = [project.configurations.shadowBundle]
+	archiveClassifier = null
+	exclude "architectury.common.json"
+}
+
+assemble.dependsOn shadowJar
