@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-08. Rama de trabajo: `feat/egipto-tanda-1` (el build multiloader ya está en `main`).
+Última sesión: 2026-11-08. Rama de trabajo: `main` (la tanda 1 de Egipto ya está fusionada; falta probarla en el juego).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -31,7 +31,7 @@
 Versiones (en `gradle.properties`): Minecraft 26.3, Architectury API 22.0.5, Fabric Loader 0.20.1,
 Fabric API 0.165.2+26.3, NeoForge 26.3.0.101, Trinkets 4.2.1+26.3.
 
-## Primera tanda de Egipto (rama `feat/egipto-tanda-1`)
+## Primera tanda de Egipto
 Diseño revisado con el usuario el 2026-11-08. Criterio: **fiel al mito, con licencias** (el efecto nace del significado
 real del símbolo; se aceptan guiños a Minecraft que no lo contradigan). Rareza: **raras** (~57 % de las pirámides trae
 al menos una reliquia). Los números están en constantes de `egypt/EgyptRelics.java`; el botín en `registry/ModLoot.java`.
