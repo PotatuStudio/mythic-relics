@@ -66,6 +66,15 @@ garras de Sekhmet. Después: Grecia, Roma, nórdicos, celtas, folclore japonés,
 Mesopotamia (las ideas con sus efectos y estructuras están en la conversación del 2026-11-08; resumen en
 [ideas.md](ideas.md)).
 
+## Herramientas y pruebas
+- **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC
+  después de subir a `main`.
+- `tools/model-gen/egypt_icons.py`: genera los íconos 16x16 (con brillo animado) y el ícono del mod.
+- `tools/model-gen/scarab_texture.py`: textura del escarabajo aliado (requiere Pillow).
+- `tools/model-gen/make_viewer.py <salida.html>`: visor three.js con la pestaña creativa, los tooltips, la página de
+  JEI y el escarabajo en 3D, armado con los mismos archivos del mod. Se publica como Artifact para revisar sin el juego.
+- JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
+
 ## Después
 1. Libro de reliquias con Modonomicon y generador de `docs/wiki/` desde los datos de las reliquias.
 2. Íconos de la tanda (estilo de Misfit Relics) e ícono del mod.
