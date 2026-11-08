@@ -35,6 +35,29 @@ subprojects {
 			}
 			filter { includeGroup "eu.pb4" }
 		}
+		// Modonomicon (libro de reliquias): el libro es solo datos, así que basta tenerlo en desarrollo.
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "Cloudsmith klikli-dev"
+					url = "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
+				}
+			}
+			filter { includeGroup "com.klikli_dev" }
+		}
+		// JEI (integración opcional: páginas de "dónde encontrarlo") y su biblioteca de configuración.
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "BlameJared"
+					url = "https://maven.blamejared.com"
+				}
+			}
+			filter {
+				includeGroup "mezz.jei"
+				includeGroup "net.mezzdev.config"
+			}
+		}
 		exclusiveContent {
 			forRepository {
 				maven {

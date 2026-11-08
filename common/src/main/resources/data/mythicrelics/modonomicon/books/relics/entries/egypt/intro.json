@@ -1,0 +1,18 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:egypt/intro",
+  "category": "mythicrelics:egypt",
+  "name": "book.mythicrelics.relics.egypt.intro.name",
+  "icon": "minecraft:chiseled_sandstone",
+  "x": 0,
+  "y": 0,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "intro",
+      "title": "book.mythicrelics.relics.egypt.intro.name",
+      "text": "lore.mythicrelics.egypt.intro",
+      "show_title_separator": true
+    }
+  ]
+}

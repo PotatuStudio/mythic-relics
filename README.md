@@ -13,6 +13,13 @@ Minecraft 26.3, Java 25, [Architectury API](https://modrinth.com/mod/architectur
 - **Fabric:** Fabric Loader 0.20.1 o superior y Fabric API.
 - **NeoForge:** NeoForge 26.3.0.101 o superior.
 
+Opcionales: [Modonomicon](https://modrinth.com/mod/modonomicon) 2.20.1 o superior agrega el **Códice de reliquias**
+(un libro con cada reliquia, su mito y dónde encontrarla) y [JEI](https://modrinth.com/mod/jei) muestra dónde se
+encuentra cada una.
+
+## Wiki
+[docs/wiki](docs/wiki/README.md): todas las reliquias con sus efectos, su mito y dónde encontrarlas.
+
 ## Desarrollo
 ```sh
 ./gradlew :fabric:runClient     # o :neoforge:runClient

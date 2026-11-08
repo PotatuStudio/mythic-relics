@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:egypt/ankh",
+  "category": "mythicrelics:egypt",
+  "name": "item.mythicrelics.ankh",
+  "icon": "mythicrelics:ankh",
+  "x": 2,
+  "y": 2,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.ankh.effect",
+      "item": "mythicrelics:ankh"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.ankh",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.ankh.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.ankh.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:egypt/intro"
+    }
+  ]
+}

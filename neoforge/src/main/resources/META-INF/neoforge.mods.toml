@@ -11,6 +11,9 @@ authors = "PotatuStudio"
 description = '''Mythological relics (Egypt, Greece, Norse...) as RPG gear.'''
 logoFile = "assets/mythicrelics/icon.png"
 
+[[mixins]]
+config = "mythicrelics.mixins.json"
+
 [[dependencies.mythicrelics]]
 modId = "neoforge"
 type = "required"
@@ -37,4 +40,18 @@ modId = "trinkets_updated"
 type = "required"
 versionRange = "[4.2.1,)"
 ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.mythicrelics]]
+modId = "jei"
+type = "optional"
+versionRange = "[31.17,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.mythicrelics]]
+modId = "modonomicon"
+type = "optional"
+versionRange = "[2.20.1,)"
+ordering = "NONE"
 side = "BOTH"

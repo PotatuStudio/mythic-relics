@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:egypt/jackal_mask",
+  "category": "mythicrelics:egypt",
+  "name": "item.mythicrelics.jackal_mask",
+  "icon": "mythicrelics:jackal_mask",
+  "x": -2,
+  "y": 5,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.jackal_mask.effect",
+      "item": "mythicrelics:jackal_mask"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.jackal_mask",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.jackal_mask.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.jackal_mask.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:egypt/intro"
+    }
+  ]
+}

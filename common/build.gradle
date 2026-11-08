@@ -7,6 +7,7 @@ dependencies {
 	implementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 	implementation "dev.architectury:architectury:$rootProject.architectury_api_version"
 	compileOnly "eu.pb4:trinkets:$rootProject.trinkets_version"
+	compileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:$rootProject.jei_version"
 }
 
 processResources {

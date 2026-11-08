@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:eye_of_horus"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "head",
+   "model": "mythicrelics:item/eye_of_horus_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

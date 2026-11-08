@@ -1,0 +1,715 @@
+<title>Mythic Relics · Egipto</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;600&family=VT323&display=swap">
+<style>
+/* Una sola atmósfera: cámara de tumba de noche, con la interfaz de Minecraft en primer plano.
+   Columna principal: inventario + tooltip/JEI a la par, y debajo el visor 3D. */
+:root {
+  --night: #15120f;      /* fondo: piedra de tumba en penumbra */
+  --stone: #221d18;      /* paneles de la página */
+  --line: #3a3128;
+  --sand: #e8d3a2;       /* texto principal, color arena */
+  --muted: #a8977a;
+  --gold: #e9b949;       /* acento: oro de las reliquias */
+  --lapis: #6f8fe8;
+  --gui: #c6c6c6; --gui-hi: #ffffff; --gui-sh: #555555; --slot: #8b8b8b; --slot-sh: #373737;
+  --font-display: "Marcellus", "Trajan Pro", Georgia, serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --font-mc: "VT323", "Lucida Console", monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--night); color: var(--sand); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px; }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 28px; }
+header { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+header img { width: 64px; height: 64px; image-rendering: pixelated; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; margin: 0; letter-spacing: .02em; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; margin: 0 0 4px; color: var(--gold); }
+.sub { color: var(--muted); margin: 0; }
+.grow { flex: 1; min-width: 0; }
+.toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.toggle button { background: transparent; color: var(--muted); border: 0; padding: 6px 12px; font: 600 13px var(--font-body); cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--gold); color: #2a1d05; }
+button:focus-visible { outline: 2px solid var(--lapis); outline-offset: 2px; }
+section { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 16px; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 760px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.note { color: var(--muted); font-size: 13px; margin: 0; }
+
+/* Interfaz de Minecraft */
+.gui { background: var(--gui); padding: 10px; border: 2px solid #000; box-shadow: inset 2px 2px 0 var(--gui-hi), inset -2px -2px 0 var(--gui-sh);
+  image-rendering: pixelated; width: fit-content; max-width: 100%; }
+.gui-title { font-family: var(--font-mc); font-size: 22px; color: #404040; margin: 0 0 6px 2px; line-height: 1; }
+.tabs { display: flex; gap: 4px; margin-bottom: -2px; }
+.tab { width: 52px; height: 48px; background: var(--gui); border: 2px solid #000; border-bottom: 0; display: grid; place-items: center;
+  box-shadow: inset 2px 2px 0 var(--gui-hi); }
+.tab canvas { width: 32px; height: 32px; }
+.slots { display: grid; grid-template-columns: repeat(9, 40px); gap: 0; }
+@media (max-width: 460px) { .slots { grid-template-columns: repeat(6, 40px); } }
+.slot { width: 40px; height: 40px; background: var(--slot); border: 0; padding: 4px; cursor: pointer;
+  box-shadow: inset 2px 2px 0 var(--slot-sh), inset -2px -2px 0 var(--gui-hi); position: relative; }
+.slot canvas { width: 32px; height: 32px; display: block; image-rendering: pixelated; }
+.slot:hover::after, .slot[aria-pressed="true"]::after { content: ""; position: absolute; inset: 4px; background: rgba(255,255,255,.45); }
+.slot.empty { cursor: default; }
+.slot.empty:hover::after { display: none; }
+
+/* Tooltip vanilla: fondo casi negro, borde violeta en degradé, texto con sombra */
+.tooltip { font-family: var(--font-mc); font-size: 20px; line-height: 20px; background: rgba(16, 0, 16, .94); color: #fff;
+  padding: 6px 8px 8px; border: 2px solid transparent; border-radius: 2px; width: fit-content; max-width: 100%; overflow-x: auto;
+  border-image: linear-gradient(#5000ff 0%, #28007f 100%) 1; white-space: pre; }
+.tooltip .line { text-shadow: 2px 2px 0 rgba(0,0,0,.75); min-height: 20px; }
+.tooltip .line.name { margin-bottom: 4px; }
+.c-white { color: #ffffff; } .c-yellow { color: #ffff55; } .c-aqua { color: #55ffff; } .c-purple { color: #ff55ff; }
+.c-gold { color: #ffaa00; } .c-gray { color: #aaaaaa; } .c-blue { color: #5555ff; } .c-dgray { color: #555555; font-style: italic; }
+
+/* Página de JEI (información) */
+.jei { background: var(--gui); border: 2px solid #000; box-shadow: inset 2px 2px 0 var(--gui-hi), inset -2px -2px 0 var(--gui-sh); padding: 10px 12px;
+  font-family: var(--font-mc); font-size: 20px; line-height: 20px; color: #404040; display: grid; gap: 8px; max-width: 100%; }
+.jei-head { display: flex; gap: 8px; align-items: center; border-bottom: 2px solid var(--gui-sh); padding-bottom: 6px; }
+.jei-head canvas { width: 32px; height: 32px; image-rendering: pixelated; }
+.jei b { color: #202020; font-weight: normal; text-decoration: underline; }
+.jei .g { color: #707070; }
+
+/* Visor 3D */
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 8px; overflow: hidden; background: #0c0a08; }
+.stage canvas { display: block; width: 100%; height: 100%; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); border-radius: 6px; padding: 7px 14px;
+  font: 600 13px var(--font-body); cursor: pointer; }
+.btn:hover { background: rgba(233, 185, 73, .12); }
+label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 13px; margin: 0; padding: 0; list-style: none; }
+.facts b { color: var(--sand); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <img id="modIcon" alt="Ícono del mod">
+    <div class="grow">
+      <h1>Mythic Relics · Egipto</h1>
+      <p class="sub" data-i18n="subtitle">Vista previa de la primera tanda, armada con los mismos archivos del mod.</p>
+    </div>
+    <div class="toggle" role="group" aria-label="Idioma">
+      <button id="langEs" aria-pressed="true">ES</button>
+      <button id="langEn" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <section>
+    <div>
+      <h2 data-i18n="invTitle">Pestaña creativa y tooltips</h2>
+      <p class="note" data-i18n="invNote">Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.</p>
+    </div>
+    <div class="cols">
+      <div>
+        <div class="tabs" aria-hidden="true"><div class="tab"><canvas id="tabIcon" width="16" height="16"></canvas></div></div>
+        <div class="gui">
+          <p class="gui-title" id="tabTitle">Mythic Relics</p>
+          <div class="slots" id="slots"></div>
+        </div>
+      </div>
+      <div style="display:grid; gap:14px; min-width:0">
+        <div class="tooltip" id="tooltip" aria-live="polite"></div>
+        <div class="jei" id="jei"></div>
+        <ul class="facts" id="facts"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div>
+      <h2 data-i18n="stageTitle">En el mundo</h2>
+      <p class="note" data-i18n="stageNote">Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.</p>
+    </div>
+    <div class="toggle" role="group" aria-label="Modelo" id="subjects">
+      <button data-subject="scarab" aria-pressed="true" data-i18n="subjScarab">Escarabajo</button>
+      <button data-subject="jackal" aria-pressed="false" data-i18n="subjJackal">Chacal</button>
+      <button data-subject="player" aria-pressed="false" data-i18n="subjPlayer">Reliquias puestas</button>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="controls" id="mobControls">
+      <button class="btn" id="btnWalk">Caminar</button>
+      <button class="btn" id="btnDig">Aparecer</button>
+      <label class="range"><span data-i18n="speed">Velocidad de marcha</span>
+        <input type="range" id="speed" min="0" max="1" step="0.05" value="0.8"></label>
+    </div>
+    <div class="controls" id="wornControls" hidden></div>
+    <p class="note" id="stageFoot"></p>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DATA = __DATA__;
+const UI = {
+  es_es: { subtitle: "Vista previa de la primera tanda, armada con los mismos archivos del mod.",
+    invTitle: "Pestaña creativa y tooltips",
+    invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
+    stageTitle: "En el mundo",
+    stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjPlayer: "Reliquias puestas",
+    walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
+    footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
+    footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
+    footPlayer: "Muñeco genérico (sin la skin de Mojang) con los modelos 3D de cada reliquia, ubicados con la misma regla que usa Trinkets. Las vendas y el anillo se ponen en ambas manos si hay uno en cada espacio; aquí se ven en las dos. El cetro no se pone: se lleva en la mano.",
+    slot: "Espacio", rarity: "Rareza", perPyramid: "Por pirámide (4 cofres)", info: "Información",
+    slotNames: {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes", "hand/ring": "anillo", "mainhand": "mano (arma)"},
+    rarities: {common: "común", uncommon: "poco común", rare: "rara", epic: "épica"} },
+  en_us: { subtitle: "Preview of the first batch, built from the mod's own files.",
+    invTitle: "Creative tab and tooltips",
+    invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
+    stageTitle: "In the world",
+    stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjPlayer: "Worn relics",
+    walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
+    footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
+    footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
+    footPlayer: "Generic figure (no Mojang skin) wearing each relic's 3D model, placed with the same rule Trinkets uses. Wraps and rings show on both hands here. The scepter isn't worn: it's held.",
+    slot: "Slot", rarity: "Rarity", perPyramid: "Per pyramid (4 chests)", info: "Information",
+    slotNames: {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves", "hand/ring": "ring", "mainhand": "main hand (weapon)"},
+    rarities: {common: "common", uncommon: "uncommon", rare: "rare", epic: "epic"} },
+};
+const RARITY_COLOR = { common: "c-white", uncommon: "c-yellow", rare: "c-aqua", epic: "c-purple" };
+let lang = "es_es";
+let selected = DATA.order[0];
+try { const saved = localStorage.getItem("mr-lang"); if (saved && UI[saved]) lang = saved; } catch (e) {}
+
+function tr(key, args) {
+  let s = DATA.lang[lang][key];
+  if (s === undefined) return key;
+  let seq = 0;
+  s = s.replace(/%(\d+\$)?s/g, (m, pos) => {
+    const i = pos ? parseInt(pos) - 1 : seq++;
+    return args && args[i] !== undefined ? String(args[i]) : m;
+  });
+  return s.replace(/%%/g, "%");
+}
+
+/* Íconos con su animación (.mcmeta): tira vertical de cuadros de 16x16, tiempos en ticks (20 por segundo). */
+const sprites = {};
+function loadSprite(name) {
+  const icon = DATA.icons[name];
+  const img = new Image();
+  img.src = "data:image/png;base64," + icon.png;
+  sprites[name] = { img, frames: icon.frames, canvases: [] };
+}
+DATA.order.forEach(loadSprite);
+function bindCanvas(name, canvas) { sprites[name].canvases.push(canvas); }
+const start = performance.now();
+function drawSprites(now) {
+  const tick = Math.floor((now - start) / 50);
+  for (const s of Object.values(sprites)) {
+    if (!s.img.complete) continue;
+    let index = 0;
+    if (s.frames) {
+      const total = s.frames.reduce((a, f) => a + f.time, 0);
+      let t = tick % total;
+      for (const f of s.frames) { if (t < f.time) { index = f.index; break; } t -= f.time; }
+    }
+    for (const c of s.canvases) {
+      const g = c.getContext("2d");
+      g.imageSmoothingEnabled = false;
+      g.clearRect(0, 0, 16, 16);
+      g.drawImage(s.img, 0, index * 16, 16, 16, 0, 0, 16, 16);
+    }
+  }
+  requestAnimationFrame(drawSprites);
+}
+requestAnimationFrame(drawSprites);
+
+function iconCanvas(name) {
+  const c = document.createElement("canvas");
+  c.width = 16; c.height = 16;
+  bindCanvas(name, c);
+  return c;
+}
+
+function buildSlots() {
+  const box = document.getElementById("slots");
+  box.innerHTML = "";
+  const total = Math.ceil(DATA.order.length / 9) * 9 + 9;
+  for (let i = 0; i < total; i++) {
+    const name = DATA.order[i];
+    const b = document.createElement("button");
+    b.className = "slot" + (name ? "" : " empty");
+    if (name) {
+      b.appendChild(iconCanvas(name));
+      b.setAttribute("aria-label", tr("item.mythicrelics." + name));
+      b.setAttribute("aria-pressed", String(name === selected));
+      const pick = () => { selected = name; render(); };
+      b.addEventListener("mouseenter", pick);
+      b.addEventListener("focus", pick);
+      b.addEventListener("click", pick);
+    } else {
+      b.tabIndex = -1;
+      b.setAttribute("aria-hidden", "true");
+    }
+    box.appendChild(b);
+  }
+}
+
+function line(text, cls) {
+  const d = document.createElement("div");
+  d.className = "line " + (cls || "");
+  d.textContent = text;
+  return d;
+}
+
+function renderTooltip() {
+  const tip = document.getElementById("tooltip");
+  tip.innerHTML = "";
+  const args = DATA.args[selected] || [];
+  tip.appendChild(line(tr("item.mythicrelics." + selected), "name " + RARITY_COLOR[DATA.rarity[selected] || "common"]));
+  for (let i = 1; i <= 8; i++) {
+    const key = "item.mythicrelics." + selected + ".tooltip." + i;
+    if (DATA.lang[lang][key] === undefined) break;
+    tip.appendChild(line(tr(key, args), i === 1 ? "c-gold" : "c-gray"));
+  }
+  if (DATA.setPieces.includes(selected)) {
+    tip.appendChild(line(" ", ""));
+    tip.appendChild(line(tr("tooltip.mythicrelics.anubis_set.1"), "c-gray"));
+    tip.appendChild(line(tr("tooltip.mythicrelics.anubis_set.2"), "c-blue"));
+    tip.appendChild(line(tr("tooltip.mythicrelics.anubis_set.3"), "c-blue"));
+  }
+  const sources = DATA.loot[selected] || [];
+  if (sources.length) {
+    const places = sources.map(s => tr(DATA.lootKeys[s.table])).join(", ");
+    tip.appendChild(line(tr("tooltip.mythicrelics.found_in", [places]), "c-dgray"));
+  }
+}
+
+function pct(c) { const p = c * 100; return Math.abs(p - Math.round(p)) < 1e-6 ? String(Math.round(p)) : p.toFixed(1); }
+
+function renderJei() {
+  const box = document.getElementById("jei");
+  box.innerHTML = "";
+  const head = document.createElement("div");
+  head.className = "jei-head";
+  head.appendChild(iconCanvas(selected));
+  const t = document.createElement("span");
+  t.textContent = UI[lang].info;
+  head.appendChild(t);
+  box.appendChild(head);
+  const body = document.createElement("div");
+  const title = document.createElement("b");
+  title.textContent = tr("jei.mythicrelics.where.title");
+  body.appendChild(title);
+  for (const s of DATA.loot[selected] || []) {
+    const d = document.createElement("div");
+    d.textContent = tr("jei.mythicrelics.where.entry", [tr(DATA.lootKeys[s.table]), pct(s.chance)]);
+    body.appendChild(d);
+  }
+  const n = document.createElement("div");
+  n.className = "g";
+  n.textContent = tr("jei.mythicrelics.where.note");
+  body.appendChild(n);
+  box.appendChild(body);
+}
+
+function renderFacts() {
+  const ui = UI[lang];
+  const ul = document.getElementById("facts");
+  const pyramid = (DATA.loot[selected] || []).find(s => s.table === "desert_pyramid");
+  const items = [[ui.slot, ui.slotNames[DATA.slots[selected]]], [ui.rarity, ui.rarities[DATA.rarity[selected] || "common"]]];
+  if (pyramid) items.push([ui.perPyramid, pct(1 - Math.pow(1 - pyramid.chance, 4)) + " %"]);
+  ul.innerHTML = "";
+  for (const [k, v] of items) {
+    const li = document.createElement("li");
+    li.innerHTML = "";
+    li.append(k + ": ");
+    const b = document.createElement("b"); b.textContent = v; li.appendChild(b);
+    ul.appendChild(li);
+  }
+}
+
+function render() {
+  for (const s of Object.values(sprites)) s.canvases = s.canvases.filter(c => c.isConnected);
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = UI[lang][el.dataset.i18n];
+  });
+  document.getElementById("btnWalk").textContent = walking ? UI[lang].stop : UI[lang].walk;
+  document.getElementById("tabTitle").textContent = tr("itemGroup.mythicrelics.main");
+  document.getElementById("langEs").setAttribute("aria-pressed", String(lang === "es_es"));
+  document.getElementById("langEn").setAttribute("aria-pressed", String(lang === "en_us"));
+  if (typeof renderStageText === "function") renderStageText();
+  buildSlots();
+  renderTooltip();
+  renderJei();
+  renderFacts();
+}
+
+function setLang(l) { lang = l; try { localStorage.setItem("mr-lang", l); } catch (e) {} render(); }
+document.getElementById("langEs").addEventListener("click", () => setLang("es_es"));
+document.getElementById("langEn").addEventListener("click", () => setLang("en_us"));
+document.getElementById("modIcon").src = "data:image/png;base64," + DATA.modIcon;
+bindCanvas("ankh", document.getElementById("tabIcon"));
+
+/* ---------------- Modelos 3D ----------------
+   Réplicas de ScarabModel.java y JackalModel.java. Coordenadas del modelo en píxeles con Y hacia abajo, como
+   Minecraft; el renderizador aplica scale(-1, -1, 1) y sube 1.501 bloques (LivingEntityRenderer). Mapeo UV de
+   ModelPart.Cube. El jugador es un muñeco de bloques genérico (sin la skin de Mojang) y las reliquias puestas siguen
+   assets/mythicrelics/trinkets/*.json: offset = posición sobre la parte (-1..1 por eje, Y hacia arriba),
+   translation en bloques, scale del ícono. Esa lectura de la configuración de Trinkets es una aproximación. */
+let walking = false;
+let subject = "scarab";
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0c0a08);
+const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.01, 100);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.minDistance = 0.3;
+controls.maxDistance = 8;
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const sun = new THREE.DirectionalLight(0xfff1d6, 0.75);
+sun.position.set(-2, 4, 3);
+scene.add(sun);
+const fillLight = new THREE.DirectionalLight(0xb8c8ff, 0.25);
+fillLight.position.set(3, 2, -2);
+scene.add(fillLight);
+
+function texFromB64(b64) {
+  const img = new Image();
+  const tex = new THREE.Texture(img);
+  img.onload = () => { tex.needsUpdate = true; };
+  img.src = "data:image/png;base64," + b64;
+  tex.magFilter = THREE.NearestFilter;
+  tex.minFilter = THREE.NearestFilter;
+  tex.encoding = THREE.sRGBEncoding;
+  return tex;
+}
+const mat = b64 => new THREE.MeshLambertMaterial({ map: texFromB64(b64), side: THREE.DoubleSide, alphaTest: 0.1 });
+const scarabMat = mat(DATA.scarabTexture);
+const jackalMat = mat(DATA.jackalTexture);
+
+/* Arena procedural (no se usan texturas de Mojang). */
+function sandTexture() {
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16;
+  const g = c.getContext("2d");
+  const tones = ["#dbcfa3", "#e3d8af", "#d4c597", "#e9dfb8", "#cdbd8e"];
+  let seed = 11;
+  const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) { g.fillStyle = tones[Math.floor(rnd() * tones.length)]; g.fillRect(x, y, 1, 1); }
+  const t = new THREE.CanvasTexture(c);
+  t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding;
+  return t;
+}
+const sandMat = new THREE.MeshLambertMaterial({ map: sandTexture() });
+for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sandMat);
+  m.position.set(x, -0.5, z);
+  scene.add(m);
+}
+const block = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sandMat);
+block.position.set(-1.2, 0.5, -1.0);
+scene.add(block);
+
+function cube(material, texW, texH, u, v, x0, y0, z0, w, h, d, mirror) {
+  const x1 = x0 + w, y1 = y0 + h, z1 = z0 + d;
+  const ax = mirror ? x1 : x0, bx = mirror ? x0 : x1;
+  const v000 = [ax, y0, z0], v100 = [bx, y0, z0], v110 = [bx, y1, z0], v010 = [ax, y1, z0];
+  const v001 = [ax, y0, z1], v101 = [bx, y0, z1], v111 = [bx, y1, z1], v011 = [ax, y1, z1];
+  const f8 = u + d, f9 = u + d + w, f10 = u + d + w + w, f11 = u + d + w + d, f12 = u + d + w + d + w, f13 = v + d, f14 = v + d + h;
+  const faces = [
+    [[v101, v001, v000, v100], f8, v, f9, f13],      // DOWN (y mínima: arriba en pantalla)
+    [[v110, v010, v011, v111], f9, f13, f10, v],     // UP
+    [[v000, v001, v011, v010], u, f13, f8, f14],     // WEST
+    [[v100, v000, v010, v110], f8, f13, f9, f14],    // NORTH
+    [[v101, v100, v110, v111], f9, f13, f11, f14],   // EAST
+    [[v001, v101, v111, v011], f11, f13, f12, f14],  // SOUTH
+  ];
+  const pos = [], uv = [], idx = [];
+  for (const [verts, u1, v1, u2, v2] of faces) {
+    const base = pos.length / 3;
+    const uvs = [[u2, v1], [u1, v1], [u1, v2], [u2, v2]];
+    verts.forEach((p, i) => { pos.push(...p); uv.push(uvs[i][0] / texW, 1 - uvs[i][1] / texH); });
+    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  return new THREE.Mesh(g, material);
+}
+
+function part(parent, material, offset, rot, cubes) {
+  const p = new THREE.Group();
+  p.position.set(...offset);
+  p.rotation.order = "ZYX";
+  p.rotation.set(rot[0], rot[1], rot[2]);
+  for (const c of cubes) p.add(cube(material, 64, 32, ...c));
+  parent.add(p);
+  p.userData.base = [...rot];
+  return p;
+}
+
+function entityRoot() {
+  const entity = new THREE.Group();
+  const root = new THREE.Group();
+  root.scale.set(-1 / 16, -1 / 16, 1 / 16);
+  root.position.y = 1.501;
+  entity.add(root);
+  scene.add(entity);
+  return { entity, root };
+}
+
+/* Escarabajo (ScarabModel.java) */
+const scarab = entityRoot();
+part(scarab.root, scarabMat, [0, 23, 1.5], [0, 0, 0], [[0, 0, -3, -3, -3.5, 6, 3, 7, false], [0, 10, -2, -4, -2.5, 4, 1, 5, false]]);
+part(scarab.root, scarabMat, [0, 23, -3.5], [0, 0, 0], [[26, 0, -2.5, -2, -1.5, 5, 2, 3, false]]);
+part(scarab.root, scarabMat, [0, 23, -5], [0, 0, 0], [[26, 5, -2, -1, -2, 4, 1, 2, false]]);
+const LEG_Z = [-3.5, -1.0, 1.5], LEG_SPREAD = [0.5, 0.0, -0.5], LEG_DROP = 0.5, STRIDE = 1.8;
+const sLeft = [], sRight = [];
+for (let i = 0; i < 3; i++) {
+  sLeft.push(part(scarab.root, scarabMat, [2.5, 22.2, LEG_Z[i]], [0, LEG_SPREAD[i], LEG_DROP], [[42, 0, 0, -0.5, -0.5, 4, 1, 1, false]]));
+  sRight.push(part(scarab.root, scarabMat, [-2.5, 22.2, LEG_Z[i]], [0, -LEG_SPREAD[i], -LEG_DROP], [[42, 0, -4, -0.5, -0.5, 4, 1, 1, true]]));
+}
+
+/* Chacal (JackalModel.java) */
+const jackal = entityRoot();
+part(jackal.root, jackalMat, [0, 14.5, 0], [0, 0, 0], [[0, 0, -2.5, -2.5, -6, 5, 5, 12, false], [34, 0, -3, -3, -6.5, 6, 6, 1, false]]);
+const jHead = part(jackal.root, jackalMat, [0, 12.5, -6.5], [0, 0, 0], [[34, 7, -2.5, -3, -4, 5, 5, 4, false], [48, 0, -1.5, -0.5, -8, 3, 2, 4, false],
+  [52, 7, -2.5, -7, -2, 2, 4, 1, false], [52, 7, 0.5, -7, -2, 2, 4, 1, true]]);
+const jTail = part(jackal.root, jackalMat, [0, 12.5, 6], [Math.PI / 5, 0, 0], [[8, 17, -1, 0, -1, 2, 7, 2, false]]);
+const jLeg = (x, z, mirror) => part(jackal.root, jackalMat, [x, 17, z], [0, 0, 0], [[0, 17, -1, 0, -1, 2, 7, 2, mirror]]);
+const jLF = jLeg(1.5, -4.5, false), jRF = jLeg(-1.5, -4.5, true), jLH = jLeg(1.5, 4.5, false), jRH = jLeg(-1.5, 4.5, true);
+
+/* Jugador de bloques con las reliquias puestas (assets/mythicrelics/trinkets). Mira hacia +Z. */
+const player = new THREE.Group();
+scene.add(player);
+const skin = new THREE.MeshLambertMaterial({ color: 0xc69c6d });
+const tunic = new THREE.MeshLambertMaterial({ color: 0xe6dcc0 });
+const legsMat = new THREE.MeshLambertMaterial({ color: 0x5a4632 });
+const hair = new THREE.MeshLambertMaterial({ color: 0x2b2118 });
+const PARTS = {};
+function pbox(name, material, cx, cy, cz, w, h, d) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w / 16, h / 16, d / 16), material);
+  m.position.set(cx / 16, cy / 16, cz / 16);
+  player.add(m);
+  PARTS[name] = { center: new THREE.Vector3(cx / 16, cy / 16, cz / 16), half: new THREE.Vector3(w / 32, h / 32, d / 32) };
+  return m;
+}
+pbox("head", skin, 0, 28, 0, 8, 8, 8);
+const hairCap = new THREE.Mesh(new THREE.BoxGeometry(8.4 / 16, 2.4 / 16, 8.4 / 16), hair);
+hairCap.position.set(0, 31.2 / 16, 0);
+player.add(hairCap);
+pbox("body", tunic, 0, 18, 0, 8, 12, 4);
+pbox(":main_hand", skin, -6, 18, 0, 4, 12, 4);
+pbox(":off_hand", skin, 6, 18, 0, 4, 12, 4);
+pbox("left_leg", legsMat, 2, 6, 0, 4, 12, 4);
+pbox("right_leg", legsMat, -2, 6, 0, 4, 12, 4);
+
+const iconTextures = {};
+function iconTexture(name) {
+  if (iconTextures[name]) return iconTextures[name];
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16;
+  const t = new THREE.CanvasTexture(c);
+  t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding;
+  const s = sprites[name];
+  const draw = () => { c.getContext("2d").drawImage(s.img, 0, 0, 16, 16, 0, 0, 16, 16); t.needsUpdate = true; };
+  if (s.img.complete) draw(); else s.img.addEventListener("load", draw);
+  iconTextures[name] = t;
+  return t;
+}
+
+/* Reliquias puestas como las dibuja Trinkets Updated 4.2.1 (render "model"): anclaje = centro de la parte +
+   offset × medio tamaño (+X izquierda de quien lo lleva, +Y arriba, +Z frente); con escala 1 y "centered", el píxel
+   (x, y, z) del modelo queda en (x-8, y-8, z-8) píxeles del jugador desde el anclaje. */
+const paletteTex = texFromB64(DATA.wornPalette);
+const paletteMat = new THREE.MeshLambertMaterial({ map: paletteTex });
+const FACE_ORDER = ["east", "west", "up", "down", "south", "north"];   // orden de caras de BoxGeometry
+function elementMesh(el) {
+  const [x0, y0, z0] = el.from, [x1, y1, z1] = el.to;
+  const g = new THREE.BoxGeometry((x1 - x0) / 16, (y1 - y0) / 16, (z1 - z0) / 16);
+  const uvAttr = g.attributes.uv;
+  FACE_ORDER.forEach((face, f) => {
+    const fd = el.faces[face];
+    if (!fd) return;
+    const [u1, v1, u2, v2] = fd.uv;
+    const corners = [[u1, v1], [u2, v1], [u1, v2], [u2, v2]];
+    corners.forEach(([u, v], i) => uvAttr.setXY(f * 4 + i, u / 16, 1 - v / 16));
+  });
+  uvAttr.needsUpdate = true;
+  const m = new THREE.Mesh(g, paletteMat);
+  m.position.set(((x0 + x1) / 2 - 8) / 16, ((y0 + y1) / 2 - 8) / 16, ((z0 + z1) / 2 - 8) / 16);
+  return m;
+}
+const HAND_PART = { ":main_hand": ":main_hand", ":off_hand": ":off_hand", "right_arm": ":main_hand", "left_arm": ":off_hand" };
+function wornMeshes(name) {
+  const out = [];
+  const cfg = DATA.trinkets[name];
+  const modelJson = DATA.wornModels[name];
+  if (!cfg || !modelJson) return out;
+  for (const r of cfg.render) {
+    const e = r.type === "minecraft:if_slot" ? r.then : r;
+    const p = PARTS[HAND_PART[e.model_part] || e.model_part];
+    if (!p || e.type !== "model") continue;
+    const g = new THREE.Group();
+    g.position.copy(p.center).add(new THREE.Vector3(e.offset[0] * p.half.x, e.offset[1] * p.half.y, e.offset[2] * p.half.z));
+    for (const el of modelJson.elements) g.add(elementMesh(el));
+    player.add(g);
+    out.push(g);
+  }
+  return out;
+}
+const TRINKETS = Object.keys(DATA.trinkets);
+const worn = {};
+const wearing = new Set(["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"]);
+for (const name of TRINKETS) worn[name] = wornMeshes(name);
+function applyWorn() {
+  for (const name of TRINKETS) for (const m of worn[name]) m.visible = wearing.has(name);
+}
+function buildWornControls() {
+  const box = document.getElementById("wornControls");
+  box.innerHTML = "";
+  for (const name of TRINKETS) {
+    const b = document.createElement("button");
+    b.className = "btn";
+    b.setAttribute("aria-pressed", String(wearing.has(name)));
+    b.style.opacity = wearing.has(name) ? "1" : "0.55";
+    b.textContent = tr("item.mythicrelics." + name);
+    b.addEventListener("click", () => {
+      if (wearing.has(name)) wearing.delete(name);
+      else {
+        // Un solo espacio de cara: el Ojo de Horus y la máscara se excluyen.
+        if (DATA.slots[name] === "head/face") for (const o of TRINKETS) if (DATA.slots[o] === "head/face") wearing.delete(o);
+        wearing.add(name);
+      }
+      applyWorn();
+      buildWornControls();
+    });
+    box.appendChild(b);
+  }
+}
+applyWorn();
+
+/* Animación de marcha (setupAnim de cada modelo) */
+let walkPos = 0, walkSpeed = 0;
+function setupAnim() {
+  const speed = Math.min(walkSpeed, 1);
+  for (let i = 0; i < 3; i++) {
+    for (const leg of [sLeft[i], sRight[i]]) leg.rotation.set(...leg.userData.base);
+    const left = walkPos * STRIDE + (i % 2 === 0 ? 0 : Math.PI);
+    const right = left + Math.PI;
+    sLeft[i].rotation.y += Math.cos(left) * 0.6 * speed;
+    sLeft[i].rotation.z -= Math.max(0, Math.sin(left)) * 0.4 * speed;
+    sRight[i].rotation.y -= Math.cos(right) * 0.6 * speed;
+    sRight[i].rotation.z += Math.max(0, Math.sin(right)) * 0.4 * speed;
+  }
+  const a = walkPos * 0.6662;
+  jRH.rotation.x = Math.cos(a) * 1.4 * speed;
+  jLH.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
+  jRF.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
+  jLF.rotation.x = Math.cos(a) * 1.4 * speed;
+  jTail.rotation.set(Math.PI / 5, Math.cos(a) * 1.4 * speed, 0);
+}
+
+/* Partículas al aparecer: el escarabajo suelta las del bloque que pisa (Minions#dig); el chacal, almas. */
+const particles = [];
+const particleGeo = new THREE.BoxGeometry(0.06, 0.06, 0.06);
+const sandParticles = ["#dbcfa3", "#e9dfb8", "#cdbd8e", "#c9b98a"].map(c => new THREE.MeshLambertMaterial({ color: c }));
+const soulParticles = ["#6fe3e8", "#3fb8c8", "#a8f4f4"].map(c => new THREE.MeshBasicMaterial({ color: c }));
+function burst(at, mats, count, rise) {
+  for (let i = 0; i < count; i++) {
+    const m = new THREE.Mesh(particleGeo, mats[i % mats.length]);
+    m.position.set(at.x + (Math.random() - 0.5) * 0.6, (rise ? 0.5 : 0.1) + (Math.random() - 0.5) * (rise ? 1 : 0.2), at.z + (Math.random() - 0.5) * 0.6);
+    m.userData.v = rise ? new THREE.Vector3((Math.random() - 0.5) * 0.04, 0.02 + Math.random() * 0.02, (Math.random() - 0.5) * 0.04)
+                        : new THREE.Vector3((Math.random() - 0.5) * 0.2, Math.random() * 0.15 + 0.05, (Math.random() - 0.5) * 0.2);
+    m.userData.gravity = rise ? 0 : 0.04;
+    m.userData.life = 20 + Math.floor(Math.random() * 10);
+    scene.add(m);
+    particles.push(m);
+  }
+}
+document.getElementById("btnDig").addEventListener("click", () => {
+  if (subject === "scarab") burst(scarab.entity.position, sandParticles, 24, false);
+  if (subject === "jackal") burst(jackal.entity.position, soulParticles, 12, true);
+});
+document.getElementById("btnWalk").addEventListener("click", () => {
+  walking = !walking;
+  document.getElementById("btnWalk").textContent = walking ? UI[lang].stop : UI[lang].walk;
+});
+const speedInput = document.getElementById("speed");
+
+const VIEWS = {
+  scarab: { cam: [0.9, 0.7, 1.1], target: [0, 0.12, 0] },
+  jackal: { cam: [1.6, 1.1, 1.8], target: [0, 0.45, 0] },
+  player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
+};
+function setSubject(s) {
+  subject = s;
+  scarab.entity.visible = s === "scarab";
+  jackal.entity.visible = s === "jackal";
+  player.visible = s === "player";
+  scarab.entity.position.set(0, 0, 0); jackal.entity.position.set(0, 0, 0);
+  scarab.entity.rotation.y = Math.PI; jackal.entity.rotation.y = Math.PI;   // de frente a la cámara
+  camera.position.set(...VIEWS[s].cam);
+  controls.target.set(...VIEWS[s].target);
+  document.querySelectorAll("#subjects button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.subject === s)));
+  document.getElementById("mobControls").hidden = s === "player";
+  document.getElementById("wornControls").hidden = s !== "player";
+  renderStageText();
+}
+function renderStageText() {
+  const foot = { scarab: "footScarab", jackal: "footJackal", player: "footPlayer" }[subject];
+  document.getElementById("stageFoot").textContent = UI[lang][foot];
+  document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
+  buildWornControls();
+}
+document.querySelectorAll("#subjects button").forEach(b => b.addEventListener("click", () => setSubject(b.dataset.subject)));
+
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(stage);
+resize();
+
+let last = performance.now(), acc = 0, angle = 0;
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function loop(now) {
+  acc += Math.min(now - last, 200); last = now;
+  while (acc >= 50) {   // un tick de Minecraft
+    acc -= 50;
+    const target = walking ? parseFloat(speedInput.value) : 0;
+    walkSpeed += (target - walkSpeed) * 0.4;
+    walkPos += walkSpeed;
+    const mob = subject === "scarab" ? scarab : subject === "jackal" ? jackal : null;
+    if (mob && walking && !reduce) {
+      angle += (subject === "jackal" ? 0.02 : 0.012) * walkSpeed;
+      const r = subject === "jackal" ? 0.9 : 0.45;
+      mob.entity.position.set(Math.cos(angle) * r - r, 0, Math.sin(angle) * r);
+      mob.entity.rotation.y = Math.PI - angle;
+    }
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.position.add(p.userData.v);
+      p.userData.v.y -= p.userData.gravity;
+      p.userData.v.multiplyScalar(0.98);
+      if (p.position.y < 0.03) { p.position.y = 0.03; p.userData.v.set(0, 0, 0); }
+      if (--p.userData.life <= 0) { scene.remove(p); particles.splice(i, 1); }
+    }
+  }
+  setupAnim();
+  controls.update();
+  renderer.render(scene, camera);
+  requestAnimationFrame(loop);
+}
+setSubject("scarab");
+requestAnimationFrame(loop);
+
+render();
+</script>

@@ -15,8 +15,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": ["io.github.potatustudio.mythicrelics.fabric.MythicRelicsFabric"],
-		"client": ["io.github.potatustudio.mythicrelics.fabric.client.MythicRelicsFabricClient"]
+		"client": ["io.github.potatustudio.mythicrelics.fabric.client.MythicRelicsFabricClient"],
+		"jei_mod_plugin": ["io.github.potatustudio.mythicrelics.client.jei.MythicRelicsJeiPlugin"]
 	},
+	"mixins": ["mythicrelics.mixins.json"],
 	"depends": {
 		"fabricloader": ">=0.20.1",
 		"minecraft": "~26.3",
@@ -24,5 +26,9 @@
 		"fabric-api": "*",
 		"architectury": ">=22.0.5",
 		"trinkets_updated": ">=4.2.1"
+	},
+	"suggests": {
+		"jei": "*",
+		"modonomicon": ">=2.20.1"
 	}
 }

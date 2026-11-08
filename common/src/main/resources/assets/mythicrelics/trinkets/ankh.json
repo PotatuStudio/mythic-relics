@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:ankh"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "body",
+   "model": "mythicrelics:item/ankh_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

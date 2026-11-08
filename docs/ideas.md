@@ -1,16 +1,15 @@
 # Ideas de reliquias por cultura
 
-Todas aprobadas por el usuario ("todas están buenas"). Se implementan por tandas de cultura. Los nombres son los
-propuestos; el usuario puede cambiarlos. "Dónde" es la estructura donde se encuentra (botín).
+Ideas aprobadas **como punto de partida** ("todas están buenas"): los efectos, números, probabilidades y la relación con
+el mito se revisan con el usuario antes de implementar cada tanda (criterio: fiel al mito, con licencias). Los nombres
+son propuestos; el usuario puede cambiarlos. "Dónde" es la estructura donde se encuentra (botín).
 
 ## Egipto
+Primera tanda (escarabajo, Ojo de Horus, Anj, vendas de momia y set de Anubis): diseño definitivo en
+[ESTADO.md](ESTADO.md).
+
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
-| Escarabajo dorado | cinturón | Bajo 3 corazones: absorción y escarabajos aliados. | Pirámides |
-| Ojo de Horus | cara | Tecla: contorno de criaturas y cofres a través de paredes. | Pirámides |
-| Anj | collar | Regeneración lenta; los no-muertos te hacen menos daño. | Pirámides, aldeas del desierto |
-| Báculo de Anubis | mano | No-muertos que matas vuelven como aliados un rato. | Pirámides, muy raro |
-| Vendas de momia | guantes | Golpes dan hambre y lentitud; los husks no te atacan. | Pirámides |
 | Disco solar de Ra | sombrero | De día tus golpes queman a los no-muertos. | Pirámides |
 | Amuleto de Bastet | collar | Caes de pie (sin daño hasta 10 bloques); los creepers te evitan. | Aldeas del desierto |
 | Tablilla de Thot | mano | Encantar cuesta menos niveles. | Bibliotecas de fortaleza |
