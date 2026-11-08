@@ -9,10 +9,13 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -20,10 +23,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Aliados temporales (escarabajos del escarabajo dorado, no-muertos alzados por el báculo de Anubis): pelean contra lo
+ * Aliados temporales (escarabajos del escarabajo dorado, chacales del anillo de los chacales): pelean contra lo
  * que su dueño golpea o lo que golpea a su dueño, nunca contra él ni sus aliados, y se deshacen al acabar su tiempo.
  * No sobreviven a una recarga del mundo: llevan la etiqueta {@link #TAG} y, si se cargan desde disco sin estar en el
  * registro en memoria, no se agregan al mundo. El dueño vive solo en memoria (no hace falta guardarlo).
@@ -34,7 +40,8 @@ public final class Minions {
 	private static final int TARGET_MEMORY = 120;
 	private static final double SEARCH_RANGE = 16.0;
 
-	private record Minion(UUID owner, int[] ticksLeft) {
+	/** {@code burrows}: sale de la tierra al aparecer y se entierra al acabar su tiempo (escarabajos). */
+	private record Minion(UUID owner, int[] ticksLeft, boolean burrows) {
 	}
 
 	private static final Map<Mob, Minion> MINIONS = Collections.synchronizedMap(new IdentityHashMap<>());
@@ -73,6 +80,12 @@ public final class Minions {
 	/** Invoca un aliado del tipo indicado junto a una posición, por la cantidad de ticks indicada. */
 	public static @Nullable Mob summon(ServerLevel level, Player owner, EntityType<? extends Mob> type, double x, double y, double z,
 			int ticks, Component name) {
+		return summon(level, owner, type, x, y, z, ticks, name, false);
+	}
+
+	/** Igual que el anterior; con {@code burrows}, el aliado sale de la tierra y vuelve a enterrarse al terminar. */
+	public static @Nullable Mob summon(ServerLevel level, Player owner, EntityType<? extends Mob> type, double x, double y, double z,
+			int ticks, Component name, boolean burrows) {
 		Mob mob = type.create(level, EntitySpawnReason.MOB_SUMMONED);
 		if (mob == null) {
 			return null;
@@ -81,10 +94,28 @@ public final class Minions {
 		mob.addTag(TAG);
 		mob.setCustomName(name);
 		mob.setPersistenceRequired();
-		MINIONS.put(mob, new Minion(owner.getUUID(), new int[] {ticks}));
+		MINIONS.put(mob, new Minion(owner.getUUID(), new int[] {ticks}, burrows));
 		level.addFreshEntity(mob);
-		level.sendParticles(ParticleTypes.SOUL, x, y + 0.5, z, 12, 0.3, 0.5, 0.3, 0.02);
+		if (burrows) {
+			dig(level, mob);
+		} else {
+			level.sendParticles(ParticleTypes.SOUL, x, y + 0.5, z, 12, 0.3, 0.5, 0.3, 0.02);
+		}
 		return mob;
+	}
+
+	/** Partículas y sonido del bloque que pisa el aliado, como si saliera de la tierra o se enterrara en ella. */
+	private static void dig(ServerLevel level, Mob mob) {
+		BlockPos below = mob.blockPosition().below();
+		BlockState ground = level.getBlockState(below);
+		if (ground.isAir()) {
+			ground = Blocks.SAND.defaultBlockState();
+		}
+		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, ground), mob.getX(), mob.getY() + 0.1, mob.getZ(),
+				24, 0.3, 0.1, 0.3, 0.1);
+		SoundType sound = ground.getSoundType();
+		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), sound.getBreakSound(), SoundSource.NEUTRAL,
+				sound.getVolume() * 0.8f, sound.getPitch() * 1.2f);
 	}
 
 	private static boolean isAlly(LivingEntity target, UUID owner) {
@@ -108,7 +139,11 @@ public final class Minions {
 					continue;
 				}
 				if (--minion.ticksLeft()[0] <= 0) {
-					level.sendParticles(ParticleTypes.POOF, mob.getX(), mob.getY() + 0.5, mob.getZ(), 10, 0.3, 0.4, 0.3, 0.02);
+					if (minion.burrows()) {
+						dig(level, mob);
+					} else {
+						level.sendParticles(ParticleTypes.POOF, mob.getX(), mob.getY() + 0.5, mob.getZ(), 10, 0.3, 0.4, 0.3, 0.02);
+					}
 					mob.discard();
 					it.remove();
 					continue;

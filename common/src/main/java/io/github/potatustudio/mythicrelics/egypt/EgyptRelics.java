@@ -8,6 +8,7 @@ import eu.pb4.trinkets.api.TrinketSlotAccess;
 import eu.pb4.trinkets.api.TrinketsApi;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
+import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,8 +203,9 @@ public final class EgyptRelics {
 		}
 		player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 300, SCARAB_ABSORPTION));
 		for (int i = 0; i < 2; i++) {
-			Minions.summon(level, player, EntityTypes.SILVERFISH, player.getX() + (i == 0 ? 1 : -1), player.getY(), player.getZ(),
-					SCARAB_MINION_TICKS, Component.translatable("entity.mythicrelics.scarab"));
+			// Los escarabajos salen de la tierra y vuelven a enterrarse al acabar su tiempo.
+			Minions.summon(level, player, ModEntities.SCARAB.get(), player.getX() + (i == 0 ? 1 : -1), player.getY(), player.getZ(),
+					SCARAB_MINION_TICKS, Component.translatable("entity.mythicrelics.scarab"), true);
 		}
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 0.5f, 1.6f);
 		level.sendParticles(GOLD, player.getX(), player.getY() + 1, player.getZ(), 30, 0.5, 0.7, 0.5, 0);

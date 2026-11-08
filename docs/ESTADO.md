@@ -38,7 +38,7 @@ al menos una reliquia). Los números están en constantes de `egypt/EgyptRelics.
 
 | Reliquia | Espacio | Mito | Efecto | Pirámide (por cofre) |
 |---|---|---|---|---|
-| **Escarabajo dorado** | cinturón | Jepri, el sol que renace | Al bajar de 3 corazones: absorción II 15 s y 2 escarabajos aliados (silverfish) 15 s. Recarga 60 s. | 3,5 % |
+| **Escarabajo dorado** | cinturón | Jepri, el sol que renace | Al bajar de 3 corazones: absorción II 15 s y 2 escarabajos aliados 15 s, que salen de la tierra y se entierran al irse. Recarga 60 s. | 3,5 % |
 | **Ojo de Horus** | cara | El ojo que Thot sanó: protección y sanación | Inmune a Ceguera y Oscuridad. Tras un golpe de 4 corazones o más, recupera el 50 % en 5 s. Recarga 45 s. | 2,5 % |
 | **Anj** | collar | La vida | Cura medio corazón cada 2,5 s; los no-muertos te hacen 25 % menos daño. | 3 % (+3 % casas de aldea del desierto) |
 | **Vendas de momia** | guantes | Guiño al husk de Minecraft | Tus golpes dan Hambre II 5 s y Lentitud 3 s; los husks no te atacan. | 4 % |
@@ -53,6 +53,12 @@ Horus que revelaba criaturas y cofres con una tecla ("el ojo que todo lo ve" es 
 Estado: portado a Architectury en `common/` (eventos `EntityEvent`/`TickEvent`/`LootEvent`, `DeferredRegister`, mixin
 común en `LivingEntity` para el Anj y la inmunidad del Ojo). `./gradlew build` compila y ambos `runClient` llegan al
 menú. **Falta probar los efectos en un mundo** y los íconos (hoy se ven con la textura faltante).
+
+Escarabajo aliado: entidad propia `mythicrelics:scarab` (`entity/Scarab.java`, `PathfinderMob`, no se guarda con el
+mundo) con modelo de cajas propio (`client/entity/ScarabModel.java`: caparazón con cúpula, pronoto, cabeza en pala,
+6 patas con marcha en trípode) y textura dorada con turquesa y lapislázuli (generada con
+`tools`-style script; layout en el modelo). Pendiente: el chacal con el mismo trato (lobo más delgado, orejas grandes,
+negro como Anubis).
 
 Segunda tanda de Egipto: disco solar de Ra, amuleto de Bastet, tablilla de Thot, cayado y mayal de Osiris,
 garras de Sekhmet. Después: Grecia, Roma, nórdicos, celtas, folclore japonés, Mesoamérica, eslavos, China,
