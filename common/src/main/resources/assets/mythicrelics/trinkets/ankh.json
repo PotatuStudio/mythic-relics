@@ -1,45 +1,18 @@
 {
-  "target": [
-    "mythicrelics:ankh"
-  ],
-  "render": [
-    {
-      "type": "item",
-      "model_part": "body",
-      "display_context": "none",
-      "offset": [
-        0,
-        1,
-        1
-      ],
-      "transformation": {
-        "translation": [
-          0,
-          -0.24,
-          0.02
-        ],
-        "left_rotation": {
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "angle": 3.141
-        },
-        "scale": [
-          0.3,
-          0.3,
-          0.3
-        ],
-        "right_rotation": {
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "angle": 0
-        }
-      }
-    }
-  ]
+ "target": [
+  "mythicrelics:ankh"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "body",
+   "model": "mythicrelics:item/ankh_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
 }

@@ -36,6 +36,9 @@ if __name__ == "__main__":
         "jackalTexture": b64(os.path.join(ASSETS, "textures", "entity", "jackal.png")),
         "trinkets": {name: json.loads(read(os.path.join(ASSETS, "trinkets", name + ".json")))
                      for name in ORDER if os.path.exists(os.path.join(ASSETS, "trinkets", name + ".json"))},
+        "wornModels": {name: json.loads(read(os.path.join(ASSETS, "models", "item", name + "_worn.json")))
+                       for name in ORDER if os.path.exists(os.path.join(ASSETS, "models", "item", name + "_worn.json"))},
+        "wornPalette": b64(os.path.join(ASSETS, "textures", "item", "worn_palette.png")),
     }
     template = read(os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer_template.html"))
     with open(out, "w", encoding="utf-8", newline="\n") as f:

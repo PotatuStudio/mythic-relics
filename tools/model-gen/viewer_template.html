@@ -157,7 +157,7 @@ const UI = {
     walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
     footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
-    footPlayer: "Muñeco genérico con las reliquias según assets/mythicrelics/trinkets. La posición es una aproximación de cómo las dibuja Trinkets; el cetro no se pone, se lleva en la mano.",
+    footPlayer: "Muñeco genérico (sin la skin de Mojang) con los modelos 3D de cada reliquia, ubicados con la misma regla que usa Trinkets. Las vendas y el anillo se ponen en ambas manos si hay uno en cada espacio; aquí se ven en las dos. El cetro no se pone: se lleva en la mano.",
     slot: "Espacio", rarity: "Rareza", perPyramid: "Por pirámide (4 cofres)", info: "Información",
     slotNames: {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes", "hand/ring": "anillo", "mainhand": "mano (arma)"},
     rarities: {common: "común", uncommon: "poco común", rare: "rara", epic: "épica"} },
@@ -170,7 +170,7 @@ const UI = {
     walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
     footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
-    footPlayer: "Generic figure wearing the relics per assets/mythicrelics/trinkets. Placement approximates how Trinkets draws them; the scepter isn't worn, it's held.",
+    footPlayer: "Generic figure (no Mojang skin) wearing each relic's 3D model, placed with the same rule Trinkets uses. Wraps and rings show on both hands here. The scepter isn't worn: it's held.",
     slot: "Slot", rarity: "Rarity", perPyramid: "Per pyramid (4 chests)", info: "Information",
     slotNames: {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves", "hand/ring": "ring", "mainhand": "main hand (weapon)"},
     rarities: {common: "common", uncommon: "uncommon", rare: "rare", epic: "epic"} },
@@ -523,33 +523,49 @@ function iconTexture(name) {
   return t;
 }
 
-/* Cada entrada "item" de la configuración de Trinkets se vuelve un cuadro con el ícono. */
+/* Reliquias puestas como las dibuja Trinkets Updated 4.2.1 (render "model"): anclaje = centro de la parte +
+   offset × medio tamaño (+X izquierda de quien lo lleva, +Y arriba, +Z frente); con escala 1 y "centered", el píxel
+   (x, y, z) del modelo queda en (x-8, y-8, z-8) píxeles del jugador desde el anclaje. */
+const paletteTex = texFromB64(DATA.wornPalette);
+const paletteMat = new THREE.MeshLambertMaterial({ map: paletteTex });
+const FACE_ORDER = ["east", "west", "up", "down", "south", "north"];   // orden de caras de BoxGeometry
+function elementMesh(el) {
+  const [x0, y0, z0] = el.from, [x1, y1, z1] = el.to;
+  const g = new THREE.BoxGeometry((x1 - x0) / 16, (y1 - y0) / 16, (z1 - z0) / 16);
+  const uvAttr = g.attributes.uv;
+  FACE_ORDER.forEach((face, f) => {
+    const fd = el.faces[face];
+    if (!fd) return;
+    const [u1, v1, u2, v2] = fd.uv;
+    const corners = [[u1, v1], [u2, v1], [u1, v2], [u2, v2]];
+    corners.forEach(([u, v], i) => uvAttr.setXY(f * 4 + i, u / 16, 1 - v / 16));
+  });
+  uvAttr.needsUpdate = true;
+  const m = new THREE.Mesh(g, paletteMat);
+  m.position.set(((x0 + x1) / 2 - 8) / 16, ((y0 + y1) / 2 - 8) / 16, ((z0 + z1) / 2 - 8) / 16);
+  return m;
+}
+const HAND_PART = { ":main_hand": ":main_hand", ":off_hand": ":off_hand", "right_arm": ":main_hand", "left_arm": ":off_hand" };
 function wornMeshes(name) {
   const out = [];
   const cfg = DATA.trinkets[name];
-  if (!cfg) return out;
-  const entries = [];
-  for (const r of cfg.render) entries.push(r.type === "minecraft:if_slot" ? r.then : r);
-  for (const e of entries) {
-    const p = PARTS[e.model_part];
-    if (!p) continue;
-    const t = e.transformation;
-    const size = t.scale[0];
-    const quad = new THREE.Mesh(new THREE.PlaneGeometry(size, size),
-      new THREE.MeshLambertMaterial({ map: iconTexture(name), transparent: true, alphaTest: 0.1, side: THREE.DoubleSide }));
-    const pos = p.center.clone().add(new THREE.Vector3(e.offset[0] * p.half.x, e.offset[1] * p.half.y, e.offset[2] * p.half.z));
-    pos.add(new THREE.Vector3(t.translation[0], t.translation[1], t.translation[2]));
-    quad.position.copy(pos);
-    const axis = t.left_rotation.axis;
-    if (axis[0] === 1) quad.rotation.x = t.left_rotation.angle;   // el anillo queda horizontal alrededor del dedo
-    player.add(quad);
-    out.push(quad);
+  const modelJson = DATA.wornModels[name];
+  if (!cfg || !modelJson) return out;
+  for (const r of cfg.render) {
+    const e = r.type === "minecraft:if_slot" ? r.then : r;
+    const p = PARTS[HAND_PART[e.model_part] || e.model_part];
+    if (!p || e.type !== "model") continue;
+    const g = new THREE.Group();
+    g.position.copy(p.center).add(new THREE.Vector3(e.offset[0] * p.half.x, e.offset[1] * p.half.y, e.offset[2] * p.half.z));
+    for (const el of modelJson.elements) g.add(elementMesh(el));
+    player.add(g);
+    out.push(g);
   }
   return out;
 }
 const TRINKETS = Object.keys(DATA.trinkets);
 const worn = {};
-const wearing = new Set(["ankh", "golden_scarab", "jackal_mask", "mummy_wraps", "jackal_ring"]);
+const wearing = new Set(["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"]);
 for (const name of TRINKETS) worn[name] = wornMeshes(name);
 function applyWorn() {
   for (const name of TRINKETS) for (const m of worn[name]) m.visible = wearing.has(name);

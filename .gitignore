@@ -38,3 +38,6 @@ hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
+
+# Capturas de las revisiones del visor con Playwright
+.playwright-mcp/

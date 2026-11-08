@@ -1,91 +1,37 @@
 {
-  "target": [
-    "mythicrelics:jackal_ring"
-  ],
-  "render": [
-    {
-      "type": "minecraft:if_slot",
-      "slot": "hand/ring",
-      "then": {
-        "type": "item",
-        "model_part": ":main_hand",
-        "display_context": "none",
-        "offset": [
-          0,
-          -0.85,
-          0
-        ],
-        "transformation": {
-          "translation": [
-            0,
-            0,
-            0
-          ],
-          "left_rotation": {
-            "axis": [
-              1,
-              0,
-              0
-            ],
-            "angle": 1.5708
-          },
-          "scale": [
-            0.3,
-            0.3,
-            0.3
-          ],
-          "right_rotation": {
-            "axis": [
-              0,
-              1,
-              0
-            ],
-            "angle": 0
-          }
-        }
-      }
-    },
-    {
-      "type": "minecraft:if_slot",
-      "slot": "offhand/ring",
-      "then": {
-        "type": "item",
-        "model_part": ":off_hand",
-        "display_context": "none",
-        "offset": [
-          0,
-          -0.85,
-          0
-        ],
-        "transformation": {
-          "translation": [
-            0,
-            0,
-            0
-          ],
-          "left_rotation": {
-            "axis": [
-              1,
-              0,
-              0
-            ],
-            "angle": 1.5708
-          },
-          "scale": [
-            0.3,
-            0.3,
-            0.3
-          ],
-          "right_rotation": {
-            "axis": [
-              0,
-              1,
-              0
-            ],
-            "angle": 0
-          }
-        }
-      }
-    }
-  ]
+ "target": [
+  "mythicrelics:jackal_ring"
+ ],
+ "render": [
+  {
+   "type": "minecraft:if_slot",
+   "slot": "hand/ring",
+   "then": {
+    "type": "model",
+    "model_part": ":main_hand",
+    "model": "mythicrelics:item/jackal_ring_worn",
+    "offset": [
+     0,
+     -1,
+     0
+    ],
+    "centered": true
+   }
+  },
+  {
+   "type": "minecraft:if_slot",
+   "slot": "offhand/ring",
+   "then": {
+    "type": "model",
+    "model_part": ":off_hand",
+    "model": "mythicrelics:item/jackal_ring_worn",
+    "offset": [
+     0,
+     -1,
+     0
+    ],
+    "centered": true
+   }
+  }
+ ]
 }
