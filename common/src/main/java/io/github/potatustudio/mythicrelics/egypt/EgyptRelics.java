@@ -167,10 +167,14 @@ public final class EgyptRelics {
 				&& player.getInventory().contains(stack -> stack.is(ModItems.ANUBIS_SCEPTER.get()));
 	}
 
-	/** Números que muestra el tooltip de cada reliquia (en el orden de los %s de su traducción). */
+	public static boolean isAnubisSetPiece(String id) {
+		return id.equals("anubis_scepter") || id.equals("jackal_mask") || id.equals("jackal_ring");
+	}
+
+	/** Números que muestra el tooltip de cada reliquia (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
-			case "golden_scarab" -> new Object[] {fmt(SCARAB_THRESHOLD / 2), SCARAB_ABSORPTION + 1, SCARAB_MINION_TICKS / 20,
+			case "golden_scarab" -> new Object[] {fmt(SCARAB_THRESHOLD / 2), roman(SCARAB_ABSORPTION + 1), SCARAB_MINION_TICKS / 20,
 					SCARAB_COOLDOWN / 20};
 			case "eye_of_horus" -> new Object[] {fmt(EYE_BIG_HIT / 2), Math.round(EYE_HEAL_FRACTION * 100), EYE_HEAL_TICKS / 20,
 					EYE_COOLDOWN / 20};
@@ -180,6 +184,18 @@ public final class EgyptRelics {
 			case "jackal_mask" -> new Object[] {fmt(MASK_SOUL_HEAL / 2), MASK_SOUL_TICKS / 20};
 			case "jackal_ring" -> new Object[] {RING_JACKALS, RING_JACKAL_TICKS / 20, RING_COOLDOWN / 20};
 			default -> new Object[0];
+		};
+	}
+
+	/** Nivel de efecto como en vanilla (Absorción II). */
+	private static String roman(int level) {
+		return switch (level) {
+			case 1 -> "I";
+			case 2 -> "II";
+			case 3 -> "III";
+			case 4 -> "IV";
+			case 5 -> "V";
+			default -> Integer.toString(level);
 		};
 	}
 
