@@ -25,7 +25,7 @@ subprojects {
 	repositories {
 		maven { url "https://maven.neoforged.net/releases/" }
 		maven { url "https://maven.architectury.dev/" }
-		// Trinkets Updated (espacios de accesorios; un mismo jar para Fabric y NeoForge).
+		// Trinkets Updated (accesorios en Fabric).
 		exclusiveContent {
 			forRepository {
 				maven {
@@ -34,6 +34,16 @@ subprojects {
 				}
 			}
 			filter { includeGroup "eu.pb4" }
+		}
+		// Curios (accesorios en NeoForge).
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "Curios"
+					url = "https://maven.theillusivec4.top/"
+				}
+			}
+			filter { includeGroup "top.theillusivec4.curios" }
 		}
 		// Modonomicon (libro de reliquias): el libro es solo datos, así que basta tenerlo en desarrollo.
 		exclusiveContent {

@@ -4,12 +4,11 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.registry.registries.RegistrySupplier;
-import eu.pb4.trinkets.api.TrinketSlotAccess;
-import eu.pb4.trinkets.api.TrinketsApi;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,6 +33,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.zombie.Husk;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -157,7 +157,7 @@ public final class EgyptRelics {
 	}
 
 	public static boolean isWearing(LivingEntity entity, RegistrySupplier<Item> item) {
-		return TrinketsApi.getAttachment(entity).findFirst(item.get()).map(TrinketSlotAccess::get).isPresent();
+		return WornRelics.isWearing(entity, item.get());
 	}
 
 	/** Set de Anubis completo: máscara y anillo puestos y el cetro en cualquier parte del inventario. */
@@ -229,8 +229,8 @@ public final class EgyptRelics {
 
 	/** Tras un golpe fuerte, el Ojo de Horus devuelve parte del daño como curación gradual. */
 	private static void eyeOfHorus(ServerLevel level, ServerPlayer player, float damageTaken) {
-		var eye = TrinketsApi.getAttachment(player).findFirst(ModItems.EYE_OF_HORUS.get()).map(TrinketSlotAccess::get);
-		if (eye.isEmpty() || player.getCooldowns().isOnCooldown(eye.get())) {
+		// La recarga es del grupo del ítem (componente USE_COOLDOWN), así que basta un stack nuevo para consultarla.
+		if (player.getCooldowns().isOnCooldown(new ItemStack(ModItems.EYE_OF_HORUS.get()))) {
 			return;
 		}
 		player.getCooldowns().addCooldown(EYE_COOLDOWN_GROUP, EYE_COOLDOWN);

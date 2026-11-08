@@ -19,7 +19,10 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.UseCooldown;
 
-/** Ítems y pestaña creativa del mod. Los espacios de Trinkets se asignan con tags en data/trinkets. */
+/**
+ * Ítems y pestaña creativa del mod. Los espacios de accesorio se asignan con tags en cada loader: data/trinkets en Fabric
+ * y data/curios en NeoForge.
+ */
 public final class ModItems {
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MythicRelics.MOD_ID, Registries.ITEM);
 	private static final DeferredRegister<CreativeModeTab> TABS =

@@ -7,7 +7,14 @@
   Es un mod aparte de Misfit Relics (que trata de lo "olvidado" de Minecraft); nada se mueve entre ellos.
 - **Fabric + NeoForge** en la última versión de Minecraft (26.3), con **Architectury** (módulos `common`, `fabric`,
   `neoforge` + Architectury API). Misfit Relics se portará igual después.
-- **Accesorios: Trinkets Updated** 4.2.1+26.3 (un mismo jar sirve en Fabric y NeoForge; no hace falta Curios).
+- **Accesorios: el estándar de cada loader** (cambio del 2026-11-08): **Trinkets Updated** 4.2.1+26.3 en Fabric y
+  **Curios** 17.0.0+26.3 en NeoForge, para no chocar con los mods de NeoForge que usan Curios. El código común pregunta
+  por `relic/WornRelics` y cada loader instala su implementación. Los espacios: Trinkets en `fabric/.../data/trinkets`
+  (cara, collar, cinturón, guantes y anillo en cada mano); Curios en `neoforge/.../data/curios/tags/item` (head,
+  necklace, belt, hands, ring; Curios no tiene "cara", así que el Ojo y la máscara van en head). Las reliquias puestas se
+  ven igual en los dos: Trinkets con `fabric/.../trinkets/*.json` y Curios con `CuriosRelicRenderer`, ambos con los
+  modelos `*_worn` (la definición del ítem los usa en el contexto de display "none"). Accessories (Wispforest) quedó
+  descartado: no tiene versión para 26.3.
 - **Las reliquias no se fabrican**: se encuentran en estructuras que calzan con su cultura (como Artifacts).
   Mientras más fuertes, más difícil la estructura.
 - **Biblioteca en el juego**: libro de reliquias con **Modonomicon** (26.3-2.20.1, Fabric y NeoForge), una página por
@@ -29,7 +36,7 @@
   "Mythic Relics cargado" en el log, sin errores del mod. En NeoForge, `FMLEnvironment.getDist()` existe en 26.3.
 
 Versiones (en `gradle.properties`): Minecraft 26.3, Architectury API 22.0.5, Fabric Loader 0.20.1,
-Fabric API 0.165.2+26.3, NeoForge 26.3.0.101, Trinkets 4.2.1+26.3.
+Fabric API 0.165.2+26.3, NeoForge 26.3.0.101, Trinkets 4.2.1+26.3 (Fabric), Curios 17.0.0+26.3 (NeoForge).
 
 ## Primera tanda de Egipto
 Diseño revisado con el usuario el 2026-11-08. Criterio: **fiel al mito, con licencias** (el efecto nace del significado

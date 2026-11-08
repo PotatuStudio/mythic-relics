@@ -11,7 +11,10 @@ Para que se vea sobre la capa de la skin hay que sobresalir al menos 0,5 px (0,7
 se pueden llevar a la vez en la misma parte no deben compartir planos (parpadean): por eso el anillo va más afuera que
 las vendas.
 
-Escribe models/item/<reliquia>_worn.json, textures/item/worn_palette.png y trinkets/<reliquia>.json.
+Escribe (common) models/item/<reliquia>_worn.json, textures/item/worn_palette.png e items/<reliquia>.json, y (fabric)
+trinkets/<reliquia>.json. La definición del ítem usa el modelo puesto en el contexto de display "none", el que usan
+Trinkets (render "model"/"item") y el renderizador de Curios en NeoForge; en el resto (inventario, mano, suelo) usa el
+ícono. Así NeoForge no necesita registrar modelos extra.
 Uso: python worn_models.py
 """
 import json
@@ -20,7 +23,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mclib import H, png  # noqa: E402
-from moddata import ASSETS  # noqa: E402
+from moddata import ASSETS, FABRIC_ASSETS  # noqa: E402
 
 NS = "mythicrelics"
 # Paleta de 4x4 casillas de 4x4 px (una por color). Cada cara de un elemento toma una casilla entera.
@@ -228,5 +231,11 @@ if __name__ == "__main__":
             assert all(-16 <= c <= 32 for c in el["from"] + el["to"]), (name, el["name"])
             assert all(a < b for a, b in zip(el["from"], el["to"])), (name, el["name"])
         write(os.path.join(ASSETS, "models", "item", name + "_worn.json"), m)
-        write(os.path.join(ASSETS, "trinkets", name + ".json"), {"target": [f"{NS}:{name}"], "render": render})
+        write(os.path.join(ASSETS, "items", name + ".json"), {"model": {
+            "type": "minecraft:select",
+            "property": "minecraft:display_context",
+            "cases": [{"when": "none", "model": {"type": "minecraft:model", "model": f"{NS}:item/{name}_worn"}}],
+            "fallback": {"type": "minecraft:model", "model": f"{NS}:item/{name}"},
+        }})
+        write(os.path.join(FABRIC_ASSETS, "trinkets", name + ".json"), {"target": [f"{NS}:{name}"], "render": render})
         print(f"{name}: {len(m['elements'])} elementos")

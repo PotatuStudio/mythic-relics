@@ -7,11 +7,12 @@ Como en *Artifacts*, las reliquias no se fabrican: se encuentran en estructuras 
 egipcias, en las pirámides del desierto).
 
 ## Requisitos
-Minecraft 26.3, Java 25, [Architectury API](https://modrinth.com/mod/architectury-api) 22.0.5 o superior y
-[Trinkets Updated](https://modrinth.com/mod/trinkets-updated)
-4.2.1 o superior. Además, según el loader:
-- **Fabric:** Fabric Loader 0.20.1 o superior y Fabric API.
-- **NeoForge:** NeoForge 26.3.0.101 o superior.
+Minecraft 26.3, Java 25 y [Architectury API](https://modrinth.com/mod/architectury-api) 22.0.5 o superior. Además,
+según el loader:
+- **Fabric:** Fabric Loader 0.20.1 o superior, Fabric API y
+  [Trinkets Updated](https://modrinth.com/mod/trinkets-updated) 4.2.1 o superior (espacios de accesorios).
+- **NeoForge:** NeoForge 26.3.0.101 o superior y [Curios API](https://modrinth.com/mod/curios) 17.0.0 o superior
+  (espacios de accesorios).
 
 Opcionales: [Modonomicon](https://modrinth.com/mod/modonomicon) 2.20.1 o superior agrega el **Códice de reliquias**
 (un libro con cada reliquia, su mito y dónde encontrarla) y [JEI](https://modrinth.com/mod/jei) muestra dónde se

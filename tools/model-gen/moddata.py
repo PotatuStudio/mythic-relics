@@ -12,6 +12,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 COMMON = os.path.join(ROOT, "common", "src", "main")
 JAVA = os.path.join(COMMON, "java", "io", "github", "potatustudio", "mythicrelics")
 ASSETS = os.path.join(COMMON, "resources", "assets", "mythicrelics")
+# Configuración de render de Trinkets (solo Fabric; en NeoForge la ubicación está en CuriosRelicRenderer).
+FABRIC_ASSETS = os.path.join(ROOT, "fabric", "src", "main", "resources", "assets", "mythicrelics")
 ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter", "jackal_mask", "jackal_ring"]
 SET_PIECES = {"anubis_scepter", "jackal_mask", "jackal_ring"}
 SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "chest/necklace",

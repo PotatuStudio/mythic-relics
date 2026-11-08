@@ -1,6 +1,19 @@
 {
  "model": {
-  "type": "minecraft:model",
-  "model": "mythicrelics:item/golden_scarab"
+  "type": "minecraft:select",
+  "property": "minecraft:display_context",
+  "cases": [
+   {
+    "when": "none",
+    "model": {
+     "type": "minecraft:model",
+     "model": "mythicrelics:item/golden_scarab_worn"
+    }
+   }
+  ],
+  "fallback": {
+   "type": "minecraft:model",
+   "model": "mythicrelics:item/golden_scarab"
+  }
  }
 }

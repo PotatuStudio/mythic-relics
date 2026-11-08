@@ -16,7 +16,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from moddata import (ASSETS, ORDER, SET_PIECES, SLOTS, LOOT_TABLE_KEYS, b64, constants, icons, lang, loot,  # noqa: E402
+from moddata import (ASSETS, FABRIC_ASSETS, ORDER, SET_PIECES, SLOTS, LOOT_TABLE_KEYS, b64, constants, icons, lang, loot,  # noqa: E402
                      rarity, read, tooltip_args)
 
 if __name__ == "__main__":
@@ -34,8 +34,8 @@ if __name__ == "__main__":
         "modIcon": b64(os.path.join(ASSETS, "icon.png")),
         "scarabTexture": b64(os.path.join(ASSETS, "textures", "entity", "scarab.png")),
         "jackalTexture": b64(os.path.join(ASSETS, "textures", "entity", "jackal.png")),
-        "trinkets": {name: json.loads(read(os.path.join(ASSETS, "trinkets", name + ".json")))
-                     for name in ORDER if os.path.exists(os.path.join(ASSETS, "trinkets", name + ".json"))},
+        "trinkets": {name: json.loads(read(os.path.join(FABRIC_ASSETS, "trinkets", name + ".json")))
+                     for name in ORDER if os.path.exists(os.path.join(FABRIC_ASSETS, "trinkets", name + ".json"))},
         "wornModels": {name: json.loads(read(os.path.join(ASSETS, "models", "item", name + "_worn.json")))
                        for name in ORDER if os.path.exists(os.path.join(ASSETS, "models", "item", name + "_worn.json"))},
         "wornPalette": b64(os.path.join(ASSETS, "textures", "item", "worn_palette.png")),

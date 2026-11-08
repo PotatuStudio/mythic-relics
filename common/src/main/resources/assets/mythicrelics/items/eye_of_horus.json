@@ -1,6 +1,19 @@
 {
  "model": {
-  "type": "minecraft:model",
-  "model": "mythicrelics:item/eye_of_horus"
+  "type": "minecraft:select",
+  "property": "minecraft:display_context",
+  "cases": [
+   {
+    "when": "none",
+    "model": {
+     "type": "minecraft:model",
+     "model": "mythicrelics:item/eye_of_horus_worn"
+    }
+   }
+  ],
+  "fallback": {
+   "type": "minecraft:model",
+   "model": "mythicrelics:item/eye_of_horus"
+  }
  }
 }
