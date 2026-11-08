@@ -4,6 +4,19 @@ plugins {
 }
 
 repositories {
+	// Trinkets Updated (espacios de accesorios).
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Nucleoid"
+				url = "https://maven.nucleoid.xyz/releases"
+			}
+		}
+		filter {
+			includeGroup "eu.pb4"
+		}
+	}
+
 	// Maven de Modrinth, solo para mods (grupo maven.modrinth).
 	exclusiveContent {
 		forRepository {
@@ -22,7 +35,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"modtemplate" {
+		"mythicrelics" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
@@ -38,8 +51,15 @@ dependencies {
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// Solo para desarrollo (runClient): no se publican ni van dentro del jar.
+	// Trinkets Updated: espacios de accesorios.
+	implementation "eu.pb4:trinkets:${project.trinkets_version}"
+
 	localRuntime "maven.modrinth:modmenu:${project.modmenu_version}"
 	localRuntime "maven.modrinth:placeholder-api:${project.placeholder_api_version}"
+	// JEI para buscar ítems por mod (@mythicrelics); compileOnly para la página "dónde encontrarlo".
+	compileOnly "maven.modrinth:jei:${project.jei_version_id}"
+	localRuntime "maven.modrinth:jei:${project.jei_version_id}"
+	localRuntime "maven.modrinth:mezzconfig:${project.mezzconfig_version_id}"
 }
 
 processResources {
@@ -48,6 +68,15 @@ processResources {
 
 	filesMatching("fabric.mod.json") {
 		expand "version": version
+	}
+
+	// El español se traduce una sola vez (es_es) y se copia a las demás variantes: Minecraft no cae de
+	// es_cl a es_es, sino directo a inglés.
+	["es_ar", "es_cl", "es_ec", "es_mx", "es_uy", "es_ve"].each { locale ->
+		from("src/main/resources/assets/mythicrelics/lang/es_es.json") {
+			into "assets/mythicrelics/lang"
+			rename { "${locale}.json" }
+		}
 	}
 }
 

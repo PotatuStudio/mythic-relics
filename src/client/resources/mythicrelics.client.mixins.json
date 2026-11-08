@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "io.github.potatustudio.modtemplate.client.mixin",
+	"package": "io.github.potatustudio.mythicrelics.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
 		

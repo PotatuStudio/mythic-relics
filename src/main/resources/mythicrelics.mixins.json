@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "io.github.potatustudio.modtemplate.mixin",
+	"package": "io.github.potatustudio.mythicrelics.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
 		

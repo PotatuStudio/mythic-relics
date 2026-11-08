@@ -5,4 +5,4 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
 
 ## [Unreleased]
 ### Added
-- Proyecto inicial desde PotatuStudio/mod-template.
+- Proyecto inicial desde mod-template, con Trinkets Updated.

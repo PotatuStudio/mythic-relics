@@ -1,32 +1,32 @@
 {
 	"schemaVersion": 1,
-	"id": "modtemplate",
+	"id": "mythicrelics",
 	"version": "${version}",
-	"name": "Mod Template",
-	"description": "TODO: describe tu mod en una frase.",
+	"name": "Mythic Relics",
+	"description": "Mythological relics (Egypt, Greece, Norse...) as RPG gear.",
 	"authors": [
 		"PotatuStudio"
 	],
 	"contact": {
-		"homepage": "https://github.com/PotatuStudio/mod-template",
-		"sources": "https://github.com/PotatuStudio/mod-template",
-		"issues": "https://github.com/PotatuStudio/mod-template/issues"
+		"homepage": "https://github.com/PotatuStudio/mythic-relics",
+		"sources": "https://github.com/PotatuStudio/mythic-relics",
+		"issues": "https://github.com/PotatuStudio/mythic-relics/issues"
 	},
 	"license": "MIT",
-	"icon": "assets/modtemplate/icon.png",
+	"icon": "assets/mythicrelics/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"io.github.potatustudio.modtemplate.ModTemplate"
+			"io.github.potatustudio.mythicrelics.MythicRelics"
 		],
 		"client": [
-			"io.github.potatustudio.modtemplate.client.ModTemplateClient"
+			"io.github.potatustudio.mythicrelics.client.MythicRelicsClient"
 		]
 	},
 	"mixins": [
-		"modtemplate.mixins.json",
+		"mythicrelics.mixins.json",
 		{
-			"config": "modtemplate.client.mixins.json",
+			"config": "mythicrelics.client.mixins.json",
 			"environment": "client"
 		}
 	],
@@ -34,6 +34,7 @@
 		"fabricloader": ">=0.20.1",
 		"minecraft": "~26.3",
 		"java": ">=25",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"trinkets_updated": ">=4.2.1"
 	}
 }
