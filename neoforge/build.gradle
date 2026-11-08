@@ -26,6 +26,10 @@ dependencies {
 	implementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
 	implementation "eu.pb4:trinkets:$rootProject.trinkets_version"
 
+	// JEI: compila contra la API común; en desarrollo (runClient) corre JEI completo. No va dentro del jar.
+	compileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:$rootProject.jei_version"
+	localRuntime "mezz.jei:jei-${rootProject.minecraft_version}-neoforge:$rootProject.jei_version"
+
 	common(project(path: ":common")) { transitive false }
 	shadowBundle(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
 }

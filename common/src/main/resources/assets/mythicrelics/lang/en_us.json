@@ -22,5 +22,8 @@
   "tooltip.mythicrelics.jackal_ring": "At night or underground, getting hit calls %s allied jackals for %s s. Cooldown %s s.",
   "tooltip.mythicrelics.anubis_set": "Anubis set (mask, ring and scepter): undead won't attack you unless you strike first.",
   "entity.mythicrelics.jackal": "Jackal",
-  "message.mythicrelics.jackals": "The tomb guardians answer!"
+  "message.mythicrelics.jackals": "The tomb guardians answer!",
+  "jei.mythicrelics.where.title": "Where to find it:",
+  "jei.mythicrelics.where.entry": "• %s: %s%% per chest",
+  "jei.mythicrelics.where.note": "Not craftable: explore to find it."
 }

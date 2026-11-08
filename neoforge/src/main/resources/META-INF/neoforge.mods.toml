@@ -41,3 +41,10 @@ type = "required"
 versionRange = "[4.2.1,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.mythicrelics]]
+modId = "jei"
+type = "optional"
+versionRange = "[31.17,)"
+ordering = "NONE"
+side = "CLIENT"

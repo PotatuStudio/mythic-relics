@@ -35,6 +35,19 @@ subprojects {
 			}
 			filter { includeGroup "eu.pb4" }
 		}
+		// JEI (integración opcional: páginas de "dónde encontrarlo") y su biblioteca de configuración.
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "BlameJared"
+					url = "https://maven.blamejared.com"
+				}
+			}
+			filter {
+				includeGroup "mezz.jei"
+				includeGroup "net.mezzdev.config"
+			}
+		}
 		exclusiveContent {
 			forRepository {
 				maven {

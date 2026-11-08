@@ -29,9 +29,8 @@ dependencies {
 
 	// Solo desarrollo (runClient): no van dentro del jar.
 	localRuntime "maven.modrinth:modmenu:$rootProject.modmenu_version"
-	compileOnly "maven.modrinth:jei:$rootProject.jei_version_id"
-	localRuntime "maven.modrinth:jei:$rootProject.jei_version_id"
-	localRuntime "maven.modrinth:mezzconfig:$rootProject.mezzconfig_version_id"
+	compileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:$rootProject.jei_version"
+	localRuntime "mezz.jei:jei-${rootProject.minecraft_version}-fabric:$rootProject.jei_version"
 
 	common(project(path: ":common")) { transitive false }
 	shadowBundle(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }

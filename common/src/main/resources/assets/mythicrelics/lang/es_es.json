@@ -22,5 +22,8 @@
   "tooltip.mythicrelics.jackal_ring": "De noche o bajo tierra, al recibir un golpe acuden %s chacales aliados durante %s s. Recarga %s s.",
   "tooltip.mythicrelics.anubis_set": "Set de Anubis (máscara, anillo y cetro): los no-muertos no te atacan a menos que los ataques primero.",
   "entity.mythicrelics.jackal": "Chacal",
-  "message.mythicrelics.jackals": "¡Los guardianes de la tumba acuden!"
+  "message.mythicrelics.jackals": "¡Los guardianes de la tumba acuden!",
+  "jei.mythicrelics.where.title": "Dónde encontrarlo:",
+  "jei.mythicrelics.where.entry": "• %s: %s %% por cofre",
+  "jei.mythicrelics.where.note": "No se fabrica: hay que explorar para encontrarlo."
 }
