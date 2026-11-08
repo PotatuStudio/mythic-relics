@@ -56,8 +56,9 @@ menú. **Falta probar los efectos en un mundo** y los íconos (hoy se ven con la
 
 Escarabajo aliado: entidad propia `mythicrelics:scarab` (`entity/Scarab.java`, `PathfinderMob`, no se guarda con el
 mundo) con modelo de cajas propio (`client/entity/ScarabModel.java`: caparazón con cúpula, pronoto, cabeza en pala,
-6 patas con marcha en trípode) y textura dorada con turquesa y lapislázuli (generada con
-`tools`-style script; layout en el modelo). Pendiente: el chacal con el mismo trato (lobo más delgado, orejas grandes,
+6 patas con marcha en trípode) y textura dorada con turquesa y lapislázuli, generada con
+`python tools/model-gen/scarab_texture.py common/src/main/resources/assets/mythicrelics/textures/entity/scarab.png`
+(requiere Pillow; el layout de la textura sigue los `texOffs` del modelo). Pendiente: el chacal con el mismo trato (lobo más delgado, orejas grandes,
 negro como Anubis).
 
 Segunda tanda de Egipto: disco solar de Ra, amuleto de Bastet, tablilla de Thot, cayado y mayal de Osiris,
