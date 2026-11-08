@@ -11,6 +11,9 @@ authors = "PotatuStudio"
 description = '''Mythological relics (Egypt, Greece, Norse...) as RPG gear.'''
 logoFile = "assets/mythicrelics/icon.png"
 
+[[mixins]]
+config = "mythicrelics.mixins.json"
+
 [[dependencies.mythicrelics]]
 modId = "neoforge"
 type = "required"

@@ -1,3 +1,26 @@
 {
-  "itemGroup.mythicrelics.main": "Mythic Relics"
+  "itemGroup.mythicrelics.main": "Mythic Relics",
+  "item.mythicrelics.golden_scarab": "Golden Scarab",
+  "item.mythicrelics.eye_of_horus": "Eye of Horus",
+  "item.mythicrelics.ankh": "Ankh",
+  "item.mythicrelics.mummy_wraps": "Mummy Wraps",
+  "tooltip.mythicrelics.golden_scarab": "Below %s hearts: Absorption %s and two allied scarabs for %s s. Cooldown %s s.",
+  "tooltip.mythicrelics.eye_of_horus": "Immune to Blindness and Darkness. After a hit of %s hearts or more, recover %s%% of it over %s s. Cooldown %s s.",
+  "tooltip.mythicrelics.ankh": "Heals half a heart every %s s. Undead deal %s%% less damage to you.",
+  "tooltip.mythicrelics.mummy_wraps": "Your hits inflict Hunger II for %s s and Slowness for %s s. Husks won't attack you.",
+  "tooltip.mythicrelics.found_in": "Found in: %s",
+  "loot.mythicrelics.chests.desert_pyramid": "desert pyramids",
+  "loot.mythicrelics.chests.village.village_desert_house": "desert village houses",
+  "entity.mythicrelics.scarab": "Scarab",
+  "message.mythicrelics.scarab": "The scarabs answer your call!",
+  "message.mythicrelics.eye": "The Eye of Horus mends your wound",
+  "item.mythicrelics.anubis_scepter": "Was Scepter of Anubis",
+  "item.mythicrelics.jackal_mask": "Jackal Mask",
+  "item.mythicrelics.jackal_ring": "Ring of the Jackals",
+  "tooltip.mythicrelics.anubis_scepter": "Judgment: undead you strike while below %s%% health are destroyed and drop %sx experience.",
+  "tooltip.mythicrelics.jackal_mask": "Undead you slay release a soul; touching it heals %s hearts. It fades after %s s.",
+  "tooltip.mythicrelics.jackal_ring": "At night or underground, getting hit calls %s allied jackals for %s s. Cooldown %s s.",
+  "tooltip.mythicrelics.anubis_set": "Anubis set (mask, ring and scepter): undead won't attack you unless you strike first.",
+  "entity.mythicrelics.jackal": "Jackal",
+  "message.mythicrelics.jackals": "The tomb guardians answer!"
 }

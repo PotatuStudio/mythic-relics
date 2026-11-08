@@ -1,14 +1,14 @@
 package io.github.potatustudio.mythicrelics.minion;
 
-import io.github.potatustudio.mythicrelics.registry.ModAttachments;
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.EntityEvent;
+import dev.architectury.event.events.common.TickEvent;
+import io.github.potatustudio.mythicrelics.MythicRelics;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -25,9 +25,12 @@ import org.jspecify.annotations.Nullable;
 /**
  * Aliados temporales (escarabajos del escarabajo dorado, no-muertos alzados por el báculo de Anubis): pelean contra lo
  * que su dueño golpea o lo que golpea a su dueño, nunca contra él ni sus aliados, y se deshacen al acabar su tiempo.
- * No sobreviven a una recarga del mundo (al cargarse, desaparecen).
+ * No sobreviven a una recarga del mundo: llevan la etiqueta {@link #TAG} y, si se cargan desde disco sin estar en el
+ * registro en memoria, no se agregan al mundo. El dueño vive solo en memoria (no hace falta guardarlo).
  */
 public final class Minions {
+	/** Etiqueta de entidad (/tag) que marca a un aliado temporal. */
+	public static final String TAG = MythicRelics.MOD_ID + ".minion";
 	private static final int TARGET_MEMORY = 120;
 	private static final double SEARCH_RANGE = 16.0;
 
@@ -40,25 +43,25 @@ public final class Minions {
 	}
 
 	public static void init() {
-		ServerTickEvents.END_SERVER_TICK.register(Minions::tick);
-		// Un aliado que se guardó con el mundo no vuelve: se deshace al cargarse.
-		ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
-			if (entity.hasAttached(ModAttachments.MINION_OWNER) && !MINIONS.containsKey(entity)) {
-				entity.discard();
-			}
-		});
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register((target, source, amount) -> {
+		TickEvent.SERVER_POST.register(Minions::tick);
+		// Un aliado que se guardó con el mundo no vuelve: al cargarse no se agrega.
+		EntityEvent.ADD.register((entity, level) -> !level.isClientSide() && entity.entityTags().contains(TAG)
+				&& !MINIONS.containsKey(entity) ? EventResult.interruptFalse() : EventResult.pass());
+		// Los aliados no dañan a su dueño, a otros aliados ni a sus mascotas o compañeros de equipo.
+		EntityEvent.LIVING_HURT.register((target, source, amount) -> {
 			Entity attacker = source.getEntity();
 			UUID owner = attacker == null ? null : ownerOf(attacker);
 			if (owner == null) {
-				return true;
+				return EventResult.pass();
 			}
-			return !(target.getUUID().equals(owner) || ownerOf(target) != null || isAlly(target, owner));
+			return target.getUUID().equals(owner) || ownerOf(target) != null || isAlly(target, owner)
+					? EventResult.interruptFalse() : EventResult.pass();
 		});
 	}
 
 	public static @Nullable UUID ownerOf(Entity entity) {
-		return entity.getAttached(ModAttachments.MINION_OWNER);
+		Minion minion = entity instanceof Mob mob ? MINIONS.get(mob) : null;
+		return minion == null ? null : minion.owner();
 	}
 
 	public static int countOf(Player owner) {
@@ -75,7 +78,7 @@ public final class Minions {
 			return null;
 		}
 		mob.snapTo(x, y, z, level.getRandom().nextFloat() * 360f, 0f);
-		mob.setAttached(ModAttachments.MINION_OWNER, owner.getUUID());
+		mob.addTag(TAG);
 		mob.setCustomName(name);
 		mob.setPersistenceRequired();
 		MINIONS.put(mob, new Minion(owner.getUUID(), new int[] {ticks}));

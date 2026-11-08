@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-08. Rama de trabajo: `main` (el build multiloader ya se fusionó).
+Última sesión: 2026-11-08. Rama de trabajo: `feat/egipto-tanda-1` (el build multiloader ya está en `main`).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -31,29 +31,28 @@
 Versiones (en `gradle.properties`): Minecraft 26.3, Architectury API 22.0.5, Fabric Loader 0.20.1,
 Fabric API 0.165.2+26.3, NeoForge 26.3.0.101, Trinkets 4.2.1+26.3.
 
-## Siguiente: primera tanda de Egipto
-Código ya escrito pero con eventos de Fabric API, guardado fuera de las fuentes en `wip/egypt/`
-(`EgyptRelics.java`, `Minions.java`). Hay que portarlo a `common/` con Architectury:
+## Primera tanda de Egipto (rama `feat/egipto-tanda-1`)
+Diseño revisado con el usuario el 2026-11-08. Criterio: **fiel al mito, con licencias** (el efecto nace del significado
+real del símbolo; se aceptan guiños a Minecraft que no lo contradigan). Rareza: **raras** (~57 % de las pirámides trae
+al menos una reliquia). Los números están en constantes de `egypt/EgyptRelics.java`; el botín en `registry/ModLoot.java`.
 
-| Fabric API | Architectury API |
-|---|---|
-| `ServerLivingEntityEvents.AFTER_DAMAGE / ALLOW_DAMAGE / AFTER_DEATH` | `EntityEvent.LIVING_HURT` (permite cancelar) y `EntityEvent.LIVING_DEATH` |
-| `ServerTickEvents.END_SERVER_TICK` | `TickEvent.SERVER_POST` |
-| `ServerEntityEvents.ENTITY_LOAD` | `EntityEvent.ADD` |
-| `PayloadTypeRegistry` + `ServerPlayNetworking` | `NetworkManager.registerReceiver` / `NetworkManager.sendToPlayer` |
-| `KeyMappingHelper` | `KeyMappingRegistry.register` + `ClientTickEvent.CLIENT_POST` |
-| Registro de ítems / pestaña creativa | `DeferredRegister` + `CreativeTabRegistry` |
-| `LootTableEvents.MODIFY` | `LootEvent.MODIFY_LOOT_TABLE` |
-| Attachments de Fabric (dueño de los aliados) | `Entity.addTag(...)` o datos persistentes propios (no hay equivalente en Architectury) |
-| Mixin cliente para el contorno solo para un jugador | mismo mixin en `common` (ver `MinecraftMixin` de Misfit Relics) |
+| Reliquia | Espacio | Mito | Efecto | Pirámide (por cofre) |
+|---|---|---|---|---|
+| **Escarabajo dorado** | cinturón | Jepri, el sol que renace | Al bajar de 3 corazones: absorción II 15 s y 2 escarabajos aliados (silverfish) 15 s. Recarga 60 s. | 3,5 % |
+| **Ojo de Horus** | cara | El ojo que Thot sanó: protección y sanación | Inmune a Ceguera y Oscuridad. Tras un golpe de 4 corazones o más, recupera el 50 % en 5 s. Recarga 45 s. | 2,5 % |
+| **Anj** | collar | La vida | Cura medio corazón cada 2,5 s; los no-muertos te hacen 25 % menos daño. | 3 % (+3 % casas de aldea del desierto) |
+| **Vendas de momia** | guantes | Guiño al husk de Minecraft | Tus golpes dan Hambre II 5 s y Lentitud 3 s; los husks no te atacan. | 4 % |
+| **Cetro *was* de Anubis** | arma (mano) | El juicio (pesado del corazón) | Golpear a un no-muerto con menos del 25 % de vida lo destruye y suelta el doble de experiencia. | 2 % |
+| **Máscara de chacal** | cara | Anubis guía las almas | Los no-muertos que matas sueltan un alma que te cura 1 corazón al tocarla (dura 10 s). | 3 % |
+| **Anillo de los chacales** | anillo | Los chacales, guardianes de las tumbas | De noche o bajo tierra, al recibir un golpe aparecen 2 chacales aliados (lobos) 20 s. Recarga 90 s. | 2,5 % |
+| **Set de Anubis** (máscara + anillo + cetro en el inventario) | — | Protector de los muertos | Los no-muertos no te atacan salvo que los hayas golpeado en los últimos 10 s. | — |
 
-| Reliquia | Espacio | Efecto | Dónde |
-|---|---|---|---|
-| **Escarabajo dorado** | cinturón | Al bajar de 3 corazones: absorción II 15 s y 2 escarabajos aliados (silverfish) 15 s. Recarga 60 s. | Pirámides del desierto (10 %) |
-| **Ojo de Horus** | cara | Tecla (H): contorno de criaturas en 32 bloques (solo para ti, 8 s) y columnas doradas sobre los cofres cercanos (2 chunks). Recarga 30 s. | Pirámides (6 %) |
-| **Anj** | collar | Cura medio corazón cada 2,5 s; los no-muertos te hacen 25 % menos daño. | Pirámides (8 %), casas de aldeas del desierto (6 %) |
-| **Báculo de Anubis** | arma (mano) | 35 % de que los no-muertos que matas con él vuelvan como aliados 20 s (máx. 3). | Pirámides (4 %) |
-| **Vendas de momia** | guantes | Tus golpes dan Hambre II 5 s y Lentitud 3 s; los husks no te atacan. | Pirámides (12 %) |
+Descartado: el báculo de Anubis que alzaba no-muertos como aliados (Anubis no es nigromante; es cultura pop) y el Ojo de
+Horus que revelaba criaturas y cofres con una tecla ("el ojo que todo lo ve" es una lectura moderna).
+
+Estado: portado a Architectury en `common/` (eventos `EntityEvent`/`TickEvent`/`LootEvent`, `DeferredRegister`, mixin
+común en `LivingEntity` para el Anj y la inmunidad del Ojo). `./gradlew build` compila y ambos `runClient` llegan al
+menú. **Falta probar los efectos en un mundo** y los íconos (hoy se ven con la textura faltante).
 
 Segunda tanda de Egipto: disco solar de Ra, amuleto de Bastet, tablilla de Thot, cayado y mayal de Osiris,
 garras de Sekhmet. Después: Grecia, Roma, nórdicos, celtas, folclore japonés, Mesoamérica, eslavos, China,
