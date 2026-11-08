@@ -1,0 +1,91 @@
+{
+  "target": [
+    "mythicrelics:mummy_wraps"
+  ],
+  "render": [
+    {
+      "type": "minecraft:if_slot",
+      "slot": "hand/glove",
+      "then": {
+        "type": "item",
+        "model_part": ":main_hand",
+        "display_context": "none",
+        "offset": [
+          0,
+          -0.75,
+          1
+        ],
+        "transformation": {
+          "translation": [
+            0,
+            0,
+            0.02
+          ],
+          "left_rotation": {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "angle": 3.141
+          },
+          "scale": [
+            0.3,
+            0.3,
+            0.3
+          ],
+          "right_rotation": {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "angle": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:if_slot",
+      "slot": "offhand/glove",
+      "then": {
+        "type": "item",
+        "model_part": ":off_hand",
+        "display_context": "none",
+        "offset": [
+          0,
+          -0.75,
+          1
+        ],
+        "transformation": {
+          "translation": [
+            0,
+            0,
+            0.02
+          ],
+          "left_rotation": {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "angle": 3.141
+          },
+          "scale": [
+            0.3,
+            0.3,
+            0.3
+          ],
+          "right_rotation": {
+            "axis": [
+              0,
+              1,
+              0
+            ],
+            "angle": 0
+          }
+        }
+      }
+    }
+  ]
+}

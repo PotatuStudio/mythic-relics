@@ -1,0 +1,45 @@
+{
+  "target": [
+    "mythicrelics:jackal_mask"
+  ],
+  "render": [
+    {
+      "type": "item",
+      "model_part": "head",
+      "display_context": "none",
+      "offset": [
+        0,
+        0,
+        1
+      ],
+      "transformation": {
+        "translation": [
+          0,
+          0.06,
+          0.03
+        ],
+        "left_rotation": {
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "angle": 3.141
+        },
+        "scale": [
+          0.62,
+          0.62,
+          0.62
+        ],
+        "right_rotation": {
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "angle": 0
+        }
+      }
+    }
+  ]
+}

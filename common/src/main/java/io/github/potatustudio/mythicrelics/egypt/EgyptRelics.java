@@ -29,7 +29,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -52,7 +51,7 @@ import net.minecraft.world.phys.Vec3;
  *           de experiencia.</li>
  *       <li><b>Máscara de chacal</b> (cara): los no-muertos que matas sueltan un alma que te cura al tocarla.</li>
  *       <li><b>Anillo de los chacales</b> (anillo): de noche o bajo tierra, al recibir un golpe aparecen dos chacales
- *           aliados (lobos). Recarga.</li>
+ *           aliados. Recarga.</li>
  *       <li>Con las tres piezas, los no-muertos no te atacan a menos que tú los ataques primero.</li>
  *     </ul>
  *   </li>
@@ -256,7 +255,7 @@ public final class EgyptRelics {
 		}
 		for (int i = 0; i < RING_JACKALS; i++) {
 			double angle = Math.PI * 2 * i / RING_JACKALS;
-			Minions.summon(level, player, EntityTypes.WOLF, player.getX() + Math.cos(angle) * 1.5, player.getY(),
+			Minions.summon(level, player, ModEntities.JACKAL.get(), player.getX() + Math.cos(angle) * 1.5, player.getY(),
 					player.getZ() + Math.sin(angle) * 1.5, RING_JACKAL_TICKS, Component.translatable("entity.mythicrelics.jackal"));
 		}
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 1.0f, 0.5f);

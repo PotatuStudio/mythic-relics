@@ -4,7 +4,7 @@ Lee los mismos datos que usa el mod (íconos, traducciones, números de EgyptRel
 de ModItems.java y la textura del escarabajo) y arma una sola página con:
   - la pestaña creativa con los tooltips como se ven en el juego (colores, líneas, rareza);
   - la página de JEI de "dónde encontrarlo";
-  - el escarabajo aliado en 3D con su modelo, su marcha en trípode y la salida de la tierra.
+  - el escarabajo y el chacal en 3D con sus modelos y su marcha, y un jugador con las reliquias puestas.
 
 No usa texturas de Mojang. Los números de los tooltips replican EgyptRelics#tooltipArgs: si cambia esa fórmula,
 actualizar TOOLTIP_ARGS aquí.
@@ -112,6 +112,9 @@ if __name__ == "__main__":
         "lang": lang(),
         "modIcon": b64(os.path.join(ASSETS, "icon.png")),
         "scarabTexture": b64(os.path.join(ASSETS, "textures", "entity", "scarab.png")),
+        "jackalTexture": b64(os.path.join(ASSETS, "textures", "entity", "jackal.png")),
+        "trinkets": {name: json.loads(read(os.path.join(ASSETS, "trinkets", name + ".json")))
+                     for name in ORDER if os.path.exists(os.path.join(ASSETS, "trinkets", name + ".json"))},
     }
     template = read(os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer_template.html"))
     with open(out, "w", encoding="utf-8", newline="\n") as f:

@@ -4,6 +4,7 @@ import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.entity.Jackal;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -22,11 +23,19 @@ public final class ModEntities {
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("scarab"))));
 
+	public static final RegistrySupplier<EntityType<Jackal>> JACKAL = ENTITIES.register("jackal",
+			() -> EntityType.Builder.of(Jackal::new, MobCategory.MISC)
+					.sized(0.5f, 0.75f)
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("jackal"))));
+
 	private ModEntities() {
 	}
 
 	public static void init() {
 		ENTITIES.register();
 		EntityAttributeRegistry.register(SCARAB, Scarab::createAttributes);
+		EntityAttributeRegistry.register(JACKAL, Jackal::createAttributes);
 	}
 }

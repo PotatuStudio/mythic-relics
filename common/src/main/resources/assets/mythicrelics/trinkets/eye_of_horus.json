@@ -1,0 +1,45 @@
+{
+  "target": [
+    "mythicrelics:eye_of_horus"
+  ],
+  "render": [
+    {
+      "type": "item",
+      "model_part": "head",
+      "display_context": "none",
+      "offset": [
+        0,
+        0,
+        1
+      ],
+      "transformation": {
+        "translation": [
+          0,
+          0.1,
+          0.02
+        ],
+        "left_rotation": {
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "angle": 3.141
+        },
+        "scale": [
+          0.3,
+          0.3,
+          0.3
+        ],
+        "right_rotation": {
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "angle": 0
+        }
+      }
+    }
+  ]
+}
