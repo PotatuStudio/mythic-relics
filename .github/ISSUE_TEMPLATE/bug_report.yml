@@ -1,0 +1,26 @@
+name: Reporte de bug
+description: Algo no funciona como debería
+labels: [bug]
+body:
+  - type: input
+    id: mc
+    attributes: { label: Versión de Minecraft, placeholder: "26.3" }
+    validations: { required: true }
+  - type: input
+    id: mod
+    attributes: { label: Versión del mod, placeholder: "0.1.0+26.3" }
+    validations: { required: true }
+  - type: input
+    id: loader
+    attributes: { label: Versión de Fabric Loader y Fabric API }
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes: { label: Qué pasó y cómo reproducirlo }
+    validations: { required: true }
+  - type: input
+    id: log
+    attributes: { label: Log o crash report (súbelo a https://mclo.gs), placeholder: "https://mclo.gs/..." }
+  - type: textarea
+    id: mods
+    attributes: { label: Otros mods instalados }

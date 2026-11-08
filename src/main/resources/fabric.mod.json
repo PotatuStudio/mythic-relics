@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "modtemplate",
+	"version": "${version}",
+	"name": "Mod Template",
+	"description": "TODO: describe tu mod en una frase.",
+	"authors": [
+		"PotatuStudio"
+	],
+	"contact": {
+		"homepage": "https://github.com/PotatuStudio/mod-template",
+		"sources": "https://github.com/PotatuStudio/mod-template",
+		"issues": "https://github.com/PotatuStudio/mod-template/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/modtemplate/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.github.potatustudio.modtemplate.ModTemplate"
+		],
+		"client": [
+			"io.github.potatustudio.modtemplate.client.ModTemplateClient"
+		]
+	},
+	"mixins": [
+		"modtemplate.mixins.json",
+		{
+			"config": "modtemplate.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
