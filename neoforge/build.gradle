@@ -1,0 +1,55 @@
+apply plugin: "com.gradleup.shadow"
+
+architectury {
+	platformSetupLoomIde()
+	neoForge()
+}
+
+configurations {
+	common {
+		canBeResolved = true
+		canBeConsumed = false
+	}
+	compileClasspath.extendsFrom common
+	runtimeClasspath.extendsFrom common
+	developmentNeoForge.extendsFrom common
+
+	// Lo que se empaqueta dentro del jar del loader (el módulo común ya transformado).
+	shadowBundle {
+		canBeResolved = true
+		canBeConsumed = false
+	}
+}
+
+dependencies {
+	neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
+	implementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
+	implementation "eu.pb4:trinkets:$rootProject.trinkets_version"
+
+	common(project(path: ":common")) { transitive false }
+	shadowBundle(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
+}
+
+processResources {
+	inputs.property "version", project.version
+	filesMatching("META-INF/neoforge.mods.toml") {
+		expand "version": project.version
+	}
+}
+
+// Como en Architectury API: el jar "raw" es solo de este módulo; el jar final (sin clasificador) lo arma Shadow
+// juntando este módulo con el común ya transformado para el loader.
+jar {
+	archiveClassifier = "raw"
+}
+
+shadowJar {
+	dependsOn jar
+	mainSpec.sourcePaths.clear()
+	from(zipTree(jar.archiveFile))
+	configurations = [project.configurations.shadowBundle]
+	archiveClassifier = null
+	exclude "architectury.common.json"
+}
+
+assemble.dependsOn shadowJar
