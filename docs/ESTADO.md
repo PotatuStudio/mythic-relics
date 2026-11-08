@@ -21,12 +21,12 @@
 ## Estado de la rama `feat/multiloader`
 - Reestructurado como proyecto Architectury siguiendo la configuración oficial de Architectury API para 26.3
   (`dev.architectury.loom-no-remap` 1.17-SNAPSHOT, `architectury-plugin` 3.5-SNAPSHOT, Shadow 9.4.3).
-- **Sin verificar**: el primer `./gradlew build` quedó descargando dependencias al cerrar la sesión.
-  **Primer paso al retomar:** `./gradlew build` (con `JAVA_HOME` en el JDK 25) y corregir lo que falle.
-  Puntos que pueden fallar: configuraciones `common`/`shadowBundle` de `fabric/` y `neoforge/build.gradle`,
-  `transformProductionFabric/NeoForge`, y `FMLEnvironment.getDist()` en `MythicRelicsNeoForge` (revisar la API de 26.3).
-- Cuando compile en ambos loaders: probar `runClient` de Fabric y de NeoForge (buscar "Mythic Relics cargado"),
-  fusionar a `main`.
+- **`./gradlew build` compila en ambos loaders** (BUILD SUCCESSFUL, 2026-11-08): genera
+  `fabric/build/libs/mythicrelics-fabric-0.1.0+26.3.jar` y `neoforge/build/libs/mythicrelics-neoforge-0.1.0+26.3.jar`,
+  cada uno con el código común incluido (`MythicRelics.class`, `icon.png`) y su metadata (`fabric.mod.json` /
+  `META-INF/neoforge.mods.toml`). Compilar con `JAVA_HOME` apuntando al JDK 25.
+- **Falta probar en el juego**: `runClient` de Fabric y de NeoForge (buscar "Mythic Relics cargado" en el log; en
+  NeoForge revisar que `FMLEnvironment.getDist()` exista en 26.3). Si carga en ambos, fusionar a `main`.
 
 Versiones (en `gradle.properties`): Minecraft 26.3, Architectury API 22.0.5, Fabric Loader 0.20.1,
 Fabric API 0.165.2+26.3, NeoForge 26.3.0.101, Trinkets 4.2.1+26.3.
