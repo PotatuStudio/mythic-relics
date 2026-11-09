@@ -146,7 +146,9 @@ oro de Andvaranaut, los botes de Skíðblaðnir que se pliegan solos) y los íte
 `SkidbladnirItem` y `OdrerirItem`. **Sleipnir** es una entidad propia (`entity/Sleipnir`, subclase de `AbstractHorse`):
 domado, ensillado y solo de su dueño, no se guarda con el mundo, vuelve a Asgard a los 3 s sin jinete, sin daño de caída
 y camina sobre el agua (`canStandOnFluid`). Su modelo (`client/entity/SleipnirModel`) usa la geometría del caballo
-vanilla con dos pares de patas más y su propia textura de 128x64 (`tools/model-gen/sleipnir_texture.py`). El viento a
+vanilla con dos pares de patas más, bardas de hierro rúnico (testera, peto, faldones, silla con perilla), crin trenzada y
+cola en dos tramos que se mece; texturas de 128x64 (`tools/model-gen/sleipnir_texture.py`: la normal y `sleipnir_glow`,
+que dibuja una `EyesLayer` para que runas y ojos brillen). Al galopar suelta escarcha y chispas (salpicaduras en el agua). El viento a
 favor de Skíðblañir lo aplica el cliente (`GreeceClient`). Mixin nuevo: `PiglinAiMixin` (trueques dobles con
 Andvaranaut). **Sin probar en el juego**: montar a Sleipnir y su velocidad sobre el agua, que se vaya al bajarte, el bote
 que se pliega, el doble de oro y de trueques, los avisos de Mímir y el crecimiento con Brísingamen.

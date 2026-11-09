@@ -13,9 +13,10 @@ import net.minecraft.client.renderer.entity.state.EquineRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Sleipnir: la misma geometría que el caballo vanilla (para que la montura y las animaciones del caballo funcionen
- * igual), con su propia textura de 128x64 y ocho patas: a las cuatro del caballo se suman dos pares en el medio, que se
- * mueven a destiempo para que el galope se vea de ocho patas. Lleva la silla dibujada como una pieza sobre el lomo.
+ * Sleipnir, corcel de guerra de Asgard: la geometría del caballo vanilla (para que montarlo y sus animaciones funcionen
+ * igual) con ocho patas, bardas de hierro rúnico (testera, peto, faldones y silla con perilla), crin alta y trenzada y
+ * una cola larga en dos tramos que se mece. Textura propia de 128x64; las runas y los ojos brillan con otra capa
+ * ({@link SleipnirRenderer}).
  */
 public class SleipnirModel extends AbstractEquineModel<EquineRenderState> {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(MythicRelics.id("sleipnir"), "main");
@@ -24,6 +25,8 @@ public class SleipnirModel extends AbstractEquineModel<EquineRenderState> {
 	private final ModelPart rightFrontMiddleLeg;
 	private final ModelPart leftHindMiddleLeg;
 	private final ModelPart rightHindMiddleLeg;
+	private final ModelPart tailTip;
+	private final ModelPart mane;
 
 	public SleipnirModel(ModelPart root) {
 		super(root);
@@ -31,6 +34,8 @@ public class SleipnirModel extends AbstractEquineModel<EquineRenderState> {
 		rightFrontMiddleLeg = root.getChild("right_front_middle_leg");
 		leftHindMiddleLeg = root.getChild("left_hind_middle_leg");
 		rightHindMiddleLeg = root.getChild("right_hind_middle_leg");
+		tailTip = root.getChild("body").getChild("tail").getChild("tail_tip");
+		mane = root.getChild("head_parts").getChild("mane");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -38,25 +43,37 @@ public class SleipnirModel extends AbstractEquineModel<EquineRenderState> {
 		PartDefinition root = mesh.getRoot();
 		PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create()
 				.texOffs(0, 0).addBox(-5.0f, -8.0f, -17.0f, 10, 10, 22)
-				// Silla de montar sobre el lomo.
-				.texOffs(32, 32).addBox(-5.5f, -8.6f, -11.0f, 11, 1, 8),
+				// Silla de batalla con perilla.
+				.texOffs(32, 32).addBox(-5.5f, -8.6f, -11.0f, 11, 1, 8)
+				.texOffs(118, 22).addBox(-1.0f, -10.6f, -11.0f, 2, 2, 1)
+				// Peto rúnico sobre el pecho.
+				.texOffs(70, 32).addBox(-5.5f, -6.0f, -17.6f, 11, 9, 1)
+				// Faldones de hierro a los costados, bajo la silla.
+				.texOffs(96, 22).addBox(5.0f, -7.0f, -12.0f, 1, 6, 10)
+				.texOffs(96, 22).mirror().addBox(-6.0f, -7.0f, -12.0f, 1, 6, 10),
 				PartPose.offset(0.0f, 11.0f, 5.0f));
 		PartDefinition headParts = root.addOrReplaceChild("head_parts", CubeListBuilder.create()
 				.texOffs(64, 0).addBox(-2.05f, -6.0f, -2.0f, 4, 12, 7),
 				PartPose.offsetAndRotation(0.0f, 4.0f, -12.0f, (float) (Math.PI / 6), 0.0f, 0.0f));
 		PartDefinition head = headParts.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(86, 0).addBox(-3.0f, -11.0f, -2.0f, 6, 5, 7), PartPose.ZERO);
+				.texOffs(86, 0).addBox(-3.0f, -11.0f, -2.0f, 6, 5, 7)
+				// Testera: placa de hierro sobre la frente y el hocico.
+				.texOffs(70, 22).addBox(-2.5f, -11.6f, -7.5f, 5, 1, 8), PartPose.ZERO);
+		// Crin alta y trenzada.
 		headParts.addOrReplaceChild("mane", CubeListBuilder.create()
-				.texOffs(112, 0).addBox(-1.0f, -11.0f, 5.01f, 2, 16, 2), PartPose.ZERO);
+				.texOffs(112, 0).addBox(-1.5f, -12.0f, 5.01f, 3, 18, 3), PartPose.ZERO);
 		headParts.addOrReplaceChild("upper_mouth", CubeListBuilder.create()
 				.texOffs(86, 12).addBox(-2.0f, -11.0f, -7.0f, 4, 5, 5), PartPose.ZERO);
 		head.addOrReplaceChild("left_ear", CubeListBuilder.create()
-				.texOffs(120, 0).addBox(0.55f, -13.0f, 4.0f, 2, 3, 1), PartPose.ZERO);
+				.texOffs(118, 25).addBox(0.55f, -13.0f, 4.0f, 2, 3, 1), PartPose.ZERO);
 		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
-				.texOffs(120, 0).addBox(-2.55f, -13.0f, 4.0f, 2, 3, 1), PartPose.ZERO);
-		body.addOrReplaceChild("tail", CubeListBuilder.create()
-				.texOffs(16, 32).addBox(-1.5f, 0.0f, 0.0f, 3, 14, 4),
+				.texOffs(118, 25).addBox(-2.55f, -13.0f, 4.0f, 2, 3, 1), PartPose.ZERO);
+		// Cola larga en dos tramos: el segundo se mece.
+		PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(16, 32).addBox(-1.5f, 0.0f, 0.0f, 3, 10, 4),
 				PartPose.offsetAndRotation(0.0f, -5.0f, 2.0f, (float) (Math.PI / 6), 0.0f, 0.0f));
+		tail.addOrReplaceChild("tail_tip", CubeListBuilder.create()
+				.texOffs(30, 42).addBox(-2.0f, 0.0f, -0.5f, 4, 12, 4), PartPose.offset(0.0f, 10.0f, 0.0f));
 		leg(root, "left_front_leg", true, 4.0f, -10.0f, -1.9f);
 		leg(root, "right_front_leg", false, -4.0f, -10.0f, -1.9f);
 		leg(root, "left_front_middle_leg", true, 4.0f, -5.0f, -1.9f);
@@ -92,5 +109,9 @@ public class SleipnirModel extends AbstractEquineModel<EquineRenderState> {
 		rightHindMiddleLeg.xRot = rightHindLeg.xRot * stand - swing * 0.6f;
 		leftFrontMiddleLeg.y = leftFrontLeg.y;
 		rightFrontMiddleLeg.y = rightFrontLeg.y;
+		// La punta de la cola y la crin se mecen; al galopar, la cola flamea hacia atrás.
+		tailTip.yRot = Mth.sin(state.ageInTicks * 0.12f) * 0.35f;
+		tailTip.xRot = 0.15f + speed * 0.6f;
+		mane.zRot = Mth.sin(state.ageInTicks * 0.1f) * 0.03f;
 	}
 }

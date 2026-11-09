@@ -68,6 +68,10 @@ public class Sleipnir extends AbstractHorse {
 	@Override
 	public void tick() {
 		super.tick();
+		if (level().isClientSide()) {
+			trail();
+			return;
+		}
 		if (!(level() instanceof ServerLevel level)) {
 			return;
 		}
@@ -77,6 +81,27 @@ public class Sleipnir extends AbstractHorse {
 			level.sendParticles(ParticleTypes.CLOUD, getX(), getY() + 1.0, getZ(), 30, 0.6, 0.6, 0.6, 0.05);
 			level.playSound(null, getX(), getY(), getZ(), SoundEvents.HORSE_GALLOP, getSoundSource(), 1.0f, 1.4f);
 			discard();
+		}
+	}
+
+	/** Cliente: al galopar, chispas de escarcha y niebla bajo los cascos; sobre el agua, salpicaduras. */
+	private void trail() {
+		double speed = getDeltaMovement().horizontalDistance();
+		if (speed < 0.12 || random.nextFloat() > 0.8f) {
+			return;
+		}
+		boolean onWater = level().getFluidState(blockPosition()).is(FluidTags.WATER)
+				|| level().getFluidState(blockPosition().below()).is(FluidTags.WATER);
+		for (int i = 0; i < 2; i++) {
+			double x = getX() + (random.nextDouble() - 0.5) * getBbWidth();
+			double z = getZ() + (random.nextDouble() - 0.5) * getBbWidth();
+			level().addParticle(onWater ? ParticleTypes.SPLASH : ParticleTypes.SNOWFLAKE, x, getY() + 0.1, z, 0.0, 0.05, 0.0);
+			if (random.nextFloat() < 0.4f) {
+				level().addParticle(onWater ? ParticleTypes.BUBBLE_POP : ParticleTypes.ELECTRIC_SPARK, x, getY() + 0.2, z, 0.0, 0.02, 0.0);
+			}
+		}
+		if (random.nextFloat() < 0.3f) {
+			level().addParticle(ParticleTypes.CLOUD, getX(), getY() + 0.15, getZ(), -getDeltaMovement().x * 0.2, 0.01, -getDeltaMovement().z * 0.2);
 		}
 	}
 

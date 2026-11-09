@@ -39,6 +39,7 @@ if __name__ == "__main__":
         "jackalTexture": b64(os.path.join(ASSETS, "textures", "entity", "jackal.png")),
         "cerberusTexture": b64(os.path.join(ASSETS, "textures", "entity", "cerberus.png")),
         "sleipnirTexture": b64(os.path.join(ASSETS, "textures", "entity", "sleipnir.png")),
+        "sleipnirGlow": b64(os.path.join(ASSETS, "textures", "entity", "sleipnir_glow.png")),
         "trinkets": {name: json.loads(read(os.path.join(FABRIC_ASSETS, "trinkets", name + ".json")))
                      for name in ORDER if os.path.exists(os.path.join(FABRIC_ASSETS, "trinkets", name + ".json"))},
         "wornModels": {name: json.loads(read(os.path.join(ASSETS, "models", "item", name + "_worn.json")))
