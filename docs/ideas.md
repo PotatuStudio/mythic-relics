@@ -132,6 +132,21 @@ Sleipnir, Huginn y Muninn, Brísingamen, Skíðblaðnir y la cabeza de Mímir.
 | Gleipnir | mano | Clic derecho a un mob: atado 6 s (no se mueve ni ataca; no jefes). Recarga 30 s. | Ciudades antiguas, 3 % |
 | Manzanas de Iðunn | mano (se comen) | Comer: Regeneración II 10 s, Absorción I 2 min y quita veneno, marchitamiento, lentitud, debilidad y hambre. Hasta 3; crece una por día. | Casas de aldeas nevadas, 4 % |
 
+Segunda tanda: diseño aprobado el 2026-11-09, falta programarla (página de diseño:
+https://claude.ai/artifact/3yqN9AjgSKA83AohCqDrsU; íconos: https://claude.ai/artifact/4jrB4FF1qGjD7jwovPsCr6). Decisiones:
+Sleipnir es un aliado propio que la herradura invoca (pedido del usuario), Andvaranaut con su maldición completa,
+Skíðblaðnir y Sleipnir sobre el agua los dos, las 7 reliquias. La cabeza de Mímir se redibujó con más color.
+
+| Reliquia | Espacio | Efecto aprobado | Dónde |
+|---|---|---|---|
+| Herradura de Sleipnir | mano / inventario | Clic derecho: aparece Sleipnir (caballo gris de ocho patas, ensillado, solo tuyo) y quedas montado; al bajarte vuelve a Asgard a los 3 s. Muy rápido, salta más, sin daño de caída y galopa sobre el agua. Si muere, vuelve en 5 min. | Casas de aldeas de sabana, 4 % |
+| Huginn y Muninn | mano | Clic derecho: hostiles a 48 bloques brillan 15 s. Agachado: dirección y distancia a tu última muerte y a tu cama. Recarga 60 s. | Ciudades del End, 3 % |
+| Brísingamen | collar | Cultivos a 8 bloques crecen más rápido y las crías al doble; al matar un hostil recuperas 1 corazón. | Minas abandonadas, 2 % |
+| Skíðblaðnir | inventario / mano | Clic derecho en el agua: despliega un bote que se pliega al bajarte; va un 60 % más rápido. | Provisiones de naufragios, 4 % |
+| Cabeza de Mímir | mano secundaria | Cada 10 s, partículas sobre minerales valiosos a 8 bloques; avisa cuando un creeper empieza a explotar cerca. | Cruces de la fortaleza, 4 % |
+| Andvaranaut | anillo | Mineral de oro doble y trueques de piglins dobles; maldición: 2 corazones menos y los hostiles te prefieren. | Bastiones, 3 % |
+| Óðrerir | mano (se bebe) | +5 niveles y Prisa I 5 min; una vez por día de Minecraft. | Casas de aldeas de taiga, 3 % |
+
 Ideas originales nórdicas (punto de partida):
 
 | Reliquia | Espacio | Efecto | Dónde |
