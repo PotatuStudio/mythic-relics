@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:egypt/thoth_palette",
+  "category": "mythicrelics:egypt",
+  "name": "item.mythicrelics.thoth_palette",
+  "icon": "mythicrelics:thoth_palette",
+  "x": 2,
+  "y": 10,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.thoth_palette.effect",
+      "item": "mythicrelics:thoth_palette"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.thoth_palette",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.thoth_palette.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.thoth_palette.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:egypt/intro"
+    }
+  ]
+}

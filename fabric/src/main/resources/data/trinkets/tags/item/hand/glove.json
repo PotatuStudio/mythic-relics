@@ -1,6 +1,7 @@
 {
-  "replace": false,
-  "values": [
-    "mythicrelics:mummy_wraps"
-  ]
+ "replace": false,
+ "values": [
+  "mythicrelics:mummy_wraps",
+  "mythicrelics:sekhmet_claws"
+ ]
 }

@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:bastet_amulet"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "body",
+   "model": "mythicrelics:item/bastet_amulet_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

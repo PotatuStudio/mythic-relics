@@ -16,8 +16,8 @@ import shutil
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from moddata import (ASSETS, LOOT_TABLE_KEYS, ORDER, ROOT, SET_PIECES, SLOTS, constants, lang, loot, pct,  # noqa: E402
-                     rarity, tooltip_args, tooltip_lines)
+from moddata import (ARCHAEOLOGY, ASSETS, LOOT_TABLE_KEYS, ORDER, ROOT, SETS, SLOTS, constants, lang, loot, pct,  # noqa: E402
+                     rarity, set_args, substitute, tooltip_args, tooltip_lines)
 
 BOOK = "relics"
 NS = "mythicrelics"
@@ -32,18 +32,23 @@ POSITIONS = {
     "golden_scarab": (-4, 2), "eye_of_horus": (-2, 2), "ankh": (2, 2), "mummy_wraps": (4, 2),
     "jackal_mask": (-2, 5), "anubis_scepter": (0, 5), "jackal_ring": (2, 5),
     "anubis_set": (0, 7),
+    # Tanda 2
+    "ra_disk": (-4, 10), "bastet_amulet": (-2, 10), "thoth_palette": (2, 10), "sekhmet_claws": (4, 10),
+    "osiris_crook": (-1, 13), "osiris_flail": (1, 13),
+    "osiris_set": (0, 15),
 }
+SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail"}
 SLOT_NAMES = {
     "es_es": {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes",
-              "hand/ring": "anillo", "mainhand": "mano (arma)"},
+              "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria"},
     "en_us": {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves",
-              "hand/ring": "ring", "mainhand": "main hand (weapon)"},
+              "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand"},
 }
 WORDS = {
-    "es_es": {"per_chest": "{p} % por cofre", "per_structure": "≈ {p} % por pirámide", "slot": "Espacio",
-              "set": "Set de Anubis"},
-    "en_us": {"per_chest": "{p}% per chest", "per_structure": "≈ {p}% per pyramid", "slot": "Slot",
-              "set": "Anubis set"},
+    "es_es": {"per_chest": "{p} % por cofre", "per_brush": "{p} % por bloque cepillado",
+              "per_structure": "≈ {p} % por pirámide", "slot": "Espacio"},
+    "en_us": {"per_chest": "{p}% per chest", "per_brush": "{p}% per brushed block",
+              "per_structure": "≈ {p}% per pyramid", "slot": "Slot"},
 }
 BREAK = "\\\n"   # salto de línea duro en el markdown de Modonomicon
 
@@ -64,7 +69,8 @@ def where_lines(code, lang_map, sources):
     out = []
     for s in sources:
         place = lang_map[LOOT_TABLE_KEYS[s["table"]]]
-        text = f"**{place[0].upper() + place[1:]}**: {w['per_chest'].format(p=pct(s['chance']))}"
+        per = w["per_brush"] if s["table"] in ARCHAEOLOGY else w["per_chest"]
+        text = f"**{place[0].upper() + place[1:]}**: {per.format(p=pct(s['chance']))}"
         chests = CHESTS.get(s["table"])
         if chests:
             text += f" ({w['per_structure'].format(p=pct(1 - (1 - s['chance']) ** chests))})"
@@ -72,25 +78,37 @@ def where_lines(code, lang_map, sources):
     return out
 
 
-def generated_keys(langs, args, sources):
+def set_of(item):
+    return next((name for name, pieces in SETS.items() if item in pieces), None)
+
+
+def set_lines(m, set_id, sargs):
+    """Título del bono del set y su efecto en una frase (las líneas 2 y 3 del tooltip juntas)."""
+    title = substitute(m[f"tooltip.mythicrelics.{set_id}.1"], sargs)
+    first, second = (substitute(m[f"tooltip.mythicrelics.{set_id}.{i}"], sargs).strip() for i in (2, 3))
+    # Si la segunda línea empieza con mayúscula es otra frase (Osiris); si no, sigue la misma (Anubis).
+    joiner = ". " if second[:1].isupper() and first[-1:] not in ".:!?" else " "
+    return title, first + joiner + second
+
+
+def generated_keys(langs, args, sources, sargs):
     """Claves del libro con los números ya puestos: efecto, descripción corta y dónde se encuentra."""
     keys = {code: {} for code in langs}
     for code, m in langs.items():
         for item in ORDER:
             lines = sentences(tooltip_lines(m, item, args[item]))
             effect = lines[:]
-            if item in SET_PIECES:
-                effect.append("")
-                effect.append(f"*{m['tooltip.mythicrelics.anubis_set.1']}*")
-                effect.append(m["tooltip.mythicrelics.anubis_set.2"].strip() + " " + m["tooltip.mythicrelics.anubis_set.3"].strip())
+            set_id = set_of(item)
+            if set_id:
+                title, bonus = set_lines(m, set_id, sargs[set_id])
+                effect += ["", f"*{title}*", bonus]
             effect.append("")
             effect.append(f"{WORDS[code]['slot']}: {SLOT_NAMES[code][SLOTS[item]]}")
             keys[code][f"{GENERATED_PREFIX}{item}.effect"] = BREAK.join(effect)
             keys[code][f"{GENERATED_PREFIX}{item}.description"] = lines[0]
             keys[code][f"{GENERATED_PREFIX}{item}.where"] = BREAK.join(where_lines(code, m, sources.get(item, [])))
-        set_lines = [m["tooltip.mythicrelics.anubis_set.1"], m["tooltip.mythicrelics.anubis_set.2"].strip() + " "
-                     + m["tooltip.mythicrelics.anubis_set.3"].strip()]
-        keys[code][f"{GENERATED_PREFIX}anubis_set.effect"] = BREAK.join(set_lines)
+        for set_id in SETS:
+            keys[code][f"{GENERATED_PREFIX}{set_id}.effect"] = BREAK.join(set_lines(m, set_id, sargs[set_id]))
     return keys
 
 
@@ -144,11 +162,11 @@ def write_book():
         ]
         entries[item] = entry(item, f"item.{NS}.{item}", f"{g}.description", f"{NS}:{item}", POSITIONS[item], pages,
                               parents=("intro",))
-    entries["anubis_set"] = entry("anubis_set", f"{prefix}.anubis_set.name", None, f"{NS}:jackal_mask",
-                                  POSITIONS["anubis_set"], [
-                                      text_page("set", f"{prefix}.anubis_set.name", f"{GENERATED_PREFIX}anubis_set.effect"),
-                                      text_page("myth", f"{prefix}.myth", f"lore.{NS}.anubis_set"),
-                                  ], parents=tuple(sorted(SET_PIECES)))
+    for set_id, pieces in SETS.items():
+        entries[set_id] = entry(set_id, f"{prefix}.{set_id}.name", None, f"{NS}:{SET_ICONS[set_id]}", POSITIONS[set_id], [
+            text_page("set", f"{prefix}.{set_id}.name", f"{GENERATED_PREFIX}{set_id}.effect"),
+            text_page("myth", f"{prefix}.myth", f"lore.{NS}.{set_id}"),
+        ], parents=tuple(sorted(pieces)))
     for name, e in entries.items():
         write_json(os.path.join(BOOK_DIR, "entries", "egypt", name + ".json"), e)
     return len(entries)
@@ -170,7 +188,7 @@ def plain(text):
     return text.replace(BREAK, "  \n")   # salto duro en Markdown de GitHub
 
 
-def write_wiki(langs, args, sources, rar):
+def write_wiki(langs, args, sources, rar, sargs):
     from PIL import Image
     img_dir = os.path.join(WIKI, "img")
     os.makedirs(img_dir, exist_ok=True)
@@ -192,14 +210,17 @@ def write_wiki(langs, args, sources, rar):
                 f"<img src=\"img/{item}.png\" width=\"64\" alt=\"\">", "",
                 f"**Espacio:** {SLOT_NAMES['es_es'][SLOTS[item]]} · **Rareza:** {rarities[rar.get(item, 'common')]}", ""]
         out += [f"- {line}" for line in sentences(tooltip_lines(es, item, args[item]))]
-        if item in SET_PIECES:
-            out += ["", f"*{es['tooltip.mythicrelics.anubis_set.1']}* {es['tooltip.mythicrelics.anubis_set.2'].strip()} "
-                        f"{es['tooltip.mythicrelics.anubis_set.3'].strip()}"]
+        set_id = set_of(item)
+        if set_id:
+            title, bonus = set_lines(es, set_id, sargs[set_id])
+            out += ["", f"*{title}* {bonus}"]
         out += ["", "**Mito.** " + plain(es[f"lore.{NS}.{item}"]), "",
                 "**Dónde encontrarla.** " + "; ".join(plain(x) for x in where_lines("es_es", es, sources.get(item, [])))]
-    out += ["", "## Set de Anubis", "",
-            f"{es['tooltip.mythicrelics.anubis_set.1']} {es['tooltip.mythicrelics.anubis_set.2'].strip()} "
-            f"{es['tooltip.mythicrelics.anubis_set.3'].strip()}", "", "**Mito.** " + plain(es[f"lore.{NS}.anubis_set"]), ""]
+    for set_id in SETS:
+        title, bonus = set_lines(es, set_id, sargs[set_id])
+        out += ["", f"## {es[f'book.{NS}.{BOOK}.{set_id}.name']}", "", f"{title} {bonus}", "",
+                "**Mito.** " + plain(es[f"lore.{NS}.{set_id}"])]
+    out.append("")
     with open(os.path.join(WIKI, "egipto.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(out))
     index = ["# Wiki de Mythic Relics", "",
@@ -208,17 +229,19 @@ def write_wiki(langs, args, sources, rar):
              "calzan con su cultura, y mientras más poderosas, más raras.", "",
              "En el juego, todo esto está en el **Códice de reliquias** (requiere Modonomicon). Con JEI instalado, cada "
              "reliquia muestra además dónde encontrarla.", "",
-             "## Culturas", "", f"- [Egipto](egipto.md): {len(ORDER)} reliquias, incluido el set de Anubis.", ""]
+             "## Culturas", "", f"- [Egipto](egipto.md): {len(ORDER)} reliquias, con los sets de Anubis y de Osiris.", ""]
     with open(os.path.join(WIKI, "README.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(index))
 
 
 if __name__ == "__main__":
     langs = lang()
-    args = tooltip_args(constants())
+    consts = constants()
+    args = tooltip_args(consts)
+    sargs = set_args(consts)
     sources = loot()
-    update_lang(generated_keys(langs, args, sources))
+    update_lang(generated_keys(langs, args, sources, sargs))
     langs = lang()
     n = write_book()
-    write_wiki(langs, args, sources, rarity())
+    write_wiki(langs, args, sources, rarity(), sargs)
     print(f"libro: {n} entradas en {os.path.relpath(BOOK_DIR, ROOT)}; wiki en docs/wiki")

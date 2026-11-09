@@ -1,0 +1,33 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:egypt/osiris_set",
+  "category": "mythicrelics:egypt",
+  "name": "book.mythicrelics.relics.osiris_set.name",
+  "icon": "mythicrelics:osiris_flail",
+  "x": 0,
+  "y": 15,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "set",
+      "title": "book.mythicrelics.relics.osiris_set.name",
+      "text": "book.mythicrelics.relics.entry.osiris_set.effect",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.osiris_set",
+      "show_title_separator": true
+    }
+  ],
+  "parents": [
+    {
+      "entry": "mythicrelics:egypt/osiris_crook"
+    },
+    {
+      "entry": "mythicrelics:egypt/osiris_flail"
+    }
+  ]
+}

@@ -182,7 +182,7 @@ public final class EgyptRelics {
 			case "anubis_scepter" -> new Object[] {Math.round(SCEPTER_JUDGMENT_HEALTH * 100), SCEPTER_XP_MULTIPLIER};
 			case "jackal_mask" -> new Object[] {fmt(MASK_SOUL_HEAL / 2), MASK_SOUL_TICKS / 20};
 			case "jackal_ring" -> new Object[] {RING_JACKALS, RING_JACKAL_TICKS / 20, RING_COOLDOWN / 20};
-			default -> new Object[0];
+			default -> EgyptGods.tooltipArgs(id);
 		};
 	}
 

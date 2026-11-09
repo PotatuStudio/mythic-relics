@@ -16,14 +16,16 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from moddata import (ASSETS, FABRIC_ASSETS, ORDER, SET_PIECES, SLOTS, LOOT_TABLE_KEYS, b64, constants, icons, lang, loot,  # noqa: E402
-                     rarity, read, tooltip_args)
+from moddata import (ARCHAEOLOGY, ASSETS, FABRIC_ASSETS, ORDER, SETS, SLOTS, LOOT_TABLE_KEYS, b64, constants, icons, lang, loot,  # noqa: E402
+                     rarity, read, set_args, tooltip_args)
 
 if __name__ == "__main__":
     out = sys.argv[1]
     data = {
         "order": ORDER,
-        "setPieces": sorted(SET_PIECES),
+        "sets": SETS,
+        "setArgs": set_args(constants()),
+        "archaeology": sorted(ARCHAEOLOGY),
         "slots": SLOTS,
         "args": tooltip_args(constants()),
         "loot": loot(),

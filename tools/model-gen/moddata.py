@@ -1,7 +1,8 @@
 """Lectura de los datos del mod que comparten el visor (make_viewer.py) y el generador del libro y la wiki
 (make_codex.py): íconos, traducciones, números de EgyptRelics.java, botín de ModLoot.java y rareza de ModItems.java.
 
-Los números de los tooltips replican EgyptRelics#tooltipArgs: si cambia esa fórmula, actualizar tooltip_args aquí.
+Los números de los tooltips replican EgyptRelics#tooltipArgs y EgyptGods#tooltipArgs: si cambia una fórmula,
+actualizar tooltip_args aquí.
 """
 import base64
 import json
@@ -14,11 +15,15 @@ JAVA = os.path.join(COMMON, "java", "io", "github", "potatustudio", "mythicrelic
 ASSETS = os.path.join(COMMON, "resources", "assets", "mythicrelics")
 # Configuración de render de Trinkets (solo Fabric; en NeoForge la ubicación está en CuriosRelicRenderer).
 FABRIC_ASSETS = os.path.join(ROOT, "fabric", "src", "main", "resources", "assets", "mythicrelics")
-ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter", "jackal_mask", "jackal_ring"]
-SET_PIECES = {"anubis_scepter", "jackal_mask", "jackal_ring"}
+ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter", "jackal_mask", "jackal_ring",
+         "ra_disk", "bastet_amulet", "thoth_palette", "osiris_crook", "osiris_flail", "sekhmet_claws"]
+# Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
+SETS = {"anubis_set": ["anubis_scepter", "jackal_mask", "jackal_ring"], "osiris_set": ["osiris_crook", "osiris_flail"]}
+SET_PIECES = {piece for pieces in SETS.values() for piece in pieces}
 SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "chest/necklace",
          "mummy_wraps": "hand/glove", "anubis_scepter": "mainhand", "jackal_mask": "head/face",
-         "jackal_ring": "hand/ring"}
+         "jackal_ring": "hand/ring", "ra_disk": "head/hat", "bastet_amulet": "chest/necklace",
+         "thoth_palette": "offhand", "osiris_crook": "offhand", "osiris_flail": "mainhand", "sekhmet_claws": "hand/glove"}
 
 
 def read(path):
@@ -32,9 +37,11 @@ def b64(path):
 
 
 def constants():
-    src = read(os.path.join(JAVA, "egypt", "EgyptRelics.java"))
-    return {name: float(value) for name, value in
-            re.findall(r"public static final (?:float|int) (\w+) = ([\d.]+)f?;", src)}
+    out = {}
+    for name in ("EgyptRelics.java", "EgyptGods.java"):
+        src = read(os.path.join(JAVA, "egypt", name))
+        out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
+    return out
 
 
 def fmt(v):
@@ -55,7 +62,21 @@ def tooltip_args(c):
         "anubis_scepter": [round(c["SCEPTER_JUDGMENT_HEALTH"] * 100), int(c["SCEPTER_XP_MULTIPLIER"])],
         "jackal_mask": [fmt(c["MASK_SOUL_HEAL"] / 2), int(c["MASK_SOUL_TICKS"] // 20)],
         "jackal_ring": [int(c["RING_JACKALS"]), int(c["RING_JACKAL_TICKS"] // 20), int(c["RING_COOLDOWN"] // 20)],
+        # Tanda 2 (EgyptGods#tooltipArgs)
+        "ra_disk": [round(c["RA_UNDEAD_BONUS"] * 100), int(c["RA_BURN_SECONDS"]), int(c["URAEUS_BURN_SECONDS"]),
+                    int(c["URAEUS_COOLDOWN"] // 20)],
+        "bastet_amulet": [round(c["BASTET_SAFE_FALL"]) + 3, round(c["BASTET_FALL_REDUCTION"] * 100)],
+        "thoth_palette": [int(c["THOTH_MAX_LEVELS"]), round(c["THOTH_XP_BONUS"] * 100)],
+        "osiris_crook": [int(c["CROOK_GROW_COOLDOWN"] // 20)],
+        "osiris_flail": [fmt(c["FLAIL_SWEEP_RADIUS"]), round(c["FLAIL_SWEEP_DAMAGE"] * 100)],
+        "sekhmet_claws": [int(c["SEKHMET_WINDOW"] // 20), int(c["SEKHMET_MAX"]), round(c["SEKHMET_PER_LEVEL"] * 100),
+                          int(c["SEKHMET_BURN_SECONDS"]), round(c["SEKHMET_CALM_HEAL"] / 2)],
     }
+
+
+def set_args(c):
+    """Argumentos de las líneas de bono de cada set (el de Osiris muestra la recarga en minutos)."""
+    return {"anubis_set": [], "osiris_set": [int(c["OSIRIS_REBIRTH_COOLDOWN"] // 20 // 60)]}
 
 
 def loot():
@@ -71,7 +92,8 @@ def loot():
 
 def rarity():
     src = read(os.path.join(JAVA, "registry", "ModItems.java"))
-    return {item: r.lower() for item, r in re.findall(r'relic\("(\w+)", p -> p\.rarity\(Rarity\.(\w+)\)', src)}
+    return {item: r.lower() for item, r in
+            re.findall(r'(?:relic|register)\("(\w+)",[^;]*?p -> p\.rarity\(Rarity\.(\w+)\)', src)}
 
 
 def icons():
@@ -89,7 +111,11 @@ def lang():
 
 
 LOOT_TABLE_KEYS = {"desert_pyramid": "loot.mythicrelics.chests.desert_pyramid",
-                   "village_desert_house": "loot.mythicrelics.chests.village.village_desert_house"}
+                   "village_desert_house": "loot.mythicrelics.chests.village.village_desert_house",
+                   "desert_pyramid_archaeology": "loot.mythicrelics.archaeology.desert_pyramid",
+                   "desert_well_archaeology": "loot.mythicrelics.archaeology.desert_well"}
+# Tablas de arqueología: la probabilidad es por bloque cepillado, no por cofre.
+ARCHAEOLOGY = {"desert_pyramid_archaeology", "desert_well_archaeology"}
 
 
 

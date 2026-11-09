@@ -1,7 +1,8 @@
 {
-  "replace": false,
-  "values": [
-    "mythicrelics:eye_of_horus",
-    "mythicrelics:jackal_mask"
-  ]
+ "replace": false,
+ "values": [
+  "mythicrelics:eye_of_horus",
+  "mythicrelics:jackal_mask",
+  "mythicrelics:ra_disk"
+ ]
 }

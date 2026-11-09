@@ -18,6 +18,7 @@ Trinkets (render "model"/"item") y el renderizador de Curios en NeoForge; en el 
 Uso: python worn_models.py
 """
 import json
+import math
 import os
 import sys
 
@@ -26,36 +27,35 @@ from mclib import H, png  # noqa: E402
 from moddata import ASSETS, FABRIC_ASSETS  # noqa: E402
 
 NS = "mythicrelics"
-# Paleta de 4x4 casillas de 4x4 px (una por color). Cada cara de un elemento toma una casilla entera.
-SWATCHES = [
-    "gold_l", "gold", "gold_d", "gold_dd",
-    "lapis_l", "lapis", "turq_l", "turq",
-    "linen_l", "linen", "linen_d", "linen_dd",
-    "onyx_hi", "onyx", "onyx_d", "white",
-]
+# Paleta de 8x8 casillas de 2x2 px (una por color). Cada cara de un elemento toma el centro de su casilla.
 COLORS = {
     "gold_l": "#ffe27a", "gold": "#f0c040", "gold_d": "#c8901e", "gold_dd": "#8a5a10",
     "lapis_l": "#5f86e6", "lapis": "#2f52b4", "turq_l": "#8af0dc", "turq": "#34bfae",
     "linen_l": "#fbf5e2", "linen": "#e2d6b4", "linen_d": "#bfae86", "linen_dd": "#8f7d58",
     "onyx_hi": "#3e383c", "onyx": "#1c1719", "onyx_d": "#0e0b0c", "white": "#f4f1e6",
+    "sun_l": "#ff9a5a", "sun": "#e0502a", "sun_d": "#a8301a",
+    "cobra_l": "#8ad874", "cobra": "#3f9a3a", "cobra_d": "#2a6a28",
+    "fur_l": "#f0c070", "fur": "#c8892e", "fur_d": "#8a5a20", "ivory": "#f4ead0", "ivory_d": "#cfc2a0",
 }
+SWATCHES = list(COLORS)
 # Cara de arriba más clara y de abajo más oscura: da volumen aunque cada elemento sea de un color.
 SHADE = {"gold": ("gold_l", "gold_d"), "gold_l": ("gold_l", "gold"), "gold_d": ("gold", "gold_dd"),
-         "lapis": ("lapis_l", "lapis"), "turq": ("turq_l", "turq"), "linen": ("linen_l", "linen_d"),
-         "linen_l": ("linen_l", "linen"), "linen_d": ("linen", "linen_dd"), "onyx": ("onyx_hi", "onyx_d"),
-         "onyx_hi": ("onyx_hi", "onyx"), "white": ("white", "white"), "lapis_l": ("lapis_l", "lapis"),
-         "turq_l": ("turq_l", "turq"), "onyx_d": ("onyx", "onyx_d"), "linen_dd": ("linen_d", "linen_dd"),
-         "gold_dd": ("gold_d", "gold_dd")}
+         "gold_dd": ("gold_d", "gold_dd"), "lapis": ("lapis_l", "lapis"), "lapis_l": ("lapis_l", "lapis"),
+         "turq": ("turq_l", "turq"), "turq_l": ("turq_l", "turq"), "linen": ("linen_l", "linen_d"),
+         "linen_l": ("linen_l", "linen"), "linen_d": ("linen", "linen_dd"), "linen_dd": ("linen_d", "linen_dd"),
+         "onyx": ("onyx_hi", "onyx_d"), "onyx_hi": ("onyx_hi", "onyx"), "onyx_d": ("onyx", "onyx_d"),
+         "white": ("white", "white"), "sun": ("sun_l", "sun_d"), "cobra": ("cobra_l", "cobra_d"),
+         "fur": ("fur_l", "fur_d"), "fur_l": ("fur_l", "fur"), "ivory": ("ivory", "ivory_d")}
 
 
 def uv(color):
     i = SWATCHES.index(color)
-    u, v = (i % 4) * 4, (i // 4) * 4
-    return [u + 0.5, v + 0.5, u + 3.5, v + 3.5]
+    u, v = (i % 8) * 2, (i // 8) * 2
+    return [u + 0.5, v + 0.5, u + 1.5, v + 1.5]
 
 
 def box(frm, to, color, name=""):
-    top, bottom = SHADE[color]
+    top, bottom = SHADE.get(color, (color, color))
     faces = {side: {"uv": uv(color), "texture": "#p"} for side in ("north", "south", "east", "west")}
     faces["up"] = {"uv": uv(top), "texture": "#p"}
     faces["down"] = {"uv": uv(bottom), "texture": "#p"}
@@ -187,6 +187,57 @@ def jackal_ring():
     return model(e)
 
 
+def ra_headdress():
+    """Corona baja de oro y, sobre la cabeza, el disco solar con su aro de oro y el ureo al frente.
+
+    Se puede llevar a la vez que el Ojo de Horus o la máscara (sombrero + cara): la corona va más afuera (3..13) y la base
+    del disco sobre la coronilla de la máscara, sin compartir planos con ellos."""
+    e = ring(3.0, 13.0, 11.0, 12.1, 3.0, 13.0, 0.75, "gold", "corona")
+    cx, cy, r = 8.0, 17.0, 4.0
+    for k in range(-4, 4):
+        y0 = cy + k
+        half = math.sqrt(max(0.0, r * r - (k + 0.5) ** 2))
+        e.append(box([cx - half, y0, 7.6], [cx + half, y0 + 1, 8.6], "sun", "disco"))
+        e.append(box([cx - half - 0.4, y0, 7.75], [cx - half, y0 + 1, 8.45], "gold", "aro"))
+        e.append(box([cx + half, y0, 7.75], [cx + half + 0.4, y0 + 1, 8.45], "gold", "aro"))
+    e += [box([7.0, 12.4, 6.0], [9.0, 13.0, 10.0], "gold", "base del disco"),
+          box([7.5, 12.1, 13.05], [8.5, 14.5, 13.7], "cobra", "ureo cuerpo"),
+          box([7.0, 14.5, 12.9], [9.0, 15.6, 13.6], "cobra", "ureo capucha"),
+          box([7.7, 15.0, 13.6], [8.3, 15.3, 13.7], "gold_l", "ureo ojos")]
+    return e
+
+
+def bastet_pendant():
+    """Cadena como la del Anj y una gata sentada de bronce oscuro con collar de oro, en relieve sobre el pecho."""
+    e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "gold_d", "cadena"),
+         box([3.5, 13.3, 6.0], [4.0, 13.8, 10.5], "gold", "cadena"),
+         box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "gold", "cadena")]
+    for i in range(6):
+        x, y = 4.0 + i * 0.6, 13.3 - i * 0.22
+        e.append(box([x, y - 0.5, 10.5], [x + 0.6, y, 11.0], "gold", "hebra"))
+        e.append(box([12.0 - (i + 1) * 0.6, y - 0.5, 10.5], [12.0 - i * 0.6, y, 11.0], "gold", "hebra"))
+    z0 = 10.75
+    e += [box([6.9, 7.6, z0], [9.1, 10.2, z0 + 1.3], "onyx", "cuerpo"),
+          box([7.2, 10.2, z0 + 0.2], [8.8, 11.6, z0 + 1.2], "onyx", "cabeza"),
+          box([7.2, 11.6, z0 + 0.5], [7.6, 12.1, z0 + 0.9], "onyx", "oreja"),
+          box([8.4, 11.6, z0 + 0.5], [8.8, 12.1, z0 + 0.9], "onyx", "oreja"),
+          box([6.9, 9.9, z0 - 0.05], [9.1, 10.3, z0 + 1.35], "gold", "collar"),
+          box([7.5, 10.9, z0 + 1.2], [7.75, 11.15, z0 + 1.3], "gold_l", "ojo"),
+          box([8.25, 10.9, z0 + 1.2], [8.5, 11.15, z0 + 1.3], "gold_l", "ojo"),
+          box([9.1, 7.6, z0 + 0.3], [9.6, 8.1, z0 + 1.0], "onyx", "cola")]
+    return e
+
+
+def sekhmet_claws_worn():
+    """Guantelete de piel de leona con muñequera de oro y cuatro garras de marfil que asoman en la punta."""
+    e = ring(5.5, 10.5, 2.0, 6.0, 5.5, 10.5, 0.5, "fur", "piel")
+    e += ring(5.35, 10.65, 6.0, 7.0, 5.35, 10.65, 0.5, "gold", "muñequera")
+    e += [box([5.5, 1.5, 5.5], [10.5, 2.0, 10.5], "fur", "punta")]
+    for i, x in enumerate((5.9, 7.1, 8.3, 9.5)):
+        e.append(box([x, 0.2, 9.3], [x + 0.6, 1.5, 10.1], "ivory", f"garra {i}"))
+    return e
+
+
 def attach(part, name, offset=(0, 0, 0)):
     return {"type": "model", "model_part": part, "model": f"{NS}:item/{name}_worn", "offset": list(offset), "centered": True}
 
@@ -203,15 +254,19 @@ WORN = {
     "jackal_mask": (jackal_mask, [attach("head", "jackal_mask")]),
     "mummy_wraps": (mummy_wraps, both_hands("glove", "mummy_wraps")),
     "jackal_ring": (jackal_ring, both_hands("ring", "jackal_ring", (0, -1, 0))),
+    # Tanda 2
+    "ra_disk": (lambda: model(ra_headdress()), [attach("head", "ra_disk")]),
+    "bastet_amulet": (lambda: model(bastet_pendant()), [attach("body", "bastet_amulet")]),
+    "sekhmet_claws": (lambda: model(sekhmet_claws_worn()), both_hands("glove", "sekhmet_claws")),
 }
 
 
 def palette():
     img = [[(0, 0, 0, 0)] * 16 for _ in range(16)]
     for i, name in enumerate(SWATCHES):
-        u, v = (i % 4) * 4, (i // 4) * 4
-        for y in range(4):
-            for x in range(4):
+        u, v = (i % 8) * 2, (i // 8) * 2
+        for y in range(2):
+            for x in range(2):
                 img[v + y][u + x] = H(COLORS[name])
     return img
 

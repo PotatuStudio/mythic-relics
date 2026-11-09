@@ -1,6 +1,7 @@
 {
-  "replace": false,
-  "values": [
-    "mythicrelics:ankh"
-  ]
+ "replace": false,
+ "values": [
+  "mythicrelics:ankh",
+  "mythicrelics:bastet_amulet"
+ ]
 }

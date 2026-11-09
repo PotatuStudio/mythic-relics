@@ -26,5 +26,8 @@ public final class MythicRelicsNeoForgeClient {
 		// Curios tiene un solo espacio de manos: las vendas son un par y se ven en los dos brazos.
 		ICurioRenderer.register(ModItems.MUMMY_WRAPS.get(), () -> new CuriosRelicRenderer(Part.BOTH_ARMS, 0f));
 		ICurioRenderer.register(ModItems.JACKAL_RING.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
+		ICurioRenderer.register(ModItems.RA_DISK.get(), () -> new CuriosRelicRenderer(Part.HEAD, 0f));
+		ICurioRenderer.register(ModItems.BASTET_AMULET.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.SEKHMET_CLAWS.get(), () -> new CuriosRelicRenderer(Part.BOTH_ARMS, 0f));
 	}
 }

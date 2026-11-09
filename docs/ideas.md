@@ -10,14 +10,14 @@ Primera tanda (escarabajo, Ojo de Horus, Anj, vendas de momia y set de Anubis): 
 
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
-Segunda tanda: diseño aprobado el 2026-11-09 (ver la tabla siguiente); falta pulir íconos y programarla.
+Segunda tanda: diseño aprobado y programado el 2026-11-09 (ver la tabla siguiente); falta probarla en el juego.
 Se encuentra sobre todo con **arqueología** (arena sospechosa de pirámides y pozos del desierto).
 
 | Reliquia | Espacio | Efecto aprobado | Dónde |
 |---|---|---|---|
 | Disco solar de Ra | sombrero (NeoForge: 2.º espacio de cabeza) | Bajo el sol: +30 % de daño a no-muertos y los prende 5 s. Ureo: escupe fuego (3 s) a quien te golpea cuerpo a cuerpo, recarga 10 s. De noche solo el ureo. | Arena sospechosa de pirámides, 1,5 % |
 | Amuleto de Bastet | collar (compite con el Anj) | Creepers y phantoms te evitan; sin daño de caída hasta 6 bloques y el resto a la mitad. | Casas de aldeas del desierto 4 %; arena sospechosa de pozos del desierto 5 % |
-| Tablilla de Thot (nombre por confirmar: Paleta de escriba de Thot) | mano secundaria | Clic derecho guarda 1 nivel de experiencia (hasta 30), agachado lo devuelve; no se pierde al morir. +20 % de experiencia en la mano secundaria. | Arena sospechosa de pirámides, 3 % |
+| Paleta de escriba de Thot | mano secundaria | Clic derecho guarda 1 nivel de experiencia (hasta 30), agachado lo devuelve; no se pierde al morir. +20 % de experiencia en la mano secundaria. | Arena sospechosa de pirámides, 3 % |
 | Cayado de Osiris | mano secundaria | Animales de granja te siguen; clic derecho vuelve adulta una cría (recarga 30 s). | Cofres de pirámides, 2 % |
 | Mayal de Osiris | arma | Ataque cargado giratorio (2,5 bloques, 60 % del daño); trilla cultivos maduros en 3×3. | Cofres de pirámides, 2 % |
 | Set de Osiris | ambas manos | Renacer: con daño mortal revives con 4 corazones y Regeneración II 5 s; recarga un día de Minecraft. | — |

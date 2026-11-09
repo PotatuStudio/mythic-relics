@@ -14,7 +14,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 /**
  * Reliquia. El tooltip sale de {@code item.mythicrelics.<id>.tooltip.1}, {@code .2}… (tantas líneas como haya en la
  * traducción; Minecraft no corta las líneas largas): la primera en dorado con el efecto principal, el resto en gris, con
- * los números de {@link EgyptRelics#tooltipArgs}. Las piezas del set de Anubis agregan el bono como los atributos vanilla
+ * los números de {@link EgyptRelics#tooltipArgs}. Las piezas de los sets (Anubis, Osiris) agregan el bono como los atributos vanilla
  * y al final va dónde se encuentra, según {@link ModLoot}.
  */
 public class RelicItem extends Item {
@@ -37,12 +37,18 @@ public class RelicItem extends Item {
 			}
 			tooltip.accept(Component.translatable(key, args).withStyle(i == 1 ? ChatFormatting.GOLD : ChatFormatting.GRAY));
 		}
-		if (EgyptRelics.isAnubisSetPiece(id)) {
+		appendExtraLines(stack, tooltip);
+		String set = EgyptRelics.isAnubisSetPiece(id) ? "anubis_set" : id.startsWith("osiris_") ? "osiris_set" : null;
+		if (set != null) {
 			tooltip.accept(Component.empty());
-			tooltip.accept(Component.translatable("tooltip.mythicrelics.anubis_set.1").withStyle(ChatFormatting.GRAY));
-			tooltip.accept(Component.translatable("tooltip.mythicrelics.anubis_set.2").withStyle(ChatFormatting.BLUE));
-			tooltip.accept(Component.translatable("tooltip.mythicrelics.anubis_set.3").withStyle(ChatFormatting.BLUE));
+			tooltip.accept(Component.translatable("tooltip.mythicrelics." + set + ".1").withStyle(ChatFormatting.GRAY));
+			tooltip.accept(Component.translatable("tooltip.mythicrelics." + set + ".2", EgyptGods.rebirthMinutes()).withStyle(ChatFormatting.BLUE));
+			tooltip.accept(Component.translatable("tooltip.mythicrelics." + set + ".3", EgyptGods.rebirthMinutes()).withStyle(ChatFormatting.BLUE));
 		}
 		ModLoot.appendWhere(this, tooltip);
+	}
+
+	/** Líneas propias de una reliquia entre el efecto y el set (p. ej. lo escrito en la paleta de Thot). */
+	protected void appendExtraLines(ItemStack stack, Consumer<Component> tooltip) {
 	}
 }

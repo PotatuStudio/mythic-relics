@@ -1,7 +1,9 @@
 package io.github.potatustudio.mythicrelics;
 
+import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
+import io.github.potatustudio.mythicrelics.registry.ModComponents;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
@@ -18,11 +20,13 @@ public final class MythicRelics {
 	}
 
 	public static void init() {
+		ModComponents.init();
 		ModItems.init();
 		ModEntities.init();
 		ModLoot.init();
 		Minions.init();
 		EgyptRelics.init();
+		EgyptGods.init();
 		LOGGER.info("Mythic Relics cargado");
 	}
 

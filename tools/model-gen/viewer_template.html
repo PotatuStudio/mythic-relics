@@ -92,7 +92,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
     <img id="modIcon" alt="Ícono del mod">
     <div class="grow">
       <h1>Mythic Relics · Egipto</h1>
-      <p class="sub" data-i18n="subtitle">Vista previa de la primera tanda, armada con los mismos archivos del mod.</p>
+      <p class="sub" data-i18n="subtitle">Vista previa de las reliquias de Egipto, armada con los mismos archivos del mod.</p>
     </div>
     <div class="toggle" role="group" aria-label="Idioma">
       <button id="langEs" aria-pressed="true">ES</button>
@@ -148,7 +148,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
 <script>
 const DATA = __DATA__;
 const UI = {
-  es_es: { subtitle: "Vista previa de la primera tanda, armada con los mismos archivos del mod.",
+  es_es: { subtitle: "Vista previa de las reliquias de Egipto, armada con los mismos archivos del mod.",
     invTitle: "Pestaña creativa y tooltips",
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
@@ -159,9 +159,9 @@ const UI = {
     footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
     footPlayer: "Muñeco genérico (sin la skin de Mojang) con los modelos 3D de cada reliquia, ubicados con la misma regla que usa Trinkets. Las vendas y el anillo se ponen en ambas manos si hay uno en cada espacio; aquí se ven en las dos. El cetro no se pone: se lleva en la mano.",
     slot: "Espacio", rarity: "Rareza", perPyramid: "Por pirámide (4 cofres)", info: "Información",
-    slotNames: {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes", "hand/ring": "anillo", "mainhand": "mano (arma)"},
+    slotNames: {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes", "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria"},
     rarities: {common: "común", uncommon: "poco común", rare: "rara", epic: "épica"} },
-  en_us: { subtitle: "Preview of the first batch, built from the mod's own files.",
+  en_us: { subtitle: "Preview of the Egyptian relics, built from the mod's own files.",
     invTitle: "Creative tab and tooltips",
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
@@ -172,7 +172,7 @@ const UI = {
     footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
     footPlayer: "Generic figure (no Mojang skin) wearing each relic's 3D model, placed with the same rule Trinkets uses. Wraps and rings show on both hands here. The scepter isn't worn: it's held.",
     slot: "Slot", rarity: "Rarity", perPyramid: "Per pyramid (4 chests)", info: "Information",
-    slotNames: {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves", "hand/ring": "ring", "mainhand": "main hand (weapon)"},
+    slotNames: {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves", "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand"},
     rarities: {common: "common", uncommon: "uncommon", rare: "rare", epic: "epic"} },
 };
 const RARITY_COLOR = { common: "c-white", uncommon: "c-yellow", rare: "c-aqua", epic: "c-purple" };
@@ -271,11 +271,16 @@ function renderTooltip() {
     if (DATA.lang[lang][key] === undefined) break;
     tip.appendChild(line(tr(key, args), i === 1 ? "c-gold" : "c-gray"));
   }
-  if (DATA.setPieces.includes(selected)) {
+  if (selected === "thoth_palette") {
+    tip.appendChild(line(tr("tooltip.mythicrelics.thoth_palette.written", [0, args[0]]), "c-aqua"));
+  }
+  const setId = Object.keys(DATA.sets).find(id => DATA.sets[id].includes(selected));
+  if (setId) {
+    const sargs = DATA.setArgs[setId] || [];
     tip.appendChild(line(" ", ""));
-    tip.appendChild(line(tr("tooltip.mythicrelics.anubis_set.1"), "c-gray"));
-    tip.appendChild(line(tr("tooltip.mythicrelics.anubis_set.2"), "c-blue"));
-    tip.appendChild(line(tr("tooltip.mythicrelics.anubis_set.3"), "c-blue"));
+    tip.appendChild(line(tr("tooltip.mythicrelics." + setId + ".1", sargs), "c-gray"));
+    tip.appendChild(line(tr("tooltip.mythicrelics." + setId + ".2", sargs), "c-blue"));
+    tip.appendChild(line(tr("tooltip.mythicrelics." + setId + ".3", sargs), "c-blue"));
   }
   const sources = DATA.loot[selected] || [];
   if (sources.length) {
@@ -302,7 +307,8 @@ function renderJei() {
   body.appendChild(title);
   for (const s of DATA.loot[selected] || []) {
     const d = document.createElement("div");
-    d.textContent = tr("jei.mythicrelics.where.entry", [tr(DATA.lootKeys[s.table]), pct(s.chance)]);
+    const key = DATA.archaeology.includes(s.table) ? "jei.mythicrelics.where.entry_brush" : "jei.mythicrelics.where.entry";
+    d.textContent = tr(key, [tr(DATA.lootKeys[s.table]), pct(s.chance)]);
     body.appendChild(d);
   }
   const n = document.createElement("div");
@@ -582,8 +588,8 @@ function buildWornControls() {
     b.addEventListener("click", () => {
       if (wearing.has(name)) wearing.delete(name);
       else {
-        // Un solo espacio de cara: el Ojo de Horus y la máscara se excluyen.
-        if (DATA.slots[name] === "head/face") for (const o of TRINKETS) if (DATA.slots[o] === "head/face") wearing.delete(o);
+        // Una reliquia por espacio, como en el juego (p. ej. el Anj y Bastet comparten el collar).
+        for (const o of TRINKETS) if (DATA.slots[o] === DATA.slots[name]) wearing.delete(o);
         wearing.add(name);
       }
       applyWorn();

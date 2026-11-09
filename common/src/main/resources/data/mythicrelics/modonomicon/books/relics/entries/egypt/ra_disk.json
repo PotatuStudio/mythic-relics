@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:egypt/ra_disk",
+  "category": "mythicrelics:egypt",
+  "name": "item.mythicrelics.ra_disk",
+  "icon": "mythicrelics:ra_disk",
+  "x": -4,
+  "y": 10,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.ra_disk.effect",
+      "item": "mythicrelics:ra_disk"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.ra_disk",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.ra_disk.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.ra_disk.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:egypt/intro"
+    }
+  ]
+}

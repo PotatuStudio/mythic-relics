@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:egypt/sekhmet_claws",
+  "category": "mythicrelics:egypt",
+  "name": "item.mythicrelics.sekhmet_claws",
+  "icon": "mythicrelics:sekhmet_claws",
+  "x": 4,
+  "y": 10,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.sekhmet_claws.effect",
+      "item": "mythicrelics:sekhmet_claws"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.sekhmet_claws",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.sekhmet_claws.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.sekhmet_claws.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:egypt/intro"
+    }
+  ]
+}

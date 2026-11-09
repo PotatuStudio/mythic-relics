@@ -1,0 +1,37 @@
+{
+ "target": [
+  "mythicrelics:sekhmet_claws"
+ ],
+ "render": [
+  {
+   "type": "minecraft:if_slot",
+   "slot": "hand/glove",
+   "then": {
+    "type": "model",
+    "model_part": ":main_hand",
+    "model": "mythicrelics:item/sekhmet_claws_worn",
+    "offset": [
+     0,
+     0,
+     0
+    ],
+    "centered": true
+   }
+  },
+  {
+   "type": "minecraft:if_slot",
+   "slot": "offhand/glove",
+   "then": {
+    "type": "model",
+    "model_part": ":off_hand",
+    "model": "mythicrelics:item/sekhmet_claws_worn",
+    "offset": [
+     0,
+     0,
+     0
+    ],
+    "centered": true
+   }
+  }
+ ]
+}

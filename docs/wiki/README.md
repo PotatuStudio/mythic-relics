@@ -8,4 +8,4 @@ En el juego, todo esto está en el **Códice de reliquias** (requiere Modonomico
 
 ## Culturas
 
-- [Egipto](egipto.md): 7 reliquias, incluido el set de Anubis.
+- [Egipto](egipto.md): 13 reliquias, con los sets de Anubis y de Osiris.

@@ -27,7 +27,7 @@ public final class ModLoot {
 	}
 
 	private static final Map<ResourceKey<LootTable>, List<Drop>> DROPS = Map.of(
-			// Pirámide del desierto (4 cofres): ~57 % de las pirámides trae al menos una reliquia.
+			// Pirámide del desierto (4 cofres): tanda 1 e insignias de Osiris.
 			BuiltInLootTables.DESERT_PYRAMID, List.of(
 					new Drop(0.040f, ModItems.MUMMY_WRAPS),
 					new Drop(0.035f, ModItems.GOLDEN_SCARAB),
@@ -35,12 +35,27 @@ public final class ModLoot {
 					new Drop(0.030f, ModItems.JACKAL_MASK),
 					new Drop(0.025f, ModItems.JACKAL_RING),
 					new Drop(0.025f, ModItems.EYE_OF_HORUS),
-					new Drop(0.020f, ModItems.ANUBIS_SCEPTER)),
+					new Drop(0.020f, ModItems.ANUBIS_SCEPTER),
+					new Drop(0.020f, ModItems.OSIRIS_CROOK),
+					new Drop(0.020f, ModItems.OSIRIS_FLAIL)),
 			BuiltInLootTables.VILLAGE_DESERT_HOUSE, List.of(
-					new Drop(0.030f, ModItems.ANKH)));
+					new Drop(0.030f, ModItems.ANKH),
+					new Drop(0.040f, ModItems.BASTET_AMULET)),
+			// Arqueología (tanda 2): probabilidad por bloque de arena sospechosa cepillado.
+			BuiltInLootTables.DESERT_PYRAMID_ARCHAEOLOGY, List.of(
+					new Drop(0.030f, ModItems.THOTH_PALETTE),
+					new Drop(0.015f, ModItems.RA_DISK),
+					new Drop(0.015f, ModItems.SEKHMET_CLAWS)),
+			BuiltInLootTables.DESERT_WELL_ARCHAEOLOGY, List.of(
+					new Drop(0.050f, ModItems.BASTET_AMULET)));
 
-	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre. */
+	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre (o por bloque cepillado, en arqueología). */
 	public record Source(ResourceKey<LootTable> table, float chance) {
+		/** Arena o grava sospechosa: la probabilidad es por bloque cepillado, no por cofre. */
+		public boolean archaeology() {
+			return table.identifier().getPath().startsWith("archaeology/");
+		}
+
 		/** Clave de traducción del lugar, p. ej. loot.mythicrelics.chests.desert_pyramid. */
 		public String translationKey() {
 			return "loot.mythicrelics." + table.identifier().getPath().replace('/', '.');

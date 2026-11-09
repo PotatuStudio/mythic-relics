@@ -22,8 +22,14 @@ PAL = {
     'q': H('#9af4e2'), 't': H('#34bfae'),                                         # turquesa
     'O': H('#4a4446'), 'o': H('#1c1719'),                                         # ónix / pelaje negro
     'w': H('#fbf5e2'), 'W': H('#e2d6b4'), 's': H('#b8a882'), 'c': H('#9c8a66'), 'x': H('#6e5e40'),  # lino
+    # Tanda 2
+    'R': H('#ff8a4a'), 'r': H('#e0502a'), 'X': H('#a8301a'),          # disco solar, cornalina, tinta roja
+    'V': H('#7fd06a'), 'v': H('#3f9a3a'),                             # cobra (ureo)
+    'Y': H('#f0c070'), 'y': H('#c8892e'), 'z': H('#8a5a20'),          # pelaje de leona, cálamos
+    'i': H('#f4ead0'),                                                # garras de marfil
+    'P': H('#d6a764'), 'p': H('#a8743a'), 'u': H('#6e4a22'),          # madera de la paleta de escriba
 }
-SHINY = set('Ggdqt' + 'Ll')
+SHINY = set('Ggdqt' + 'Ll' + 'RrVv')
 
 GOLDEN_SCARAB = [
     "................",
@@ -265,6 +271,144 @@ def sheet(images, path, scale=8):
     png(path, canvas)
 
 
+# --- Tanda 2 ----------------------------------------------------------------------------------------------------------
+def empty_chars():
+    return [['.'] * 16 for _ in range(16)]
+
+
+def finish(chars):
+    """Convierte la grilla de letras a imagen y le agrega el contorno."""
+    img = [[PAL[c] for c in row] for row in chars]
+    return outline(img, chars)
+
+
+def ra_disk():
+    """Disco solar con aro de oro y el ureo (cobra) alzándose al frente de su parte baja."""
+    c = empty_chars()
+    cx, cy = 7.5, 7.0
+    for y in range(16):
+        for x in range(16):
+            d = math.hypot(x - cx, y - cy)
+            if d <= 6.2:
+                light = -(x - cx + y - cy) / 8
+                c[y][x] = 'g' if d > 5.2 else ('R' if light > 0.25 else 'r' if light > -0.35 else 'X')
+    # Ureo: cuerpo enroscado en la base del disco y la capucha alzada al frente.
+    for x, y, ch in [(5, 12, 'v'), (6, 12, 'V'), (7, 12, 'V'), (8, 12, 'V'), (9, 12, 'v'), (10, 12, 'v'),
+                     (7, 11, 'V'), (8, 11, 'v'), (7, 10, 'V'), (8, 10, 'v'),
+                     (6, 9, 'V'), (7, 9, 'V'), (8, 9, 'v'), (9, 9, 'v'), (6, 8, 'V'), (7, 8, 'g'), (8, 8, 'g'), (9, 8, 'v'),
+                     (7, 7, 'V'), (8, 7, 'v')]:
+        c[y][x] = ch
+    return finish(c)
+
+
+BASTET = [
+    "................",
+    ".....o....o.....",
+    ".....oo..oo.....",
+    ".....oooooo.....",
+    ".....oGooGo.....",
+    ".....oooooo.....",
+    "......oOOo......",
+    ".....gggggg.....",
+    "....oooooooo....",
+    "....oOoooooo....",
+    "...oOooooooo....",
+    "...ooooooooo..o.",
+    "...oooooooooooo.",
+    "...oooooooooo...",
+    "....oo....oo....",
+    "................",
+]
+
+
+def bastet():
+    c = [list(r) for r in BASTET]
+    c[7][4] = 'd'
+    c[7][11] = 'd'
+    c[3][4] = 'g'   # arete de oro
+    return finish(c)
+
+
+def thoth_palette():
+    """Paleta de escriba: tabla de madera con dos pocillos de tinta (roja y negra) y la ranura de los cálamos."""
+    c = empty_chars()
+    for y in range(1, 15):
+        for x in range(4, 12):
+            c[y][x] = 'P' if (x == 4 or y == 1) else ('u' if (x == 11 or y == 14) else 'p')
+    for x, y, ch in [(5, 2, 'X'), (6, 2, 'r'), (5, 3, 'X'), (6, 3, 'X'),   # tinta roja
+                     (9, 2, 'O'), (10, 2, 'o'), (9, 3, 'o'), (10, 3, 'o')]:  # tinta negra
+        c[y][x] = ch
+    for y in range(5, 14):
+        c[y][7] = 'u'
+        c[y][8] = 'u'
+    for y in range(6, 13):
+        c[y][7] = 'Y'
+    for y in range(7, 13):
+        c[y][8] = 'y'
+    c[5][7] = 'z'
+    c[13][8] = 'z'
+    return finish(c)
+
+
+def crook():
+    c = empty_chars()
+    for i in range(9):
+        x, y = 3 + i, 13 - i
+        stripe = 'l' if (i // 2) % 2 == 0 else 'g'
+        c[y][x] = stripe
+        c[y][x + 1] = 'b' if stripe == 'l' else 'd'
+    for x, y in [(12, 4), (12, 3), (13, 2), (14, 2), (14, 3), (14, 4)]:
+        c[y][x] = 'g' if y < 4 else 'l'
+    c[5][14] = 'l'
+    return finish(c)
+
+
+def flail():
+    """Mango a rayas y tres hebras de cuentas que cuelgan desde la punta."""
+    c = empty_chars()
+    for i in range(7):
+        x, y = 2 + i, 13 - i
+        stripe = 'l' if (i // 2) % 2 == 0 else 'g'
+        c[y][x] = stripe
+        c[y][x + 1] = 'b' if stripe == 'l' else 'd'
+    for x, y in [(9, 6), (10, 5), (10, 4), (11, 4), (12, 4)]:
+        c[y][x] = 'g'
+    beads = ['g', 't', 'r', 'g', 't', 'r']
+    for strand, x in enumerate((11, 12, 13)):
+        for k in range(5 + strand % 2):
+            c[5 + k][x] = beads[(k + strand) % len(beads)]
+    return finish(c)
+
+
+SEKHMET = [
+    "..i..i..i..i....",
+    "..yy.yy.yy.yy...",
+    ".kYykYykYykYyk..",
+    ".kYykYykYykYyk..",
+    ".kYyyYyyYyyYyk..",
+    ".kYyyyyyyyyyyk..",
+    ".kYyyyyyyyyyykk.",
+    ".kYyyyyyyyyyyiyk",
+    ".kYyyyyyyyyyyyyk",
+    "..kYyyyyyyyyzyk.",
+    "..kYyyyyyyyzk...",
+    "..kggggggggggdk.",
+    "..kdddddddddDk..",
+    "..kkkkkkkkkkkk..",
+    "................",
+    "................",
+]
+
+
+def sekhmet():
+    c = [list(r) for r in SEKHMET]
+    for x in range(3, 13):
+        if c[11][x] == 'g' and x % 3 == 0:
+            c[11][x] = 'r'   # cuentas de cornalina en la muñequera
+    return finish(c)
+
+
+
 ICONS = {
     "golden_scarab": lambda: build(GOLDEN_SCARAB),
     "eye_of_horus": lambda: build(EYE_OF_HORUS),
@@ -273,6 +417,12 @@ ICONS = {
     "anubis_scepter": anubis_scepter,
     "jackal_mask": jackal_mask,
     "jackal_ring": jackal_ring,
+    "ra_disk": ra_disk,
+    "bastet_amulet": bastet,
+    "thoth_palette": thoth_palette,
+    "osiris_crook": crook,
+    "osiris_flail": flail,
+    "sekhmet_claws": sekhmet,
 }
 
 if __name__ == "__main__":

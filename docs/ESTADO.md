@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-08. Rama de trabajo: `main` (la tanda 1 de Egipto ya está fusionada; falta probarla en el juego).
+Última sesión: 2026-11-09. Rama de trabajo: `main` (tandas 1 y 2 de Egipto programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -75,6 +75,17 @@ Segunda tanda de Egipto: disco solar de Ra, amuleto de Bastet, tablilla de Thot,
 garras de Sekhmet. Después: Grecia, Roma, nórdicos, celtas, folclore japonés, Mesoamérica, eslavos, China,
 Mesopotamia (las ideas con sus efectos y estructuras están en la conversación del 2026-11-08; resumen en
 [ideas.md](ideas.md)).
+
+## Segunda tanda de Egipto (programada el 2026-11-09)
+Diseño aprobado en `docs/ideas.md` (con su página de diseño). Código en `egypt/EgyptGods.java` (constantes y lógica),
+`egypt/ThothPaletteItem.java` (experiencia escrita en el componente `mythicrelics:written_levels`) y
+`egypt/OsirisCrookItem.java`. Mixins nuevos: `PlayerMixin` (carga del ataque para el golpe giratorio del mayal y +20 %
+de experiencia de Thot), `BrushableBlockEntityMixin` (al cepillar, la reliquia sale primero; Minecraft solo da un ítem)
+y en `LivingEntityMixin` el daño de Ra/Sekhmet/Bastet y el renacer de Osiris en `checkTotemDeathProtection`.
+Arqueología: `archaeology/desert_pyramid` (Thot 3 %, Ra 1,5 %, Sekhmet 1,5 %) y `archaeology/desert_well` (Bastet 5 %),
+por bloque cepillado. NeoForge suma 1 espacio de cabeza en Curios (`data/mythicrelics/curios/slots/head.json`) para que
+Ra conviva con el Ojo o la máscara. **Sin probar en el juego**: en especial los mixins nuevos (si un punto de inyección
+falla, el juego se cae al iniciar), la arqueología, el renacer y que los creepers eviten a Bastet.
 
 ## Herramientas y pruebas
 - **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC

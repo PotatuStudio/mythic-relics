@@ -39,7 +39,7 @@ public class MythicRelicsJeiPlugin implements IModPlugin {
 			List<Component> lines = new ArrayList<>();
 			lines.add(Component.translatable("jei.mythicrelics.where.title").withStyle(ChatFormatting.BOLD));
 			for (ModLoot.Source source : sources) {
-				lines.add(Component.translatable("jei.mythicrelics.where.entry",
+				lines.add(Component.translatable(source.archaeology() ? "jei.mythicrelics.where.entry_brush" : "jei.mythicrelics.where.entry",
 						Component.translatable(source.translationKey()), formatChance(source.chance())));
 			}
 			lines.add(Component.translatable("jei.mythicrelics.where.note").withStyle(ChatFormatting.GRAY));
