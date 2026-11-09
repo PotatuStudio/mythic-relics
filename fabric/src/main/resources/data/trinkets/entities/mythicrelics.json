@@ -10,6 +10,8 @@
   "offhand/glove",
   "hand/ring",
   "offhand/ring",
-  "head/hat"
+  "head/hat",
+  "feet/shoes",
+  "chest/back"
  ]
 }

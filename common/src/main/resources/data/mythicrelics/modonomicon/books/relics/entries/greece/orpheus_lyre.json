@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:greece/orpheus_lyre",
+  "category": "mythicrelics:greece",
+  "name": "item.mythicrelics.orpheus_lyre",
+  "icon": "mythicrelics:orpheus_lyre",
+  "x": 3,
+  "y": 8,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.orpheus_lyre.effect",
+      "item": "mythicrelics:orpheus_lyre"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.orpheus_lyre",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.orpheus_lyre.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.orpheus_lyre.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:greece/intro"
+    }
+  ]
+}

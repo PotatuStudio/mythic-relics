@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:greece/ariadne_thread",
+  "category": "mythicrelics:greece",
+  "name": "item.mythicrelics.ariadne_thread",
+  "icon": "mythicrelics:ariadne_thread",
+  "x": -3,
+  "y": 8,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.ariadne_thread.effect",
+      "item": "mythicrelics:ariadne_thread"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.ariadne_thread",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.ariadne_thread.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.ariadne_thread.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:greece/intro"
+    }
+  ]
+}

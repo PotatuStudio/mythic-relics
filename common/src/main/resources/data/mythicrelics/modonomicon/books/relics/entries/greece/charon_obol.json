@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:greece/charon_obol",
+  "category": "mythicrelics:greece",
+  "name": "item.mythicrelics.charon_obol",
+  "icon": "mythicrelics:charon_obol",
+  "x": 0,
+  "y": 8,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.charon_obol.effect",
+      "item": "mythicrelics:charon_obol"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.charon_obol",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.charon_obol.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.charon_obol.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:greece/intro"
+    }
+  ]
+}

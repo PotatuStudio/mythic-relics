@@ -29,5 +29,8 @@ public final class MythicRelicsNeoForgeClient {
 		ICurioRenderer.register(ModItems.RA_DISK.get(), () -> new CuriosRelicRenderer(Part.HEAD, 0f));
 		ICurioRenderer.register(ModItems.BASTET_AMULET.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.SEKHMET_CLAWS.get(), () -> new CuriosRelicRenderer(Part.BOTH_ARMS, 0f));
+		ICurioRenderer.register(ModItems.HERMES_SANDALS.get(), () -> new CuriosRelicRenderer(Part.BOTH_LEGS, 0f));
+		ICurioRenderer.register(ModItems.HADES_HELM.get(), () -> new CuriosRelicRenderer(Part.HEAD, 0f));
+		ICurioRenderer.register(ModItems.ATHENA_AEGIS.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 	}
 }

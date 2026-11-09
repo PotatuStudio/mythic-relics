@@ -30,8 +30,8 @@ tablillas de arcilla son mesopotámicas (de ahí el posible cambio de nombre). P
 https://claude.ai/artifact/TVhToSr5yZL8YrgbfKAyfH
 
 ## Grecia
-Primera tanda: diseño aprobado el 2026-11-09 (página de diseño:
-https://claude.ai/artifact/MCuhiAWJDj8RXgu5W1Cnhu); falta programarla.
+Primera tanda: diseño aprobado y programado el 2026-11-09 (página de diseño:
+https://claude.ai/artifact/MCuhiAWJDj8RXgu5W1Cnhu); falta probarla en el juego.
 Fidelidad: ninguna depende de cultura pop. Correcciones al aplicar el criterio: la «caja» de Pandora era una jarra
 (*pithos*; «caja» viene de una mala traducción de Erasmo), la «tobillera» de Aquiles no es un objeto del mito (lo fiel es
 el agua del Estigia) y el óbolo de Caronte pagaba el pasaje, no evitaba la muerte.

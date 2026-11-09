@@ -1,0 +1,18 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:greece/intro",
+  "category": "mythicrelics:greece",
+  "name": "book.mythicrelics.relics.greece.intro.name",
+  "icon": "minecraft:chiseled_quartz_block",
+  "x": 0,
+  "y": 0,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "intro",
+      "title": "book.mythicrelics.relics.greece.intro.name",
+      "text": "lore.mythicrelics.greece.intro",
+      "show_title_separator": true
+    }
+  ]
+}

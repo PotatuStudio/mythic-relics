@@ -38,7 +38,8 @@ public class RelicItem extends Item {
 			tooltip.accept(Component.translatable(key, args).withStyle(i == 1 ? ChatFormatting.GOLD : ChatFormatting.GRAY));
 		}
 		appendExtraLines(stack, tooltip);
-		String set = EgyptRelics.isAnubisSetPiece(id) ? "anubis_set" : id.startsWith("osiris_") ? "osiris_set" : null;
+		String set = EgyptRelics.isAnubisSetPiece(id) ? "anubis_set" : id.startsWith("osiris_") ? "osiris_set"
+				: id.equals("hermes_sandals") || id.equals("hades_helm") || id.equals("athena_aegis") ? "perseus_set" : null;
 		if (set != null) {
 			tooltip.accept(Component.empty());
 			tooltip.accept(Component.translatable("tooltip.mythicrelics." + set + ".1").withStyle(ChatFormatting.GRAY));

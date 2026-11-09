@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-09. Rama de trabajo: `main` (tandas 1 y 2 de Egipto programadas; falta probarlas en el juego).
+Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto tandas 1 y 2 y Grecia tanda 1 programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -90,6 +90,18 @@ por bloque cepillado. NeoForge suma 1 espacio de cabeza en Curios (`data/mythicr
 Ra conviva con el Ojo o la máscara. **Sin probar en el juego**: en especial los mixins nuevos (si un punto de inyección
 falla, el juego se cae al iniciar), la arqueología, el renacer y que los creepers eviten a Bastet.
 
+## Primera tanda de Grecia (programada el 2026-11-09)
+Diseño aprobado en `docs/ideas.md`. Código en `greece/`: `GreeceRelics` (constantes y lógica: Hermes, Hades, égida,
+petrificar, set de Perseo), `MedusaHeadItem`, `AriadneThreadItem` (punto de inicio en el componente
+`mythicrelics:ariadne_anchor`), `OrpheusLyreItem` y `CharonStash` (inventario y experiencia guardados con el mundo al
+morir con el óbolo; se devuelven al reaparecer). Cliente: `client/GreeceClient` (doble salto de Hermes con el paquete
+`mythicrelics:hermes_jump` e hilo rojo de Ariadna). Mixin nuevo: `blockUsingItem` en `LivingEntityMixin` para la égida.
+Los mobs petrificados llevan la etiqueta `mythicrelics.petrified` y se liberan solos aunque el servidor se reinicie.
+Botín: ruinas de los senderos y ruinas oceánicas cálidas (arqueología), fortaleza del Nether, fortaleza (pasillos y
+biblioteca), recompensas de cámaras de desafío y ciudades antiguas. Espacios: Trinkets `feet/shoes`, `head/hat` y
+`chest/back`; Curios `feet`, `head` y `back`. **Sin probar en el juego**: el doble salto, la égida al bloquear, el
+óbolo al morir (también desconectándose en la pantalla de muerte) y la lira.
+
 ## Herramientas y pruebas
 - **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC
   después de subir a `main`.
@@ -99,6 +111,7 @@ falla, el juego se cae al iniciar), la arqueología, el renacer y que los creepe
   sus textos con los números ya puestos (claves `book.mythicrelics.relics.entry.*` en los lang) y la wiki
   (`docs/wiki/`). El mito de cada reliquia se escribe a mano en los lang (`lore.mythicrelics.*`). **Correrlo cada vez que
   cambien números, botín, tooltips o mito.**
+- `tools/model-gen/greece_icons.py`: íconos de Grecia (como `egypt_icons.py`).
 - `tools/model-gen/worn_models.py`: modelos 3D de las reliquias puestas, su paleta y `trinkets/*.json`.
 - `tools/model-gen/jackal_texture.py`: textura del chacal aliado (requiere Pillow).
 - `tools/model-gen/make_viewer.py <salida.html>`: visor three.js con la pestaña creativa, los tooltips, la página de

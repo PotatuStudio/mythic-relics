@@ -1,12 +1,14 @@
 {
-  "entities": [
-    "#curios:player_like"
-  ],
-  "slots": [
-    "belt",
-    "head",
-    "necklace",
-    "hands",
-    "ring"
-  ]
+ "entities": [
+  "#curios:player_like"
+ ],
+ "slots": [
+  "belt",
+  "head",
+  "necklace",
+  "hands",
+  "ring",
+  "feet",
+  "back"
+ ]
 }

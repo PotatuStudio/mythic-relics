@@ -26,9 +26,10 @@ public final class ModLoot {
 	private record Drop(float chance, RegistrySupplier<Item> item) {
 	}
 
-	private static final Map<ResourceKey<LootTable>, List<Drop>> DROPS = Map.of(
+	private static final Map<ResourceKey<LootTable>, List<Drop>> DROPS = Map.ofEntries(
+			// ---- Egipto ----
 			// Pirámide del desierto (4 cofres): tanda 1 e insignias de Osiris.
-			BuiltInLootTables.DESERT_PYRAMID, List.of(
+			Map.entry(BuiltInLootTables.DESERT_PYRAMID, List.of(
 					new Drop(0.040f, ModItems.MUMMY_WRAPS),
 					new Drop(0.035f, ModItems.GOLDEN_SCARAB),
 					new Drop(0.030f, ModItems.ANKH),
@@ -37,17 +38,40 @@ public final class ModLoot {
 					new Drop(0.025f, ModItems.EYE_OF_HORUS),
 					new Drop(0.020f, ModItems.ANUBIS_SCEPTER),
 					new Drop(0.020f, ModItems.OSIRIS_CROOK),
-					new Drop(0.020f, ModItems.OSIRIS_FLAIL)),
-			BuiltInLootTables.VILLAGE_DESERT_HOUSE, List.of(
+					new Drop(0.020f, ModItems.OSIRIS_FLAIL))),
+			Map.entry(BuiltInLootTables.VILLAGE_DESERT_HOUSE, List.of(
 					new Drop(0.030f, ModItems.ANKH),
-					new Drop(0.040f, ModItems.BASTET_AMULET)),
+					new Drop(0.040f, ModItems.BASTET_AMULET))),
 			// Arqueología (tanda 2): probabilidad por bloque de arena sospechosa cepillado.
-			BuiltInLootTables.DESERT_PYRAMID_ARCHAEOLOGY, List.of(
+			Map.entry(BuiltInLootTables.DESERT_PYRAMID_ARCHAEOLOGY, List.of(
 					new Drop(0.030f, ModItems.THOTH_PALETTE),
 					new Drop(0.015f, ModItems.RA_DISK),
-					new Drop(0.015f, ModItems.SEKHMET_CLAWS)),
-			BuiltInLootTables.DESERT_WELL_ARCHAEOLOGY, List.of(
-					new Drop(0.050f, ModItems.BASTET_AMULET)));
+					new Drop(0.015f, ModItems.SEKHMET_CLAWS))),
+			Map.entry(BuiltInLootTables.DESERT_WELL_ARCHAEOLOGY, List.of(
+					new Drop(0.050f, ModItems.BASTET_AMULET))),
+			// ---- Grecia ----
+			// Ruinas de los senderos: las ruinas antiguas (arqueología, por bloque cepillado).
+			Map.entry(BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_RARE, List.of(
+					new Drop(0.020f, ModItems.HERMES_SANDALS),
+					new Drop(0.030f, ModItems.CHARON_OBOL))),
+			// Ruinas oceánicas cálidas: templos hundidos.
+			Map.entry(BuiltInLootTables.OCEAN_RUIN_WARM_ARCHAEOLOGY, List.of(
+					new Drop(0.015f, ModItems.MEDUSA_HEAD))),
+			// Fortaleza del Nether: el reino de Hades.
+			Map.entry(BuiltInLootTables.NETHER_BRIDGE, List.of(
+					new Drop(0.040f, ModItems.HADES_HELM),
+					new Drop(0.050f, ModItems.CHARON_OBOL))),
+			// Fortaleza: el laberinto.
+			Map.entry(BuiltInLootTables.STRONGHOLD_CORRIDOR, List.of(
+					new Drop(0.060f, ModItems.ARIADNE_THREAD))),
+			Map.entry(BuiltInLootTables.STRONGHOLD_LIBRARY, List.of(
+					new Drop(0.060f, ModItems.ARIADNE_THREAD))),
+			// Cámaras de desafío: las pruebas del héroe.
+			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, List.of(
+					new Drop(0.030f, ModItems.ATHENA_AEGIS))),
+			// Ciudad antigua: el descenso de Orfeo.
+			Map.entry(BuiltInLootTables.ANCIENT_CITY, List.of(
+					new Drop(0.030f, ModItems.ORPHEUS_LYRE))));
 
 	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre (o por bloque cepillado, en arqueología). */
 	public record Source(ResourceKey<LootTable> table, float chance) {

@@ -1,0 +1,29 @@
+{
+ "target": [
+  "mythicrelics:hermes_sandals"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "right_leg",
+   "model": "mythicrelics:item/hermes_sandals_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  },
+  {
+   "type": "model",
+   "model_part": "left_leg",
+   "model": "mythicrelics:item/hermes_sandals_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

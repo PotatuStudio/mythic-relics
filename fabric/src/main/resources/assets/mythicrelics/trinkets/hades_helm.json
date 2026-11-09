@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:hades_helm"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "head",
+   "model": "mythicrelics:item/hades_helm_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

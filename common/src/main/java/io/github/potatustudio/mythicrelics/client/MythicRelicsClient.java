@@ -18,5 +18,6 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.SCARAB, ScarabRenderer::new);
 		EntityModelLayerRegistry.register(JackalModel.LAYER, JackalModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.JACKAL, JackalRenderer::new);
+		GreeceClient.init();
 	}
 }

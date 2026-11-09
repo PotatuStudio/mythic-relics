@@ -2,9 +2,11 @@
 visor (moddata.py), para que nunca se contradigan.
 
 Escribe:
-  - common/src/main/resources/data/mythicrelics/modonomicon/books/relics/  (book.json, categoría y entradas)
-  - las claves book.mythicrelics.relics.<reliquia>.* con los números ya calculados en los lang (reemplaza las anteriores)
-  - docs/wiki/README.md, docs/wiki/egipto.md y docs/wiki/img/*.png (íconos, primer cuadro, x4; requiere Pillow)
+  - common/src/main/resources/data/mythicrelics/modonomicon/books/relics/  (book.json, una categoría y sus entradas
+    por cultura)
+  - las claves book.mythicrelics.relics.entry.* con los números ya calculados en los lang (reemplaza las anteriores)
+  - docs/wiki/README.md, una página por cultura (egipto.md, grecia.md…) y docs/wiki/img/*.png (íconos, primer cuadro,
+    x4; requiere Pillow)
 
 Los textos del mito (lore.mythicrelics.*) y los títulos fijos del libro se escriben a mano en los lang.
 Correr de nuevo cada vez que cambien los números, el botín, los tooltips o el mito:
@@ -16,8 +18,8 @@ import shutil
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from moddata import (ARCHAEOLOGY, ASSETS, LOOT_TABLE_KEYS, ORDER, ROOT, SETS, SLOTS, constants, lang, loot, pct,  # noqa: E402
-                     rarity, set_args, substitute, tooltip_args, tooltip_lines)
+from moddata import (ARCHAEOLOGY, ASSETS, CULTURES, LOOT_TABLE_KEYS, ORDER, ROOT, SETS, SLOTS, constants, lang, loot,  # noqa: E402
+                     pct, rarity, set_args, substitute, tooltip_args, tooltip_lines)
 
 BOOK = "relics"
 NS = "mythicrelics"
@@ -26,23 +28,37 @@ WIKI = os.path.join(ROOT, "docs", "wiki")
 GENERATED_PREFIX = f"book.{NS}.{BOOK}.entry."
 CHESTS = {"desert_pyramid": 4}   # cofres por estructura, para la probabilidad por estructura
 
-# Posiciones en el mapa de nodos de la categoría (en celdas).
-POSITIONS = {
-    "intro": (0, 0),
-    "golden_scarab": (-4, 2), "eye_of_horus": (-2, 2), "ankh": (2, 2), "mummy_wraps": (4, 2),
-    "jackal_mask": (-2, 5), "anubis_scepter": (0, 5), "jackal_ring": (2, 5),
-    "anubis_set": (0, 7),
-    # Tanda 2
-    "ra_disk": (-4, 10), "bastet_amulet": (-2, 10), "thoth_palette": (2, 10), "sekhmet_claws": (4, 10),
-    "osiris_crook": (-1, 13), "osiris_flail": (1, 13),
-    "osiris_set": (0, 15),
+# Cada cultura: página de la wiki, ícono de la categoría y de su introducción, y posición de cada entrada en el mapa
+# de nodos de su categoría (en celdas).
+CULTURE_INFO = {
+    "egypt": {
+        "wiki": "egipto.md", "title": "Egipto", "icon": "ankh", "intro_icon": "minecraft:chiseled_sandstone",
+        "positions": {
+            "intro": (0, 0),
+            "golden_scarab": (-4, 2), "eye_of_horus": (-2, 2), "ankh": (2, 2), "mummy_wraps": (4, 2),
+            "jackal_mask": (-2, 5), "anubis_scepter": (0, 5), "jackal_ring": (2, 5), "anubis_set": (0, 7),
+            "ra_disk": (-4, 10), "bastet_amulet": (-2, 10), "thoth_palette": (2, 10), "sekhmet_claws": (4, 10),
+            "osiris_crook": (-1, 13), "osiris_flail": (1, 13), "osiris_set": (0, 15),
+        },
+    },
+    "greece": {
+        "wiki": "grecia.md", "title": "Grecia", "icon": "hades_helm", "intro_icon": "minecraft:chiseled_quartz_block",
+        "positions": {
+            "intro": (0, 0),
+            "hermes_sandals": (-2, 2), "hades_helm": (0, 2), "athena_aegis": (2, 2), "perseus_set": (0, 4),
+            "medusa_head": (0, 6),
+            "ariadne_thread": (-3, 8), "charon_obol": (0, 8), "orpheus_lyre": (3, 8),
+        },
+    },
 }
-SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail"}
+SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm"}
 SLOT_NAMES = {
     "es_es": {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes",
-              "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria"},
+              "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria",
+              "feet/shoes": "zapatos", "chest/back": "espalda", "hand": "mano", "inventory": "inventario"},
     "en_us": {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves",
-              "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand"},
+              "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand",
+              "feet/shoes": "shoes", "chest/back": "back", "hand": "hand", "inventory": "inventory"},
 }
 WORDS = {
     "es_es": {"per_chest": "{p} % por cofre", "per_brush": "{p} % por bloque cepillado",
@@ -50,6 +66,7 @@ WORDS = {
     "en_us": {"per_chest": "{p}% per chest", "per_brush": "{p}% per brushed block",
               "per_structure": "≈ {p}% per pyramid", "slot": "Slot"},
 }
+RARITIES = {"common": "común", "uncommon": "poco común", "rare": "rara", "epic": "épica"}
 BREAK = "\\\n"   # salto de línea duro en el markdown de Modonomicon
 
 
@@ -82,11 +99,18 @@ def set_of(item):
     return next((name for name, pieces in SETS.items() if item in pieces), None)
 
 
+def culture_of(item_or_set):
+    for culture, items in CULTURES.items():
+        if item_or_set in items or item_or_set in SETS and SETS[item_or_set][0] in items:
+            return culture
+    raise KeyError(item_or_set)
+
+
 def set_lines(m, set_id, sargs):
     """Título del bono del set y su efecto en una frase (las líneas 2 y 3 del tooltip juntas)."""
     title = substitute(m[f"tooltip.mythicrelics.{set_id}.1"], sargs)
     first, second = (substitute(m[f"tooltip.mythicrelics.{set_id}.{i}"], sargs).strip() for i in (2, 3))
-    # Si la segunda línea empieza con mayúscula es otra frase (Osiris); si no, sigue la misma (Anubis).
+    # Si la segunda línea empieza con mayúscula es otra frase (Osiris); si no, sigue la misma (Anubis, Perseo).
     joiner = ". " if second[:1].isupper() and first[-1:] not in ".:!?" else " "
     return title, first + joiner + second
 
@@ -116,13 +140,14 @@ def text_page(page_id, title, text):
     return {"type": "modonomicon:text", "id": page_id, "title": title, "text": text, "show_title_separator": True}
 
 
-def entry(entry_id, name, description, icon, pos, pages, parents=()):
-    e = {"type": "modonomicon:content", "id": f"{NS}:egypt/{entry_id}", "category": f"{NS}:egypt",
+def entry(culture, entry_id, name, description, icon, pages, parents=()):
+    pos = CULTURE_INFO[culture]["positions"][entry_id]
+    e = {"type": "modonomicon:content", "id": f"{NS}:{culture}/{entry_id}", "category": f"{NS}:{culture}",
          "name": name, "icon": icon, "x": pos[0], "y": pos[1], "pages": pages}
     if description:
         e["description"] = description
     if parents:
-        e["parents"] = [{"entry": f"{NS}:egypt/{p}"} for p in parents]
+        e["parents"] = [{"entry": f"{NS}:{culture}/{p}"} for p in parents]
     return e
 
 
@@ -145,31 +170,33 @@ def write_book():
         "model": "modonomicon:modonomicon_blue",
         "creative_tab": f"{NS}:main",
     })
-    write_json(os.path.join(BOOK_DIR, "categories", "egypt.json"), {
-        "name": f"{prefix}.egypt.name",
-        "icon": f"{NS}:ankh",
-        "sort_number": 0,
-    })
-    entries = {"intro": entry("intro", f"{prefix}.egypt.intro.name", None, "minecraft:chiseled_sandstone",
-                              POSITIONS["intro"], [text_page("intro", f"{prefix}.egypt.intro.name",
-                                                             f"lore.{NS}.egypt.intro")])}
-    for item in ORDER:
-        g = f"{GENERATED_PREFIX}{item}"
-        pages = [
-            {"type": "modonomicon:spotlight", "id": "relic", "title": "", "text": f"{g}.effect", "item": f"{NS}:{item}"},
-            text_page("myth", f"{prefix}.myth", f"lore.{NS}.{item}"),
-            text_page("where", f"{prefix}.where", f"{g}.where"),
-        ]
-        entries[item] = entry(item, f"item.{NS}.{item}", f"{g}.description", f"{NS}:{item}", POSITIONS[item], pages,
-                              parents=("intro",))
-    for set_id, pieces in SETS.items():
-        entries[set_id] = entry(set_id, f"{prefix}.{set_id}.name", None, f"{NS}:{SET_ICONS[set_id]}", POSITIONS[set_id], [
-            text_page("set", f"{prefix}.{set_id}.name", f"{GENERATED_PREFIX}{set_id}.effect"),
-            text_page("myth", f"{prefix}.myth", f"lore.{NS}.{set_id}"),
-        ], parents=tuple(sorted(pieces)))
-    for name, e in entries.items():
-        write_json(os.path.join(BOOK_DIR, "entries", "egypt", name + ".json"), e)
-    return len(entries)
+    count = 0
+    for sort, (culture, items) in enumerate(CULTURES.items()):
+        info = CULTURE_INFO[culture]
+        write_json(os.path.join(BOOK_DIR, "categories", culture + ".json"), {
+            "name": f"{prefix}.{culture}.name", "icon": f"{NS}:{info['icon']}", "sort_number": sort})
+        entries = {"intro": entry(culture, "intro", f"{prefix}.{culture}.intro.name", None, info["intro_icon"],
+                                  [text_page("intro", f"{prefix}.{culture}.intro.name", f"lore.{NS}.{culture}.intro")])}
+        for item in items:
+            g = f"{GENERATED_PREFIX}{item}"
+            pages = [
+                {"type": "modonomicon:spotlight", "id": "relic", "title": "", "text": f"{g}.effect", "item": f"{NS}:{item}"},
+                text_page("myth", f"{prefix}.myth", f"lore.{NS}.{item}"),
+                text_page("where", f"{prefix}.where", f"{g}.where"),
+            ]
+            entries[item] = entry(culture, item, f"item.{NS}.{item}", f"{g}.description", f"{NS}:{item}", pages,
+                                  parents=("intro",))
+        for set_id, pieces in SETS.items():
+            if culture_of(set_id) != culture:
+                continue
+            entries[set_id] = entry(culture, set_id, f"{prefix}.{set_id}.name", None, f"{NS}:{SET_ICONS[set_id]}", [
+                text_page("set", f"{prefix}.{set_id}.name", f"{GENERATED_PREFIX}{set_id}.effect"),
+                text_page("myth", f"{prefix}.myth", f"lore.{NS}.{set_id}"),
+            ], parents=tuple(sorted(pieces)))
+        for name, e in entries.items():
+            write_json(os.path.join(BOOK_DIR, "entries", culture, name + ".json"), e)
+        count += len(entries)
+    return count
 
 
 def update_lang(keys):
@@ -188,27 +215,20 @@ def plain(text):
     return text.replace(BREAK, "  \n")   # salto duro en Markdown de GitHub
 
 
-def write_wiki(langs, args, sources, rar, sargs):
-    from PIL import Image
-    img_dir = os.path.join(WIKI, "img")
-    os.makedirs(img_dir, exist_ok=True)
-    for item in ORDER:
-        icon = Image.open(os.path.join(ASSETS, "textures", "item", item + ".png")).crop((0, 0, 16, 16))
-        icon.resize((64, 64), Image.NEAREST).save(os.path.join(img_dir, item + ".png"))
-    es = langs["es_es"]
-    rarities = {"common": "común", "uncommon": "poco común", "rare": "rara", "epic": "épica"}
-    out = ["# Egipto", "",
+def wiki_page(culture, items, es, args, sources, rar, sargs):
+    info = CULTURE_INFO[culture]
+    out = [f"# {info['title']}", "",
            "<!-- Generado por tools/model-gen/make_codex.py desde los datos del mod. No editar a mano. -->", "",
-           plain(es[f"lore.{NS}.egypt.intro"]), "",
+           plain(es[f"lore.{NS}.{culture}.intro"]), "",
            "| | Reliquia | Espacio | Rareza | Dónde |", "|---|---|---|---|---|"]
-    for item in ORDER:
+    for item in items:
         places = "; ".join(plain(x).replace("**", "") for x in where_lines("es_es", es, sources.get(item, [])))
         out.append(f"| ![](img/{item}.png) | [{es[f'item.{NS}.{item}']}](#{item.replace('_', '-')}) | "
-                   f"{SLOT_NAMES['es_es'][SLOTS[item]]} | {rarities[rar.get(item, 'common')]} | {places} |")
-    for item in ORDER:
+                   f"{SLOT_NAMES['es_es'][SLOTS[item]]} | {RARITIES[rar.get(item, 'common')]} | {places} |")
+    for item in items:
         out += ["", f"<a id=\"{item.replace('_', '-')}\"></a>", f"## {es[f'item.{NS}.{item}']}", "",
                 f"<img src=\"img/{item}.png\" width=\"64\" alt=\"\">", "",
-                f"**Espacio:** {SLOT_NAMES['es_es'][SLOTS[item]]} · **Rareza:** {rarities[rar.get(item, 'common')]}", ""]
+                f"**Espacio:** {SLOT_NAMES['es_es'][SLOTS[item]]} · **Rareza:** {RARITIES[rar.get(item, 'common')]}", ""]
         out += [f"- {line}" for line in sentences(tooltip_lines(es, item, args[item]))]
         set_id = set_of(item)
         if set_id:
@@ -217,19 +237,38 @@ def write_wiki(langs, args, sources, rar, sargs):
         out += ["", "**Mito.** " + plain(es[f"lore.{NS}.{item}"]), "",
                 "**Dónde encontrarla.** " + "; ".join(plain(x) for x in where_lines("es_es", es, sources.get(item, [])))]
     for set_id in SETS:
+        if culture_of(set_id) != culture:
+            continue
         title, bonus = set_lines(es, set_id, sargs[set_id])
         out += ["", f"## {es[f'book.{NS}.{BOOK}.{set_id}.name']}", "", f"{title} {bonus}", "",
                 "**Mito.** " + plain(es[f"lore.{NS}.{set_id}"])]
     out.append("")
-    with open(os.path.join(WIKI, "egipto.md"), "w", encoding="utf-8", newline="\n") as f:
+    with open(os.path.join(WIKI, info["wiki"]), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(out))
+
+
+def write_wiki(langs, args, sources, rar, sargs):
+    from PIL import Image
+    img_dir = os.path.join(WIKI, "img")
+    os.makedirs(img_dir, exist_ok=True)
+    for item in ORDER:
+        icon = Image.open(os.path.join(ASSETS, "textures", "item", item + ".png")).crop((0, 0, 16, 16))
+        icon.resize((64, 64), Image.NEAREST).save(os.path.join(img_dir, item + ".png"))
+    es = langs["es_es"]
+    lines = []
+    for culture, items in CULTURES.items():
+        wiki_page(culture, items, es, args, sources, rar, sargs)
+        sets = [es[f"book.{NS}.{BOOK}.{s}.name"] for s in SETS if culture_of(s) == culture]
+        info = CULTURE_INFO[culture]
+        lines.append(f"- [{info['title']}]({info['wiki']}): {len(items)} reliquias"
+                     + (f", con {' y '.join(sets)}." if sets else "."))
     index = ["# Wiki de Mythic Relics", "",
              "<!-- Generado por tools/model-gen/make_codex.py desde los datos del mod. No editar a mano. -->", "",
              "Reliquias de la mitología convertidas en equipo RPG. No se fabrican: se encuentran en estructuras que "
              "calzan con su cultura, y mientras más poderosas, más raras.", "",
              "En el juego, todo esto está en el **Códice de reliquias** (requiere Modonomicon). Con JEI instalado, cada "
              "reliquia muestra además dónde encontrarla.", "",
-             "## Culturas", "", f"- [Egipto](egipto.md): {len(ORDER)} reliquias, con los sets de Anubis y de Osiris.", ""]
+             "## Culturas", ""] + lines + [""]
     with open(os.path.join(WIKI, "README.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(index))
 

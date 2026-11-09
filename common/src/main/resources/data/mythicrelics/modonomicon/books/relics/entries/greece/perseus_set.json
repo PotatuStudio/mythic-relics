@@ -1,0 +1,36 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:greece/perseus_set",
+  "category": "mythicrelics:greece",
+  "name": "book.mythicrelics.relics.perseus_set.name",
+  "icon": "mythicrelics:hades_helm",
+  "x": 0,
+  "y": 4,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "set",
+      "title": "book.mythicrelics.relics.perseus_set.name",
+      "text": "book.mythicrelics.relics.entry.perseus_set.effect",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.perseus_set",
+      "show_title_separator": true
+    }
+  ],
+  "parents": [
+    {
+      "entry": "mythicrelics:greece/athena_aegis"
+    },
+    {
+      "entry": "mythicrelics:greece/hades_helm"
+    },
+    {
+      "entry": "mythicrelics:greece/hermes_sandals"
+    }
+  ]
+}

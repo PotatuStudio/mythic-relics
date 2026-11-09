@@ -9,6 +9,9 @@ import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.egypt.OsirisCrookItem;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.egypt.ThothPaletteItem;
+import io.github.potatustudio.mythicrelics.greece.AriadneThreadItem;
+import io.github.potatustudio.mythicrelics.greece.MedusaHeadItem;
+import io.github.potatustudio.mythicrelics.greece.OrpheusLyreItem;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
@@ -55,6 +58,15 @@ public final class ModItems {
 			// El grupo de enfriamiento hace que el ícono del mayal muestre la recarga del renacer.
 			.component(DataComponents.USE_COOLDOWN, new UseCooldown(0.05f, Optional.of(EgyptGods.OSIRIS_REBIRTH_GROUP))));
 	public static final RegistrySupplier<Item> SEKHMET_CLAWS = relic("sekhmet_claws", p -> p.rarity(Rarity.EPIC));
+
+	// Grecia, primera tanda.
+	public static final RegistrySupplier<Item> HERMES_SANDALS = relic("hermes_sandals", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> HADES_HELM = relic("hades_helm", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> ATHENA_AEGIS = relic("athena_aegis", p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> MEDUSA_HEAD = register("medusa_head", MedusaHeadItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> ARIADNE_THREAD = register("ariadne_thread", AriadneThreadItem::new, p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> CHARON_OBOL = register("charon_obol", RelicItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));
+	public static final RegistrySupplier<Item> ORPHEUS_LYRE = register("orpheus_lyre", OrpheusLyreItem::new, p -> p.rarity(Rarity.EPIC));
 
 	public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register("main", () -> CreativeTabRegistry.create(builder -> builder
 			.title(Component.translatable("itemGroup.mythicrelics.main"))

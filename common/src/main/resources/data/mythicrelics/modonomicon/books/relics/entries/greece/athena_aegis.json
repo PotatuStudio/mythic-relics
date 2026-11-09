@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:greece/athena_aegis",
+  "category": "mythicrelics:greece",
+  "name": "item.mythicrelics.athena_aegis",
+  "icon": "mythicrelics:athena_aegis",
+  "x": 2,
+  "y": 2,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.athena_aegis.effect",
+      "item": "mythicrelics:athena_aegis"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.athena_aegis",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.athena_aegis.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.athena_aegis.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:greece/intro"
+    }
+  ]
+}

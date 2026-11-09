@@ -7,6 +7,7 @@ Así, con offset [0,0,0]:
   - cuerpo (body):   x 4..12, y 2..14 (14 = cuello), z 6..10 (10 = pecho)
   - cabeza (head):   x, y, z 4..12 (frente en z 12)
   - brazo (arm):     x 6..10, y 2..14 (2 = extremo de la mano), z 6..10
+  - pierna (leg):    x 6..10, y 2..14 (2 = la planta del pie), z 6..10
 Para que se vea sobre la capa de la skin hay que sobresalir al menos 0,5 px (0,75 en la cabeza). Dos reliquias que
 se pueden llevar a la vez en la misma parte no deben compartir planos (parpadean): por eso el anillo va más afuera que
 las vendas.
@@ -36,6 +37,10 @@ COLORS = {
     "sun_l": "#ff9a5a", "sun": "#e0502a", "sun_d": "#a8301a",
     "cobra_l": "#8ad874", "cobra": "#3f9a3a", "cobra_d": "#2a6a28",
     "fur_l": "#f0c070", "fur": "#c8892e", "fur_d": "#8a5a20", "ivory": "#f4ead0", "ivory_d": "#cfc2a0",
+    # Grecia
+    "black_l": "#4a4446", "black": "#1c1719", "black_d": "#0e0b0c", "crest_l": "#ff6a5a", "crest": "#c8302a",
+    "crest_d": "#7a1a14", "wing_l": "#f4f8ff", "wing": "#cfe6ff", "wing_d": "#7fb0e0", "leather_l": "#c09060",
+    "leather": "#a07848", "leather_d": "#6e4e2c", "stone": "#c9cfc4", "stone_d": "#8f978a", "snake": "#4f8f3a",
 }
 SWATCHES = list(COLORS)
 # Cara de arriba más clara y de abajo más oscura: da volumen aunque cada elemento sea de un color.
@@ -45,7 +50,9 @@ SHADE = {"gold": ("gold_l", "gold_d"), "gold_l": ("gold_l", "gold"), "gold_d": (
          "linen_l": ("linen_l", "linen"), "linen_d": ("linen", "linen_dd"), "linen_dd": ("linen_d", "linen_dd"),
          "onyx": ("onyx_hi", "onyx_d"), "onyx_hi": ("onyx_hi", "onyx"), "onyx_d": ("onyx", "onyx_d"),
          "white": ("white", "white"), "sun": ("sun_l", "sun_d"), "cobra": ("cobra_l", "cobra_d"),
-         "fur": ("fur_l", "fur_d"), "fur_l": ("fur_l", "fur"), "ivory": ("ivory", "ivory_d")}
+         "fur": ("fur_l", "fur_d"), "fur_l": ("fur_l", "fur"), "ivory": ("ivory", "ivory_d"),
+         "black": ("black_l", "black_d"), "crest": ("crest_l", "crest_d"), "wing": ("wing_l", "wing_d"),
+         "leather": ("leather_l", "leather_d"), "stone": ("stone", "stone_d")}
 
 
 def uv(color):
@@ -122,15 +129,16 @@ def scarab_belt():
 
 def eye_diadem():
     """Diadema de oro alrededor de la cabeza con el wedjat al frente."""
-    e = ring(3.25, 12.75, 9.5, 10.5, 3.25, 12.75, 0.75, "gold", "diadema")
-    z = 12.75
+    e = ring(3.15, 12.85, 9.5, 10.5, 3.15, 12.85, 0.75, "gold", "diadema")
+    z = 12.85
     e += [
-        box([6.4, 9.0, z], [9.6, 11.6, z + 0.4], "lapis", "placa"),
-        box([6.7, 9.9, z + 0.4], [9.3, 10.6, z + 0.55], "white", "ojo"),
-        box([7.7, 9.9, z + 0.55], [8.4, 10.6, z + 0.65], "lapis_l", "pupila"),
-        box([6.7, 10.9, z + 0.4], [9.3, 11.25, z + 0.55], "gold", "ceja"),
-        box([6.9, 9.15, z + 0.4], [7.25, 9.9, z + 0.55], "gold", "lágrima"),
-        box([8.8, 9.15, z + 0.4], [9.15, 9.9, z + 0.55], "gold", "espiral"),
+        # La placa sobresale hasta 13,3: con la máscara puesta (cara en z 12,5..13,25) no comparten plano.
+        box([6.4, 9.0, z], [9.6, 11.6, z + 0.45], "lapis", "placa"),
+        box([6.7, 9.9, z + 0.45], [9.3, 10.6, z + 0.6], "white", "ojo"),
+        box([7.7, 9.9, z + 0.6], [8.4, 10.6, z + 0.7], "lapis_l", "pupila"),
+        box([6.7, 10.9, z + 0.45], [9.3, 11.25, z + 0.6], "gold", "ceja"),
+        box([6.9, 9.15, z + 0.45], [7.25, 9.9, z + 0.6], "gold", "lágrima"),
+        box([8.8, 9.15, z + 0.45], [9.15, 9.9, z + 0.6], "gold", "espiral"),
     ]
     return model(e)
 
@@ -201,9 +209,9 @@ def ra_headdress():
         e.append(box([cx - half - 0.4, y0, 7.75], [cx - half, y0 + 1, 8.45], "gold", "aro"))
         e.append(box([cx + half, y0, 7.75], [cx + half + 0.4, y0 + 1, 8.45], "gold", "aro"))
     e += [box([7.0, 12.4, 6.0], [9.0, 13.0, 10.0], "gold", "base del disco"),
-          box([7.5, 12.1, 13.05], [8.5, 14.5, 13.7], "cobra", "ureo cuerpo"),
-          box([7.0, 14.5, 12.9], [9.0, 15.6, 13.6], "cobra", "ureo capucha"),
-          box([7.7, 15.0, 13.6], [8.3, 15.3, 13.7], "gold_l", "ureo ojos")]
+          box([7.5, 12.1, 13.1], [8.5, 14.5, 13.75], "cobra", "ureo cuerpo"),
+          box([7.0, 14.5, 12.95], [9.0, 15.6, 13.65], "cobra", "ureo capucha"),
+          box([7.7, 15.0, 13.65], [8.3, 15.3, 13.75], "gold_l", "ureo ojos")]
     return e
 
 
@@ -238,6 +246,45 @@ def sekhmet_claws_worn():
     return e
 
 
+def sandal():
+    """En cada pierna (centro en y 8; el pie llega a y 2): suela, tiras y un ala blanca en el talón, hacia atrás."""
+    e = [box([5.5, 1.5, 5.5], [10.5, 2.25, 11.0], "leather", "suela")]
+    e += ring(5.6, 10.4, 2.25, 3.0, 5.6, 10.4, 0.5, "leather", "tira del pie")
+    e += ring(5.6, 10.4, 4.5, 5.25, 5.6, 10.4, 0.5, "leather", "tira del tobillo")
+    for side, x0, x1 in (("ext.", 4.6, 5.5), ("int.", 10.5, 11.4)):
+        e += [box([x0, 3.4, 4.6], [x1, 5.0, 7.2], "wing", f"ala {side}"),
+              box([x0, 4.6, 3.0], [x1, 6.4, 4.6], "wing", f"ala {side}"),
+              box([x0, 6.0, 1.6], [x1, 7.6, 3.0], "wing_d", f"punta ala {side}")]
+    return e
+
+
+def helm():
+    """Yelmo corintio: casco negro alrededor de la cabeza, protectores de mejillas y la cimera roja.
+
+    Va un poco más afuera (2,95..13,05) que las piezas de cara y la corona de Ra, para no compartir planos con ellas."""
+    e = ring(2.95, 13.05, 7.1, 12.85, 2.95, 13.05, 0.7, "black", "casco")
+    e += [box([2.95, 12.85, 2.95], [13.05, 13.55, 13.05], "black", "tapa"),
+          box([2.95, 3.1, 12.35], [6.4, 7.1, 13.05], "black", "mejilla der."),
+          box([9.6, 3.1, 12.35], [13.05, 7.1, 13.05], "black", "mejilla izq."),
+          box([7.35, 5.1, 12.35], [8.65, 9.6, 13.05], "black", "nasal"),
+          box([2.95, 3.1, 2.95], [13.05, 7.1, 3.65], "black", "nuca"),
+          box([7.05, 13.55, 2.45], [8.95, 16.1, 13.45], "crest", "cimera"),
+          box([7.25, 16.1, 3.45], [8.75, 16.7, 12.05], "crest", "crin")]
+    return e
+
+
+def aegis_worn():
+    """Égida: piel dorada a la espalda (sobre los hombros) con el gorgoneion al centro. Apartada de la cadena de los
+    collares (Anj, Bastet) para no compartir planos con ella."""
+    e = [box([3.5, 5.0, 4.6], [12.5, 14.0, 5.35], "gold", "piel"),
+         box([3.2, 14.0, 4.6], [12.8, 14.7, 10.35], "gold", "hombros"),
+         box([6.5, 8.0, 4.1], [9.5, 11.0, 4.6], "stone", "gorgoneion"),
+         box([6.2, 10.8, 3.95], [9.8, 11.5, 4.6], "snake", "serpientes")]
+    for i, x in enumerate((4.0, 6.0, 8.0, 10.0)):
+        e.append(box([x, 4.2, 4.75], [x + 1.2, 5.0, 5.25], "gold_d", f"fleco {i}"))
+    return e
+
+
 def attach(part, name, offset=(0, 0, 0)):
     return {"type": "model", "model_part": part, "model": f"{NS}:item/{name}_worn", "offset": list(offset), "centered": True}
 
@@ -258,6 +305,10 @@ WORN = {
     "ra_disk": (lambda: model(ra_headdress()), [attach("head", "ra_disk")]),
     "bastet_amulet": (lambda: model(bastet_pendant()), [attach("body", "bastet_amulet")]),
     "sekhmet_claws": (lambda: model(sekhmet_claws_worn()), both_hands("glove", "sekhmet_claws")),
+    # Grecia: las sandalias van en las dos piernas.
+    "hermes_sandals": (lambda: model(sandal()), [attach("right_leg", "hermes_sandals"), attach("left_leg", "hermes_sandals")]),
+    "hades_helm": (lambda: model(helm()), [attach("head", "hades_helm")]),
+    "athena_aegis": (lambda: model(aegis_worn()), [attach("body", "athena_aegis")]),
 }
 
 

@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:greece/hades_helm",
+  "category": "mythicrelics:greece",
+  "name": "item.mythicrelics.hades_helm",
+  "icon": "mythicrelics:hades_helm",
+  "x": 0,
+  "y": 2,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.hades_helm.effect",
+      "item": "mythicrelics:hades_helm"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.hades_helm",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.hades_helm.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.hades_helm.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:greece/intro"
+    }
+  ]
+}

@@ -32,7 +32,7 @@ import top.theillusivec4.curios.api.client.ICurioRenderer;
 public final class CuriosRelicRenderer implements ICurioRenderer {
 	/** En qué parte del cuerpo va la reliquia. */
 	public enum Part {
-		HEAD, BODY, MAIN_ARM, BOTH_ARMS
+		HEAD, BODY, MAIN_ARM, BOTH_ARMS, BOTH_LEGS
 	}
 
 	private final Part part;
@@ -62,6 +62,10 @@ public final class CuriosRelicRenderer implements ICurioRenderer {
 			case BOTH_ARMS -> {
 				draw(model, model.rightArm, poseStack, collector, light);
 				draw(model, model.leftArm, poseStack, collector, light);
+			}
+			case BOTH_LEGS -> {
+				draw(model, model.rightLeg, poseStack, collector, light);
+				draw(model, model.leftLeg, poseStack, collector, light);
 			}
 		}
 	}

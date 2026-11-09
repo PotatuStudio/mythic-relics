@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.mixin;
 
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
+import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
@@ -21,7 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  *   <li>daño recibido: Anj (menos daño de no-muertos), Ra (más daño a no-muertos bajo el sol), Sekhmet (frenesí) y
  *       Bastet (caídas);</li>
  *   <li>el Ojo de Horus impide la Ceguera y la Oscuridad;</li>
- *   <li>el renacer de Osiris, en la misma comprobación que el tótem.</li>
+ *   <li>el renacer de Osiris, en la misma comprobación que el tótem;</li>
+ *   <li>la égida de Atenea, al bloquear con escudo.</li>
  * </ul>
  */
 @Mixin(LivingEntity.class)
@@ -33,7 +36,7 @@ public abstract class LivingEntityMixin {
 				&& EgyptRelics.isWearing(self, ModItems.ANKH)) {
 			amount *= 1.0f - EgyptRelics.ANKH_UNDEAD_REDUCTION;
 		}
-		return EgyptGods.modifyIncomingDamage(self, source, amount);
+		return GreeceRelics.modifyIncomingDamage(self, source, EgyptGods.modifyIncomingDamage(self, source, amount));
 	}
 
 	@Inject(method = "canBeAffected", at = @At("HEAD"), cancellable = true)
@@ -42,6 +45,13 @@ public abstract class LivingEntityMixin {
 				&& EgyptRelics.isWearing((LivingEntity) (Object) this, ModItems.EYE_OF_HORUS)) {
 			cir.setReturnValue(false);
 		}
+	}
+
+	/** Égida de Atenea: solo se llama cuando un escudo bloquea un golpe cuerpo a cuerpo (Player llama a super). */
+	@Inject(method = "blockUsingItem", at = @At("HEAD"))
+	private void mythicrelics$aegis(ServerLevel level, LivingEntity attacker, DamageSource source, float damage, boolean fullyBlocked,
+			CallbackInfo ci) {
+		GreeceRelics.aegisBlocked((LivingEntity) (Object) this, attacker);
 	}
 
 	@Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)

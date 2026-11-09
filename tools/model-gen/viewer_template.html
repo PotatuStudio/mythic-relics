@@ -1,4 +1,4 @@
-<title>Mythic Relics · Egipto</title>
+<title>Mythic Relics · Reliquias</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -91,8 +91,8 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
   <header>
     <img id="modIcon" alt="Ícono del mod">
     <div class="grow">
-      <h1>Mythic Relics · Egipto</h1>
-      <p class="sub" data-i18n="subtitle">Vista previa de las reliquias de Egipto, armada con los mismos archivos del mod.</p>
+      <h1>Mythic Relics</h1>
+      <p class="sub" data-i18n="subtitle">Vista previa de las reliquias de Egipto y Grecia, armada con los mismos archivos del mod.</p>
     </div>
     <div class="toggle" role="group" aria-label="Idioma">
       <button id="langEs" aria-pressed="true">ES</button>
@@ -148,7 +148,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
 <script>
 const DATA = __DATA__;
 const UI = {
-  es_es: { subtitle: "Vista previa de las reliquias de Egipto, armada con los mismos archivos del mod.",
+  es_es: { subtitle: "Vista previa de las reliquias de Egipto y Grecia, armada con los mismos archivos del mod.",
     invTitle: "Pestaña creativa y tooltips",
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
@@ -159,9 +159,9 @@ const UI = {
     footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
     footPlayer: "Muñeco genérico (sin la skin de Mojang) con los modelos 3D de cada reliquia, ubicados con la misma regla que usa Trinkets. Las vendas y el anillo se ponen en ambas manos si hay uno en cada espacio; aquí se ven en las dos. El cetro no se pone: se lleva en la mano.",
     slot: "Espacio", rarity: "Rareza", perPyramid: "Por pirámide (4 cofres)", info: "Información",
-    slotNames: {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes", "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria"},
+    slotNames: {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes", "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria", "feet/shoes": "zapatos", "chest/back": "espalda", "hand": "mano", "inventory": "inventario"},
     rarities: {common: "común", uncommon: "poco común", rare: "rara", epic: "épica"} },
-  en_us: { subtitle: "Preview of the Egyptian relics, built from the mod's own files.",
+  en_us: { subtitle: "Preview of the Egyptian and Greek relics, built from the mod's own files.",
     invTitle: "Creative tab and tooltips",
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
@@ -172,7 +172,7 @@ const UI = {
     footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
     footPlayer: "Generic figure (no Mojang skin) wearing each relic's 3D model, placed with the same rule Trinkets uses. Wraps and rings show on both hands here. The scepter isn't worn: it's held.",
     slot: "Slot", rarity: "Rarity", perPyramid: "Per pyramid (4 chests)", info: "Information",
-    slotNames: {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves", "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand"},
+    slotNames: {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves", "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand", "feet/shoes": "shoes", "chest/back": "back", "hand": "hand", "inventory": "inventory"},
     rarities: {common: "common", uncommon: "uncommon", rare: "rare", epic: "epic"} },
 };
 const RARITY_COLOR = { common: "c-white", uncommon: "c-yellow", rare: "c-aqua", epic: "c-purple" };
