@@ -177,6 +177,11 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 - `tools/model-gen/jackal_texture.py` y `cerberus_texture.py`: texturas del chacal y del Cerbero (requieren Pillow).
 - `tools/model-gen/make_viewer.py <salida.html>`: visor three.js con la pestaña creativa, los tooltips, la página de
   JEI y el escarabajo en 3D, armado con los mismos archivos del mod. Se publica como Artifact para revisar sin el juego.
+- `tools/design-page/`: plantilla y ejemplo de las páginas de diseño de cada tanda (ver su README).
+- `tools/model-gen/coplanar_check.py`: busca caras coplanares entre reliquias del cuerpo que se pueden llevar juntas
+  (parpadeo). Correrlo después de `worn_models.py` y agregar las reliquias nuevas a sus grupos.
+- `tools/model-gen/rome_icons.py`, `norse_icons.py` (incluye el emblema de la pestaña), `rome_models.py` (Ancile y
+  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`.
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
 ## Después

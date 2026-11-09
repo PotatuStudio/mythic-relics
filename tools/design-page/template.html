@@ -1,0 +1,358 @@
+<title>Egipto · Tanda 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;600&display=swap">
+<style>
+/* Misma atmósfera que el visor de la tanda 1 (cámara de tumba de noche). Documento de diseño: vista 3D arriba,
+   fichas de cada reliquia y al final las decisiones abiertas. */
+:root {
+  --night: #15120f; --stone: #221d18; --stone-2: #2b241d; --line: #3a3128;
+  --sand: #e8d3a2; --muted: #a8977a; --gold: #e9b949; --lapis: #8aa6f0; --sun: #f08a5a; --green: #8ad874;
+  --font-display: "Marcellus", Georgia, serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--night); color: var(--sand); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px; }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 28px; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: 2.1rem; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; margin: 0; color: var(--gold); text-wrap: balance; }
+h3 { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+p { margin: 0; }
+.lead { color: var(--muted); max-width: 70ch; }
+.intro { display: grid; gap: 10px; max-width: 75ch; }
+.intro ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+section.stagebox { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; }
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #0c0a08; }
+.stage canvas { display: block; width: 100%; height: 100%; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); border-radius: 6px; padding: 6px 12px;
+  font: 600 13px var(--font-body); cursor: pointer; }
+.btn[aria-pressed="false"] { opacity: .5; }
+.btn:focus-visible { outline: 2px solid var(--lapis); outline-offset: 2px; }
+.note { color: var(--muted); font-size: 13px; }
+.cards { display: grid; gap: 18px; }
+.card { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid;
+  grid-template-columns: 112px minmax(0, 1fr); gap: 20px; }
+@media (max-width: 640px) { .card { grid-template-columns: minmax(0, 1fr); } }
+.icon { width: 112px; height: 112px; image-rendering: pixelated; background: #8b8b8b;
+  box-shadow: inset 4px 4px 0 #373737, inset -4px -4px 0 #fff; padding: 8px; }
+.icon canvas { width: 96px; height: 96px; image-rendering: pixelated; display: block; }
+.body { display: grid; gap: 14px; min-width: 0; }
+.head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12px; border: 1px solid var(--line); background: var(--stone-2); border-radius: 999px; padding: 2px 10px; color: var(--sand); }
+.chip.epic { border-color: #c070e0; color: #e6a8ff; }
+.chip.rare { border-color: #4ab8c8; color: #8ae8f4; }
+.chip.warn { border-color: #c8902a; color: var(--gold); }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 760px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.effects { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.effects b { color: var(--gold); font-weight: 600; }
+.fid { margin: 12px 0 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 12px; font-size: 13px; }
+.fid dt { font-weight: 600; white-space: nowrap; }
+.fid dd { margin: 0; color: var(--muted); }
+.fid-fiel { color: var(--green); } .fid-lic { color: var(--gold); } .fid-pop { color: var(--sun); }
+@media (max-width: 480px) { .fid { grid-template-columns: minmax(0, 1fr); } .fid dd { margin-bottom: 6px; } }
+.where { font-size: 14px; }
+.where span { color: var(--muted); }
+.set { background: var(--stone-2); border: 1px dashed #5a4a36; border-radius: 8px; padding: 12px 14px; }
+.decisions { background: var(--stone); border: 1px solid var(--gold); border-radius: 10px; padding: 20px; display: grid; gap: 10px; }
+.decisions ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 80ch; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Egipto · Tanda 2</h1>
+    <p class="lead">Propuesta para revisar antes de programar. Seis reliquias con el mismo criterio que la tanda 1: el efecto nace del significado real del mito, con licencias de Minecraft que no lo contradigan. Los íconos y modelos son borradores.</p>
+    <ul>
+      <li><b>Arqueología:</b> la mayoría se encuentra <b>cepillando arena sospechosa</b> en pirámides y pozos del desierto. Así los cofres de las pirámides no se llenan más (ya traen alguna reliquia en el 57 % de los casos).</li>
+      <li><b>Competencia por espacios:</b> Bastet compite con el Anj (collar) y Sekhmet con las vendas (guantes). Elegir es parte del juego.</li>
+      <li><b>Probabilidades:</b> la arqueología se expresa por bloque cepillado; los cofres, por cofre y por pirámide (4 cofres).</li>
+    </ul>
+  </header>
+
+  <section class="stagebox">
+    <h2>Así se verían</h2>
+    <p class="note">Mismo muñeco y misma regla de ubicación que el visor de la tanda 1. El cayado y el mayal se llevan en las manos.</p>
+    <div class="stage" id="stage"></div>
+    <div class="controls" id="toggles"></div>
+  </section>
+
+  <div class="cards" id="cards"></div>
+
+  <section class="decisions">
+    <h2>Decisiones tomadas</h2>
+    <ol>
+      <li><b>Arqueología:</b> sí, es la fuente principal de esta tanda (arena sospechosa de pirámides y pozos del desierto).</li>
+      <li><b>Cabeza en NeoForge:</b> se agrega un segundo espacio de cabeza en Curios para que Ra conviva con el Ojo o la máscara, como en Fabric.</li>
+      <li><b>Thot:</b> registro de experiencia (no “encantar más barato”).</li>
+      <li><b>Renacer de Osiris:</b> queda como está (4 corazones y Regeneración II, una vez por día de Minecraft).</li>
+      <li><b>Bastet:</b> sin curación de gatos; queda con evitar creepers y phantoms y caer de pie.</li>
+    </ol>
+    <p class="note">Pendiente: renombrar la tablilla a “Paleta de escriba de Thot”, porque las tablillas de arcilla son de Mesopotamia.</p>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DRAFT = __DRAFT__;
+const RELICS = [
+  { id: "ra_disk", name: "Disco solar de Ra", rarity: "epic", slots: ["Fabric: sombrero", "NeoForge: cabeza"], warn: "NeoForge: 2.º espacio de cabeza",
+    myth: "Ra, dios del sol, cruza el cielo de día en su barca y de noche atraviesa la Duat, el inframundo, donde lucha contra Apep, la serpiente del caos. Lleva sobre la cabeza el disco solar rodeado por el ureo, la cobra que escupe fuego contra sus enemigos.",
+    fid: { fiel: 'Ra cruza el cielo de día y de noche viaja por la Duat peleando con Apep; el disco con el ureo que escupe fuego es iconografía real. Que se apague de noche sale del mito.', lic: 'El daño extra a los no-muertos es de Minecraft (el sol quema zombis); los egipcios no tenían “no-muertos” así.', pop: 'Nada.' },
+    effects: ["<b>Bajo el sol</b> (de día y a cielo abierto): +30 % de daño a los no-muertos y los prendes fuego 5 s.",
+      "<b>Ureo:</b> cuando un enemigo te golpea cuerpo a cuerpo, la cobra le escupe fuego (3 s). Recarga 10 s. Funciona de día y de noche.",
+      "<b>De noche</b> el disco se apaga (Ra está en la Duat): solo queda el ureo."],
+    where: [["Arena sospechosa de pirámides", "1,5 % por bloque cepillado"]] },
+  { id: "bastet_amulet", name: "Amuleto de Bastet", rarity: "rare", slots: ["Fabric: collar", "NeoForge: collar"], warn: "Compite con el Anj",
+    myth: "Bastet, la diosa gata, protegía el hogar, a las madres y a los niños. Los egipcios veneraban a los gatos porque cazaban serpientes y ratas; al principio era una leona guerrera, como Sekhmet.",
+    fid: { fiel: 'Diosa gata protectora del hogar, las madres y los niños; los gatos se veneraban por cazar serpientes y ratas. Al principio era una leona guerrera, como Sekhmet.', lic: 'Caer de pie (es de los gatos). Que creepers y phantoms la eviten es de Minecraft.', pop: 'Nada. Matiz: el gato que decapita a Apep en el Libro de los Muertos es el “Gran Gato” de Heliópolis (Ra); con Bastet se asocia solo en parte.' },
+    effects: ["<b>Como un gato:</b> los creepers y los phantoms te evitan.",
+      "<b>Caes de pie:</b> sin daño de caída hasta 6 bloques; el resto, a la mitad.", "<b>"],
+    where: [["Cofres de casas de aldeas del desierto", "4 % por cofre"], ["Arena sospechosa de pozos del desierto", "5 % por bloque cepillado"]] },
+  { id: "thoth_tablet", name: "Tablilla de Thot", rarity: "rare", slots: ["Mano secundaria"], warn: "Nombre por confirmar",
+    myth: "Thot, el dios ibis de la escritura, la sabiduría y la luna, era el escriba de los dioses. Inventó los jeroglíficos y en el juicio de los muertos anota el peso del corazón.",
+    fid: { fiel: 'Dios de la escritura, la sabiduría y la luna; escriba de los dioses que anota el resultado del juicio.', lic: 'Guardar experiencia por escrito es invento, coherente con su papel.', pop: 'Las tablillas de arcilla son de Mesopotamia: el escriba egipcio usaba paleta y papiro. Propuesta: renombrar a “Paleta de escriba de Thot”.' },
+    effects: ["<b>Registro:</b> clic derecho escribe 1 nivel de tu experiencia en la tablilla (hasta 30); agachado y clic derecho lo lees de vuelta.",
+      "Lo escrito <b>no se pierde al morir</b>: queda en la tablilla, que cae como cualquier ítem.",
+      "<b>Sabiduría:</b> con la tablilla en la mano secundaria ganas +20 % de experiencia."],
+    where: [["Arena sospechosa de pirámides", "3 % por bloque cepillado"]] },
+  { id: "osiris_crook", name: "Cayado de Osiris", rarity: "epic", slots: ["Mano secundaria"], warn: "Set con el mayal",
+    myth: "Osiris, rey de Egipto, fue asesinado por su hermano Set y devuelto a la vida por Isis; se volvió señor del más allá y dios de la agricultura y de la crecida del Nilo. El cayado del pastor que guía y el mayal de la trilla del grano son los símbolos del faraón.",
+    fid: { fiel: 'Insignia real del faraón: el cayado del pastor que guía. Osiris, asesinado por Set y devuelto a la vida por Isis, es señor del más allá y de la agricultura.', lic: 'Que las crías crezcan al instante.', pop: 'Nada.' },
+    effects: ["<b>Pastor:</b> los animales de granja te siguen como si llevaras su comida.",
+      "<b>Crecida:</b> clic derecho en una cría la vuelve adulta al instante. Recarga 30 s."],
+    where: [["Cofres de pirámides", "2 % por cofre (≈ 7,8 % por pirámide)"]] },
+  { id: "osiris_flail", name: "Mayal de Osiris", rarity: "epic", slots: ["Mano principal (arma)"], warn: "Set con el cayado",
+    myth: "El mayal (nekhakha) era la herramienta para trillar el grano; en manos del faraón, el símbolo de su autoridad y de la abundancia de las cosechas que Osiris traía con el Nilo.",
+    fid: { fiel: 'Insignia real del faraón junto al cayado. El renacer del set es el centro de su mito.', lic: 'El golpe giratorio.', pop: 'Nada. Matiz: el origen del mayal se discute (trilla, espantamoscas o recolección de resina); la trilla es una de las hipótesis.' },
+    effects: ["<b>Golpe giratorio:</b> el ataque cargado alcanza a todos los enemigos a 2,5 bloques con el 60 % del daño.",
+      "<b>Trilla:</b> golpear un cultivo maduro cosecha y vuelve a plantar los de un 3×3."],
+    where: [["Cofres de pirámides", "2 % por cofre (≈ 7,8 % por pirámide)"]],
+    set: "<b>Insignias de Osiris</b> (cayado y mayal en las manos) · <b>Renacer:</b> al recibir daño mortal revives con 4 corazones y Regeneración II por 5 s. Recarga: un día de Minecraft (20 min)." },
+  { id: "sekhmet_claws", name: "Garras de Sekhmet", rarity: "epic", slots: ["Fabric: guantes", "NeoForge: manos"], warn: "Compite con las vendas",
+    myth: "Sekhmet, la leona de la guerra, «la Poderosa». Ra la envió a castigar a los humanos y entró en un frenesí de sangre; solo la detuvieron llenando los campos de cerveza teñida de rojo, que bebió creyendo que era sangre. También era diosa de la sanación.",
+    fid: { fiel: 'Leona de la guerra enviada por Ra a castigar a los humanos; la detuvo la cerveza teñida de rojo. También diosa de la sanación, y su aliento era el viento caliente del desierto.', lic: 'El frenesí que se acumula traduce su sed de sangre a mecánica de juego.', pop: 'Nada.' },
+    effects: ["<b>Frenesí:</b> cada enemigo que matas antes de 5 s suma un nivel (máx. 3): +10 % de daño y +10 % de velocidad por nivel.",
+      "<b>Aliento del desierto:</b> con frenesí 3, tus golpes prenden fuego 3 s.",
+      "<b>Calma:</b> cuando se te acaba un frenesí de nivel 3, recuperas 2 corazones."],
+    where: [["Arena sospechosa de pirámides", "1,5 % por bloque cepillado"]] },
+];
+const RARITY = { epic: "Épica", rare: "Rara" };
+
+/* Íconos con su brillo animado (tira de cuadros 16x16, tiempos en ticks). */
+const sprites = {};
+for (const [id, icon] of Object.entries(DRAFT.icons)) {
+  const img = new Image();
+  img.src = "data:image/png;base64," + icon.png;
+  sprites[id] = { img, frames: icon.frames, canvases: [] };
+}
+const t0 = performance.now();
+function drawSprites(now) {
+  const tick = Math.floor((now - t0) / 50);
+  for (const s of Object.values(sprites)) {
+    if (!s.img.complete) continue;
+    let index = 0;
+    if (s.frames) {
+      const total = s.frames.reduce((a, f) => a + f.time, 0);
+      let t = tick % total;
+      for (const f of s.frames) { if (t < f.time) { index = f.index; break; } t -= f.time; }
+    }
+    for (const c of s.canvases) {
+      const g = c.getContext("2d"); g.imageSmoothingEnabled = false;
+      g.clearRect(0, 0, 16, 16); g.drawImage(s.img, 0, index * 16, 16, 16, 0, 0, 16, 16);
+    }
+  }
+  requestAnimationFrame(drawSprites);
+}
+requestAnimationFrame(drawSprites);
+
+function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
+const cards = document.getElementById("cards");
+for (const r of RELICS) {
+  const card = el("article", "card");
+  const icon = el("div", "icon");
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16; sprites[r.id].canvases.push(c);
+  icon.appendChild(c);
+  card.appendChild(icon);
+  const body = el("div", "body");
+  const head = el("div", "head");
+  head.appendChild(el("h2", "", r.name));
+  const chips = el("div", "chips");
+  chips.appendChild(el("span", "chip " + r.rarity, RARITY[r.rarity]));
+  for (const s of r.slots) chips.appendChild(el("span", "chip", s));
+  if (r.warn) chips.appendChild(el("span", "chip warn", r.warn));
+  head.appendChild(chips);
+  body.appendChild(head);
+  const cols = el("div", "cols");
+  const left = el("div");
+  left.appendChild(el("h3", "", "Mito"));
+  left.appendChild(el("p", "", r.myth));
+  const fid = el("dl", "fid");
+  for (const [k, label] of [["fiel", "Fiel al mito"], ["lic", "Licencia de juego"], ["pop", "Cultura pop"]]) {
+    fid.appendChild(el("dt", "fid-" + k, label));
+    fid.appendChild(el("dd", "", r.fid[k]));
+  }
+  left.appendChild(fid);
+  const right = el("div");
+  right.appendChild(el("h3", "", "Efecto propuesto"));
+  const ul = el("ul", "effects");
+  for (const e of r.effects) ul.appendChild(el("li", "", e));
+  right.appendChild(ul);
+  const where = el("div", "where");
+  where.appendChild(el("h3", "", "Dónde se encuentra"));
+  for (const [place, p] of r.where) where.appendChild(el("p", "", place + " <span>· " + p + "</span>"));
+  right.appendChild(where);
+  cols.appendChild(left); cols.appendChild(right);
+  body.appendChild(cols);
+  if (r.set) body.appendChild(el("p", "set", r.set));
+  card.appendChild(body);
+  cards.appendChild(card);
+}
+
+/* ---------- Vista 3D ---------- */
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0c0a08);
+const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.01, 100);
+camera.position.set(1.5, 2.1, 3.3);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.4, 0); controls.enableDamping = true; controls.minDistance = 0.4; controls.maxDistance = 7;
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const sun = new THREE.DirectionalLight(0xfff1d6, 0.75); sun.position.set(-2, 4, 3); scene.add(sun);
+const fillL = new THREE.DirectionalLight(0xb8c8ff, 0.25); fillL.position.set(3, 2, -2); scene.add(fillL);
+
+function nearest(t) { t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding; return t; }
+function texFromB64(b64) { const img = new Image(); const t = new THREE.Texture(img); img.onload = () => { t.needsUpdate = true; }; img.src = "data:image/png;base64," + b64; return nearest(t); }
+function sandTexture() {
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16; const g = c.getContext("2d");
+  const tones = ["#dbcfa3", "#e3d8af", "#d4c597", "#e9dfb8", "#cdbd8e"]; let seed = 11;
+  const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) { g.fillStyle = tones[Math.floor(rnd() * tones.length)]; g.fillRect(x, y, 1, 1); }
+  return nearest(new THREE.CanvasTexture(c));
+}
+const sandMat = new THREE.MeshLambertMaterial({ map: sandTexture() });
+for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++) { const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sandMat); m.position.set(x, -0.5, z); scene.add(m); }
+
+const player = new THREE.Group(); scene.add(player);
+const PARTS = {};
+function pbox(name, color, cx, cy, cz, w, h, d) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w / 16, h / 16, d / 16), new THREE.MeshLambertMaterial({ color }));
+  m.position.set(cx / 16, cy / 16, cz / 16); player.add(m);
+  PARTS[name] = { center: new THREE.Vector3(cx / 16, cy / 16, cz / 16), half: new THREE.Vector3(w / 32, h / 32, d / 32) };
+}
+pbox("head", 0xc69c6d, 0, 28, 0, 8, 8, 8);
+const hair = new THREE.Mesh(new THREE.BoxGeometry(8.4 / 16, 2.4 / 16, 8.4 / 16), new THREE.MeshLambertMaterial({ color: 0x2b2118 }));
+hair.position.set(0, 31.2 / 16, 0); player.add(hair);
+pbox("body", 0xe6dcc0, 0, 18, 0, 8, 12, 4);
+pbox("right_arm", 0xc69c6d, -6, 18, 0, 4, 12, 4);
+pbox("left_arm", 0xc69c6d, 6, 18, 0, 4, 12, 4);
+pbox("left_leg", 0x5a4632, 2, 6, 0, 4, 12, 4);
+pbox("right_leg", 0x5a4632, -2, 6, 0, 4, 12, 4);
+
+const paletteMat = new THREE.MeshLambertMaterial({ map: texFromB64(DRAFT.palette) });
+const FACE_ORDER = ["east", "west", "up", "down", "south", "north"];
+function elementMesh(e) {
+  const [x0, y0, z0] = e.from, [x1, y1, z1] = e.to;
+  const g = new THREE.BoxGeometry((x1 - x0) / 16, (y1 - y0) / 16, (z1 - z0) / 16);
+  const uvA = g.attributes.uv;
+  FACE_ORDER.forEach((face, f) => {
+    const fd = e.faces[face]; if (!fd) return;
+    const [u1, v1, u2, v2] = fd.uv;
+    [[u1, v1], [u2, v1], [u1, v2], [u2, v2]].forEach(([u, v], i) => uvA.setXY(f * 4 + i, u / 16, 1 - v / 16));
+  });
+  uvA.needsUpdate = true;
+  const m = new THREE.Mesh(g, paletteMat);
+  m.position.set(((x0 + x1) / 2 - 8) / 16, ((y0 + y1) / 2 - 8) / 16, ((z0 + z1) / 2 - 8) / 16);
+  return m;
+}
+const groups = {};
+function wornGroup(partName, elements) {
+  const p = PARTS[partName]; const g = new THREE.Group(); g.position.copy(p.center);
+  for (const e of elements) g.add(elementMesh(e));
+  player.add(g); return g;
+}
+for (const [id, w] of Object.entries(DRAFT.worn)) {
+  groups[id] = w.part === "arms" ? [wornGroup("right_arm", w.elements), wornGroup("left_arm", w.elements)] : [wornGroup(w.part, w.elements)];
+}
+/* Ítems en la mano, como los dibuja el juego en tercera persona. El muñeco tiene las medidas del jugador de vanilla, así
+   que se replica la cadena de transformaciones: LivingEntityRenderer (giro de 180°, scale(-1,-1,1), bajar 1,501), el
+   pivote del brazo, ItemInHandLayer (rotar X -90°, Y 180° y mover (±1/16, 0,125, -0,625)), el "display" de tercera
+   persona del modelo (handheld para armas y bastones, generated para el resto; en la mano izquierda se invierten x y
+   los giros en Y y Z) y el ítem extruido de 1 px de grosor en el espacio 0..1 del modelo. */
+const HELD_DISPLAY = {
+  handheld: { r: [0, -90, 55], t: [0, 4, 0.5], s: 0.85 },
+  generated: { r: [0, 0, 0], t: [0, 3, 1], s: 0.55 },
+};
+function heldIcon(id, arm, kind = "generated") {
+  const left = arm === "left_arm", d = HELD_DISPLAY[kind], deg = Math.PI / 180;
+  const M = new THREE.Matrix4();
+  const then = m => M.multiply(m);
+  then(new THREE.Matrix4().makeRotationY(Math.PI));
+  then(new THREE.Matrix4().makeScale(-1, -1, 1));
+  then(new THREE.Matrix4().makeTranslation(0, -1.501, 0));
+  then(new THREE.Matrix4().makeTranslation((left ? 5 : -5) / 16, 2 / 16, 0));
+  then(new THREE.Matrix4().makeRotationX(-90 * deg));
+  then(new THREE.Matrix4().makeRotationY(180 * deg));
+  then(new THREE.Matrix4().makeTranslation((left ? -1 : 1) / 16, 0.125, -0.625));
+  then(new THREE.Matrix4().makeTranslation((left ? -d.t[0] : d.t[0]) / 16, d.t[1] / 16, d.t[2] / 16));
+  then(new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(d.r[0] * deg, (left ? -d.r[1] : d.r[1]) * deg,
+    (left ? -d.r[2] : d.r[2]) * deg, "XYZ")));
+  then(new THREE.Matrix4().makeScale(d.s, d.s, d.s));
+  then(new THREE.Matrix4().makeTranslation(-0.5, -0.5, -0.5));
+  const holder = new THREE.Group();
+  holder.matrixAutoUpdate = false;
+  holder.matrix.copy(M);
+  player.add(holder);
+  // Extrusión de 1 px como ItemModelGenerator: un cubo por píxel opaco, en z 7,5..8,5 del modelo (primer cuadro).
+  const img = sprites[id].img;
+  const build = () => {
+    const c = document.createElement("canvas"); c.width = 16; c.height = 16;
+    const g = c.getContext("2d"); g.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16);
+    const data = g.getImageData(0, 0, 16, 16).data;
+    const cells = [];
+    for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (data[(y * 16 + x) * 4 + 3] > 25) cells.push([x, y]);
+    const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1 / 16, 1 / 16, 1 / 16), new THREE.MeshLambertMaterial(), cells.length);
+    const m = new THREE.Matrix4(), col = new THREE.Color();
+    cells.forEach(([x, y], i) => {
+      m.makeTranslation((x + 0.5) / 16, (15 - y + 0.5) / 16, 0.5);
+      mesh.setMatrixAt(i, m);
+      const k = (y * 16 + x) * 4;
+      col.setRGB(data[k] / 255, data[k + 1] / 255, data[k + 2] / 255).convertSRGBToLinear();
+      mesh.setColorAt(i, col);
+    });
+    holder.add(mesh);
+  };
+  if (img.complete && img.naturalWidth) build(); else img.addEventListener("load", build);
+  return [holder];
+}
+groups.osiris_flail = heldIcon("osiris_flail", "right_arm");
+groups.osiris_crook = heldIcon("osiris_crook", "left_arm");
+const ORDER = ["ra_disk", "bastet_amulet", "sekhmet_claws", "osiris_flail", "osiris_crook"];
+const on = new Set(ORDER);
+const toggles = document.getElementById("toggles");
+function apply() {
+  for (const id of ORDER) for (const g of groups[id]) g.visible = on.has(id);
+  toggles.innerHTML = "";
+  for (const id of ORDER) {
+    const r = RELICS.find(x => x.id === id);
+    const b = el("button", "btn", r.name); b.setAttribute("aria-pressed", String(on.has(id)));
+    b.addEventListener("click", () => { on.has(id) ? on.delete(id) : on.add(id); apply(); });
+    toggles.appendChild(b);
+  }
+}
+apply();
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage); resize();
+(function loop() { controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop); })();
+</script>
