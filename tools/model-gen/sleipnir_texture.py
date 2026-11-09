@@ -96,13 +96,13 @@ for side in ("west", "east"):                                                   
         px[x0 + ex, y0 + 1] = (*EYE, 255)
         gx[x0 + ex, y0 + 1] = (*EYE, 255)
 box(86, 12, 4, 5, 5, front=lambda x, y, w, h: MUZZLE if y >= 2 else coat(x, y, w, h), bottom=lambda *a: MUZZLE)
-box(112, 0, 3, 18, 3, side=mane, top=mane, front=mane, back=mane, bottom=mane)       # crin trenzada
+box(112, 0, 3, 18, 2, side=mane, top=mane, front=mane, back=mane, bottom=mane)       # crin trenzada
 box(118, 25, 2, 3, 1)                                                                 # oreja
 box(0, 32, 4, 11, 4, side=lambda x, y, w, h: HOOF if y >= h - 2 else (COAT_SH if y >= h - 5 else coat(x, y, w, h)),
     front=lambda x, y, w, h: HOOF if y >= h - 2 else (COAT_SH if y >= h - 5 else coat(x, y, w, h)),
     bottom=lambda *a: HOOF)                                                           # pata
-box(16, 32, 3, 10, 4, side=mane, top=mane, front=mane, back=mane, bottom=mane)       # cola
-box(30, 42, 4, 12, 4, side=mane, top=mane, front=mane, back=mane, bottom=mane)       # punta de la cola
+box(16, 32, 3, 8, 4, side=mane, top=mane, front=mane, back=mane, bottom=mane)       # cola
+box(30, 42, 3, 10, 3, side=mane, top=mane, front=mane, back=mane, bottom=mane)       # punta de la cola
 
 
 def saddle(x, y, w, h):

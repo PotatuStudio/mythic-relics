@@ -61,19 +61,19 @@ public class SleipnirModel extends AbstractEquineModel<EquineRenderState> {
 				.texOffs(70, 22).addBox(-2.5f, -11.6f, -7.5f, 5, 1, 8), PartPose.ZERO);
 		// Crin alta y trenzada.
 		headParts.addOrReplaceChild("mane", CubeListBuilder.create()
-				.texOffs(112, 0).addBox(-1.5f, -12.0f, 5.01f, 3, 18, 3), PartPose.ZERO);
+				.texOffs(112, 0).addBox(-1.5f, -12.0f, 5.01f, 3, 18, 2), PartPose.ZERO);
 		headParts.addOrReplaceChild("upper_mouth", CubeListBuilder.create()
 				.texOffs(86, 12).addBox(-2.0f, -11.0f, -7.0f, 4, 5, 5), PartPose.ZERO);
 		head.addOrReplaceChild("left_ear", CubeListBuilder.create()
 				.texOffs(118, 25).addBox(0.55f, -13.0f, 4.0f, 2, 3, 1), PartPose.ZERO);
 		head.addOrReplaceChild("right_ear", CubeListBuilder.create()
 				.texOffs(118, 25).addBox(-2.55f, -13.0f, 4.0f, 2, 3, 1), PartPose.ZERO);
-		// Cola larga en dos tramos: el segundo se mece.
+		// Cola larga en dos tramos: la base como la del caballo y la punta, un poco más angosta y centrada, que cae y se mece.
 		PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create()
-				.texOffs(16, 32).addBox(-1.5f, 0.0f, 0.0f, 3, 10, 4),
+				.texOffs(16, 32).addBox(-1.5f, 0.0f, 0.0f, 3, 8, 4),
 				PartPose.offsetAndRotation(0.0f, -5.0f, 2.0f, (float) (Math.PI / 6), 0.0f, 0.0f));
 		tail.addOrReplaceChild("tail_tip", CubeListBuilder.create()
-				.texOffs(30, 42).addBox(-2.0f, 0.0f, -0.5f, 4, 12, 4), PartPose.offset(0.0f, 10.0f, 0.0f));
+				.texOffs(30, 42).addBox(-1.5f, 0.0f, 0.0f, 3, 10, 3), PartPose.offset(0.0f, 7.5f, 0.5f));
 		leg(root, "left_front_leg", true, 4.0f, -10.0f, -1.9f);
 		leg(root, "right_front_leg", false, -4.0f, -10.0f, -1.9f);
 		leg(root, "left_front_middle_leg", true, 4.0f, -5.0f, -1.9f);
@@ -110,8 +110,8 @@ public class SleipnirModel extends AbstractEquineModel<EquineRenderState> {
 		leftFrontMiddleLeg.y = leftFrontLeg.y;
 		rightFrontMiddleLeg.y = rightFrontLeg.y;
 		// La punta de la cola y la crin se mecen; al galopar, la cola flamea hacia atrás.
-		tailTip.yRot = Mth.sin(state.ageInTicks * 0.12f) * 0.35f;
-		tailTip.xRot = 0.15f + speed * 0.6f;
+		tailTip.yRot = Mth.sin(state.ageInTicks * 0.12f) * 0.25f;
+		tailTip.xRot = -0.25f + speed * 0.5f;
 		mane.zRot = Mth.sin(state.ageInTicks * 0.1f) * 0.03f;
 	}
 }
