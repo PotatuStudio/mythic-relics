@@ -65,7 +65,7 @@ def tooltip_args(c):
         # Tanda 2 (EgyptGods#tooltipArgs)
         "ra_disk": [round(c["RA_UNDEAD_BONUS"] * 100), int(c["RA_BURN_SECONDS"]), int(c["URAEUS_BURN_SECONDS"]),
                     int(c["URAEUS_COOLDOWN"] // 20)],
-        "bastet_amulet": [round(c["BASTET_SAFE_FALL"]) + 3, round(c["BASTET_FALL_REDUCTION"] * 100)],
+        "bastet_amulet": [],
         "thoth_palette": [int(c["THOTH_MAX_LEVELS"]), round(c["THOTH_XP_BONUS"] * 100)],
         "osiris_crook": [int(c["CROOK_GROW_COOLDOWN"] // 20)],
         "osiris_flail": [fmt(c["FLAIL_SWEEP_RADIUS"]), round(c["FLAIL_SWEEP_DAMAGE"] * 100)],

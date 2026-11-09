@@ -154,7 +154,7 @@ Sobre su cabeza lleva el disco solar rodeado por el ureo, la cobra que escupe fu
 **Espacio:** collar · **Rareza:** rara
 
 - Los creepers y los phantoms te evitan, como a un gato
-- Caes de pie: sin daño de caída hasta 6 bloques y después, 50% menos
+- Caes de pie: las caídas no te hacen daño
 
 **Mito.** Bastet, la diosa gata, protegía el hogar, a las madres y a los niños. Los egipcios veneraban a los gatos porque cazaban serpientes y ratas.  
 Al principio, Bastet era una leona guerrera, como Sekhmet.

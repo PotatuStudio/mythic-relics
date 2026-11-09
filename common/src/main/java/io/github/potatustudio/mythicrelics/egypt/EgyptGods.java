@@ -66,8 +66,6 @@ public final class EgyptGods {
 	public static final int URAEUS_BURN_SECONDS = 3;
 	public static final int URAEUS_COOLDOWN = 200;
 
-	public static final float BASTET_SAFE_FALL = 3.0f;
-	public static final float BASTET_FALL_REDUCTION = 0.5f;
 	public static final double BASTET_RADIUS = 16.0;
 
 	public static final int THOTH_MAX_LEVELS = 30;
@@ -102,8 +100,8 @@ public final class EgyptGods {
 	public static void init() {
 		EntityEvent.ADD.register(EgyptGods::onEntityAdded);
 		EntityEvent.LIVING_HURT.register((target, source, amount) ->
-				// Bastet: caídas cortas no hacen nada (ni el golpe ni el sonido).
-				source.is(DamageTypeTags.IS_FALL) && amount <= BASTET_SAFE_FALL && EgyptRelics.isWearing(target, ModItems.BASTET_AMULET)
+				// Bastet: caes de pie, las caídas no hacen daño (ni el golpe ni el sonido).
+				source.is(DamageTypeTags.IS_FALL) && EgyptRelics.isWearing(target, ModItems.BASTET_AMULET)
 						? EventResult.interruptFalse() : EventResult.pass());
 		EntityEvent.LIVING_DAMAGE_POST.register((entity, source, baseDamage, damageTaken, blocked) -> {
 			if (blocked || damageTaken <= 0 || !(entity.level() instanceof ServerLevel level)) {
@@ -157,10 +155,10 @@ public final class EgyptGods {
 
 	// ---- Daño (lo llama el mixin de LivingEntity) ------------------------------------------------------------------
 
-	/** Daño recibido por {@code self} después de aplicar Anj, Ra, Sekhmet y Bastet. */
+	/** Daño recibido por {@code self} después de aplicar Anj, Ra, Sekhmet y Bastet (que anula las caídas). */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
 		if (source.is(DamageTypeTags.IS_FALL) && EgyptRelics.isWearing(self, ModItems.BASTET_AMULET)) {
-			return Math.max(0.0f, amount - BASTET_SAFE_FALL) * (1.0f - BASTET_FALL_REDUCTION);
+			return 0.0f;
 		}
 		if (!(source.getEntity() instanceof LivingEntity attacker)) {
 			return amount;
@@ -336,7 +334,6 @@ public final class EgyptGods {
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
 			case "ra_disk" -> new Object[] {Math.round(RA_UNDEAD_BONUS * 100), RA_BURN_SECONDS, URAEUS_BURN_SECONDS, URAEUS_COOLDOWN / 20};
-			case "bastet_amulet" -> new Object[] {Math.round(BASTET_SAFE_FALL) + 3, Math.round(BASTET_FALL_REDUCTION * 100)};
 			case "thoth_palette" -> new Object[] {THOTH_MAX_LEVELS, Math.round(THOTH_XP_BONUS * 100)};
 			case "osiris_crook" -> new Object[] {CROOK_GROW_COOLDOWN / 20};
 			case "osiris_flail" -> new Object[] {FLAIL_SWEEP_RADIUS, Math.round(FLAIL_SWEEP_DAMAGE * 100)};
