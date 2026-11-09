@@ -1,5 +1,6 @@
-"""Íconos 16x16 de la primera tanda de Grecia (estilo vanilla: contorno, luz desde arriba a la izquierda, brillo
-animado en el oro, el bronce, la plata, las alas y el hilo).
+"""Íconos 16x16 de la primera tanda de Grecia, estilo vanilla: silueta legible, 3 o 4 tonos por material con la luz
+arriba a la izquierda, contorno del color oscuro de cada material (no negro plano) y brillo animado en el oro, el
+bronce, la plata, las alas y el hilo.
 
 Uso: python greece_icons.py <carpeta_texturas_item> [<carpeta_vista_previa>]
 """
@@ -13,22 +14,36 @@ from glint import glint  # noqa: E402
 from mclib import H, T, png  # noqa: E402
 
 PAL = {
-    '.': T, 'k': H('#241a10'),
-    'G': H('#fff0a0'), 'g': H('#f2c445'), 'd': H('#c8901e'), 'D': H('#8a5a10'),          # oro
-    'B': H('#f0b070'), 'b': H('#c87a3a'), 'n': H('#8a4a1e'), 'N': H('#5a2e12'),          # bronce
-    'M': H('#ffffff'), 'm': H('#e8e6e0'), 'a': H('#bcb8ae'), 'A': H('#8a867c'),          # mármol / plata
-    'L': H('#cfe6ff'), 'l': H('#7fb0e0'), 'w': H('#f4f8ff'),                              # alas, celeste
-    'o': H('#1c1719'), 'O': H('#4a4446'),                                                 # negro (yelmo)
-    'V': H('#9ad27a'), 'v': H('#4f8f3a'), 'u': H('#2f5a24'),                              # serpientes de Medusa
-    'S': H('#c9cfc4'), 's': H('#8f978a'),                                                 # piel de piedra
-    'R': H('#ff6a5a'), 'r': H('#c8302a'), 'x': H('#7a1a14'),                              # hilo rojo
-    'P': H('#a07848'), 'p': H('#7a5430'),                                                 # cuero / caparazón
+    '.': T,
+    # oro
+    'G': H('#fff3a8'), 'g': H('#f5c842'), 'd': H('#c98f1c'), 'D': H('#7d520c'),
+    # bronce
+    'B': H('#ffd29a'), 'b': H('#e0954a'), 'n': H('#a85f26'), 'N': H('#5e3214'),
+    # hierro oscuro (yelmo)
+    'I': H('#8a8796'), 'i': H('#55525f'), 'o': H('#34313c'), 'O': H('#1b1920'),
+    # crin roja
+    'R': H('#ff8a72'), 'r': H('#d8392b'), 'x': H('#8c1d16'), 'X': H('#4d0d0a'),
+    # plumas
+    'W': H('#ffffff'), 'w': H('#e4eefa'), 'L': H('#b3cdea'), 'l': H('#6f93bd'),
+    # cuero
+    'P': H('#d39a5c'), 'p': H('#a2662e'), 'u': H('#6e3f17'), 'U': H('#3f220b'),
+    # piedra de la gorgona
+    'S': H('#dfe6d6'), 's': H('#a9b5a0'), 'z': H('#6f7d68'), 'Z': H('#3e4a3a'),
+    # serpientes
+    'V': H('#b6e27a'), 'v': H('#5fa13a'), 'y': H('#2f6420'), 'Y': H('#ffe14a'),
+    # plata
+    'M': H('#ffffff'), 'm': H('#dcdcdc'), 'a': H('#a8a8b0'), 'A': H('#62626c'),
+    # caparazón de tortuga
+    'T': H('#c8a060'), 't': H('#8a6230'), 'q': H('#4e3416'),
+    'k': H('#1a0f08'), 'e': H('#000000'),
 }
-SHINY = set('GgdBbMmLlRr')
-
-
-def blank():
-    return [['.'] * 16 for _ in range(16)]
+SHINY = set('GgdBbIRrWwLMmY')
+# Color del contorno según el material del vecino (más oscuro que su tono más oscuro).
+OUTLINE_OF = {}
+for group, edge in (('Ggd', 'D'), ('Bbn', 'N'), ('Iio', 'O'), ('Rrx', 'X'), ('WwLl', 'l'), ('Ppu', 'U'),
+                    ('Ssz', 'Z'), ('VvY', 'y'), ('Mma', 'A'), ('Ttq', 'q')):
+    for ch in group:
+        OUTLINE_OF[ch] = edge
 
 
 def grid(rows):
@@ -37,6 +52,7 @@ def grid(rows):
 
 
 def outline(c):
+    """Contorno de 1 px del color oscuro del material vecino (ignora los píxeles que ya son oscuros)."""
     out = [row[:] for row in c]
     for y in range(16):
         for x in range(16):
@@ -44,148 +60,181 @@ def outline(c):
                 continue
             for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
                 nx, ny = x + dx, y + dy
-                if 0 <= nx < 16 and 0 <= ny < 16 and c[ny][nx] not in '.k':
-                    out[y][x] = 'k'
+                if 0 <= nx < 16 and 0 <= ny < 16 and c[ny][nx] in OUTLINE_OF:
+                    out[y][x] = OUTLINE_OF[c[ny][nx]]
                     break
     return out
 
 
-# Sandalia alada vista de costado: suela, tiras cruzadas y el ala en el talón.
+# Sandalia alada de Hermes, de costado (punta a la derecha): ala de tres hileras de plumas en el tobillo,
+# tiras cruzadas con hebilla de oro y suela gruesa.
 HERMES = grid([
     "................",
-    ".l..............",
-    ".wl.l...........",
-    ".wwlwl.l........",
-    "..wwwlwl........",
-    "...wwwwll.......",
-    "....wwwwlbbb....",
-    "......bPbPbPb...",
-    ".....bPbPbPbPb..",
-    ".....PbPbPbPbPb.",
-    ".....bbbbbbbbbbb",
-    ".....NNNNNNNNNNN",
-    "................",
+    ".W..............",
+    ".wW.W...........",
+    "..wLwW.W........",
+    ".wwLLwLwW.......",
+    "..wwLLLlw.......",
+    "...wwLLlPp......",
+    "....wlLPgPp.....",
+    ".......pPpP.....",
+    ".......PpPpp....",
+    "......pPPPPPPp..",
+    "......PPpppppPPp",
+    "......uuuuuuuuuu",
     "................",
     "................",
     "................",
 ])
 
-# Yelmo corintio negro con cimera de crin y aberturas de los ojos.
+# Yelmo corintio de Hades, de frente: cimera de crin, cúpula de hierro oscuro, banda de oro, ojos almendrados,
+# protector nasal y carrilleras.
 HADES = grid([
-    "......rrrr......",
+    "......rRRr......",
     ".....rRrrrr.....",
-    "....rrrrrrrr....",
-    "....oooooooo....",
-    "...oOooooooOo...",
-    "...oOooooooOo...",
-    "...ooooooooooo..",
-    "...oo.oooo.oo...",
-    "...oo..oo..oo...",
-    "...oooooooooo...",
-    "...ooooo.ooooo..",
-    "....oooo.oooo...",
-    "....oooo.oooo...",
-    ".....ooo.ooo....",
+    ".....rrrrrx.....",
+    "....iIIiiiio....",
+    "...iIIiiiiiio...",
+    "...iIiiiiiiio...",
+    "...ggggggggggd..",
+    "...io..ii..oi...",
+    "...ii..io..ii...",
+    "...iiiiooiiio...",
+    "...iii.oo.iio...",
+    "...iii....iio...",
+    "...iio....iio...",
+    "....io....io....",
     "................",
     "................",
 ])
 
-# Cabeza de Medusa de frente: rostro de piedra y cabellera de serpientes.
+# Cabeza de Medusa: rostro de piedra, ojos amarillos y cabellera de serpientes con sus cabezas.
 MEDUSA = grid([
-    "..v..V....V..v..",
-    ".vV.vVv..vVv.Vv.",
-    "..VvvVVvvVVvvV..",
-    ".vVvSSSSSSSSvVv.",
-    "..vSSSSSSSSSSv..",
-    ".vVSsSSSSSSsSVv.",
-    "..vSRrSSSSrRSv..",
+    ".V..V......V..V.",
+    "vVv.vVv..vVv.vVv",
+    ".vvVvVvvvvVvVvv.",
+    "..vvSSSSSSSSvv..",
     ".vVSSSSSSSSSSVv.",
-    "..vSSSSssSSSSv..",
-    "..vSSSSssSSSSv..",
-    "...vSSrrrrSSv...",
-    "...vSSSSSSSSv...",
-    "....vSSSSSSv....",
-    ".....vvSSvv.....",
-    "......v..v......",
+    "vVvSsSSSSSSsSvVv",
+    "v.vSYzSSSSzYSv.v",
+    "..vSSSSSSSSSSv..",
+    "...sSSSssSSSs...",
+    "...sSSSssSSSs...",
+    "...zsSxxxxSsz...",
+    "....zsSSSSsz....",
+    ".....zssssz.....",
+    "................",
+    "................",
+    "................",
+])
+
+# Lira de Orfeo: caja de caparazón de tortuga, brazos de oro curvados, travesaño y cuerdas.
+LYRE = grid([
+    "..G..........G..",
+    "..gG........Gg..",
+    "..dgGGGGGGGGgd..",
+    "...dg.W.W.W.gd..",
+    "...dg.W.W.W.gd..",
+    "...dg.W.W.W.gd..",
+    "...dg.W.W.W.gd..",
+    "...dg.W.W.W.gd..",
+    "...dgTTTTTTTgd..",
+    "...TTtTTtTTtTT..",
+    "...TtqtTqtTtqT..",
+    "...tTTtTTtTTtt..",
+    "....ttqttqttq...",
+    ".....tttttt.....",
+    "................",
     "................",
 ])
 
 
 def aegis():
-    """Escudo redondo de bronce con el gorgoneion (rostro de Medusa) al centro."""
-    c = blank()
+    """Escudo redondo de bronce con aro de oro, reflejo arriba a la izquierda y el gorgoneion al centro."""
+    c = [['.'] * 16 for _ in range(16)]
     cx, cy = 7.5, 7.5
     for y in range(16):
         for x in range(16):
             d = math.hypot(x - cx, y - cy)
-            if d <= 7.0:
-                light = -(x - cx + y - cy) / 9
-                c[y][x] = 'g' if d > 6.0 else ('B' if light > 0.3 else 'b' if light > -0.4 else 'n')
-    for x, y, ch in [(6, 5, 'V'), (9, 5, 'V'), (5, 6, 'v'), (10, 6, 'v'),
-                     (6, 6, 'S'), (7, 6, 'S'), (8, 6, 'S'), (9, 6, 'S'),
-                     (6, 7, 'r'), (7, 7, 'S'), (8, 7, 'S'), (9, 7, 'r'),
-                     (6, 8, 'S'), (7, 8, 's'), (8, 8, 's'), (9, 8, 'S'),
-                     (7, 9, 'r'), (8, 9, 'r'), (7, 10, 'S'), (8, 10, 'S')]:
+            if d > 7.2:
+                continue
+            light = -((x - cx) + (y - cy)) / 10.0
+            if d > 6.2:
+                c[y][x] = 'G' if light > 0.35 else 'g' if light > -0.2 else 'd'
+            else:
+                c[y][x] = 'B' if light > 0.45 else 'b' if light > -0.1 else 'n'
+    for x, y, ch in [(5, 5, 'v'), (6, 4, 'V'), (9, 4, 'V'), (10, 5, 'v'), (4, 7, 'v'), (11, 7, 'v'),
+                     (6, 5, 'S'), (7, 5, 'S'), (8, 5, 'S'), (9, 5, 'S'),
+                     (5, 6, 'S'), (6, 6, 'Y'), (7, 6, 'S'), (8, 6, 'S'), (9, 6, 'Y'), (10, 6, 's'),
+                     (5, 7, 'S'), (6, 7, 'S'), (7, 7, 's'), (8, 7, 's'), (9, 7, 'S'), (10, 7, 's'),
+                     (6, 8, 's'), (7, 8, 'x'), (8, 8, 'x'), (9, 8, 's'), (7, 9, 's'), (8, 9, 'z')]:
         c[y][x] = ch
     return outline(c)
 
 
 def ariadne():
-    """Ovillo de hilo rojo con la hebra suelta."""
-    c = blank()
-    cx, cy = 7.0, 8.0
+    """Ovillo de hilo rojo con las vueltas en arcos, brillo arriba a la izquierda y la hebra suelta."""
+    c = [['.'] * 16 for _ in range(16)]
+    cx, cy, r = 7.0, 7.5, 5.6
     for y in range(16):
         for x in range(16):
-            d = math.hypot(x - cx, y - cy)
-            if d <= 5.3:
-                band = (x + 2 * y) % 4
-                c[y][x] = 'R' if band == 0 else ('r' if band in (1, 2) else 'x')
+            dx, dy = x - cx, y - cy
+            d = math.hypot(dx, dy)
+            if d > r:
+                continue
+            # Vueltas cruzadas: dos familias de arcos inclinados.
+            band = (math.sin((dx * 0.8 + dy) * 1.25) + math.sin((dx - dy * 0.6) * 1.1)) / 2
+            light = -(dx + dy) / (2 * r)
+            if band > 0.55:
+                c[y][x] = 'R'
+            elif band > -0.1:
+                c[y][x] = 'r' if light > -0.25 else 'x'
+            else:
+                c[y][x] = 'x' if light > -0.1 else 'X'
+    for x, y in [(4, 4), (5, 3), (4, 5)]:
+        c[y][x] = 'R'
     for x, y in [(12, 11), (13, 12), (13, 13), (14, 14), (15, 14)]:
         c[y][x] = 'r'
     return outline(c)
 
 
 def obol():
-    """Óbolo de plata ateniense: la lechuza de Atenea."""
-    c = blank()
+    """Óbolo de plata ateniense: borde gastado, la lechuza de Atenea (ojos grandes, orejas) y una ramita de olivo."""
+    c = [['.'] * 16 for _ in range(16)]
     cx, cy = 7.5, 7.5
     for y in range(16):
         for x in range(16):
             d = math.hypot(x - cx, y - cy)
-            if d <= 6.0:
-                light = -(x - cx + y - cy) / 8
-                c[y][x] = 'a' if d > 5.0 else ('M' if light > 0.3 else 'm' if light > -0.3 else 'a')
-    for x, y, ch in [(6, 5, 'A'), (9, 5, 'A'), (6, 6, 'A'), (7, 6, 'A'), (8, 6, 'A'), (9, 6, 'A'),
-                     (6, 7, 'k'), (9, 7, 'k'), (7, 7, 'A'), (8, 7, 'A'),
-                     (6, 8, 'A'), (7, 8, 'A'), (8, 8, 'A'), (9, 8, 'A'), (7, 9, 'A'), (8, 9, 'A'),
-                     (7, 10, 'A'), (8, 10, 'A'), (10, 9, 'v'), (11, 8, 'v')]:
+            if d > 6.6:
+                continue
+            light = -((x - cx) + (y - cy)) / 9.0
+            if d > 5.6:
+                c[y][x] = 'm' if light > 0.3 else 'a'
+            else:
+                c[y][x] = 'M' if light > 0.55 else 'm' if light > -0.3 else 'a'
+    owl = [(6, 4, 'A'), (9, 4, 'A'),                                   # orejas
+           (6, 5, 'a'), (7, 5, 'a'), (8, 5, 'a'), (9, 5, 'a'),
+           (5, 6, 'a'), (6, 6, 'M'), (7, 6, 'a'), (8, 6, 'a'), (9, 6, 'M'), (10, 6, 'a'),   # ojos
+           (5, 7, 'a'), (6, 7, 'e'), (7, 7, 'A'), (8, 7, 'A'), (9, 7, 'e'), (10, 7, 'a'),
+           (6, 8, 'a'), (7, 8, 'A'), (8, 8, 'a'), (9, 8, 'a'),        # pico y pecho
+           (6, 9, 'a'), (7, 9, 'A'), (8, 9, 'a'), (9, 9, 'A'),
+           (6, 10, 'A'), (7, 10, 'a'), (8, 10, 'A'), (9, 10, 'a'),
+           (7, 11, 'A'), (8, 11, 'A'),
+           (11, 8, 'v'), (11, 9, 'y'), (12, 9, 'v'), (11, 10, 'v')]    # olivo
+    for x, y, ch in owl:
         c[y][x] = ch
     return outline(c)
 
 
-LYRE = grid([
-    "..g..........g..",
-    "..gg........gg..",
-    "...gGgggggggg...",
-    "...g.m.m.m.mg...",
-    "...g.m.m.m.mg...",
-    "...g.m.m.m.mg...",
-    "...g.m.m.m.mg...",
-    "...g.m.m.m.mg...",
-    "...gd.m.m.mdg...",
-    "....PpPpPpPp....",
-    "...PpPPpPPpPP...",
-    "...pPpPpPpPpP...",
-    "....PpPpPpPp....",
-    ".....pppppp.....",
-    "................",
-    "................",
-])
-
-ICONS = {"hermes_sandals": lambda: outline(HERMES), "hades_helm": lambda: outline(HADES),
-         "medusa_head": lambda: outline(MEDUSA), "athena_aegis": aegis, "ariadne_thread": ariadne,
-         "charon_obol": obol, "orpheus_lyre": lambda: outline(LYRE)}
-
+ICONS = {
+    "hermes_sandals": lambda: outline(HERMES),
+    "hades_helm": lambda: outline(HADES),
+    "medusa_head": lambda: outline(MEDUSA),
+    "athena_aegis": aegis,
+    "ariadne_thread": ariadne,
+    "charon_obol": obol,
+    "orpheus_lyre": lambda: outline(LYRE),
+}
 
 
 def save(folder, name, chars):
