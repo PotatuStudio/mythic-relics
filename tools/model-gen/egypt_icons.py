@@ -1,5 +1,5 @@
-"""Íconos 16x16 de la primera tanda de Egipto y el ícono del mod (estilo vanilla: contorno, luz desde arriba a la
-izquierda, brillo animado solo en el oro y las gemas).
+"""Íconos 16x16 de Egipto y el ícono del mod (estilo vanilla: contorno del color oscuro de cada material, luz desde
+arriba a la izquierda, brillo animado solo en el oro y las gemas). Renovados el 2026-11-09.
 
 Uso: python egypt_icons.py <carpeta_texturas_item> <ícono_del_mod.png> [<carpeta_vista_previa>]
   p. ej. python egypt_icons.py ../../common/src/main/resources/assets/mythicrelics/textures/item \
@@ -30,6 +30,52 @@ PAL = {
     'P': H('#d6a764'), 'p': H('#a8743a'), 'u': H('#6e4a22'),          # madera de la paleta de escriba
 }
 SHINY = set('Ggdqt' + 'Ll' + 'RrVv')
+
+# Paleta renovada: misma letra, tonos más ricos.
+PAL_OLD = dict(PAL)
+NEW = PAL  # la paleta renovada reemplaza los tonos de PAL
+NEW.update({
+    'G': H('#fff3a8'), 'g': H('#f5c842'), 'd': H('#c98f1c'), 'D': H('#7d520c'),
+    'L': H('#7aa2f5'), 'l': H('#3358c4'), 'b': H('#1d2f80'),
+    'q': H('#a8fbe8'), 't': H('#2fc4b0'),
+    'O': H('#57505a'), 'o': H('#221c24'),
+    'w': H('#fffaf0'), 'W': H('#e8dcbc'), 's': H('#bba984'), 'c': H('#8f7a52'), 'x': H('#5e4c2e'),
+    'R': H('#ffa060'), 'r': H('#e8582a'), 'X': H('#a3301a'),
+    'V': H('#9ee07a'), 'v': H('#3f9a3a'),
+    'Y': H('#f6c878'), 'y': H('#cc8a32'), 'z': H('#8a5420'),
+    'i': H('#fff4dc'), 'P': H('#dcae6c'), 'p': H('#a8743a'), 'u': H('#6e4a22'),
+})
+# Contorno por material (el tono más oscuro de cada uno, un paso más).
+EDGE = {}
+for group, edge in (('GgdD', '#5a3806'), ('Llb', '#101a4a'), ('qt', '#145a52'), ('Oo', '#0c080e'),
+                    ('wWscx', '#4a3a20'), ('RrX', '#5e1a0c'), ('Vv', '#1e4a1a'), ('Yyz', '#5a3410'),
+                    ('i', '#8a7a58'), ('Ppu', '#3e2810')):
+    for ch in group:
+        EDGE[ch] = H(edge)
+DEFAULT_EDGE = H('#2e1d06')
+
+
+def recolor(img_chars):
+    """Cambia cada píxel de contorno ('k') por el borde del material vecino más común."""
+    h, w = len(img_chars), len(img_chars[0])
+    out = []
+    for y in range(h):
+        row = []
+        for x in range(w):
+            ch = img_chars[y][x]
+            if ch != 'k':
+                row.append(NEW[ch])
+                continue
+            counts = {}
+            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1)):
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < w and 0 <= ny < h and img_chars[ny][nx] in EDGE:
+                    counts[img_chars[ny][nx]] = counts.get(img_chars[ny][nx], 0) + 1
+            row.append(EDGE[max(counts, key=counts.get)] if counts else DEFAULT_EDGE)
+        out.append(row)
+    return out
+
+
 
 GOLDEN_SCARAB = [
     "................",
@@ -212,6 +258,7 @@ def jackal_mask():
 
 
 def save(folder, name, img, chars):
+    img = recolor(chars)
     strip, meta = glint(img, lambda x, y: chars[y][x] in SHINY)
     png(os.path.join(folder, name + ".png"), strip)
     mcmeta = os.path.join(folder, name + ".png.mcmeta")
@@ -220,6 +267,7 @@ def save(folder, name, img, chars):
             json.dump(meta, fh)
     elif os.path.exists(mcmeta):
         os.remove(mcmeta)
+    return img
 
 
 # --- Ícono del mod: panel de inventario vanilla con cuatro reliquias (como el de Misfit Relics) ------------------------
@@ -408,20 +456,190 @@ def sekhmet():
 
 
 
+# --- Íconos renovados (2026-11-09) ----------------------------------------------------------------------------------
+def grid_chars(rows):
+    assert len(rows) == 16 and all(len(r) == 16 for r in rows), [(i, len(r)) for i, r in enumerate(rows) if len(r) != 16]
+    return [list(r) for r in rows]
+
+
+def outline_chars(c):
+    """Contorno 'k' alrededor de lo opaco; recolor() lo pinta del color de cada material."""
+    out = [row[:] for row in c]
+    for y in range(16):
+        for x in range(16):
+            if c[y][x] != '.':
+                continue
+            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < 16 and 0 <= ny < 16 and c[ny][nx] not in '.k':
+                    out[y][x] = 'k'
+                    break
+    return out
+
+
+def from_chars(chars):
+    return recolor(chars), chars
+
+
+# Escarabajo de oro visto desde arriba: cabeza en pala, pronoto con gema turquesa, élitros con bandas de lapislázuli.
+SCARAB = grid_chars([
+    "................",
+    "......dggd......",
+    ".....dgGGgd.....",
+    ".d...dggggd...d.",
+    "..d.dGgqtggd.d..",
+    "...dgGgttggdd...",
+    "....dggggggd....",
+    ".dd.dddddddd.dd.",
+    "...dGlgdgglgd...",
+    "...dGlgdgglgd...",
+    ".d.dglgdgglgdd.d",
+    "..ddglgdgglgdd..",
+    "....dlgdgglgd...",
+    ".....ddddddd....",
+    "...d.........d..",
+    "................",
+])
+
+# Wedjat (ojo de Horus) mirando a la derecha: ceja, ojo con iris, línea cosmética, gota y espiral.
+EYE = grid_chars([
+    "................",
+    "................",
+    "..lLLLLLLLLLLl..",
+    "...bbbbbbbbbbl..",
+    "................",
+    "....llllllll....",
+    "...lwwwoowwwl...",
+    "..lwwwooowwwwlll",
+    "...lwwwoowwwl..l",
+    "....llllllll....",
+    ".....l....l.....",
+    ".....l.....l....",
+    ".....l.....ll...",
+    "....ll....l.l...",
+    "..........ll....",
+    "................",
+])
+
+# Rollo de vendas de lino acostado: cara en espiral a la izquierda, vueltas marcadas y la tira cayendo ondulada.
+WRAPS = grid_chars([
+    "................",
+    "................",
+    "...WWWWWWWWW....",
+    "..wWWWsWWsWWs...",
+    ".wWsWWsWWsWWs...",
+    ".WscWWsWWsWWs...",
+    ".WcwcWsWWsWWs...",
+    ".WscWWsWWsWWs...",
+    ".wWsWWsWWsWWs...",
+    "..sWWWsWWsWWsW..",
+    "...ssssssssssWW.",
+    "............sWW.",
+    "............WWs.",
+    "...........sWW..",
+    "...........WWs..",
+    "................",
+])
+
+
+def wraps_new():
+    return outline_chars(WRAPS)
+
+
+# Cetro was de Anubis: cabeza de chacal negra con ojo de oro, asta de oro con bandas de lapislázuli y horquilla abajo.
+SCEPTER = grid_chars([
+    "...........oO...",
+    "..........oooo..",
+    "..........ogooo.",
+    "..........ooo...",
+    ".........dgl....",
+    "........dgl.....",
+    ".......dgg......",
+    "......dgl.......",
+    ".....dgl........",
+    "....dgg.........",
+    "...dgl..........",
+    "..dgg...........",
+    ".dg.g...........",
+    ".g...g..........",
+    "g.....g.........",
+    "................",
+])
+
+# Disco solar de Ra: disco con aro de oro y el ureo (cobra) alzado al frente, enroscado en la base.
+def ra_new():
+    c = [['.'] * 16 for _ in range(16)]
+    cx, cy = 7.5, 6.5
+    for y in range(16):
+        for x in range(16):
+            d = math.hypot(x - cx, y - cy)
+            if d <= 6.3:
+                light = -(x - cx + y - cy) / 8
+                c[y][x] = 'g' if d > 5.3 else ('R' if light > 0.3 else 'r' if light > -0.35 else 'X')
+    cobra = [(6, 7, 'V'), (7, 7, 'V'), (8, 7, 'v'), (9, 7, 'v'),
+             (5, 8, 'V'), (6, 8, 'g'), (7, 8, 'V'), (8, 8, 'v'), (9, 8, 'g'), (10, 8, 'v'),
+             (5, 9, 'V'), (6, 9, 'V'), (7, 9, 'v'), (8, 9, 'v'), (9, 9, 'v'), (10, 9, 'v'),
+             (6, 10, 'V'), (7, 10, 'v'), (8, 10, 'v'), (9, 10, 'v'),
+             (7, 11, 'V'), (8, 11, 'v'), (7, 12, 'V'), (8, 12, 'v'),
+             (3, 13, 'v'), (4, 13, 'V'), (5, 13, 'V'), (6, 13, 'v'), (7, 13, 'V'), (8, 13, 'v'), (9, 13, 'V'),
+             (10, 13, 'v'), (11, 13, 'V'), (12, 13, 'v'), (2, 12, 'v'), (13, 12, 'v')]
+    for x, y, ch in cobra:
+        c[y][x] = ch
+    return outline_chars(c)
+
+
+# Mayal de Osiris: mango a rayas y tres hebras de cuentas que cuelgan de la punta.
+def flail_new():
+    c = [['.'] * 16 for _ in range(16)]
+    for i in range(8):
+        x, y = 1 + i, 14 - i
+        stripe = 'l' if (i // 2) % 2 == 0 else 'g'
+        c[y][x] = stripe
+        c[y][x + 1] = 'b' if stripe == 'l' else 'd'
+    for x, y in [(9, 6), (10, 5), (11, 5), (12, 5), (13, 5)]:
+        c[y][x] = 'g'
+    beads = "gtrgt"
+    for s, x in enumerate((10, 12, 14)):
+        for k in range(5):
+            c[6 + k * 2 // 2 + k][x] = beads[(k + s) % len(beads)] if 6 + k * 2 // 2 + k < 16 else c[15][x]
+    return outline_chars(c)
+
+
+# Pata de leona de Sekhmet: cuatro dedos con garras de marfil, pelaje leonado y muñequera de oro con cornalina.
+SEKHMET = grid_chars([
+    "..i...i...i...i.",
+    "..ii..ii..ii..ii",
+    ".yYy.yYy.yYy.yYy",
+    ".yyy.yyy.yyy.yyy",
+    ".zyyzyyyzyyyzyz.",
+    "..yYyyyyyyyyyy..",
+    "..yYyyyyyyyyyz..",
+    "..yYyyyyyyyyyz..",
+    "..yyyyyyyyyyyz..",
+    "...yyyyyyyyyz...",
+    "...zyyyyyyyzz...",
+    "...gggrgggrggd..",
+    "...dddddddddd...",
+    "................",
+    "................",
+    "................",
+])
+
+
 ICONS = {
-    "golden_scarab": lambda: build(GOLDEN_SCARAB),
-    "eye_of_horus": lambda: build(EYE_OF_HORUS),
+    "golden_scarab": lambda: from_chars(outline_chars(SCARAB)),
+    "eye_of_horus": lambda: from_chars(outline_chars(EYE)),
     "ankh": lambda: build(ANKH),
-    "mummy_wraps": lambda: wrapped(MUMMY_WRAPS),
-    "anubis_scepter": anubis_scepter,
+    "mummy_wraps": lambda: from_chars(wraps_new()),
+    "anubis_scepter": lambda: from_chars(outline_chars(SCEPTER)),
     "jackal_mask": jackal_mask,
     "jackal_ring": jackal_ring,
-    "ra_disk": ra_disk,
+    "ra_disk": lambda: from_chars(ra_new()),
     "bastet_amulet": bastet,
     "thoth_palette": thoth_palette,
     "osiris_crook": crook,
-    "osiris_flail": flail,
-    "sekhmet_claws": sekhmet,
+    "osiris_flail": lambda: from_chars(flail_new()),
+    "sekhmet_claws": lambda: from_chars(outline_chars(SEKHMET)),
 }
 
 if __name__ == "__main__":
@@ -431,8 +649,7 @@ if __name__ == "__main__":
     made = {}
     for name, make in ICONS.items():
         img, chars = make()
-        save(out, name, img, chars)
-        made[name] = img
+        made[name] = save(out, name, img, chars)
     icon = panel([made["ankh"], made["eye_of_horus"], made["golden_scarab"], made["anubis_scepter"]])
     png(mod_icon, upscale(icon, 2))
     if preview:
