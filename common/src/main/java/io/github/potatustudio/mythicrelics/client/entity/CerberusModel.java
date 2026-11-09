@@ -22,6 +22,10 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 
 	/** Giro hacia afuera de las cabezas de los lados. */
 	private static final float SIDE_TURN = 0.5f;
+	/** Curva de la cola de serpiente: sube desde la cadera y se dobla hacia adelante. */
+	private static final float TAIL_BASE = 0.9f;
+	private static final float TAIL_MID = 1.1f;
+	private static final float TAIL_HEAD = 0.9f;
 
 	private final ModelPart[] heads = new ModelPart[3];
 	private final ModelPart[] jaws = new ModelPart[3];
@@ -71,13 +75,15 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 		dogHead(root, "head", PartPose.offset(0.0f, 7.0f, -8.0f));
 		dogHead(root, "left_head", PartPose.offsetAndRotation(5.0f, 9.0f, -6.5f, 0.0f, -SIDE_TURN, 0.0f));
 		dogHead(root, "right_head", PartPose.offsetAndRotation(-5.0f, 9.0f, -6.5f, 0.0f, SIDE_TURN, 0.0f));
-		// Cola de serpiente en tres tramos, con su propia cabeza.
+		// Cola de serpiente en tres tramos que sube y se curva sobre el lomo: la cabeza mira hacia adelante, por encima de
+		// Cerbero, con los ojos a los costados y la lengua afuera.
 		PartDefinition tail = root.addOrReplaceChild("tail", CubeListBuilder.create()
-				.texOffs(32, 24).addBox(-1.0f, -1.0f, 0.0f, 2, 2, 6), PartPose.offsetAndRotation(0.0f, 9.0f, 8.0f, 0.5f, 0.0f, 0.0f));
+				.texOffs(32, 24).addBox(-1.0f, -1.0f, 0.0f, 2, 2, 6), PartPose.offsetAndRotation(0.0f, 9.0f, 8.0f, TAIL_BASE, 0.0f, 0.0f));
 		PartDefinition mid = tail.addOrReplaceChild("tail_mid", CubeListBuilder.create()
-				.texOffs(48, 24).addBox(-1.0f, -1.0f, 0.0f, 2, 2, 5), PartPose.offsetAndRotation(0.0f, 0.0f, 6.0f, -0.9f, 0.0f, 0.0f));
+				.texOffs(48, 24).addBox(-1.0f, -1.0f, 0.0f, 2, 2, 5), PartPose.offsetAndRotation(0.0f, 0.0f, 6.0f, TAIL_MID, 0.0f, 0.0f));
 		mid.addOrReplaceChild("tail_head", CubeListBuilder.create()
-				.texOffs(28, 32).addBox(-1.5f, -1.0f, 0.0f, 3, 2, 3), PartPose.offsetAndRotation(0.0f, 0.0f, 5.0f, -0.4f, 0.0f, 0.0f));
+				.texOffs(28, 32).addBox(-1.5f, -1.0f, 0.0f, 3, 2, 4)
+				.texOffs(42, 32).addBox(-0.5f, 0.5f, 4.0f, 1, 0, 2), PartPose.offsetAndRotation(0.0f, 0.0f, 5.0f, TAIL_HEAD, 0.0f, 0.0f));
 		// Patas gruesas con zarpas anchas y garras.
 		CubeListBuilder leg = CubeListBuilder.create()
 				.texOffs(0, 32).addBox(-1.5f, 0.0f, -1.5f, 3, 10, 3)
@@ -116,8 +122,9 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 			jaws[i].xRot = 0.15f + Math.abs(Mth.sin(age * 0.2f + i * 2.1f)) * (0.25f + 0.3f * speed);
 		}
 		// La cola de serpiente se menea y su cabeza busca.
-		tail.yRot = Mth.sin(age * 0.12f) * 0.4f;
-		tailMid.yRot = Mth.sin(age * 0.12f - 1.0f) * 0.5f;
-		tailHead.yRot = Mth.sin(age * 0.12f - 2.0f) * 0.6f;
+		tail.yRot = Mth.sin(age * 0.12f) * 0.3f;
+		tailMid.yRot = Mth.sin(age * 0.12f - 1.0f) * 0.3f;
+		tailHead.yRot = Mth.sin(age * 0.12f - 2.0f) * 0.4f;
+		tailHead.xRot = TAIL_HEAD + Mth.sin(age * 0.09f) * 0.15f;
 	}
 }

@@ -112,9 +112,16 @@ def scales(x, y, w, h):
 snake = dict(side=scales, top=scales, bottom=lambda *a: SCALE_BELLY)
 box(32, 24, 2, 2, 6, **snake)
 box(48, 24, 2, 2, 5, **snake)
-# Cabeza de la cola (28,32) 3x2x3: mira hacia atrás (su "frente" es la cara de atrás del cubo).
-box(28, 32, 3, 2, 3, **snake, back=lambda x, y, w, h: SNAKE_EYE if y == 0 and x in (0, 2) else
-    TONGUE if y == 1 and x == 1 else scales(x, y, w, h))
+# Cabeza de la cola (28,32) 3x2x4: la punta es la cara de atrás del cubo (la boca, oscura); los ojos van a los
+# costados, cerca de la punta, con una ceja de escamas oscuras encima. Lengua (42,32) 1x0x2 roja.
+f = faces(28, 32, 3, 2, 4)
+fill(f["top"], lambda x, y, w, h: (22, 32, 18) if y == h - 1 and x in (0, w - 1) else scales(x, y, w, h))
+fill(f["bottom"], lambda *a: SCALE_BELLY)
+fill(f["front"], scales)
+fill(f["back"], lambda x, y, w, h: (20, 6, 8) if y == 1 else scales(x, y, w, h))
+fill(f["west"], lambda x, y, w, h: SNAKE_EYE if y == 0 and x == 0 else scales(x, y, w, h))
+fill(f["east"], lambda x, y, w, h: SNAKE_EYE if y == 0 and x == w - 1 else scales(x, y, w, h))
+box(42, 32, 1, 0, 2, side=lambda *a: TONGUE, top=lambda *a: TONGUE, bottom=lambda *a: TONGUE)
 
 img.save(sys.argv[1])
 print("ok", sys.argv[1])

@@ -553,9 +553,10 @@ for (const [offset, turn] of [[[0, 7, -8], 0], [[5, 9, -6.5], -C_TURN], [[-5, 9,
   cHeads.push(h);
   cJaws.push(cPart(h, [0, 1, -5], [0, 0, 0], [[36, 18, -2, 0, -5, 4, 1, 5, false]]));
 }
-const cTail = cPart(cerberus.root, [0, 9, 8], [0.5, 0, 0], [[32, 24, -1, -1, 0, 2, 2, 6, false]]);
-const cTailMid = cPart(cTail, [0, 0, 6], [-0.9, 0, 0], [[48, 24, -1, -1, 0, 2, 2, 5, false]]);
-const cTailHead = cPart(cTailMid, [0, 0, 5], [-0.4, 0, 0], [[28, 32, -1.5, -1, 0, 3, 2, 3, false]]);
+const C_TAIL = [0.9, 1.1, 0.9];
+const cTail = cPart(cerberus.root, [0, 9, 8], [C_TAIL[0], 0, 0], [[32, 24, -1, -1, 0, 2, 2, 6, false]]);
+const cTailMid = cPart(cTail, [0, 0, 6], [C_TAIL[1], 0, 0], [[48, 24, -1, -1, 0, 2, 2, 5, false]]);
+const cTailHead = cPart(cTailMid, [0, 0, 5], [C_TAIL[2], 0, 0], [[28, 32, -1.5, -1, 0, 3, 2, 4, false], [42, 32, -0.5, 0.5, 4, 1, 0, 2, false]]);
 const cLeg = (x, y, z, mirror) => cPart(cerberus.root, [x, y, z], [0, 0, 0],
   [[0, 32, -1.5, 0, -1.5, 3, 10, 3, mirror], [12, 32, -2, 8, -2.5, 4, 2, 4, mirror]]);
 const cLF = cLeg(3.5, 14, -4, false), cRF = cLeg(-3.5, 14, -4, true), cLH = cLeg(3, 14, 5, false), cRH = cLeg(-3, 14, 5, true);
@@ -708,9 +709,9 @@ function setupAnim() {
   cHeads[1].rotation.set(sway, -C_TURN, 0);
   cHeads[2].rotation.set(-sway, C_TURN, 0);
   cJaws.forEach((j, i) => j.rotation.set(0.15 + Math.abs(Math.sin(age * 0.2 + i * 2.1)) * (0.25 + 0.3 * speed), 0, 0));
-  cTail.rotation.set(0.5, Math.sin(age * 0.12) * 0.4, 0);
-  cTailMid.rotation.set(-0.9, Math.sin(age * 0.12 - 1) * 0.5, 0);
-  cTailHead.rotation.set(-0.4, Math.sin(age * 0.12 - 2) * 0.6, 0);
+  cTail.rotation.set(C_TAIL[0], Math.sin(age * 0.12) * 0.3, 0);
+  cTailMid.rotation.set(C_TAIL[1], Math.sin(age * 0.12 - 1) * 0.3, 0);
+  cTailHead.rotation.set(C_TAIL[2] + Math.sin(age * 0.09) * 0.15, Math.sin(age * 0.12 - 2) * 0.4, 0);
 }
 
 /* Partículas al aparecer: el escarabajo suelta las del bloque que pisa (Minions#dig); el chacal, almas. */
