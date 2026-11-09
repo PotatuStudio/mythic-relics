@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:rome/palladium",
+  "category": "mythicrelics:rome",
+  "name": "item.mythicrelics.palladium",
+  "icon": "mythicrelics:palladium",
+  "x": 0,
+  "y": 2,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.palladium.effect",
+      "item": "mythicrelics:palladium"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.palladium",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.palladium.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.palladium.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:rome/intro"
+    }
+  ]
+}

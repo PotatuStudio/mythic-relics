@@ -18,9 +18,10 @@ FABRIC_ASSETS = os.path.join(ROOT, "fabric", "src", "main", "resources", "assets
 ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter", "jackal_mask", "jackal_ring",
          "ra_disk", "bastet_amulet", "thoth_palette", "osiris_crook", "osiris_flail", "sekhmet_claws",
          "hermes_sandals", "hades_helm", "athena_aegis", "medusa_head", "ariadne_thread", "charon_obol", "orpheus_lyre",
-         "icarus_wings", "golden_fleece", "cerberus_collar", "pandora_jar", "styx_water", "prometheus_fennel"]
+         "icarus_wings", "golden_fleece", "cerberus_collar", "pandora_jar", "styx_water", "prometheus_fennel",
+         "wolf_bulla", "ancile", "palladium", "janus_key", "vesta_lamp", "sibylline_books", "augur_lituus"]
 # Cultura de cada reliquia (categoría del libro y página de la wiki), en el orden en que se muestran.
-CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:]}
+CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:]}
 # Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
 SETS = {"anubis_set": ["anubis_scepter", "jackal_mask", "jackal_ring"], "osiris_set": ["osiris_crook", "osiris_flail"],
         "perseus_set": ["hermes_sandals", "hades_helm", "athena_aegis"]}
@@ -32,7 +33,9 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "hermes_sandals": "feet/shoes", "hades_helm": "head/hat", "athena_aegis": "chest/back", "medusa_head": "offhand",
          "ariadne_thread": "hand", "charon_obol": "inventory", "orpheus_lyre": "hand",
          "icarus_wings": "chest/back", "golden_fleece": "chest/cape", "cerberus_collar": "chest/necklace",
-         "pandora_jar": "hand", "styx_water": "hand", "prometheus_fennel": "hand"}
+         "pandora_jar": "hand", "styx_water": "hand", "prometheus_fennel": "hand",
+         "wolf_bulla": "chest/necklace", "ancile": "offhand", "palladium": "block", "janus_key": "hand",
+         "vesta_lamp": "offhand", "sibylline_books": "hand", "augur_lituus": "hand"}
 
 
 def read(path):
@@ -47,7 +50,8 @@ def b64(path):
 
 def constants():
     out = {}
-    for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java"):
+    for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java",
+                 "rome/RomeRelics.java"):
         src = read(os.path.join(JAVA, *name.split("/")))
         out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
     return out
@@ -102,6 +106,17 @@ def tooltip_args(c):
         "styx_water": [int(c["STYX_TICKS"] // 20 // 60), round(c["STYX_FRONT_FACTOR"] * 100), int(c["STYX_COOLDOWN"] // 20 // 60)],
         "prometheus_fennel": [int(c["PROMETHEUS_BURN_SECONDS"]), int(c["PROMETHEUS_COOK_MAX"]),
                               int(c["PROMETHEUS_COOLDOWN"] // 20)],
+        # Roma (RomeRelics#tooltipArgs)
+        "wolf_bulla": [int(c["WOLF_RADIUS"]), int(c["WOLF_HOWL_HEALTH"] // 2), int(c["WOLF_HOWL_TAMES"]),
+                       int(c["WOLF_HOWL_COOLDOWN"] // 20 // 60)],
+        "ancile": [int(c["ANCILE_RAID_RADIUS"]), round(c["ANCILE_RAID_FACTOR"] * 100)],
+        "palladium": [int(c["PALLADIUM_RADIUS"])],
+        "janus_key": [],
+        "vesta_lamp": [int(c["VESTA_RADIUS"]), round(c["VESTA_HUNGER_FACTOR"] * 100)],
+        "sibylline_books": [int(c["SIBYL_LEVELS"]), int(c["SIBYL_RADIUS"]), int(c["SIBYL_GLOW_TICKS"] // 20),
+                            int(c["SIBYL_COOLDOWN"] // 20 // 60)],
+        "augur_lituus": [int(c["LITUUS_FAVOR_TICKS"] // 20 // 60), int(c["LITUUS_BAD_TICKS"] // 20 // 60),
+                         int(c["LITUUS_BIRD_RADIUS"]), int(c["LITUUS_COOLDOWN"] // 20 // 60)],
     }
 
 
@@ -160,7 +175,12 @@ LOOT_TABLE_KEYS = {"desert_pyramid": "loot.mythicrelics.chests.desert_pyramid",
                    "bastion_bridge": "loot.mythicrelics.chests.bastion_bridge",
                    "bastion_hoglin_stable": "loot.mythicrelics.chests.bastion_hoglin_stable",
                    "woodland_mansion": "loot.mythicrelics.chests.woodland_mansion",
-                   "ruined_portal": "loot.mythicrelics.chests.ruined_portal"}
+                   "ruined_portal": "loot.mythicrelics.chests.ruined_portal",
+                   "village_taiga_house": "loot.mythicrelics.chests.village.village_taiga_house",
+                   "pillager_outpost": "loot.mythicrelics.chests.pillager_outpost",
+                   "village_temple": "loot.mythicrelics.chests.village.village_temple",
+                   "village_plains_house": "loot.mythicrelics.chests.village.village_plains_house",
+                   "jungle_temple": "loot.mythicrelics.chests.jungle_temple"}
 # Tablas de arqueología: la probabilidad es por bloque cepillado, no por cofre.
 ARCHAEOLOGY = {"desert_pyramid_archaeology", "desert_well_archaeology", "trail_ruins_archaeology_rare",
                "ocean_ruin_warm_archaeology", "ocean_ruin_cold_archaeology"}

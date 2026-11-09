@@ -52,16 +52,24 @@ CULTURE_INFO = {
             "pandora_jar": (-2, 13), "styx_water": (0, 13), "prometheus_fennel": (2, 13),
         },
     },
+    "rome": {
+        "wiki": "roma.md", "title": "Roma", "icon": "ancile", "intro_icon": "minecraft:chiseled_stone_bricks",
+        "positions": {
+            "intro": (0, 0),
+            "ancile": (-2, 2), "palladium": (0, 2), "vesta_lamp": (2, 2),
+            "wolf_bulla": (-3, 5), "janus_key": (-1, 5), "sibylline_books": (1, 5), "augur_lituus": (3, 5),
+        },
+    },
 }
 SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm"}
 SLOT_NAMES = {
     "es_es": {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes",
               "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria",
-              "feet/shoes": "zapatos", "chest/back": "espalda", "chest/cape": "capa", "hand": "mano",
+              "feet/shoes": "zapatos", "chest/back": "espalda", "chest/cape": "capa", "block": "bloque (se coloca)", "hand": "mano",
               "inventory": "inventario"},
     "en_us": {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves",
               "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand",
-              "feet/shoes": "shoes", "chest/back": "back", "chest/cape": "cape", "hand": "hand",
+              "feet/shoes": "shoes", "chest/back": "back", "chest/cape": "cape", "block": "block (placed)", "hand": "hand",
               "inventory": "inventory"},
 }
 WORDS = {

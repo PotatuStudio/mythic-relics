@@ -15,6 +15,11 @@ import io.github.potatustudio.mythicrelics.greece.OrpheusLyreItem;
 import io.github.potatustudio.mythicrelics.greece.PandoraJarItem;
 import io.github.potatustudio.mythicrelics.greece.PrometheusFennelItem;
 import io.github.potatustudio.mythicrelics.greece.StyxWaterItem;
+import io.github.potatustudio.mythicrelics.rome.AugurLituusItem;
+import io.github.potatustudio.mythicrelics.rome.JanusKeyItem;
+import io.github.potatustudio.mythicrelics.rome.PalladiumItem;
+import io.github.potatustudio.mythicrelics.rome.SibyllineBooksItem;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
@@ -27,6 +32,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.UseCooldown;
 
 /**
@@ -79,6 +86,22 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> STYX_WATER = register("styx_water", StyxWaterItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> PROMETHEUS_FENNEL = register("prometheus_fennel", PrometheusFennelItem::new,
 			p -> p.rarity(Rarity.RARE));
+
+	// Roma, primera tanda.
+	public static final RegistrySupplier<Item> WOLF_BULLA = relic("wolf_bulla", p -> p.rarity(Rarity.RARE));
+	// Escudo: bloquea como el vanilla (90°, 0,25 s) pero sin durabilidad, así que nunca se rompe.
+	public static final RegistrySupplier<Item> ANCILE = relic("ancile", p -> p.rarity(Rarity.EPIC)
+			.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(0.25f, 1.0f,
+					List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0.0f, 1.0f)),
+					new BlocksAttacks.ItemDamageFunction(3.0f, 1.0f, 1.0f), Optional.empty(),
+					Optional.of(SoundEvents.SHIELD_BLOCK), Optional.of(SoundEvents.SHIELD_BREAK))));
+	public static final RegistrySupplier<Item> PALLADIUM = register("palladium",
+			p -> new PalladiumItem(ModBlocks.PALLADIUM.get(), p), p -> p.rarity(Rarity.EPIC).useItemDescriptionPrefix());
+	public static final RegistrySupplier<Item> JANUS_KEY = register("janus_key", JanusKeyItem::new, p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> VESTA_LAMP = relic("vesta_lamp", p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> SIBYLLINE_BOOKS = register("sibylline_books", SibyllineBooksItem::new,
+			p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> AUGUR_LITUUS = register("augur_lituus", AugurLituusItem::new, p -> p.rarity(Rarity.RARE));
 
 	public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register("main", () -> CreativeTabRegistry.create(builder -> builder
 			.title(Component.translatable("itemGroup.mythicrelics.main"))

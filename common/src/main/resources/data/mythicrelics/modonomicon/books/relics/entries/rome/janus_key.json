@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:rome/janus_key",
+  "category": "mythicrelics:rome",
+  "name": "item.mythicrelics.janus_key",
+  "icon": "mythicrelics:janus_key",
+  "x": -1,
+  "y": 5,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.janus_key.effect",
+      "item": "mythicrelics:janus_key"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.janus_key",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.janus_key.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.janus_key.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:rome/intro"
+    }
+  ]
+}

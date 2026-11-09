@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mythicrelics:block/palladium"
+  },
+  "facing=east": {
+   "model": "mythicrelics:block/palladium",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mythicrelics:block/palladium",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mythicrelics:block/palladium",
+   "y": 270
+  }
+ }
+}

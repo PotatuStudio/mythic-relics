@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto tandas 1 y 2 y Grecia tandas 1 y 2 programadas; falta probarlas en el juego).
+Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto tandas 1 y 2, Grecia tandas 1 y 2 y Roma tanda 1 programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -115,6 +115,19 @@ Botín: ruinas oceánicas frías (arqueología), casas de pastor, tesoros de nau
 ciudades antiguas y portales en ruinas. Espacios: Trinkets `chest/back`, `chest/cape` (nuevo en la lista de la entidad)
 y `chest/necklace`; Curios `back`, `body` (nuevo) y `necklace`. **Sin probar en el juego**: el planeo (sensación y daño
 de caída), el derretido, las mordidas seguidas del Cerbero, los vexes de Pandora y la dirección del talón del Estigia.
+
+## Primera tanda de Roma (programada el 2026-11-09)
+Diseño aprobado en `docs/ideas.md` (solo mito y leyenda propios de Roma). Código en `rome/`: `RomeRelics` (constantes y
+lógica: bulla y lobos, Ancile, aparición de monstruos, candados en uso y rotura, Vesta, las dos caras de Jano),
+`Palladiums` y `JanusLocks` (datos guardados con el mundo), `PalladiumBlock` + `PalladiumItem` (primer bloque del mod,
+`registry/ModBlocks`), `JanusKeyItem`, `SibyllineBooksItem` y `AugurLituusItem`. El Ancile es un ítem con el componente
+`blocks_attacks` sin durabilidad (bloquea como el escudo y nunca se rompe); su modelo 3D (`tools/model-gen/rome_models.py`)
+usa las coordenadas y los `display` del escudo vanilla, y en el inventario se ve el ícono. Mixins nuevos:
+`applyItemBlocking` (devolver proyectiles) y `canFreeze` en `LivingEntityMixin`, `causeFoodExhaustion` en `PlayerMixin`,
+y `BreakDoorGoalMixin` + `DoorInteractGoalAccessor` (los zombis no rompen puertas con llave). Cambio sobre el diseño: la
+llave cierra y abre con **agachado + clic derecho** (sin agacharse, el clic abre la puerta antes de que actúe el ítem).
+**Sin probar en el juego**: cómo se ve el Ancile en la mano y al bloquear, el rebote de las flechas, el Paladio (modelo y
+que no aparezcan monstruos), los candados (también cofres dobles y puertas) y la búsqueda de estructuras de la sibila.
 
 ## Herramientas y pruebas
 - **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC

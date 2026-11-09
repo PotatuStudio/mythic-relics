@@ -320,6 +320,21 @@ def golden_fleece():
     return e
 
 
+def wolf_bulla():
+    """Cordón de cuero como la cadena del Anj y el relicario redondo de oro con la loba en relieve sobre el pecho."""
+    e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "leather_d", "cordón atrás"),
+         box([3.5, 13.3, 6.0], [4.0, 13.8, 10.5], "leather_d", "cordón der."),
+         box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "leather_d", "cordón izq.")]
+    for i in range(6):
+        x, y = 4.0 + i * 0.6, 13.3 - i * 0.22
+        e.append(box([x, y - 0.5, 10.5], [x + 0.6, y, 11.0], "leather_d", "cordón"))
+        e.append(box([12.0 - (i + 1) * 0.6, y - 0.5, 10.5], [12.0 - i * 0.6, y, 11.0], "leather_d", "cordón"))
+    e += [box([6.8, 9.2, 10.75], [9.2, 11.6, 11.6], "gold", "relicario"),
+          box([7.2, 8.8, 10.75], [8.8, 12.0, 11.6], "gold", "relicario"),
+          box([7.4, 9.8, 11.6], [8.6, 10.8, 11.75], "gold_d", "loba")]
+    return e
+
+
 def cerberus_collar():
     """Collar de cuero negro con púas de plata y un medallón de bronce con tres pares de ojos de brasa."""
     e = ring(3.55, 12.45, 13.2, 14.2, 5.6, 10.4, 0.6, "black", "cuero")
@@ -362,6 +377,8 @@ WORN = {
     "icarus_wings": (lambda: model(icarus_wings()), [attach("body", "icarus_wings")]),
     "golden_fleece": (lambda: model(golden_fleece()), [attach("body", "golden_fleece")]),
     "cerberus_collar": (lambda: model(cerberus_collar()), [attach("body", "cerberus_collar")]),
+    # Roma
+    "wolf_bulla": (lambda: model(wolf_bulla()), [attach("body", "wolf_bulla")]),
 }
 
 

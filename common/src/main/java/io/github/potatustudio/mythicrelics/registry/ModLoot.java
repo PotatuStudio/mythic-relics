@@ -65,7 +65,8 @@ public final class ModLoot {
 			Map.entry(BuiltInLootTables.STRONGHOLD_CORRIDOR, List.of(
 					new Drop(0.060f, ModItems.ARIADNE_THREAD))),
 			Map.entry(BuiltInLootTables.STRONGHOLD_LIBRARY, List.of(
-					new Drop(0.060f, ModItems.ARIADNE_THREAD))),
+					new Drop(0.060f, ModItems.ARIADNE_THREAD),
+					new Drop(0.040f, ModItems.SIBYLLINE_BOOKS))),
 			// Cámaras de desafío: las pruebas del héroe.
 			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, List.of(
 					new Drop(0.030f, ModItems.ATHENA_AEGIS))),
@@ -95,8 +96,26 @@ public final class ModLoot {
 			Map.entry(BuiltInLootTables.WOODLAND_MANSION, List.of(
 					new Drop(0.050f, ModItems.PANDORA_JAR))),
 			// Portales en ruinas: el fuego robado.
+			// Portales en ruinas: el fuego robado y las puertas de Jano.
 			Map.entry(BuiltInLootTables.RUINED_PORTAL, List.of(
-					new Drop(0.030f, ModItems.PROMETHEUS_FENNEL))));
+					new Drop(0.030f, ModItems.PROMETHEUS_FENNEL),
+					new Drop(0.030f, ModItems.JANUS_KEY))),
+			// ---- Roma ----
+			// Casas de aldeas de taiga: los lobos.
+			Map.entry(BuiltInLootTables.VILLAGE_TAIGA_HOUSE, List.of(
+					new Drop(0.040f, ModItems.WOLF_BULLA))),
+			// Puestos de saqueadores: la guerra de Marte.
+			Map.entry(BuiltInLootTables.PILLAGER_OUTPOST, List.of(
+					new Drop(0.040f, ModItems.ANCILE))),
+			// Templo de aldea (clérigo): la ciudad que no cae.
+			Map.entry(BuiltInLootTables.VILLAGE_TEMPLE, List.of(
+					new Drop(0.030f, ModItems.PALLADIUM))),
+			// Casas de aldeas de llanura: el hogar de Vesta.
+			Map.entry(BuiltInLootTables.VILLAGE_PLAINS_HOUSE, List.of(
+					new Drop(0.030f, ModItems.VESTA_LAMP))),
+			// Templos de la jungla: las aves de los augures.
+			Map.entry(BuiltInLootTables.JUNGLE_TEMPLE, List.of(
+					new Drop(0.040f, ModItems.AUGUR_LITUUS))));
 
 	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre (o por bloque cepillado, en arqueología). */
 	public record Source(ResourceKey<LootTable> table, float chance) {

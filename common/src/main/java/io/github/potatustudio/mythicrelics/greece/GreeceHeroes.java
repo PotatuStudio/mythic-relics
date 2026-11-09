@@ -216,7 +216,7 @@ public final class GreeceHeroes {
 					PANDORA_HOPE_ABSORPTION_TICKS / 20 / 60};
 			case "styx_water" -> new Object[] {STYX_TICKS / 20 / 60, Math.round(STYX_FRONT_FACTOR * 100), STYX_COOLDOWN / 20 / 60};
 			case "prometheus_fennel" -> new Object[] {PROMETHEUS_BURN_SECONDS, PROMETHEUS_COOK_MAX, PROMETHEUS_COOLDOWN / 20};
-			default -> new Object[0];
+			default -> io.github.potatustudio.mythicrelics.rome.RomeRelics.tooltipArgs(id);
 		};
 	}
 }

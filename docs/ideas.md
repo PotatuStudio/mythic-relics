@@ -85,8 +85,8 @@ Ideas originales de Grecia (punto de partida):
 | Antorcha de Prometeo | mano | Prende fuego a lo que golpeas; visión en la oscuridad. | Portales en ruinas |
 
 ## Roma
-Primera tanda: diseño aprobado el 2026-11-09, falta programarla (página de diseño:
-https://claude.ai/artifact/DAV4VYDMYHYTef8nPYgbp8). Enfoque elegido por el usuario: solo mito y leyenda propios de
+Primera tanda: diseño aprobado y programado el 2026-11-09, falta probarla en el juego (página de diseño:
+https://claude.ai/artifact/DAV4VYDMYHYTef8nPYgbp8; íconos: https://claude.ai/artifact/LNqz48ZaEosjPeBoqtNABP). Enfoque elegido por el usuario: solo mito y leyenda propios de
 Roma; el laurel, el águila y el gladius (historia, no mito) quedan fuera. Decisiones: Paladio tal cual (zona segura
 total), Llave de Jano con candado guardado con el mundo, Ancile como escudo propio, las 7 reliquias.
 
@@ -95,7 +95,7 @@ total), Llave de Jano con candado guardado con el mundo, Ancile como escudo prop
 | Bulla de la Loba | collar (compite con el Anj, Bastet y Cerbero) | Tus lobos a 16 bloques tienen Regeneración I y Fuerza I; los lobos salvajes no te atacan; con 3 corazones o menos aúllas y 2 lobos salvajes cercanos se vuelven tuyos (recarga 5 min). | Casas de aldeas de taiga, 4 % |
 | Ancile | mano secundaria (escudo propio) | Bloquea como escudo y no se rompe; los proyectiles bloqueados vuelven a quien los lanzó; en una invasión, aldeanos y gólems a 32 bloques reciben la mitad del daño. | Puestos de saqueadores, 4 % |
 | Paladio | bloque | En 48 bloques no aparecen monstruos hostiles (los generadores sí funcionan); dos paladios a menos de 96 bloques no suman. | Templos de aldea (clérigo), 3 % |
-| Llave de Jano | mano | Clic derecho en puerta, trampilla, valla o cofre: lo cierra con llave (solo tú lo abres; los zombis no rompen esas puertas); agachado lo abre. Con la llave en la mano, los mobs que te persiguen por detrás brillan. | Portales en ruinas, 3 % |
+| Llave de Jano | mano | Agachado + clic derecho en puerta, trampilla, valla o cofre: lo cierra con llave (otra vez lo abre) (solo tú lo abres; los zombis no rompen esas puertas). Con la llave en la mano, los mobs que te persiguen por detrás brillan. | Portales en ruinas, 3 % |
 | Lámpara de Vesta | mano secundaria | Junto a una fogata encendida (5 bloques), Regeneración II; el hambre baja a la mitad y la nieve polvo no te congela. | Casas de aldeas de llanura, 3 % |
 | Libros sibilinos | mano | Consultar (3 niveles): hostiles a 48 bloques brillan 15 s y te dice hacia dónde y a cuánto queda la estructura más cercana. Recarga 2 min. | Bibliotecas de la fortaleza, 4 % |
 | Lítuo del augur | mano | Tomar los auspicios: 2 de 3 favorables (Suerte II y Prisa I 5 min), si no Mala suerte 1 min; siempre favorable bajo el cielo con aves cerca. Recarga 5 min. | Templos de la jungla, 4 % |

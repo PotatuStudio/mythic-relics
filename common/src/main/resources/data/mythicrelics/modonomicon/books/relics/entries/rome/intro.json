@@ -1,0 +1,18 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:rome/intro",
+  "category": "mythicrelics:rome",
+  "name": "book.mythicrelics.relics.rome.intro.name",
+  "icon": "minecraft:chiseled_stone_bricks",
+  "x": 0,
+  "y": 0,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "intro",
+      "title": "book.mythicrelics.relics.rome.intro.name",
+      "text": "lore.mythicrelics.rome.intro",
+      "show_title_separator": true
+    }
+  ]
+}

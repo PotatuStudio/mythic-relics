@@ -97,7 +97,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
     <img id="modIcon" alt="Ícono del mod">
     <div class="grow">
       <h1>Mythic Relics</h1>
-      <p class="sub" data-i18n="subtitle">Vista previa de las reliquias de Egipto y Grecia, armada con los mismos archivos del mod.</p>
+      <p class="sub" data-i18n="subtitle">Vista previa de las reliquias por cultura, armada con los mismos archivos del mod.</p>
     </div>
     <div class="toggle" role="group" aria-label="Idioma">
       <button id="langEs" aria-pressed="true">ES</button>
@@ -156,7 +156,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
 <script>
 const DATA = __DATA__;
 const UI = {
-  es_es: { subtitle: "Vista previa de las reliquias de Egipto y Grecia, armada con los mismos archivos del mod.",
+  es_es: { subtitle: "Vista previa de las reliquias por cultura, armada con los mismos archivos del mod.",
     invTitle: "Pestaña creativa y tooltips",
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
@@ -168,9 +168,9 @@ const UI = {
     footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
     footPlayer: "Muñeco genérico (sin la skin de Mojang) con los modelos 3D de cada reliquia, ubicados con la misma regla que usa Trinkets. Las vendas y el anillo se ponen en ambas manos si hay uno en cada espacio; aquí se ven en las dos. El cetro no se pone: se lleva en la mano.",
     slot: "Espacio", rarity: "Rareza", perPyramid: "Por pirámide (4 cofres)", info: "Información",
-    slotNames: {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes", "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria", "feet/shoes": "zapatos", "chest/back": "espalda", "chest/cape": "capa", "hand": "mano", "inventory": "inventario"},
+    slotNames: {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes", "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria", "feet/shoes": "zapatos", "chest/back": "espalda", "chest/cape": "capa", "block": "bloque (se coloca)", "hand": "mano", "inventory": "inventario"},
     rarities: {common: "común", uncommon: "poco común", rare: "rara", epic: "épica"} },
-  en_us: { subtitle: "Preview of the Egyptian and Greek relics, built from the mod's own files.",
+  en_us: { subtitle: "Preview of the relics by culture, built from the mod's own files.",
     invTitle: "Creative tab and tooltips",
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
@@ -182,17 +182,17 @@ const UI = {
     footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
     footPlayer: "Generic figure (no Mojang skin) wearing each relic's 3D model, placed with the same rule Trinkets uses. Wraps and rings show on both hands here. The scepter isn't worn: it's held.",
     slot: "Slot", rarity: "Rarity", perPyramid: "Per pyramid (4 chests)", info: "Information",
-    slotNames: {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves", "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand", "feet/shoes": "shoes", "chest/back": "back", "chest/cape": "cape", "hand": "hand", "inventory": "inventory"},
+    slotNames: {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves", "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand", "feet/shoes": "shoes", "chest/back": "back", "chest/cape": "cape", "block": "block (placed)", "hand": "hand", "inventory": "inventory"},
     rarities: {common: "common", uncommon: "uncommon", rare: "rare", epic: "epic"} },
 };
 const RARITY_COLOR = { common: "c-white", uncommon: "c-yellow", rare: "c-aqua", epic: "c-purple" };
 let lang = "es_es";
 /* Pestañas por cultura: cada una muestra solo sus reliquias. Se recuerda la última y va en el enlace (#egipto). */
-const CULTURE_HASH = { egypt: "egipto", greece: "grecia" };
-const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia" }, en_us: { egypt: "Egypt", greece: "Greece" } };
+const CULTURE_HASH = { egypt: "egipto", greece: "grecia", rome: "roma" };
+const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma" }, en_us: { egypt: "Egypt", greece: "Greece", rome: "Rome" } };
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
-  greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"] };
+  greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);

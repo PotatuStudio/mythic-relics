@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:rome/sibylline_books",
+  "category": "mythicrelics:rome",
+  "name": "item.mythicrelics.sibylline_books",
+  "icon": "mythicrelics:sibylline_books",
+  "x": 1,
+  "y": 5,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.sibylline_books.effect",
+      "item": "mythicrelics:sibylline_books"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.sibylline_books",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.sibylline_books.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.sibylline_books.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:rome/intro"
+    }
+  ]
+}

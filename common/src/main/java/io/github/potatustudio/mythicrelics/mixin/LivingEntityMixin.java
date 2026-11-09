@@ -5,6 +5,7 @@ import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,7 +26,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  *       Bastet (caídas); Perseo (lo petrificado) y el Baño del Estigia (de frente y por la espalda);</li>
  *   <li>el Ojo de Horus impide la Ceguera y la Oscuridad;</li>
  *   <li>el renacer de Osiris, en la misma comprobación que el tótem;</li>
- *   <li>la égida de Atenea, al bloquear con escudo.</li>
+ *   <li>la égida de Atenea, al bloquear con escudo, y el Ancile, que devuelve los proyectiles bloqueados;</li>
+ *   <li>la lámpara de Vesta impide congelarse; el Ancile protege a los aldeanos en una invasión.</li>
  * </ul>
  */
 @Mixin(LivingEntity.class)
@@ -38,7 +40,8 @@ public abstract class LivingEntityMixin {
 			amount *= 1.0f - EgyptRelics.ANKH_UNDEAD_REDUCTION;
 		}
 		amount = EgyptGods.modifyIncomingDamage(self, source, amount);
-		return GreeceHeroes.modifyIncomingDamage(self, source, GreeceRelics.modifyIncomingDamage(self, source, amount));
+		amount = GreeceHeroes.modifyIncomingDamage(self, source, GreeceRelics.modifyIncomingDamage(self, source, amount));
+		return RomeRelics.modifyIncomingDamage(self, source, amount);
 	}
 
 	@Inject(method = "canBeAffected", at = @At("HEAD"), cancellable = true)
@@ -54,6 +57,20 @@ public abstract class LivingEntityMixin {
 	private void mythicrelics$aegis(ServerLevel level, LivingEntity attacker, DamageSource source, float damage, boolean fullyBlocked,
 			CallbackInfo ci) {
 		GreeceRelics.aegisBlocked((LivingEntity) (Object) this, attacker);
+	}
+
+	/** Ancile: después de bloquear un proyectil, se lo devuelve a quien lo lanzó. */
+	@Inject(method = "applyItemBlocking", at = @At("RETURN"))
+	private void mythicrelics$ancile(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Float> cir) {
+		RomeRelics.afterBlocking((LivingEntity) (Object) this, source, cir.getReturnValue());
+	}
+
+	/** Lámpara de Vesta: el fuego que no se apaga no te deja congelarte. */
+	@Inject(method = "canFreeze", at = @At("HEAD"), cancellable = true)
+	private void mythicrelics$vestaWarmth(CallbackInfoReturnable<Boolean> cir) {
+		if (RomeRelics.warmedByVesta((LivingEntity) (Object) this)) {
+			cir.setReturnValue(false);
+		}
 	}
 
 	@Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)

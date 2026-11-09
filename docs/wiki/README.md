@@ -10,3 +10,4 @@ En el juego, todo esto está en el **Códice de reliquias** (requiere Modonomico
 
 - [Egipto](egipto.md): 13 reliquias, con Set de Anubis y Insignias de Osiris.
 - [Grecia](grecia.md): 13 reliquias, con Set de Perseo.
+- [Roma](roma.md): 7 reliquias.

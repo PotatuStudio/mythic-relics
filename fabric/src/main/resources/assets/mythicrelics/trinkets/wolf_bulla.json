@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:wolf_bulla"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "body",
+   "model": "mythicrelics:item/wolf_bulla_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

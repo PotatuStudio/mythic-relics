@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:rome/augur_lituus",
+  "category": "mythicrelics:rome",
+  "name": "item.mythicrelics.augur_lituus",
+  "icon": "mythicrelics:augur_lituus",
+  "x": 3,
+  "y": 5,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.augur_lituus.effect",
+      "item": "mythicrelics:augur_lituus"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.augur_lituus",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.augur_lituus.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.augur_lituus.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:rome/intro"
+    }
+  ]
+}

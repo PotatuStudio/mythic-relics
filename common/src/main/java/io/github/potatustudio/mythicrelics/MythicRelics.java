@@ -5,12 +5,14 @@ import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
+import io.github.potatustudio.mythicrelics.registry.ModBlocks;
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
 import io.github.potatustudio.mythicrelics.registry.ModEffects;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ public final class MythicRelics {
 	public static void init() {
 		ModComponents.init();
 		ModEffects.init();
+		ModBlocks.init();
 		ModItems.init();
 		ModEntities.init();
 		ModLoot.init();
@@ -35,6 +38,7 @@ public final class MythicRelics {
 		EgyptGods.init();
 		GreeceRelics.init();
 		GreeceHeroes.init();
+		RomeRelics.init();
 		LOGGER.info("Mythic Relics cargado");
 	}
 

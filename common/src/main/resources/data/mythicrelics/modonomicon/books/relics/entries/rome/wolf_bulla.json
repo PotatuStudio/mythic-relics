@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:rome/wolf_bulla",
+  "category": "mythicrelics:rome",
+  "name": "item.mythicrelics.wolf_bulla",
+  "icon": "mythicrelics:wolf_bulla",
+  "x": -3,
+  "y": 5,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.wolf_bulla.effect",
+      "item": "mythicrelics:wolf_bulla"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.wolf_bulla",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.wolf_bulla.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.wolf_bulla.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:rome/intro"
+    }
+  ]
+}
