@@ -20,7 +20,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.level.Level;
 
 /**
- * Cerbero del collar: la bestia de tres cabezas, cola de serpiente y serpientes en el lomo. Cada ataque son tres mordidas seguidas, una por
+ * Cerbero del collar: la bestia de tres cabezas y cola de serpiente. Cada ataque son tres mordidas seguidas, una por
  * cabeza (la primera es el golpe normal; las otras dos llegan a los pocos ticks). En el Nether, sus mordidas prenden fuego.
  * Como el chacal, no elige objetivos solo ({@code Minions} lo dirige) y no le afecta el fuego.
  */

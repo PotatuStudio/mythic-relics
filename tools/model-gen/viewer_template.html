@@ -164,7 +164,7 @@ const UI = {
     subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjPlayer: "Reliquias puestas",
     walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
-    footCerberus: "Cerbero como lo describe Apolodoro: tres cabezas de perro, cola de serpiente y serpientes en el lomo. Aparece con llamas de alma y muerde tres veces por ataque, una por cabeza; las fauces gruñen a destiempo.",
+    footCerberus: "Cerbero como lo describe Apolodoro: tres cabezas de perro y cola de serpiente. Aparece con llamas de alma y muerde tres veces por ataque, una por cabeza; las fauces gruñen a destiempo.",
     footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
     footPlayer: "Muñeco genérico (sin la skin de Mojang) con los modelos 3D de cada reliquia, ubicados con la misma regla que usa Trinkets. Las vendas y el anillo se ponen en ambas manos si hay uno en cada espacio; aquí se ven en las dos. El cetro no se pone: se lleva en la mano.",
     slot: "Espacio", rarity: "Rareza", perPyramid: "Por pirámide (4 cofres)", info: "Información",
@@ -178,7 +178,7 @@ const UI = {
     subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjPlayer: "Worn relics",
     walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
-    footCerberus: "Cerberus as Apollodorus describes him: three dog heads, a serpent for a tail and snakes along his back. He appears in soul flames and bites three times per attack, once per head; the jaws snarl out of step.",
+    footCerberus: "Cerberus as Apollodorus describes him: three dog heads and a serpent for a tail. He appears in soul flames and bites three times per attack, once per head; the jaws snarl out of step.",
     footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
     footPlayer: "Generic figure (no Mojang skin) wearing each relic's 3D model, placed with the same rule Trinkets uses. Wraps and rings show on both hands here. The scepter isn't worn: it's held.",
     slot: "Slot", rarity: "Rarity", perPyramid: "Per pyramid (4 chests)", info: "Information",
@@ -541,7 +541,7 @@ const jTail = part(jackal.root, jackalMat, [0, 12.5, 6], [Math.PI / 5, 0, 0], [[
 const jLeg = (x, z, mirror) => part(jackal.root, jackalMat, [x, 17, z], [0, 0, 0], [[0, 17, -1, 0, -1, 2, 7, 2, mirror]]);
 const jLF = jLeg(1.5, -4.5, false), jRF = jLeg(-1.5, -4.5, true), jLH = jLeg(1.5, 4.5, false), jRH = jLeg(-1.5, 4.5, true);
 
-/* Cerbero (CerberusModel.java): tres cabezas con mandíbula, serpientes en el lomo y cola de serpiente. Textura 64x64. */
+/* Cerbero (CerberusModel.java): tres cabezas con mandíbula y cola de serpiente. Textura 64x64. */
 const cerberus = entityRoot();
 const C_TURN = 0.5;
 const cPart = (parent, offset, rot, cubes) => part(parent, cerberusMat, offset, rot, cubes, 64);
@@ -553,9 +553,6 @@ for (const [offset, turn] of [[[0, 7, -8], 0], [[5, 9, -6.5], -C_TURN], [[-5, 9,
   cHeads.push(h);
   cJaws.push(cPart(h, [0, 1, -5], [0, 0, 0], [[36, 18, -2, 0, -5, 4, 1, 5, false]]));
 }
-const C_SNAKES = [[-1.5, 5, -6, -0.35], [1.5, 5, -3.5, -0.45], [-1.5, 5, -1, -0.55], [1.5, 7, 1.5, -0.6], [-1.5, 7, 4, -0.7]];
-const cSnakes = C_SNAKES.map(([x, y, z, tilt]) => cPart(cerberus.root, [x, y, z], [tilt, 0, 0],
-  [[40, 32, -0.5, -4, -0.5, 1, 4, 1, false], [44, 32, -1, -5, -1.5, 2, 1, 2, false]]));
 const cTail = cPart(cerberus.root, [0, 9, 8], [0.5, 0, 0], [[32, 24, -1, -1, 0, 2, 2, 6, false]]);
 const cTailMid = cPart(cTail, [0, 0, 6], [-0.9, 0, 0], [[48, 24, -1, -1, 0, 2, 2, 5, false]]);
 const cTailHead = cPart(cTailMid, [0, 0, 5], [-0.4, 0, 0], [[28, 32, -1.5, -1, 0, 3, 2, 3, false]]);
@@ -714,7 +711,6 @@ function setupAnim() {
   cTail.rotation.set(0.5, Math.sin(age * 0.12) * 0.4, 0);
   cTailMid.rotation.set(-0.9, Math.sin(age * 0.12 - 1) * 0.5, 0);
   cTailHead.rotation.set(-0.4, Math.sin(age * 0.12 - 2) * 0.6, 0);
-  cSnakes.forEach((sn, i) => sn.rotation.set(C_SNAKES[i][3] + Math.cos(age * 0.14 + i) * 0.12, 0, Math.sin(age * 0.18 + i * 1.3) * 0.3));
 }
 
 /* Partículas al aparecer: el escarabajo suelta las del bloque que pisa (Minions#dig); el chacal, almas. */

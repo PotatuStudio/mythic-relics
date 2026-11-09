@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 
-/** Cerbero: pelaje de sombra, ojos de brasa, fauces rojas y serpientes verde oscuro. */
+/** Cerbero: pelaje de sombra, ojos de brasa, fauces rojas y cola de serpiente. */
 public class CerberusRenderer extends MobRenderer<Cerberus, LivingEntityRenderState, CerberusModel> {
 	private static final Identifier TEXTURE = MythicRelics.id("textures/entity/cerberus.png");
 

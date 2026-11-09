@@ -1,5 +1,5 @@
 """Textura 64x64 de Cerbero (layout de CerberusModel): pelaje de sombra con cresta más oscura, ojos de brasa, fauces
-rojas con colmillos de marfil, garras, y serpientes verde oscuro de ojos amarillos (cola y lomo).
+rojas con colmillos de marfil, garras, y la cola de serpiente verde oscuro de ojos amarillos.
 Uso: python cerberus_texture.py <salida.png>  (requiere Pillow)"""
 import random
 import sys
@@ -115,10 +115,6 @@ box(48, 24, 2, 2, 5, **snake)
 # Cabeza de la cola (28,32) 3x2x3: mira hacia atrás (su "frente" es la cara de atrás del cubo).
 box(28, 32, 3, 2, 3, **snake, back=lambda x, y, w, h: SNAKE_EYE if y == 0 and x in (0, 2) else
     TONGUE if y == 1 and x == 1 else scales(x, y, w, h))
-# Serpientes del lomo: cuello (40,32) 1x4x1 y cabeza (44,32) 2x1x2 con ojos al frente.
-box(40, 32, 1, 4, 1, **snake)
-box(44, 32, 2, 1, 2, side=scales, top=scales, bottom=lambda *a: SCALE_BELLY,
-    front=lambda x, y, w, h: SNAKE_EYE)
 
 img.save(sys.argv[1])
 print("ok", sys.argv[1])

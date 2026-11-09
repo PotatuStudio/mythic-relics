@@ -13,8 +13,8 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Cerbero como lo describe Apolodoro: tres cabezas de perro, cola de serpiente y serpientes que le salen del lomo. Bestia
- * de lomo encorvado (pecho alto y ancho, cadera más baja), patas gruesas con garras y fauces que se abren y gruñen a
+ * Cerbero: tres cabezas de perro y cola de serpiente, como en Apolodoro (sin las serpientes del lomo, a pedido del
+ * usuario). Bestia de lomo encorvado (pecho alto y ancho, cadera más baja), patas gruesas con garras y fauces que se abren y gruñen a
  * destiempo. Las cabezas de los lados miran hacia afuera.
  */
 public class CerberusModel extends EntityModel<LivingEntityRenderState> {
@@ -22,14 +22,9 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 
 	/** Giro hacia afuera de las cabezas de los lados. */
 	private static final float SIDE_TURN = 0.5f;
-	/** Serpientes del lomo: x, y, z de la base e inclinación hacia atrás. */
-	private static final float[][] BACK_SNAKES = {
-			{-1.5f, 5.0f, -6.0f, -0.35f}, {1.5f, 5.0f, -3.5f, -0.45f}, {-1.5f, 5.0f, -1.0f, -0.55f},
-			{1.5f, 7.0f, 1.5f, -0.6f}, {-1.5f, 7.0f, 4.0f, -0.7f}};
 
 	private final ModelPart[] heads = new ModelPart[3];
 	private final ModelPart[] jaws = new ModelPart[3];
-	private final ModelPart[] snakes = new ModelPart[BACK_SNAKES.length];
 	private final ModelPart tail;
 	private final ModelPart tailMid;
 	private final ModelPart tailHead;
@@ -44,9 +39,6 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 		for (int i = 0; i < 3; i++) {
 			heads[i] = root.getChild(names[i]);
 			jaws[i] = heads[i].getChild("jaw");
-		}
-		for (int i = 0; i < snakes.length; i++) {
-			snakes[i] = root.getChild("snake_" + i);
 		}
 		tail = root.getChild("tail");
 		tailMid = tail.getChild("tail_mid");
@@ -79,14 +71,6 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 		dogHead(root, "head", PartPose.offset(0.0f, 7.0f, -8.0f));
 		dogHead(root, "left_head", PartPose.offsetAndRotation(5.0f, 9.0f, -6.5f, 0.0f, -SIDE_TURN, 0.0f));
 		dogHead(root, "right_head", PartPose.offsetAndRotation(-5.0f, 9.0f, -6.5f, 0.0f, SIDE_TURN, 0.0f));
-		// Serpientes del lomo: cuello fino y cabeza.
-		for (int i = 0; i < BACK_SNAKES.length; i++) {
-			float[] s = BACK_SNAKES[i];
-			root.addOrReplaceChild("snake_" + i, CubeListBuilder.create()
-					.texOffs(40, 32).addBox(-0.5f, -4.0f, -0.5f, 1, 4, 1)
-					.texOffs(44, 32).addBox(-1.0f, -5.0f, -1.5f, 2, 1, 2),
-					PartPose.offsetAndRotation(s[0], s[1], s[2], s[3], 0.0f, 0.0f));
-		}
 		// Cola de serpiente en tres tramos, con su propia cabeza.
 		PartDefinition tail = root.addOrReplaceChild("tail", CubeListBuilder.create()
 				.texOffs(32, 24).addBox(-1.0f, -1.0f, 0.0f, 2, 2, 6), PartPose.offsetAndRotation(0.0f, 9.0f, 8.0f, 0.5f, 0.0f, 0.0f));
@@ -131,13 +115,9 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 		for (int i = 0; i < 3; i++) {
 			jaws[i].xRot = 0.15f + Math.abs(Mth.sin(age * 0.2f + i * 2.1f)) * (0.25f + 0.3f * speed);
 		}
-		// La cola de serpiente se menea y su cabeza busca; las del lomo se mecen.
+		// La cola de serpiente se menea y su cabeza busca.
 		tail.yRot = Mth.sin(age * 0.12f) * 0.4f;
 		tailMid.yRot = Mth.sin(age * 0.12f - 1.0f) * 0.5f;
 		tailHead.yRot = Mth.sin(age * 0.12f - 2.0f) * 0.6f;
-		for (int i = 0; i < snakes.length; i++) {
-			snakes[i].zRot = Mth.sin(age * 0.18f + i * 1.3f) * 0.3f;
-			snakes[i].xRot = BACK_SNAKES[i][3] + Mth.cos(age * 0.14f + i) * 0.12f;
-		}
 	}
 }

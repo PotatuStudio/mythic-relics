@@ -106,7 +106,7 @@ biblioteca), recompensas de cámaras de desafío y ciudades antiguas. Espacios: 
 Diseño aprobado en `docs/ideas.md`. Código en `greece/GreeceHeroes` (constantes y lógica: Ícaro en el servidor,
 vellocino, Cerbero y el daño del Estigia), `PandoraJarItem`, `StyxWaterItem` (da el efecto `mythicrelics:styx_bath`,
 registrado en `registry/ModEffects`) y `PrometheusFennelItem` (cocina con las recetas de horno). Entidad nueva
-`entity/Cerberus` (aliado de `Minions`, tres mordidas por ataque) con `client/entity/CerberusModel` (tres cabezas, cola de serpiente y serpientes en el lomo, como en Apolodoro) y su
+`entity/Cerberus` (aliado de `Minions`, tres mordidas por ataque) con `client/entity/CerberusModel` (tres cabezas y cola de serpiente, como en Apolodoro) y su
 textura de `tools/model-gen/cerberus_texture.py`. Ícaro: el planeo y los aleteos los decide el cliente
 (`client/GreeceClient`) y los avisa con el paquete `mythicrelics:icarus`; la cera derretida es la recarga del ítem de las
 alas (el cliente la ve). Si llevas las sandalias de Hermes, el primer salto en el aire es el de Hermes y los siguientes,
