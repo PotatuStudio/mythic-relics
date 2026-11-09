@@ -74,7 +74,7 @@ public final class ModItems {
 	// Grecia, segunda tanda.
 	public static final RegistrySupplier<Item> ICARUS_WINGS = relic("icarus_wings", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> GOLDEN_FLEECE = relic("golden_fleece", p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> CERBERUS_COLLAR = relic("cerberus_collar", p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> CERBERUS_COLLAR = relic("cerberus_collar", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> PANDORA_JAR = register("pandora_jar", PandoraJarItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> STYX_WATER = register("styx_water", StyxWaterItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> PROMETHEUS_FENNEL = register("prometheus_fennel", PrometheusFennelItem::new,

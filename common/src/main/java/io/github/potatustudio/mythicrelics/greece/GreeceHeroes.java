@@ -58,7 +58,7 @@ public final class GreeceHeroes {
 
 	public static final float FLEECE_NUGGET_CHANCE = 0.10f;
 
-	public static final int CERBERUS_TICKS = 300;
+	public static final int CERBERUS_TICKS = 400;
 	public static final int CERBERUS_COOLDOWN = 1200;
 	public static final int CERBERUS_BITES = 3;
 	public static final int CERBERUS_BURN_SECONDS = 3;

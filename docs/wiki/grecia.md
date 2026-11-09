@@ -16,7 +16,7 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 | ![](img/orpheus_lyre.png) | [Lira de Orfeo](#orpheus-lyre) | mano | épica | Ciudades antiguas: 3 % por cofre |
 | ![](img/icarus_wings.png) | [Alas de Ícaro](#icarus-wings) | espalda | épica | Grava sospechosa de ruinas oceánicas frías: 1.5 % por bloque cepillado |
 | ![](img/golden_fleece.png) | [Vellocino de oro](#golden-fleece) | capa | épica | Casas de pastor: 4 % por cofre; Tesoros de naufragios: 2 % por cofre |
-| ![](img/cerberus_collar.png) | [Collar de Cerbero](#cerberus-collar) | collar | rara | Tesoros de bastiones: 3 % por cofre; Bastiones: 3 % por cofre; Puentes de bastiones: 3 % por cofre; Establos de hoglins: 3 % por cofre |
+| ![](img/cerberus_collar.png) | [Collar de Cerbero](#cerberus-collar) | collar | épica | Tesoros de bastiones: 3 % por cofre; Bastiones: 3 % por cofre; Puentes de bastiones: 3 % por cofre; Establos de hoglins: 3 % por cofre |
 | ![](img/pandora_jar.png) | [Jarra de Pandora](#pandora-jar) | mano | épica | Mansiones del bosque: 5 % por cofre |
 | ![](img/styx_water.png) | [Agua del Estigia](#styx-water) | mano | épica | Ciudades antiguas: 2 % por cofre |
 | ![](img/prometheus_fennel.png) | [Hinojo de Prometeo](#prometheus-fennel) | mano | rara | Portales en ruinas: 3 % por cofre |
@@ -166,9 +166,9 @@ Jasón y los argonautas la buscaron porque traerla era la prueba para reclamar e
 
 <img src="img/cerberus_collar.png" width="64" alt="">
 
-**Espacio:** collar · **Rareza:** rara
+**Espacio:** collar · **Rareza:** épica
 
-- Cuando un mob te hiere, aparece Cerbero que lo ataca durante 15 s: 3 mordidas por ataque
+- Cuando un mob te hiere, aparece Cerbero que lo ataca durante 20 s: 3 mordidas por ataque
 - En el Nether, sus mordidas prenden fuego 3 s
 - Recarga: 60 s
 
