@@ -113,6 +113,27 @@ Ideas originales de Roma (descartadas por ser historia, no mito):
 | Gladius de bronce | arma | Espada corta y rápida; crítico garantizado por la espalda. | Ruinas de los senderos |
 
 ## Nórdicos
+Primera tanda: diseño aprobado el 2026-11-09, falta programarla (página de diseño:
+https://claude.ai/artifact/4Hj4Nnxahhj6uZo5FSR8oV). Decisiones: Mjölnir y Gungnir lanzables con proyectil propio, set
+de Thor, las 8 reliquias. Correcciones a las ideas iniciales: la «runa de Valhalla» y la «semilla de Yggdrasil» no son
+del mito (cambiadas por Megingjörð y las manzanas de Iðunn), la «cadena de Fenrir» era Gleipnir (una cinta de seda) y
+Mjölnir era de hierro, no de cobre. «Solo los dignos pueden levantarlo» es de Marvel y no se usa. Para la tanda 2:
+Sleipnir, Huginn y Muninn, Brísingamen, Skíðblaðnir y la cabeza de Mímir.
+
+| Reliquia | Espacio | Efecto aprobado | Dónde |
+|---|---|---|---|
+| Mjölnir | arma (se lanza) | Martillo cuerpo a cuerpo; lanzado vuela hasta 24 bloques (mango corto), golpea y vuelve; en tormenta, rayo donde golpea. | Bóvedas ominosas de cámaras de desafío, 2 % |
+| Járngreipr | guantes (compite con vendas y garras) | +3 de daño sin arma; los rayos no te hacen daño. | Minas abandonadas, 3 % |
+| Megingjörð | cinturón (compite con el escarabajo) | +25 % de daño cuerpo a cuerpo y la mitad del retroceso recibido. | Iglús, 6 % |
+| Set de Thor | las tres | Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta. | — |
+| Gungnir | arma (se lanza) | Lanza que busca al mob más cercano a donde apuntas (32 bloques) y vuelve. | Ciudades del End, 3 % |
+| Draupnir | anillo (compite con el de los chacales) | Al amanecer de cada novena noche que lo llevas, gotean 8 lingotes de oro. | Tesoros enterrados, 6 % |
+| Gjallarhorn | mano | Toque (2 s): tú y tus aliados a 32 bloques, Fuerza I y Velocidad I 60 s; hostiles a 64 bloques brillan 10 s. Recarga 5 min. | Puestos de saqueadores, 4 % |
+| Gleipnir | mano | Clic derecho a un mob: atado 6 s (no se mueve ni ataca; no jefes). Recarga 30 s. | Ciudades antiguas, 3 % |
+| Manzanas de Iðunn | mano (se comen) | Comer: Regeneración II 10 s, Absorción I 2 min y quita veneno, marchitamiento, lentitud, debilidad y hambre. Hasta 3; crece una por día. | Casas de aldeas nevadas, 4 % |
+
+Ideas originales nórdicas (punto de partida):
+
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
 | Mjölnir de cobre | arma | Martillo arrojadizo que vuelve; bajo tormenta, rayo al golpear. | Cámaras de desafío, muy raro |
