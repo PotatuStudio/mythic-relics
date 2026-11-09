@@ -161,6 +161,23 @@ Ideas originales nórdicas (punto de partida):
 | Semilla de Yggdrasil | collar | Cultivos y árboles cercanos crecen más rápido. | Ruinas de los senderos |
 
 ## Celtas
+Propuesta para la tanda 1 (sin aprobar; se empezaron borradores de íconos, no hay página todavía). Criterio: mitología
+irlandesa propia (los tesoros de los Tuatha Dé Danann, Manannán, la Morrígan). El torque de oro es historia, no mito:
+preguntar si va.
+
+| Reliquia | Espacio | Efecto propuesto | Dónde (propuesta) |
+|---|---|---|---|
+| Caldero del Dagda | mano | Una vez por día: hambre y saturación llenas y Regeneración I para ti y los jugadores a 8 bloques («nadie se iba sin saciarse»). | Arena sospechosa de ruinas de los senderos (los túmulos de los sídhe) |
+| Garrote del Dagda | arma | Golpe muy fuerte y lento; agachado + clic derecho sobre un aliado o en el aire cura 6 corazones (un extremo mata, el otro revive). Recarga 60 s. | Ruinas de los senderos |
+| Arpa del Dagda (Uaithne) | mano | Tocarla 3 s cambia el clima en orden (despejado, lluvia, tormenta): ordenaba las estaciones. Recarga 5 min. | Ruinas de los senderos (raro) |
+| Lanza de Lugh (Areadbhar) | arma | Prende fuego; sed de sangre: +10 % de daño por muerte reciente (máx. 5); si pasa 2 min sin matar mientras la sostienes, empieza a quemarte (en el mito había que sumergir su punta). | Fortalezas del Nether |
+| Fragarach (la Respondona) | arma | Ignora la armadura; el golpeado queda quieto 1 s («nadie podía moverse ante ella»). | Cofre grande de ruinas submarinas |
+| Manto de Manannán | capa | Con 4 corazones o menos: niebla, invisibilidad 6 s y los mobs a 8 bloques quedan ciegos y pierden tu rastro. Recarga 2 min. | Cofre chico de ruinas submarinas |
+| Pluma de la Morrígan | sombrero | Al matar, el hostil más cercano queda marcado 10 s (brilla y recibe +25 % de daño): presagio de muerte. | Mansiones del bosque |
+| Torque de oro (historia) | collar | +2 de armadura por cada pieza de armadura que no lleves (máx. +8): los gaesatae peleaban desnudos con torques. | Mazmorras |
+
+Ideas originales celtas (punto de partida):
+
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
 | Caldero del Dagda | mano | Una vez al día, estofado que llena el hambre y regenera. | Cabañas de bruja |

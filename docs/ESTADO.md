@@ -180,7 +180,12 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
 ## Después
-1. Probar en el juego (en el PC del usuario) la tanda de Egipto completa: efectos, aliados, reliquias puestas, libro
-   y JEI.
-2. Segunda tanda de Egipto (diseño a revisar con el usuario antes de programar).
-3. Portar Misfit Relics a Architectury (mismo esquema de módulos).
+1. **Probar en el juego** (en el PC del usuario) todo lo programado: Egipto 1 y 2, Grecia 1 y 2, Roma 1 y nórdicos 1 y 2
+   (60 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
+   Gungnir en vuelo (se dibujan como el ícono de cara a la cámara), Sleipnir (patas del medio al galopar, la capa que
+   brilla, caminar sobre el agua), el modelo del Paladio, los candados de Jano y la búsqueda de estructuras de la sibila.
+2. **Celtas**: propuesta sin aprobar en `docs/ideas.md` (8 reliquias); falta armar la página de diseño y preguntar.
+3. Pendiente menor: renderizador propio que gire a Mjölnir y Gungnir en el aire; actualizar el ícono del mod
+   (`icon.png`, hoy hecho con íconos de Egipto) al estilo del emblema de la pestaña.
+4. Folclore japonés y otras culturas de `docs/ideas.md`.
+5. Portar Misfit Relics a Architectury (mismo esquema de módulos).
