@@ -10,11 +10,24 @@ Primera tanda (escarabajo, Ojo de Horus, Anj, vendas de momia y set de Anubis): 
 
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
-| Disco solar de Ra | sombrero | De día tus golpes queman a los no-muertos. | Pirámides |
-| Amuleto de Bastet | collar | Caes de pie (sin daño hasta 10 bloques); los creepers te evitan. | Aldeas del desierto |
-| Tablilla de Thot | mano | Encantar cuesta menos niveles. | Bibliotecas de fortaleza |
-| Cayado y mayal de Osiris | mano (dos) | Cayado domestica animales al instante; mayal golpea en área. | Pirámides, muy raro |
-| Garras de Sekhmet | guantes | Frenesí: más fuerza y velocidad mientras más matas seguido. | Templos del desierto |
+Segunda tanda: diseño aprobado el 2026-11-09 (ver la tabla siguiente); falta pulir íconos y programarla.
+Se encuentra sobre todo con **arqueología** (arena sospechosa de pirámides y pozos del desierto).
+
+| Reliquia | Espacio | Efecto aprobado | Dónde |
+|---|---|---|---|
+| Disco solar de Ra | sombrero (NeoForge: 2.º espacio de cabeza) | Bajo el sol: +30 % de daño a no-muertos y los prende 5 s. Ureo: escupe fuego (3 s) a quien te golpea cuerpo a cuerpo, recarga 10 s. De noche solo el ureo. | Arena sospechosa de pirámides, 1,5 % |
+| Amuleto de Bastet | collar (compite con el Anj) | Creepers y phantoms te evitan; sin daño de caída hasta 6 bloques y el resto a la mitad. | Casas de aldeas del desierto 4 %; arena sospechosa de pozos del desierto 5 % |
+| Tablilla de Thot (nombre por confirmar: Paleta de escriba de Thot) | mano secundaria | Clic derecho guarda 1 nivel de experiencia (hasta 30), agachado lo devuelve; no se pierde al morir. +20 % de experiencia en la mano secundaria. | Arena sospechosa de pirámides, 3 % |
+| Cayado de Osiris | mano secundaria | Animales de granja te siguen; clic derecho vuelve adulta una cría (recarga 30 s). | Cofres de pirámides, 2 % |
+| Mayal de Osiris | arma | Ataque cargado giratorio (2,5 bloques, 60 % del daño); trilla cultivos maduros en 3×3. | Cofres de pirámides, 2 % |
+| Set de Osiris | ambas manos | Renacer: con daño mortal revives con 4 corazones y Regeneración II 5 s; recarga un día de Minecraft. | — |
+| Garras de Sekhmet | guantes (compite con las vendas) | Frenesí por muertes en 5 s (máx. 3): +10 % daño y velocidad por nivel; con 3, prende fuego 3 s; al terminar un frenesí 3, cura 2 corazones. | Arena sospechosa de pirámides, 1,5 % |
+
+Fidelidad (fiel / licencia / pop): ninguna depende de cultura pop. Licencias: daño a no-muertos (Ra), caer de pie y
+creepers/phantoms (Bastet), guardar experiencia (Thot), golpe giratorio y crías (Osiris), frenesí acumulable (Sekhmet).
+Matices: el gato que decapita a Apep es Ra como “Gran Gato”, no exactamente Bastet; el origen del mayal se discute; las
+tablillas de arcilla son mesopotámicas (de ahí el posible cambio de nombre). Página de diseño:
+https://claude.ai/artifact/TVhToSr5yZL8YrgbfKAyfH
 
 ## Grecia
 | Reliquia | Espacio | Efecto | Dónde |
