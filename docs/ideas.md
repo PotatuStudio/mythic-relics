@@ -30,6 +30,28 @@ tablillas de arcilla son mesopotámicas (de ahí el posible cambio de nombre). P
 https://claude.ai/artifact/TVhToSr5yZL8YrgbfKAyfH
 
 ## Grecia
+Primera tanda: diseño aprobado el 2026-11-09 (página de diseño:
+https://claude.ai/artifact/MCuhiAWJDj8RXgu5W1Cnhu); falta programarla.
+Fidelidad: ninguna depende de cultura pop. Correcciones al aplicar el criterio: la «caja» de Pandora era una jarra
+(*pithos*; «caja» viene de una mala traducción de Erasmo), la «tobillera» de Aquiles no es un objeto del mito (lo fiel es
+el agua del Estigia) y el óbolo de Caronte pagaba el pasaje, no evitaba la muerte.
+
+| Reliquia | Espacio | Efecto aprobado | Dónde |
+|---|---|---|---|
+| Sandalias aladas de Hermes | zapatos / pies | +20 % de velocidad, doble salto, la arena y la tierra de almas no frenan. | Arena sospechosa de ruinas de los senderos, 2 % |
+| Yelmo de Hades | sombrero / cabeza | Agachado y quieto 2 s: invisible y los mobs pierden tu rastro; moverse rápido o atacar lo rompe. | Fortalezas del Nether, 4 % |
+| Égida de Atenea | espalda | Al bloquear con escudo un golpe cuerpo a cuerpo, el atacante queda aturdido 2 s y retrocede. | Recompensa de cámaras de desafío, 3 % |
+| Set de Perseo | sandalias + yelmo + égida | La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño. | — |
+| Cabeza de Medusa | mano secundaria | Clic derecho: petrifica 5 s a los mobs que te miran a 16 bloques (no jefes). Recarga 60 s. | Arena sospechosa de ruinas oceánicas cálidas, 1,5 % |
+| Hilo de Ariadna | mano | Clic derecho marca el inicio (se ve el hilo rojo); agachado + clic derecho te devuelve (misma dimensión, hasta 256 bloques). Recarga 5 min. | Pasillos y bibliotecas de la fortaleza, 6 % |
+| Óbolo de Caronte | inventario | Si mueres con él, conservas inventario y experiencia; se gasta. | Fortalezas del Nether 5 %; arena sospechosa de ruinas de los senderos 3 % |
+| Lira de Orfeo | mano | Mantener clic derecho: los animales a 16 bloques te siguen y los hostiles a 8 bloques se duermen mientras suena (no jefes); no puedes atacar y vas lento. | Ciudades antiguas, 3 % |
+
+Segunda tanda (ideas a revisar): alas de Ícaro, vellocino de oro, collar de Cerbero, jarra de Pandora, agua del Estigia
+(Aquiles) y antorcha de Prometeo.
+
+Ideas originales de Grecia (punto de partida):
+
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
 | Sandalias de Hermes | zapatos | Velocidad y doble salto; la arena de almas no te frena. | Ruinas de los senderos |
