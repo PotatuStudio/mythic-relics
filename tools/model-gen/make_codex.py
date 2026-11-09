@@ -67,6 +67,8 @@ CULTURE_INFO = {
             "jarngreipr": (-2, 2), "mjolnir": (0, 2), "megingjord": (2, 2), "thor_set": (0, 4),
             "gungnir": (-3, 7), "draupnir": (-1, 7), "gjallarhorn": (1, 7), "gleipnir": (3, 7),
             "idunn_apples": (0, 9),
+            "sleipnir_horseshoe": (-3, 12), "odin_ravens": (-1, 12), "mimir_head": (1, 12), "brisingamen": (3, 12),
+            "skidbladnir": (-2, 14), "andvaranaut": (0, 14), "odrerir": (2, 14),
         },
     },
 }

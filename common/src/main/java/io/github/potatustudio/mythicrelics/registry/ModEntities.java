@@ -7,6 +7,7 @@ import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.Cerberus;
 import io.github.potatustudio.mythicrelics.entity.Jackal;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
+import io.github.potatustudio.mythicrelics.entity.Sleipnir;
 import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -48,6 +49,15 @@ public final class ModEntities {
 					.updateInterval(20)
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("thrown_relic"))));
 
+	/** Sleipnir, invocado con la herradura: no se guarda con el mundo (vuelve a Asgard). */
+	public static final RegistrySupplier<EntityType<Sleipnir>> SLEIPNIR = ENTITIES.register("sleipnir",
+			() -> EntityType.Builder.of(Sleipnir::new, MobCategory.CREATURE)
+					.sized(1.3964844f, 1.6f)
+					.eyeHeight(1.52f)
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("sleipnir"))));
+
 	private ModEntities() {
 	}
 
@@ -56,5 +66,6 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(SCARAB, Scarab::createAttributes);
 		EntityAttributeRegistry.register(JACKAL, Jackal::createAttributes);
 		EntityAttributeRegistry.register(CERBERUS, Cerberus::createAttributes);
+		EntityAttributeRegistry.register(SLEIPNIR, Sleipnir::createAttributes);
 	}
 }

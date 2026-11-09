@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:norse/sleipnir_horseshoe",
+  "category": "mythicrelics:norse",
+  "name": "item.mythicrelics.sleipnir_horseshoe",
+  "icon": "mythicrelics:sleipnir_horseshoe",
+  "x": -3,
+  "y": 12,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.sleipnir_horseshoe.effect",
+      "item": "mythicrelics:sleipnir_horseshoe"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.sleipnir_horseshoe",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.sleipnir_horseshoe.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.sleipnir_horseshoe.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:norse/intro"
+    }
+  ]
+}

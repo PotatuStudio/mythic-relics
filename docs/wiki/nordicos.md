@@ -15,6 +15,13 @@ Están donde su mito calza: el frío del norte, las minas de los enanos y las pr
 | ![](img/gjallarhorn.png) | [Gjallarhorn](#gjallarhorn) | mano | épica | Puestos de saqueadores: 4 % por cofre |
 | ![](img/gleipnir.png) | [Gleipnir](#gleipnir) | mano | épica | Ciudades antiguas: 3 % por cofre |
 | ![](img/idunn_apples.png) | [Manzanas de Iðunn](#idunn-apples) | mano | épica | Casas de aldeas nevadas: 4 % por cofre |
+| ![](img/sleipnir_horseshoe.png) | [Herradura de Sleipnir](#sleipnir-horseshoe) | mano | épica | Casas de aldeas de sabana: 4 % por cofre |
+| ![](img/odin_ravens.png) | [Huginn y Muninn](#odin-ravens) | mano | épica | Ciudades del End: 3 % por cofre |
+| ![](img/brisingamen.png) | [Brísingamen](#brisingamen) | collar | épica | Minas abandonadas: 2 % por cofre |
+| ![](img/skidbladnir.png) | [Skíðblaðnir](#skidbladnir) | mano | épica | Provisiones de naufragios: 4 % por cofre |
+| ![](img/mimir_head.png) | [Cabeza de Mímir](#mimir-head) | mano secundaria | épica | Cruces de la fortaleza: 4 % por cofre |
+| ![](img/andvaranaut.png) | [Andvaranaut](#andvaranaut) | anillo | épica | Tesoros de bastiones: 3 % por cofre |
+| ![](img/odrerir.png) | [Óðrerir](#odrerir) | mano | rara | Casas de aldeas de taiga: 3 % por cofre |
 
 <a id="mjolnir"></a>
 ## Mjölnir
@@ -137,6 +144,112 @@ Era fina y suave como una cinta de seda.
 Cuando el gigante Þjazi la raptó, los dioses empezaron a envejecer.
 
 **Dónde encontrarla.** **Casas de aldeas nevadas**: 4 % por cofre
+
+<a id="sleipnir-horseshoe"></a>
+## Herradura de Sleipnir
+
+<img src="img/sleipnir_horseshoe.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** épica
+
+- Clic derecho: llamas a Sleipnir y lo montas
+- Muy rápido, salta alto, sin daño de caída y galopa sobre el agua
+- Al bajarte vuelve a Asgard a los 3 s
+- Si muere, vuelve en 5 min
+
+**Mito.** Sleipnir, el caballo de ocho patas de Odín, era el más rápido de todos. Galopaba por el aire y sobre el mar.  
+Hermóðr lo montó para bajar hasta Hel a pedir por Balder.
+
+**Dónde encontrarla.** **Casas de aldeas de sabana**: 4 % por cofre
+
+<a id="odin-ravens"></a>
+## Huginn y Muninn
+
+<img src="img/odin_ravens.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** épica
+
+- Huginn (clic derecho): los hostiles a 48 bloques brillan 15 s
+- Muninn (agachado): dónde moriste y dónde está tu cama
+- Recarga: 60 s
+
+**Mito.** Los cuervos de Odín, Pensamiento y Memoria. Cada mañana vuelan por todo el mundo y al volver le cuentan al oído todo lo que vieron.
+
+**Dónde encontrarla.** **Ciudades del End**: 3 % por cofre
+
+<a id="brisingamen"></a>
+## Brísingamen
+
+<img src="img/brisingamen.png" width="64" alt="">
+
+**Espacio:** collar · **Rareza:** épica
+
+- Los cultivos y las crías a 8 bloques crecen más rápido
+- Al matar a un hostil recuperas 1 corazón
+
+**Mito.** El collar de la diosa Freyja, forjado por cuatro enanos.  
+Freyja era diosa del amor y la fertilidad, y recibía en su salón a la mitad de los guerreros caídos en batalla.
+
+**Dónde encontrarla.** **Minas abandonadas**: 2 % por cofre
+
+<a id="skidbladnir"></a>
+## Skíðblaðnir
+
+<img src="img/skidbladnir.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** épica
+
+- Clic derecho mirando al agua: despliegas un bote
+- Al bajarte se pliega solo. Viento a favor: +60% de velocidad
+
+**Mito.** El barco del dios Freyr, hecho por los hijos de Ivaldi. Cabían todos los dioses con sus armas, siempre tenía viento a favor y se plegaba como un pañuelo para llevarlo en el bolsillo.
+
+**Dónde encontrarla.** **Provisiones de naufragios**: 4 % por cofre
+
+<a id="mimir-head"></a>
+## Cabeza de Mímir
+
+<img src="img/mimir_head.png" width="64" alt="">
+
+**Espacio:** mano secundaria · **Rareza:** épica
+
+- En la mano secundaria: cada 10 s, los minerales valiosos a 8 bloques sueltan partículas a través de la piedra
+- Te avisa cuando un creeper empieza a explotar
+
+**Mito.** Mímir era el más sabio de los dioses. Cuando los vanir lo decapitaron, Odín untó su cabeza con hierbas para que no se pudriera y le cantó encantamientos.  
+Así la cabeza hablaba y le contaba a Odín lo que nadie más sabía.
+
+**Dónde encontrarla.** **Cruces de la fortaleza**: 4 % por cofre
+
+<a id="andvaranaut"></a>
+## Andvaranaut
+
+<img src="img/andvaranaut.png" width="64" alt="">
+
+**Espacio:** anillo · **Rareza:** épica
+
+- El mineral de oro suelta el doble y los piglins te dan el doble en los trueques
+- Maldición: 2 corazones menos de vida máxima y los hostiles cercanos te prefieren a ti
+
+**Mito.** El anillo del enano Andvari, que hacía crecer el oro. Cuando Loki se lo robó, Andvari lo maldijo: traería la ruina a todos sus dueños.  
+Así fue con Hreidmar, con Fafnir y con Sigurd.
+
+**Dónde encontrarla.** **Tesoros de bastiones**: 3 % por cofre
+
+<a id="odrerir"></a>
+## Óðrerir
+
+<img src="img/odrerir.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** rara
+
+- Bébelo: +5 niveles y Prisa I durante 5 min
+- No se gasta: una vez por día
+
+**Mito.** El hidromiel de la poesía, hecho con la sangre del sabio Kvasir: quien lo bebía se volvía poeta o erudito.  
+Odín se lo robó a los gigantes convertido en águila.
+
+**Dónde encontrarla.** **Casas de aldeas de taiga**: 3 % por cofre
 
 ## Set de Thor
 

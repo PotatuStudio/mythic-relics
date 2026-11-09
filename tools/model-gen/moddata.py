@@ -20,7 +20,8 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
          "hermes_sandals", "hades_helm", "athena_aegis", "medusa_head", "ariadne_thread", "charon_obol", "orpheus_lyre",
          "icarus_wings", "golden_fleece", "cerberus_collar", "pandora_jar", "styx_water", "prometheus_fennel",
          "wolf_bulla", "ancile", "palladium", "janus_key", "vesta_lamp", "sibylline_books", "augur_lituus",
-         "mjolnir", "jarngreipr", "megingjord", "gungnir", "draupnir", "gjallarhorn", "gleipnir", "idunn_apples"]
+         "mjolnir", "jarngreipr", "megingjord", "gungnir", "draupnir", "gjallarhorn", "gleipnir", "idunn_apples",
+         "sleipnir_horseshoe", "odin_ravens", "brisingamen", "skidbladnir", "mimir_head", "andvaranaut", "odrerir"]
 # Cultura de cada reliquia (categoría del libro y página de la wiki), en el orden en que se muestran.
 CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:]}
 # Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
@@ -39,7 +40,9 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "wolf_bulla": "chest/necklace", "ancile": "offhand", "palladium": "block", "janus_key": "hand",
          "vesta_lamp": "offhand", "sibylline_books": "hand", "augur_lituus": "hand",
          "mjolnir": "mainhand", "jarngreipr": "hand/glove", "megingjord": "legs/belt", "gungnir": "mainhand",
-         "draupnir": "hand/ring", "gjallarhorn": "hand", "gleipnir": "hand", "idunn_apples": "hand"}
+         "draupnir": "hand/ring", "gjallarhorn": "hand", "gleipnir": "hand", "idunn_apples": "hand",
+         "sleipnir_horseshoe": "hand", "odin_ravens": "hand", "brisingamen": "chest/necklace", "skidbladnir": "hand",
+         "mimir_head": "offhand", "andvaranaut": "hand/ring", "odrerir": "hand"}
 
 
 def read(path):
@@ -55,7 +58,8 @@ def b64(path):
 def constants():
     out = {}
     for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java",
-                 "rome/RomeRelics.java", "norse/NorseRelics.java"):
+                 "rome/RomeRelics.java", "norse/NorseRelics.java",
+                 "norse/NorseGods.java"):
         src = read(os.path.join(JAVA, *name.split("/")))
         out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
     return out
@@ -131,6 +135,14 @@ def tooltip_args(c):
                         int(c["HORN_SIGHT_RADIUS"]), int(c["HORN_GLOW_TICKS"] // 20), int(c["HORN_COOLDOWN"] // 20 // 60)],
         "gleipnir": [int(c["GLEIPNIR_TICKS"] // 20), int(c["GLEIPNIR_COOLDOWN"] // 20)],
         "idunn_apples": [int(c["IDUNN_REGEN_TICKS"] // 20), int(c["IDUNN_ABSORPTION_TICKS"] // 20 // 60), int(c["IDUNN_MAX"])],
+        # Nórdicos, tanda 2 (NorseGods#tooltipArgs)
+        "sleipnir_horseshoe": [int(c["SLEIPNIR_LEAVE_TICKS"] // 20), int(c["SLEIPNIR_COOLDOWN"] // 20 // 60)],
+        "odin_ravens": [int(c["RAVENS_RADIUS"]), int(c["RAVENS_GLOW_TICKS"] // 20), int(c["RAVENS_COOLDOWN"] // 20)],
+        "brisingamen": [int(c["BRISINGAMEN_RADIUS"]), int(c["BRISINGAMEN_HEAL"] // 2)],
+        "skidbladnir": [round(c["SKIDBLADNIR_BOOST"] * 100)],
+        "mimir_head": [int(c["MIMIR_RADIUS"]), int(c["MIMIR_INTERVAL"] // 20)],
+        "andvaranaut": [int(c["ANDVARANAUT_HEALTH"] // 2)],
+        "odrerir": [int(c["ODRERIR_LEVELS"]), int(c["ODRERIR_HASTE_TICKS"] // 20 // 60)],
     }
 
 
@@ -201,7 +213,10 @@ LOOT_TABLE_KEYS = {"desert_pyramid": "loot.mythicrelics.chests.desert_pyramid",
                    "igloo_chest": "loot.mythicrelics.chests.igloo_chest",
                    "end_city_treasure": "loot.mythicrelics.chests.end_city_treasure",
                    "buried_treasure": "loot.mythicrelics.chests.buried_treasure",
-                   "village_snowy_house": "loot.mythicrelics.chests.village.village_snowy_house"}
+                   "village_snowy_house": "loot.mythicrelics.chests.village.village_snowy_house",
+                   "village_savanna_house": "loot.mythicrelics.chests.village.village_savanna_house",
+                   "shipwreck_supply": "loot.mythicrelics.chests.shipwreck_supply",
+                   "stronghold_crossing": "loot.mythicrelics.chests.stronghold_crossing"}
 # Tablas de arqueología: la probabilidad es por bloque cepillado, no por cofre.
 ARCHAEOLOGY = {"desert_pyramid_archaeology", "desert_well_archaeology", "trail_ruins_archaeology_rare",
                "ocean_ruin_warm_archaeology", "ocean_ruin_cold_archaeology"}

@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:norse/brisingamen",
+  "category": "mythicrelics:norse",
+  "name": "item.mythicrelics.brisingamen",
+  "icon": "mythicrelics:brisingamen",
+  "x": 3,
+  "y": 12,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.brisingamen.effect",
+      "item": "mythicrelics:brisingamen"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.brisingamen",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.brisingamen.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.brisingamen.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:norse/intro"
+    }
+  ]
+}

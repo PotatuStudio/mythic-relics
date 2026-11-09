@@ -6,6 +6,7 @@ import io.github.potatustudio.mythicrelics.greece.AriadneThreadItem;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.network.HermesJumpPayload;
+import io.github.potatustudio.mythicrelics.norse.NorseGods;
 import io.github.potatustudio.mythicrelics.network.IcarusPayload;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
@@ -66,6 +67,7 @@ public final class GreeceClient {
 			icarus(player, pressed, jumpDown);
 		}
 		jumpWasDown = jumpDown;
+		skidbladnirWind(player);
 
 		if (player.tickCount % 2 == 0) {
 			ItemStack thread = player.getMainHandItem().is(ModItems.ARIADNE_THREAD.get()) ? player.getMainHandItem()
@@ -76,6 +78,22 @@ public final class GreeceClient {
 			}
 		}
 	}
+
+	/** Skíðblaðnir: con el barco plegable encima, el bote que conduces acelera hasta un 60 % más (siempre viento a favor). */
+	private static void skidbladnirWind(LocalPlayer player) {
+		if (!NorseGods.favorableWind(player) || player.getVehicle() == null || !player.getVehicle().isInWater()) {
+			return;
+		}
+		var boat = player.getVehicle();
+		Vec3 motion = boat.getDeltaMovement();
+		double speed = Math.hypot(motion.x, motion.z);
+		if (speed > 0.05 && speed < WIND_MAX_SPEED) {
+			boat.setDeltaMovement(motion.x * 1.03, motion.y, motion.z * 1.03);
+		}
+	}
+
+	/** Velocidad máxima de un bote con viento a favor (la del bote vanilla en agua es unos 0,4 bloques por tick). */
+	private static final double WIND_MAX_SPEED = 0.4 * (1.0 + NorseGods.SKIDBLADNIR_BOOST);
 
 	/** Alas de Ícaro: un aleteo por pulsación (hasta {@link GreeceHeroes#ICARUS_FLAPS}) o planear con salto mantenido. */
 	private static void icarus(LocalPlayer player, boolean pressed, boolean jumpDown) {

@@ -5,6 +5,8 @@ import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import io.github.potatustudio.mythicrelics.client.entity.CerberusModel;
 import io.github.potatustudio.mythicrelics.client.entity.CerberusRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.JackalModel;
+import io.github.potatustudio.mythicrelics.client.entity.SleipnirModel;
+import io.github.potatustudio.mythicrelics.client.entity.SleipnirRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.JackalRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabModel;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabRenderer;
@@ -23,6 +25,8 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.JACKAL, JackalRenderer::new);
 		EntityModelLayerRegistry.register(CerberusModel.LAYER, CerberusModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.CERBERUS, CerberusRenderer::new);
+		EntityModelLayerRegistry.register(SleipnirModel.LAYER, SleipnirModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.SLEIPNIR, SleipnirRenderer::new);
 		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
 		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, context -> new ThrownItemRenderer<>(context, 1.5f, false));
 		GreeceClient.init();

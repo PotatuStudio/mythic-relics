@@ -18,6 +18,10 @@ import io.github.potatustudio.mythicrelics.greece.StyxWaterItem;
 import io.github.potatustudio.mythicrelics.norse.GjallarhornItem;
 import io.github.potatustudio.mythicrelics.norse.GleipnirItem;
 import io.github.potatustudio.mythicrelics.norse.IdunnApplesItem;
+import io.github.potatustudio.mythicrelics.norse.OdinRavensItem;
+import io.github.potatustudio.mythicrelics.norse.OdrerirItem;
+import io.github.potatustudio.mythicrelics.norse.SkidbladnirItem;
+import io.github.potatustudio.mythicrelics.norse.SleipnirHorseshoeItem;
 import io.github.potatustudio.mythicrelics.norse.ThrownRelicItem;
 import io.github.potatustudio.mythicrelics.rome.AugurLituusItem;
 import io.github.potatustudio.mythicrelics.rome.JanusKeyItem;
@@ -119,6 +123,16 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> GJALLARHORN = register("gjallarhorn", GjallarhornItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> GLEIPNIR = register("gleipnir", GleipnirItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> IDUNN_APPLES = register("idunn_apples", IdunnApplesItem::new, p -> p.rarity(Rarity.EPIC));
+
+	// Nórdicos, segunda tanda.
+	public static final RegistrySupplier<Item> SLEIPNIR_HORSESHOE = register("sleipnir_horseshoe", SleipnirHorseshoeItem::new,
+			p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> ODIN_RAVENS = register("odin_ravens", OdinRavensItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> BRISINGAMEN = relic("brisingamen", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> SKIDBLADNIR = register("skidbladnir", SkidbladnirItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> MIMIR_HEAD = relic("mimir_head", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> ANDVARANAUT = relic("andvaranaut", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> ODRERIR = register("odrerir", OdrerirItem::new, p -> p.rarity(Rarity.RARE));
 
 	/** Emblema del mod (escudo con una cultura por cuarto): solo es el ícono de la pestaña creativa, no se consigue. */
 	public static final RegistrySupplier<Item> EMBLEM = register("emblem", Item::new, p -> p);

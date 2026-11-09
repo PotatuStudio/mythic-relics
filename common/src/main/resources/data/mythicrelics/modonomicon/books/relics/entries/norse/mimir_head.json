@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:norse/mimir_head",
+  "category": "mythicrelics:norse",
+  "name": "item.mythicrelics.mimir_head",
+  "icon": "mythicrelics:mimir_head",
+  "x": 1,
+  "y": 12,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.mimir_head.effect",
+      "item": "mythicrelics:mimir_head"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.mimir_head",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.mimir_head.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.mimir_head.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:norse/intro"
+    }
+  ]
+}

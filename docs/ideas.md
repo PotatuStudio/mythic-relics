@@ -132,7 +132,7 @@ Sleipnir, Huginn y Muninn, Brísingamen, Skíðblaðnir y la cabeza de Mímir.
 | Gleipnir | mano | Clic derecho a un mob: atado 6 s (no se mueve ni ataca; no jefes). Recarga 30 s. | Ciudades antiguas, 3 % |
 | Manzanas de Iðunn | mano (se comen) | Comer: Regeneración II 10 s, Absorción I 2 min y quita veneno, marchitamiento, lentitud, debilidad y hambre. Hasta 3; crece una por día. | Casas de aldeas nevadas, 4 % |
 
-Segunda tanda: diseño aprobado el 2026-11-09, falta programarla (página de diseño:
+Segunda tanda: diseño aprobado y programado el 2026-11-09, falta probarla en el juego (página de diseño:
 https://claude.ai/artifact/3yqN9AjgSKA83AohCqDrsU; íconos: https://claude.ai/artifact/4jrB4FF1qGjD7jwovPsCr6). Decisiones:
 Sleipnir es un aliado propio que la herradura invoca (pedido del usuario), Andvaranaut con su maldición completa,
 Skíðblaðnir y Sleipnir sobre el agua los dos, las 7 reliquias. La cabeza de Mímir se redibujó con más color.

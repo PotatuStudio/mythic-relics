@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:norse/skidbladnir",
+  "category": "mythicrelics:norse",
+  "name": "item.mythicrelics.skidbladnir",
+  "icon": "mythicrelics:skidbladnir",
+  "x": -2,
+  "y": 14,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.skidbladnir.effect",
+      "item": "mythicrelics:skidbladnir"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.skidbladnir",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.skidbladnir.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.skidbladnir.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:norse/intro"
+    }
+  ]
+}

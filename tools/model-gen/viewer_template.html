@@ -137,6 +137,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button data-subject="scarab" aria-pressed="true" data-i18n="subjScarab">Escarabajo</button>
       <button data-subject="jackal" aria-pressed="false" data-i18n="subjJackal">Chacal</button>
       <button data-subject="cerberus" aria-pressed="false" data-i18n="subjCerberus">Cerbero</button>
+      <button data-subject="sleipnir" aria-pressed="false" data-i18n="subjSleipnir">Sleipnir</button>
       <button data-subject="player" aria-pressed="false" data-i18n="subjPlayer">Reliquias puestas</button>
     </div>
     <div class="stage" id="stage"></div>
@@ -161,9 +162,10 @@ const UI = {
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
     stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
-    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjPlayer: "Reliquias puestas",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjPlayer: "Reliquias puestas",
     walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
+    footSleipnir: "Sleipnir, el caballo de ocho patas de Odín, que llama la herradura: la geometría del caballo vanilla con dos pares de patas más que se mueven a destiempo. Va ensillado y vuelve a Asgard cuando te bajas.",
     footCerberus: "Cerbero como lo describe Apolodoro: tres cabezas de perro y cola de serpiente. Aparece con llamas de alma y muerde tres veces por ataque, una por cabeza; las fauces gruñen a destiempo.",
     footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
     footPlayer: "Muñeco genérico (sin la skin de Mojang) con los modelos 3D de cada reliquia, ubicados con la misma regla que usa Trinkets. Las vendas y el anillo se ponen en ambas manos si hay uno en cada espacio; aquí se ven en las dos. El cetro no se pone: se lleva en la mano.",
@@ -175,9 +177,10 @@ const UI = {
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
     stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
-    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjPlayer: "Worn relics",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjPlayer: "Worn relics",
     walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
+    footSleipnir: "Sleipnir, Odin's eight-legged horse, called by the horseshoe: the vanilla horse geometry with two extra pairs of legs moving out of step. He comes saddled and returns to Asgard when you dismount.",
     footCerberus: "Cerberus as Apollodorus describes him: three dog heads and a serpent for a tail. He appears in soul flames and bites three times per attack, once per head; the jaws snarl out of step.",
     footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
     footPlayer: "Generic figure (no Mojang skin) wearing each relic's 3D model, placed with the same rule Trinkets uses. Wraps and rings show on both hands here. The scepter isn't worn: it's held.",
@@ -191,8 +194,8 @@ let lang = "es_es";
 const CULTURE_HASH = { egypt: "egipto", greece: "grecia", rome: "roma", norse: "nordicos" };
 const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma", norse: "Nórdicos" }, en_us: { egypt: "Egypt", greece: "Greece", rome: "Rome", norse: "Norse" } };
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
-  greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player"] };
+  greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player", "sleipnir"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -448,6 +451,7 @@ const mat = b64 => new THREE.MeshLambertMaterial({ map: texFromB64(b64), side: T
 const scarabMat = mat(DATA.scarabTexture);
 const jackalMat = mat(DATA.jackalTexture);
 const cerberusMat = mat(DATA.cerberusTexture);
+const sleipnirMat = mat(DATA.sleipnirTexture);
 
 /* Arena procedural (no se usan texturas de Mojang). */
 function sandTexture() {
@@ -500,12 +504,12 @@ function cube(material, texW, texH, u, v, x0, y0, z0, w, h, d, mirror) {
   return new THREE.Mesh(g, material);
 }
 
-function part(parent, material, offset, rot, cubes, texH = 32) {
+function part(parent, material, offset, rot, cubes, texH = 32, texW = 64) {
   const p = new THREE.Group();
   p.position.set(...offset);
   p.rotation.order = "ZYX";
   p.rotation.set(rot[0], rot[1], rot[2]);
-  for (const c of cubes) p.add(cube(material, 64, texH, ...c));
+  for (const c of cubes) p.add(cube(material, texW, texH, ...c));
   parent.add(p);
   p.userData.base = [...rot];
   return p;
@@ -561,6 +565,18 @@ const cTailHead = cPart(cTailMid, [0, 0, 5], [C_TAIL[2], 0, 0], [[28, 32, -1.5, 
 const cLeg = (x, y, z, mirror) => cPart(cerberus.root, [x, y, z], [0, 0, 0],
   [[0, 32, -1.5, 0, -1.5, 3, 10, 3, mirror], [12, 32, -2, 8, -2.5, 4, 2, 4, mirror]]);
 const cLF = cLeg(3.5, 14, -4, false), cRF = cLeg(-3.5, 14, -4, true), cLH = cLeg(3, 14, 5, false), cRH = cLeg(-3, 14, 5, true);
+
+/* Sleipnir (SleipnirModel.java): caballo vanilla con ocho patas; textura 128x64. */
+const sleipnir = entityRoot();
+const sP = (parent, offset, rot, cubes) => part(parent, sleipnirMat, offset, rot, cubes, 64, 128);
+const sBody = sP(sleipnir.root, [0, 11, 5], [0, 0, 0], [[0, 0, -5, -8, -17, 10, 10, 22, false], [32, 32, -5.5, -8.6, -11, 11, 1, 8, false]]);
+const sTail = sP(sBody, [0, -5, 2], [Math.PI / 6, 0, 0], [[16, 32, -1.5, 0, 0, 3, 14, 4, false]]);
+const sHead = sP(sleipnir.root, [0, 4, -12], [Math.PI / 6, 0, 0], [[64, 0, -2.05, -6, -2, 4, 12, 7, false],
+  [112, 0, -1, -11, 5.01, 2, 16, 2, false], [86, 12, -2, -11, -7, 4, 5, 5, false]]);
+sP(sHead, [0, 0, 0], [0, 0, 0], [[86, 0, -3, -11, -2, 6, 5, 7, false], [120, 0, 0.55, -13, 4, 2, 3, 1, false], [120, 0, -2.55, -13, 4, 2, 3, 1, false]]);
+const sLegs = [[4, -10, -1.9, true], [-4, -10, -1.9, false], [4, -5, -1.9, true], [-4, -5, -1.9, false],
+  [4, 2, -1, true], [-4, 2, -1, false], [4, 7, -1, true], [-4, 7, -1, false]]
+  .map(([x, z, bz, left]) => sP(sleipnir.root, [x, 14, z], [0, 0, 0], [[0, 32, left ? -3 : -1, -1.01, bz, 4, 11, 4, left]]));
 
 /* Jugador de bloques con las reliquias puestas (assets/mythicrelics/trinkets). Mira hacia +Z. */
 const player = new THREE.Group();
@@ -701,6 +717,13 @@ function setupAnim() {
   jRF.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
   jLF.rotation.x = Math.cos(a) * 1.4 * speed;
   jTail.rotation.set(Math.PI / 5, Math.cos(a) * 1.4 * speed, 0);
+  // Sleipnir: como el caballo (AbstractEquineModel) y las patas del medio a medio paso.
+  const legA = Math.cos(a + Math.PI), swing = Math.cos(a + Math.PI / 2) * 0.8 * speed;
+  sLegs[0].rotation.x = -legA * 0.8 * speed; sLegs[1].rotation.x = legA * 0.8 * speed;
+  sLegs[2].rotation.x = -swing; sLegs[3].rotation.x = swing;
+  sLegs[4].rotation.x = swing * 0.6; sLegs[5].rotation.x = -swing * 0.6;
+  sLegs[6].rotation.x = -legA * 0.5 * speed; sLegs[7].rotation.x = legA * 0.5 * speed;
+  sTail.rotation.set(Math.PI / 6 + Math.PI / 6 + speed * 0.75, 0, 0);
   cRH.rotation.x = Math.cos(a) * 1.2 * speed;
   cLH.rotation.x = Math.cos(a + Math.PI) * 1.2 * speed;
   cRF.rotation.x = Math.cos(a + Math.PI) * 1.2 * speed;
@@ -734,7 +757,7 @@ function burst(at, mats, count, rise) {
 }
 document.getElementById("btnDig").addEventListener("click", () => {
   if (subject === "scarab") burst(scarab.entity.position, sandParticles, 24, false);
-  if (subject === "jackal" || subject === "cerberus") burst((subject === "jackal" ? jackal : cerberus).entity.position, soulParticles, 12, true);
+  if (subject === "jackal" || subject === "cerberus" || subject === "sleipnir") burst({ jackal, cerberus, sleipnir }[subject].entity.position, soulParticles, 12, true);
 });
 document.getElementById("btnWalk").addEventListener("click", () => {
   walking = !walking;
@@ -746,6 +769,7 @@ const VIEWS = {
   scarab: { cam: [0.9, 0.7, 1.1], target: [0, 0.12, 0] },
   jackal: { cam: [1.6, 1.1, 1.8], target: [0, 0.45, 0] },
   cerberus: { cam: [1.9, 1.4, 2.3], target: [0, 0.6, 0] },
+  sleipnir: { cam: [3.2, 2.0, 3.6], target: [0, 0.9, 0] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
 function setSubject(s) {
@@ -753,8 +777,10 @@ function setSubject(s) {
   scarab.entity.visible = s === "scarab";
   jackal.entity.visible = s === "jackal";
   cerberus.entity.visible = s === "cerberus";
+  sleipnir.entity.visible = s === "sleipnir";
   player.visible = s === "player";
-  scarab.entity.position.set(0, 0, 0); jackal.entity.position.set(0, 0, 0); cerberus.entity.position.set(0, 0, 0);
+  scarab.entity.position.set(0, 0, 0); jackal.entity.position.set(0, 0, 0); cerberus.entity.position.set(0, 0, 0); sleipnir.entity.position.set(0, 0, 0);
+  sleipnir.entity.rotation.y = Math.PI;
   scarab.entity.rotation.y = Math.PI; jackal.entity.rotation.y = Math.PI; cerberus.entity.rotation.y = Math.PI;   // de frente a la cámara
   camera.position.set(...VIEWS[s].cam);
   controls.target.set(...VIEWS[s].target);
@@ -764,7 +790,7 @@ function setSubject(s) {
   renderStageText();
 }
 function renderStageText() {
-  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", player: "footPlayer" }[subject];
+  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", player: "footPlayer" }[subject];
   document.getElementById("stageFoot").textContent = UI[lang][foot];
   document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
   buildWornControls();
@@ -789,10 +815,10 @@ function loop(now) {
     const target = walking ? parseFloat(speedInput.value) : 0;
     walkSpeed += (target - walkSpeed) * 0.4;
     walkPos += walkSpeed;
-    const mob = subject === "scarab" ? scarab : subject === "jackal" ? jackal : subject === "cerberus" ? cerberus : null;
+    const mob = subject === "scarab" ? scarab : subject === "jackal" ? jackal : subject === "cerberus" ? cerberus : subject === "sleipnir" ? sleipnir : null;
     if (mob && walking && !reduce) {
       angle += (subject === "scarab" ? 0.012 : 0.02) * walkSpeed;
-      const r = subject === "scarab" ? 0.45 : 0.9;
+      const r = subject === "scarab" ? 0.45 : subject === "sleipnir" ? 1.6 : 0.9;
       mob.entity.position.set(Math.cos(angle) * r - r, 0, Math.sin(angle) * r);
       mob.entity.rotation.y = Math.PI - angle;
     }

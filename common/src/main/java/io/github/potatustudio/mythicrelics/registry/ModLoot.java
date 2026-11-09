@@ -86,7 +86,8 @@ public final class ModLoot {
 					new Drop(0.020f, ModItems.GOLDEN_FLEECE))),
 			// Bastiones: la puerta del Nether que guarda Cerbero.
 			Map.entry(BuiltInLootTables.BASTION_TREASURE, List.of(
-					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
+					new Drop(0.030f, ModItems.CERBERUS_COLLAR),
+					new Drop(0.030f, ModItems.ANDVARANAUT))),
 			Map.entry(BuiltInLootTables.BASTION_OTHER, List.of(
 					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
 			Map.entry(BuiltInLootTables.BASTION_BRIDGE, List.of(
@@ -104,7 +105,8 @@ public final class ModLoot {
 			// ---- Roma ----
 			// Casas de aldeas de taiga: los lobos.
 			Map.entry(BuiltInLootTables.VILLAGE_TAIGA_HOUSE, List.of(
-					new Drop(0.040f, ModItems.WOLF_BULLA))),
+					new Drop(0.040f, ModItems.WOLF_BULLA),
+					new Drop(0.030f, ModItems.ODRERIR))),
 			// Puestos de saqueadores: la guerra de Marte.
 			Map.entry(BuiltInLootTables.PILLAGER_OUTPOST, List.of(
 					new Drop(0.040f, ModItems.ANCILE),
@@ -124,19 +126,30 @@ public final class ModLoot {
 					new Drop(0.020f, ModItems.MJOLNIR))),
 			// Minas abandonadas: las forjas de los enanos.
 			Map.entry(BuiltInLootTables.ABANDONED_MINESHAFT, List.of(
-					new Drop(0.030f, ModItems.JARNGREIPR))),
+					new Drop(0.030f, ModItems.JARNGREIPR),
+					new Drop(0.020f, ModItems.BRISINGAMEN))),
 			// Iglús: el norte helado.
 			Map.entry(BuiltInLootTables.IGLOO_CHEST, List.of(
 					new Drop(0.060f, ModItems.MEGINGJORD))),
 			// Ciudades del End: el reino de los dioses en lo alto.
 			Map.entry(BuiltInLootTables.END_CITY_TREASURE, List.of(
-					new Drop(0.030f, ModItems.GUNGNIR))),
+					new Drop(0.030f, ModItems.GUNGNIR),
+					new Drop(0.030f, ModItems.ODIN_RAVENS))),
 			// Tesoros enterrados: el oro de los enanos.
 			Map.entry(BuiltInLootTables.BURIED_TREASURE, List.of(
 					new Drop(0.060f, ModItems.DRAUPNIR))),
 			// Casas de aldeas nevadas: la cesta de Iðunn.
 			Map.entry(BuiltInLootTables.VILLAGE_SNOWY_HOUSE, List.of(
-					new Drop(0.040f, ModItems.IDUNN_APPLES))));
+					new Drop(0.040f, ModItems.IDUNN_APPLES))),
+			// Casas de aldeas de sabana: los caballos.
+			Map.entry(BuiltInLootTables.VILLAGE_SAVANNA_HOUSE, List.of(
+					new Drop(0.040f, ModItems.SLEIPNIR_HORSESHOE))),
+			// Provisiones de naufragios: el barco de Freyr.
+			Map.entry(BuiltInLootTables.SHIPWRECK_SUPPLY, List.of(
+					new Drop(0.040f, ModItems.SKIDBLADNIR))),
+			// Cruces de la fortaleza: la cabeza que guarda lo oculto.
+			Map.entry(BuiltInLootTables.STRONGHOLD_CROSSING, List.of(
+					new Drop(0.040f, ModItems.MIMIR_HEAD))));
 
 	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre (o por bloque cepillado, en arqueología). */
 	public record Source(ResourceKey<LootTable> table, float chance) {

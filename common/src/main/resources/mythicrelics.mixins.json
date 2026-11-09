@@ -7,6 +7,7 @@
 		"BrushableBlockEntityMixin",
 		"DoorInteractGoalAccessor",
 		"LivingEntityMixin",
+		"PiglinAiMixin",
 		"PlayerMixin"
 	],
 	"injectors": {

@@ -200,7 +200,7 @@ public final class NorseRelics {
 					HORN_GLOW_TICKS / 20, HORN_COOLDOWN / 20 / 60};
 			case "gleipnir" -> new Object[] {GLEIPNIR_TICKS / 20, GLEIPNIR_COOLDOWN / 20};
 			case "idunn_apples" -> new Object[] {IDUNN_REGEN_TICKS / 20, IDUNN_ABSORPTION_TICKS / 20 / 60, IDUNN_MAX};
-			default -> new Object[0];
+			default -> NorseGods.tooltipArgs(id);
 		};
 	}
 }

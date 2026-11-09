@@ -43,7 +43,7 @@ COLORS = {
     "leather": "#a07848", "leather_d": "#6e4e2c", "stone": "#c9cfc4", "stone_d": "#8f978a", "snake": "#4f8f3a",
     "wax_l": "#fff2c2", "wax": "#e6c66a", "silver": "#e8e8ec", "silver_d": "#a8a8b0", "bronze": "#e0954a",
     "bronze_d": "#a85f26", "ember": "#ff8a3a",
-    "iron_l": "#cfd3dc", "iron": "#8a8f9c", "iron_d": "#4a4e58",
+    "iron_l": "#cfd3dc", "iron": "#8a8f9c", "iron_d": "#4a4e58", "amber": "#ffb030", "ruby": "#d8392b",
 }
 SWATCHES = list(COLORS)
 # Cara de arriba más clara y de abajo más oscura: da volumen aunque cada elemento sea de un color.
@@ -348,6 +348,23 @@ def draupnir_ring():
     return e
 
 
+def brisingamen():
+    """Cadena de oro como la del Anj y cinco piezas en V sobre el pecho, alternando ámbar y oro (los cuatro enanos)."""
+    e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "gold_d", "cadena atrás"),
+         box([3.5, 13.3, 6.0], [4.0, 13.8, 10.5], "gold", "cadena der."),
+         box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "gold", "cadena izq.")]
+    for i, (x, y) in enumerate([(4.4, 12.2), (5.7, 11.2), (7.3, 10.6), (8.9, 11.2), (10.2, 12.2)]):
+        e.append(box([x, y, 10.5], [x + 1.4, y + 1.2, 11.2], "amber" if i % 2 == 0 else "gold", "pieza"))
+    return e
+
+
+def andvaranaut():
+    """Anillo de oro con la gema roja de la maldición, en el lugar de los demás anillos."""
+    e = ring(5.15, 10.85, 8.6, 9.6, 5.15, 10.85, 0.5, "gold", "aro")
+    e += [box([7.3, 8.4, 10.85], [8.7, 9.8, 11.5], "ruby", "gema")]
+    return e
+
+
 def wolf_bulla():
     """Cordón de cuero como la cadena del Anj y el relicario redondo de oro con la loba en relieve sobre el pecho."""
     e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "leather_d", "cordón atrás"),
@@ -411,6 +428,8 @@ WORN = {
     "jarngreipr": (lambda: model(jarngreipr()), both_hands("glove", "jarngreipr")),
     "megingjord": (lambda: model(megingjord()), [attach("body", "megingjord")]),
     "draupnir": (lambda: model(draupnir_ring()), both_hands("ring", "draupnir", (0, -1, 0))),
+    "brisingamen": (lambda: model(brisingamen()), [attach("body", "brisingamen")]),
+    "andvaranaut": (lambda: model(andvaranaut()), both_hands("ring", "andvaranaut", (0, -1, 0))),
 }
 
 

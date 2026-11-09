@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1 y nórdicos 1 programadas; falta probarlas en el juego).
+Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1 y nórdicos 1 y 2 programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -139,6 +139,17 @@ set; Gungnir persigue al mob al que se apuntó), dibujada con `ThrownItemRendere
 renderizador que lo gire en el aire queda pendiente). Mjölnir y Gungnir no se rompen (`unbreakable`) y usan
 `item/handheld`. **Sin probar en el juego**: el lanzamiento y la vuelta, el rayo, la puntería de Gungnir, el aumento de
 Draupnir al amanecer y la cesta de Iðunn al pasar los días.
+
+## Segunda tanda nórdica (programada el 2026-11-09)
+Diseño aprobado en `docs/ideas.md`. Código en `norse/NorseGods` (constantes y lógica: Brísingamen, Mímir, la maldición y el
+oro de Andvaranaut, los botes de Skíðblaðnir que se pliegan solos) y los ítems `SleipnirHorseshoeItem`, `OdinRavensItem`,
+`SkidbladnirItem` y `OdrerirItem`. **Sleipnir** es una entidad propia (`entity/Sleipnir`, subclase de `AbstractHorse`):
+domado, ensillado y solo de su dueño, no se guarda con el mundo, vuelve a Asgard a los 3 s sin jinete, sin daño de caída
+y camina sobre el agua (`canStandOnFluid`). Su modelo (`client/entity/SleipnirModel`) usa la geometría del caballo
+vanilla con dos pares de patas más y su propia textura de 128x64 (`tools/model-gen/sleipnir_texture.py`). El viento a
+favor de Skíðblañir lo aplica el cliente (`GreeceClient`). Mixin nuevo: `PiglinAiMixin` (trueques dobles con
+Andvaranaut). **Sin probar en el juego**: montar a Sleipnir y su velocidad sobre el agua, que se vaya al bajarte, el bote
+que se pliega, el doble de oro y de trueques, los avisos de Mímir y el crecimiento con Brísingamen.
 
 ## Pestaña creativa
 El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
