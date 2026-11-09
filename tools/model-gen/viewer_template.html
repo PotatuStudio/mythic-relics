@@ -272,7 +272,7 @@ function renderTooltip() {
     tip.appendChild(line(tr(key, args), i === 1 ? "c-gold" : "c-gray"));
   }
   if (selected === "thoth_palette") {
-    tip.appendChild(line(tr("tooltip.mythicrelics.thoth_palette.written", [0, args[0]]), "c-aqua"));
+    tip.appendChild(line(tr("tooltip.mythicrelics.thoth_palette.written", [0, args[2]]), "c-aqua"));
   }
   const setId = Object.keys(DATA.sets).find(id => DATA.sets[id].includes(selected));
   if (setId) {

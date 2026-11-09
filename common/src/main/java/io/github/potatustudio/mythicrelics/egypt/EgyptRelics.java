@@ -8,6 +8,7 @@ import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,8 +94,6 @@ public final class EgyptRelics {
 	/** Etiqueta del no-muerto destruido por el juicio del cetro, para darle el doble de experiencia al morir. */
 	private static final String JUDGED_TAG = MythicRelics.MOD_ID + ".judged";
 
-	private static final Map<UUID, Long> SCARAB_LAST = new HashMap<>();
-	private static final Map<UUID, Long> RING_LAST = new HashMap<>();
 
 	/** Curación pendiente del Ojo de Horus: jugador -> [vida por tick, ticks restantes]. */
 	private record Healing(float perTick, int[] ticksLeft) {
@@ -203,17 +202,8 @@ public final class EgyptRelics {
 		return value == Math.floor(value) ? Integer.toString((int) value) : Double.toString(value);
 	}
 
-	private static boolean onCooldown(Map<UUID, Long> last, ServerLevel level, ServerPlayer player, int cooldown) {
-		long now = level.getGameTime();
-		if (now - last.getOrDefault(player.getUUID(), -cooldown * 2L) < cooldown) {
-			return true;
-		}
-		last.put(player.getUUID(), now);
-		return false;
-	}
-
 	private static void scarab(ServerLevel level, ServerPlayer player) {
-		if (onCooldown(SCARAB_LAST, level, player, SCARAB_COOLDOWN)) {
+		if (!RelicCooldowns.tryStart(player, "golden_scarab", SCARAB_COOLDOWN, null)) {
 			return;
 		}
 		player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 300, SCARAB_ABSORPTION));
@@ -230,10 +220,10 @@ public final class EgyptRelics {
 	/** Tras un golpe fuerte, el Ojo de Horus devuelve parte del daño como curación gradual. */
 	private static void eyeOfHorus(ServerLevel level, ServerPlayer player, float damageTaken) {
 		// La recarga es del grupo del ítem (componente USE_COOLDOWN), así que basta un stack nuevo para consultarla.
-		if (player.getCooldowns().isOnCooldown(new ItemStack(ModItems.EYE_OF_HORUS.get()))) {
+		if (!RelicCooldowns.ready(player, "eye_of_horus")) {
 			return;
 		}
-		player.getCooldowns().addCooldown(EYE_COOLDOWN_GROUP, EYE_COOLDOWN);
+		RelicCooldowns.start(player, "eye_of_horus", EYE_COOLDOWN, EYE_COOLDOWN_GROUP);
 		EYE_HEALING.put(player.getUUID(), new Healing(damageTaken * EYE_HEAL_FRACTION / EYE_HEAL_TICKS, new int[] {EYE_HEAL_TICKS}));
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 0.6f, 1.4f);
 		player.sendOverlayMessage(Component.translatable("message.mythicrelics.eye").withStyle(ChatFormatting.GOLD));
@@ -250,7 +240,7 @@ public final class EgyptRelics {
 	/** Anillo de los chacales: de noche o bajo tierra, los guardianes de la tumba acuden al golpe. */
 	private static void jackals(ServerLevel level, ServerPlayer player) {
 		boolean dark = level.isDarkOutside() || !level.canSeeSky(player.blockPosition());
-		if (!dark || onCooldown(RING_LAST, level, player, RING_COOLDOWN)) {
+		if (!dark || !RelicCooldowns.tryStart(player, "jackal_ring", RING_COOLDOWN, null)) {
 			return;
 		}
 		for (int i = 0; i < RING_JACKALS; i++) {

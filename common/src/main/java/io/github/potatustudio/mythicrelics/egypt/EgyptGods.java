@@ -7,6 +7,7 @@ import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -68,7 +69,9 @@ public final class EgyptGods {
 
 	public static final double BASTET_RADIUS = 16.0;
 
+	/** Lo que cabe en la paleta: los puntos de experiencia de los niveles 0 a 30 (1395 puntos). */
 	public static final int THOTH_MAX_LEVELS = 30;
+	public static final int THOTH_MAX_POINTS = pointsUpToLevel(THOTH_MAX_LEVELS);
 	public static final float THOTH_XP_BONUS = 0.20f;
 
 	public static final int CROOK_GROW_COOLDOWN = 600;
@@ -85,8 +88,6 @@ public final class EgyptGods {
 	public static final int SEKHMET_BURN_SECONDS = 3;
 	public static final float SEKHMET_CALM_HEAL = 4.0f;
 	private static final Identifier SEKHMET_SPEED = MythicRelics.id("sekhmet_frenzy");
-
-	private static final Map<UUID, Long> URAEUS_LAST = new HashMap<>();
 
 	/** Frenesí de Sekhmet de cada jugador: nivel y tick de la última muerte. */
 	private record Frenzy(int level, long lastKill) {
@@ -142,11 +143,9 @@ public final class EgyptGods {
 	}
 
 	private static void uraeus(ServerLevel level, ServerPlayer player, LivingEntity attacker) {
-		long now = level.getGameTime();
-		if (now - URAEUS_LAST.getOrDefault(player.getUUID(), -URAEUS_COOLDOWN * 2L) < URAEUS_COOLDOWN) {
+		if (!RelicCooldowns.tryStart(player, "uraeus", URAEUS_COOLDOWN, null)) {
 			return;
 		}
-		URAEUS_LAST.put(player.getUUID(), now);
 		attacker.igniteForSeconds(URAEUS_BURN_SECONDS);
 		level.sendParticles(ParticleTypes.FLAME, attacker.getX(), attacker.getY() + attacker.getBbHeight() / 2, attacker.getZ(),
 				14, 0.3, 0.4, 0.3, 0.02);
@@ -194,9 +193,35 @@ public final class EgyptGods {
 
 	// ---- Thot (lo llama el mixin de Player) --------------------------------------------------------------------------
 
+	/** Mientras la paleta devuelve lo escrito, no se aplica el +20 % (si no, leer daría experiencia de más). */
+	private static boolean readingPalette;
+
+	/** Puntos de experiencia de un nivel (de {@code level} a {@code level + 1}), la misma fórmula de vanilla. */
+	public static int pointsForLevel(int level) {
+		return level >= 30 ? 112 + (level - 30) * 9 : level >= 15 ? 37 + (level - 15) * 5 : 7 + level * 2;
+	}
+
+	public static int pointsUpToLevel(int level) {
+		int total = 0;
+		for (int l = 0; l < level; l++) {
+			total += pointsForLevel(l);
+		}
+		return total;
+	}
+
+	/** Devuelve puntos al jugador sin el bono de la paleta. */
+	public static void giveWithoutThothBonus(Player player, int points) {
+		readingPalette = true;
+		try {
+			player.giveExperiencePoints(points);
+		} finally {
+			readingPalette = false;
+		}
+	}
+
 	/** Experiencia ganada con la paleta en la mano secundaria: +20 %, con la fracción repartida al azar. */
 	public static int thothExperience(Player player, int amount) {
-		if (amount <= 0 || !player.getOffhandItem().is(ModItems.THOTH_PALETTE.get())) {
+		if (amount <= 0 || readingPalette || !player.getOffhandItem().is(ModItems.THOTH_PALETTE.get())) {
 			return amount;
 		}
 		float bonus = amount * THOTH_XP_BONUS;
@@ -256,13 +281,13 @@ public final class EgyptGods {
 	/** Renacer de Osiris (lo llama el mixin en la misma comprobación que el tótem). Devuelve true si salvó al jugador. */
 	public static boolean osirisRebirth(LivingEntity self, DamageSource source) {
 		if (!(self instanceof ServerPlayer player) || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || !hasOsirisSet(player)
-				|| player.getCooldowns().isOnCooldown(new ItemStack(ModItems.OSIRIS_FLAIL.get()))) {
+				|| !RelicCooldowns.ready(player, "osiris_rebirth")) {
 			return false;
 		}
 		player.setHealth(OSIRIS_REBIRTH_HEALTH);
 		player.removeAllEffects();
 		player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, OSIRIS_REBIRTH_REGEN_TICKS, 1));
-		player.getCooldowns().addCooldown(OSIRIS_REBIRTH_GROUP, OSIRIS_REBIRTH_COOLDOWN);
+		RelicCooldowns.start(player, "osiris_rebirth", OSIRIS_REBIRTH_COOLDOWN, OSIRIS_REBIRTH_GROUP);
 		ServerLevel level = player.level();
 		level.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY() + 1.0, player.getZ(), 40, 0.5, 0.8, 0.5, 0.3);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 0.8f, 0.8f);
@@ -334,7 +359,7 @@ public final class EgyptGods {
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
 			case "ra_disk" -> new Object[] {Math.round(RA_UNDEAD_BONUS * 100), RA_BURN_SECONDS, URAEUS_BURN_SECONDS, URAEUS_COOLDOWN / 20};
-			case "thoth_palette" -> new Object[] {THOTH_MAX_LEVELS, Math.round(THOTH_XP_BONUS * 100)};
+			case "thoth_palette" -> new Object[] {THOTH_MAX_LEVELS, Math.round(THOTH_XP_BONUS * 100), THOTH_MAX_POINTS};
 			case "osiris_crook" -> new Object[] {CROOK_GROW_COOLDOWN / 20};
 			case "osiris_flail" -> new Object[] {FLAIL_SWEEP_RADIUS, Math.round(FLAIL_SWEEP_DAMAGE * 100)};
 			case "sekhmet_claws" -> new Object[] {SEKHMET_WINDOW / 20, SEKHMET_MAX, Math.round(SEKHMET_PER_LEVEL * 100), SEKHMET_BURN_SECONDS,

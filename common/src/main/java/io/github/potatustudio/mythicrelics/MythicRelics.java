@@ -7,6 +7,7 @@ import io.github.potatustudio.mythicrelics.registry.ModComponents;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ public final class MythicRelics {
 		ModEntities.init();
 		ModLoot.init();
 		Minions.init();
+		RelicCooldowns.init();
 		EgyptRelics.init();
 		EgyptGods.init();
 		LOGGER.info("Mythic Relics cargado");

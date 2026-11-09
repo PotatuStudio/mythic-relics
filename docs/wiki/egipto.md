@@ -168,9 +168,9 @@ Al principio, Bastet era una leona guerrera, como Sekhmet.
 
 **Espacio:** mano secundaria · **Rareza:** rara
 
-- Clic derecho: escribes 1 nivel de experiencia (máx. 30)
+- Clic derecho: escribes un nivel de tu experiencia
 - Agachado y clic derecho: lo lees de vuelta
-- Lo escrito no se pierde al morir
+- Caben 1395 puntos (los niveles 0 a 30) y no se pierden al morir
 - En la mano secundaria: +20% de experiencia
 
 **Mito.** Thot, el dios ibis de la escritura, la sabiduría y la luna, era el escriba de los dioses: inventó los jeroglíficos y en el juicio de los muertos anota el peso del corazón.  

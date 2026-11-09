@@ -13,9 +13,9 @@ public final class ModComponents {
 	private static final DeferredRegister<DataComponentType<?>> COMPONENTS =
 			DeferredRegister.create(MythicRelics.MOD_ID, Registries.DATA_COMPONENT_TYPE);
 
-	/** Niveles de experiencia escritos en la paleta de escriba de Thot. Se guardan con el ítem y viajan al cliente. */
-	public static final RegistrySupplier<DataComponentType<Integer>> WRITTEN_LEVELS = COMPONENTS.register("written_levels",
-			() -> DataComponentType.<Integer>builder().persistent(Codec.intRange(0, 1000)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+	/** Puntos de experiencia escritos en la paleta de escriba de Thot. Se guardan con el ítem y viajan al cliente. */
+	public static final RegistrySupplier<DataComponentType<Integer>> WRITTEN_POINTS = COMPONENTS.register("written_points",
+			() -> DataComponentType.<Integer>builder().persistent(Codec.intRange(0, 100000)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
 
 	private ModComponents() {
 	}

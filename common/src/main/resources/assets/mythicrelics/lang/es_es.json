@@ -40,8 +40,8 @@
   "book.mythicrelics.relics.entry.sekhmet_claws.description": "Frenesí: cada muerte antes de 5 s suma un nivel (máx. 3)",
   "book.mythicrelics.relics.entry.sekhmet_claws.effect": "Frenesí: cada muerte antes de 5 s suma un nivel (máx. 3)\\\n+10% de daño y de velocidad por nivel\\\nCon frenesí 3, tus golpes queman 3 s\\\nAl calmarte, recuperas 2 ❤\\\n\\\nEspacio: guantes",
   "book.mythicrelics.relics.entry.sekhmet_claws.where": "**Arena sospechosa de pirámides del desierto**: 1.5 % por bloque cepillado",
-  "book.mythicrelics.relics.entry.thoth_palette.description": "Clic derecho: escribes 1 nivel de experiencia (máx. 30)",
-  "book.mythicrelics.relics.entry.thoth_palette.effect": "Clic derecho: escribes 1 nivel de experiencia (máx. 30)\\\nAgachado y clic derecho: lo lees de vuelta\\\nLo escrito no se pierde al morir\\\nEn la mano secundaria: +20% de experiencia\\\n\\\nEspacio: mano secundaria",
+  "book.mythicrelics.relics.entry.thoth_palette.description": "Clic derecho: escribes un nivel de tu experiencia",
+  "book.mythicrelics.relics.entry.thoth_palette.effect": "Clic derecho: escribes un nivel de tu experiencia\\\nAgachado y clic derecho: lo lees de vuelta\\\nCaben 1395 puntos (los niveles 0 a 30) y no se pierden al morir\\\nEn la mano secundaria: +20% de experiencia\\\n\\\nEspacio: mano secundaria",
   "book.mythicrelics.relics.entry.thoth_palette.where": "**Arena sospechosa de pirámides del desierto**: 3 % por bloque cepillado",
   "book.mythicrelics.relics.myth": "Mito",
   "book.mythicrelics.relics.name": "Códice de reliquias",
@@ -97,9 +97,9 @@
   "item.mythicrelics.sekhmet_claws.tooltip.3": "Con frenesí %2$s, tus golpes queman %4$s s",
   "item.mythicrelics.sekhmet_claws.tooltip.4": "Al calmarte, recuperas %5$s ❤",
   "item.mythicrelics.thoth_palette": "Paleta de escriba de Thot",
-  "item.mythicrelics.thoth_palette.tooltip.1": "Clic derecho: escribes 1 nivel de experiencia (máx. %1$s)",
+  "item.mythicrelics.thoth_palette.tooltip.1": "Clic derecho: escribes un nivel de tu experiencia",
   "item.mythicrelics.thoth_palette.tooltip.2": "Agachado y clic derecho: lo lees de vuelta",
-  "item.mythicrelics.thoth_palette.tooltip.3": "Lo escrito no se pierde al morir",
+  "item.mythicrelics.thoth_palette.tooltip.3": "Caben %3$s puntos (los niveles 0 a %1$s) y no se pierden al morir",
   "item.mythicrelics.thoth_palette.tooltip.4": "En la mano secundaria: +%2$s%% de experiencia",
   "itemGroup.mythicrelics.main": "Mythic Relics",
   "jei.mythicrelics.where.entry": "• %s: %s %% por cofre",
@@ -138,5 +138,5 @@
   "tooltip.mythicrelics.osiris_set.1": "Insignias de Osiris (cayado y mayal en las manos):",
   "tooltip.mythicrelics.osiris_set.2": " Al recibir daño mortal renaces con 4 ❤ y Regeneración II",
   "tooltip.mythicrelics.osiris_set.3": " Recarga: %s min (un día de Minecraft)",
-  "tooltip.mythicrelics.thoth_palette.written": "Escrito: %s/%s niveles"
+  "tooltip.mythicrelics.thoth_palette.written": "Escrito: %s/%s puntos"
 }

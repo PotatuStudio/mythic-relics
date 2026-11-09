@@ -40,8 +40,8 @@
   "book.mythicrelics.relics.entry.sekhmet_claws.description": "Frenzy: each kill within 5 s adds a level (max 3)",
   "book.mythicrelics.relics.entry.sekhmet_claws.effect": "Frenzy: each kill within 5 s adds a level (max 3)\\\n+10% damage and speed per level\\\nAt frenzy 3, your hits burn for 3 s\\\nWhen you calm down, recover 2 ❤\\\n\\\nSlot: gloves",
   "book.mythicrelics.relics.entry.sekhmet_claws.where": "**Suspicious sand in desert pyramids**: 1.5% per brushed block",
-  "book.mythicrelics.relics.entry.thoth_palette.description": "Right-click: write down 1 experience level (max 30)",
-  "book.mythicrelics.relics.entry.thoth_palette.effect": "Right-click: write down 1 experience level (max 30)\\\nSneak + right-click: read it back\\\nWhat is written is not lost on death\\\nIn your off hand: +20% experience\\\n\\\nSlot: off hand",
+  "book.mythicrelics.relics.entry.thoth_palette.description": "Right-click: write down one level of your experience",
+  "book.mythicrelics.relics.entry.thoth_palette.effect": "Right-click: write down one level of your experience\\\nSneak + right-click: read it back\\\nHolds 1395 points (levels 0 to 30), not lost on death\\\nIn your off hand: +20% experience\\\n\\\nSlot: off hand",
   "book.mythicrelics.relics.entry.thoth_palette.where": "**Suspicious sand in desert pyramids**: 3% per brushed block",
   "book.mythicrelics.relics.myth": "Myth",
   "book.mythicrelics.relics.name": "Relic Codex",
@@ -97,9 +97,9 @@
   "item.mythicrelics.sekhmet_claws.tooltip.3": "At frenzy %2$s, your hits burn for %4$s s",
   "item.mythicrelics.sekhmet_claws.tooltip.4": "When you calm down, recover %5$s ❤",
   "item.mythicrelics.thoth_palette": "Scribe's Palette of Thoth",
-  "item.mythicrelics.thoth_palette.tooltip.1": "Right-click: write down 1 experience level (max %1$s)",
+  "item.mythicrelics.thoth_palette.tooltip.1": "Right-click: write down one level of your experience",
   "item.mythicrelics.thoth_palette.tooltip.2": "Sneak + right-click: read it back",
-  "item.mythicrelics.thoth_palette.tooltip.3": "What is written is not lost on death",
+  "item.mythicrelics.thoth_palette.tooltip.3": "Holds %3$s points (levels 0 to %1$s), not lost on death",
   "item.mythicrelics.thoth_palette.tooltip.4": "In your off hand: +%2$s%% experience",
   "itemGroup.mythicrelics.main": "Mythic Relics",
   "jei.mythicrelics.where.entry": "• %s: %s%% per chest",
@@ -138,5 +138,5 @@
   "tooltip.mythicrelics.osiris_set.1": "Insignia of Osiris (crook and flail in your hands):",
   "tooltip.mythicrelics.osiris_set.2": " On lethal damage you are reborn with 4 ❤ and Regeneration II",
   "tooltip.mythicrelics.osiris_set.3": " Cooldown: %s min (one Minecraft day)",
-  "tooltip.mythicrelics.thoth_palette.written": "Written: %s/%s levels"
+  "tooltip.mythicrelics.thoth_palette.written": "Written: %s/%s points"
 }

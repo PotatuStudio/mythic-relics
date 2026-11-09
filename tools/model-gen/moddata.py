@@ -66,7 +66,9 @@ def tooltip_args(c):
         "ra_disk": [round(c["RA_UNDEAD_BONUS"] * 100), int(c["RA_BURN_SECONDS"]), int(c["URAEUS_BURN_SECONDS"]),
                     int(c["URAEUS_COOLDOWN"] // 20)],
         "bastet_amulet": [],
-        "thoth_palette": [int(c["THOTH_MAX_LEVELS"]), round(c["THOTH_XP_BONUS"] * 100)],
+        "thoth_palette": [int(c["THOTH_MAX_LEVELS"]), round(c["THOTH_XP_BONUS"] * 100),
+                          sum(112 + (l - 30) * 9 if l >= 30 else 37 + (l - 15) * 5 if l >= 15 else 7 + l * 2
+                              for l in range(int(c["THOTH_MAX_LEVELS"])))],
         "osiris_crook": [int(c["CROOK_GROW_COOLDOWN"] // 20)],
         "osiris_flail": [fmt(c["FLAIL_SWEEP_RADIUS"]), round(c["FLAIL_SWEEP_DAMAGE"] * 100)],
         "sekhmet_claws": [int(c["SEKHMET_WINDOW"] // 20), int(c["SEKHMET_MAX"]), round(c["SEKHMET_PER_LEVEL"] * 100),

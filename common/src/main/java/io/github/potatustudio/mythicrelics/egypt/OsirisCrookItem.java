@@ -1,7 +1,10 @@
 package io.github.potatustudio.mythicrelics.egypt;
 
 import net.minecraft.core.particles.ParticleTypes;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -25,9 +28,12 @@ public class OsirisCrookItem extends RelicItem {
 		if (!(target instanceof AgeableMob animal) || !animal.isBaby() || player.getCooldowns().isOnCooldown(stack)) {
 			return InteractionResult.PASS;
 		}
-		if (player.level() instanceof ServerLevel level) {
+		if (player instanceof ServerPlayer serverPlayer && player.level() instanceof ServerLevel level) {
+			if (!RelicCooldowns.tryStart(serverPlayer, "osiris_crook", EgyptGods.CROOK_GROW_COOLDOWN,
+					BuiltInRegistries.ITEM.getKey(stack.getItem()))) {
+				return InteractionResult.PASS;
+			}
 			animal.setAge(0);
-			player.getCooldowns().addCooldown(stack, EgyptGods.CROOK_GROW_COOLDOWN);
 			level.sendParticles(ParticleTypes.HAPPY_VILLAGER, animal.getX(), animal.getY() + animal.getBbHeight() / 2, animal.getZ(),
 					12, 0.4, 0.4, 0.4, 0);
 			level.playSound(null, animal.getX(), animal.getY(), animal.getZ(), SoundEvents.BONE_MEAL_USE, SoundSource.PLAYERS, 1.0f, 1.0f);

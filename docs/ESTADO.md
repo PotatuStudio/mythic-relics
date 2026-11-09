@@ -82,6 +82,9 @@ Diseño aprobado en `docs/ideas.md` (con su página de diseño). Código en `egy
 `egypt/OsirisCrookItem.java`. Mixins nuevos: `PlayerMixin` (carga del ataque para el golpe giratorio del mayal y +20 %
 de experiencia de Thot), `BrushableBlockEntityMixin` (al cepillar, la reliquia sale primero; Minecraft solo da un ítem)
 y en `LivingEntityMixin` el daño de Ra/Sekhmet/Bastet y el renacer de Osiris en `checkTotemDeathProtection`.
+Recargas guardadas con el mundo por jugador (`relic/RelicCooldowns`, SavedData `mythicrelics:cooldowns`): no se
+reinician al relogear ni al reiniciar el servidor; al entrar se restaura la recarga visible en el ícono. La paleta de
+Thot guarda puntos de experiencia (componente `mythicrelics:written_points`), no niveles, para que no se pueda duplicar.
 Arqueología: `archaeology/desert_pyramid` (Thot 3 %, Ra 1,5 %, Sekhmet 1,5 %) y `archaeology/desert_well` (Bastet 5 %),
 por bloque cepillado. NeoForge suma 1 espacio de cabeza en Curios (`data/mythicrelics/curios/slots/head.json`) para que
 Ra conviva con el Ojo o la máscara. **Sin probar en el juego**: en especial los mixins nuevos (si un punto de inyección

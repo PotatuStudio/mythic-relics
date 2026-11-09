@@ -13,9 +13,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /**
- * Paleta de escriba de Thot: clic derecho escribe un nivel de experiencia en la paleta (hasta {@link EgyptGods#THOTH_MAX_LEVELS});
- * agachado y clic derecho lo lee de vuelta. Lo escrito queda en el ítem, así que no se pierde al morir: cae con la
- * paleta. La barra del ítem muestra cuánto lleva escrito.
+ * Paleta de escriba de Thot: clic derecho escribe en la paleta los puntos de un nivel de tu experiencia; agachado y clic
+ * derecho los lee de vuelta, de a un nivel. Guarda <b>puntos</b>, no niveles: un nivel alto vale muchos más puntos que uno
+ * bajo, y guardar niveles permitiría escribir barato y leer caro. Cabe lo de los niveles 0 a 30 ({@link
+ * EgyptGods#THOTH_MAX_POINTS}). Lo escrito queda en el ítem, así que no se pierde al morir: cae con la paleta.
  */
 public class ThothPaletteItem extends RelicItem {
 	public ThothPaletteItem(Properties properties) {
@@ -23,7 +24,7 @@ public class ThothPaletteItem extends RelicItem {
 	}
 
 	public static int written(ItemStack stack) {
-		return stack.getOrDefault(ModComponents.WRITTEN_LEVELS.get(), 0);
+		return stack.getOrDefault(ModComponents.WRITTEN_POINTS.get(), 0);
 	}
 
 	@Override
@@ -31,12 +32,19 @@ public class ThothPaletteItem extends RelicItem {
 		ItemStack stack = player.getItemInHand(hand);
 		int written = written(stack);
 		boolean read = player.isShiftKeyDown();
-		if (read ? written <= 0 : (written >= EgyptGods.THOTH_MAX_LEVELS || player.experienceLevel <= 0)) {
+		// Escribir: los puntos del último nivel que tienes. Leer: los de un nivel a tu nivel actual (o lo que quede).
+		int points = read ? Math.min(written, EgyptGods.pointsForLevel(player.experienceLevel))
+				: Math.min(EgyptGods.pointsForLevel(Math.max(0, player.experienceLevel - 1)), EgyptGods.THOTH_MAX_POINTS - written);
+		if (points <= 0 || !read && player.experienceLevel <= 0) {
 			return InteractionResult.PASS;
 		}
 		if (!level.isClientSide()) {
-			player.giveExperienceLevels(read ? 1 : -1);
-			stack.set(ModComponents.WRITTEN_LEVELS.get(), written + (read ? -1 : 1));
+			if (read) {
+				EgyptGods.giveWithoutThothBonus(player, points);
+			} else {
+				player.giveExperiencePoints(-points);
+			}
+			stack.set(ModComponents.WRITTEN_POINTS.get(), written + (read ? -points : points));
 			level.playSound(null, player.getX(), player.getY(), player.getZ(),
 					read ? SoundEvents.EXPERIENCE_ORB_PICKUP : SoundEvents.BOOK_PAGE_TURN, SoundSource.PLAYERS, 0.8f, read ? 1.2f : 0.9f);
 		}
@@ -50,7 +58,7 @@ public class ThothPaletteItem extends RelicItem {
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
-		return Math.round(13.0f * written(stack) / EgyptGods.THOTH_MAX_LEVELS);
+		return Math.round(13.0f * written(stack) / EgyptGods.THOTH_MAX_POINTS);
 	}
 
 	@Override
@@ -60,7 +68,7 @@ public class ThothPaletteItem extends RelicItem {
 
 	@Override
 	protected void appendExtraLines(ItemStack stack, Consumer<Component> tooltip) {
-		tooltip.accept(Component.translatable("tooltip.mythicrelics.thoth_palette.written", written(stack), EgyptGods.THOTH_MAX_LEVELS)
+		tooltip.accept(Component.translatable("tooltip.mythicrelics.thoth_palette.written", written(stack), EgyptGods.THOTH_MAX_POINTS)
 				.withStyle(ChatFormatting.AQUA));
 	}
 }
