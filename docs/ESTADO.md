@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto tandas 1 y 2 y Grecia tanda 1 programadas; falta probarlas en el juego).
+Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto tandas 1 y 2 y Grecia tandas 1 y 2 programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -102,6 +102,20 @@ biblioteca), recompensas de cámaras de desafío y ciudades antiguas. Espacios: 
 `chest/back`; Curios `feet`, `head` y `back`. **Sin probar en el juego**: el doble salto, la égida al bloquear, el
 óbolo al morir (también desconectándose en la pantalla de muerte) y la lira.
 
+## Segunda tanda de Grecia (programada el 2026-11-09)
+Diseño aprobado en `docs/ideas.md`. Código en `greece/GreeceHeroes` (constantes y lógica: Ícaro en el servidor,
+vellocino, Cerbero y el daño del Estigia), `PandoraJarItem`, `StyxWaterItem` (da el efecto `mythicrelics:styx_bath`,
+registrado en `registry/ModEffects`) y `PrometheusFennelItem` (cocina con las recetas de horno). Entidad nueva
+`entity/Cerberus` (aliado de `Minions`, tres mordidas por ataque) con `client/entity/CerberusModel` de tres cabezas y su
+textura de `tools/model-gen/cerberus_texture.py`. Ícaro: el planeo y los aleteos los decide el cliente
+(`client/GreeceClient`) y los avisa con el paquete `mythicrelics:icarus`; la cera derretida es la recarga del ítem de las
+alas (el cliente la ve). Si llevas las sandalias de Hermes, el primer salto en el aire es el de Hermes y los siguientes,
+aleteos. Vellocino: Héroe de la aldea renovado cada 2 s; la pepita al esquilar sale de `InteractionEvent.INTERACT_ENTITY`.
+Botín: ruinas oceánicas frías (arqueología), casas de pastor, tesoros de naufragios, bastiones (cuatro tablas), mansiones,
+ciudades antiguas y portales en ruinas. Espacios: Trinkets `chest/back`, `chest/cape` (nuevo en la lista de la entidad)
+y `chest/necklace`; Curios `back`, `body` (nuevo) y `necklace`. **Sin probar en el juego**: el planeo (sensación y daño
+de caída), el derretido, las mordidas seguidas del Cerbero, los vexes de Pandora y la dirección del talón del Estigia.
+
 ## Herramientas y pruebas
 - **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC
   después de subir a `main`.
@@ -113,7 +127,7 @@ biblioteca), recompensas de cámaras de desafío y ciudades antiguas. Espacios: 
   cambien números, botín, tooltips o mito.**
 - `tools/model-gen/greece_icons.py`: íconos de Grecia (como `egypt_icons.py`).
 - `tools/model-gen/worn_models.py`: modelos 3D de las reliquias puestas, su paleta y `trinkets/*.json`.
-- `tools/model-gen/jackal_texture.py`: textura del chacal aliado (requiere Pillow).
+- `tools/model-gen/jackal_texture.py` y `cerberus_texture.py`: texturas del chacal y del Cerbero (requieren Pillow).
 - `tools/model-gen/make_viewer.py <salida.html>`: visor three.js con la pestaña creativa, los tooltips, la página de
   JEI y el escarabajo en 3D, armado con los mismos archivos del mod. Se publica como Artifact para revisar sin el juego.
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.

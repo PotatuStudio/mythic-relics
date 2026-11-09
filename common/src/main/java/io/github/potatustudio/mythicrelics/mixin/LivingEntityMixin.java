@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.mixin;
 
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
+import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * Efectos de reliquias que Architectury no cubre con eventos:
  * <ul>
  *   <li>daño recibido: Anj (menos daño de no-muertos), Ra (más daño a no-muertos bajo el sol), Sekhmet (frenesí) y
- *       Bastet (caídas);</li>
+ *       Bastet (caídas); Perseo (lo petrificado) y el Baño del Estigia (de frente y por la espalda);</li>
  *   <li>el Ojo de Horus impide la Ceguera y la Oscuridad;</li>
  *   <li>el renacer de Osiris, en la misma comprobación que el tótem;</li>
  *   <li>la égida de Atenea, al bloquear con escudo.</li>
@@ -36,7 +37,8 @@ public abstract class LivingEntityMixin {
 				&& EgyptRelics.isWearing(self, ModItems.ANKH)) {
 			amount *= 1.0f - EgyptRelics.ANKH_UNDEAD_REDUCTION;
 		}
-		return GreeceRelics.modifyIncomingDamage(self, source, EgyptGods.modifyIncomingDamage(self, source, amount));
+		amount = EgyptGods.modifyIncomingDamage(self, source, amount);
+		return GreeceHeroes.modifyIncomingDamage(self, source, GreeceRelics.modifyIncomingDamage(self, source, amount));
 	}
 
 	@Inject(method = "canBeAffected", at = @At("HEAD"), cancellable = true)

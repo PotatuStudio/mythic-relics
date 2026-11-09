@@ -1,4 +1,4 @@
-"""Íconos 16x16 de la primera tanda de Grecia, estilo vanilla: silueta legible, 3 o 4 tonos por material con la luz
+"""Íconos 16x16 de Grecia (tandas 1 y 2), estilo vanilla: silueta legible, 3 o 4 tonos por material con la luz
 arriba a la izquierda, contorno del color oscuro de cada material (no negro plano) y brillo animado en el oro, el
 bronce, la plata, las alas y el hilo.
 
@@ -226,6 +226,171 @@ def obol():
     return outline(c)
 
 
+
+# --- Segunda tanda (2026-11-09) ---------------------------------------------------------------------------------
+# Materiales nuevos: terracota (jarra), humo de los males, agua del Estigia, vidrio, cera.
+PAL.update({
+    'K': H('#f6b98a'), 'C': H('#e08a52'), 'c': H('#b45c2c'), 'h': H('#7a3518'), 'j': H('#2a1610'),
+    '1': H('#d9b8f0'), '2': H('#9a68c8'), '0': H('#4a2a6a'),
+    '3': H('#8fe6dc'), '4': H('#2f9ba0'), '5': H('#175a6e'), 'F': H('#0a2a36'),
+    '6': H('#f2fbff'), '7': H('#a9cfe2'), 'E': H('#4e7890'),
+    '8': H('#fff2c2'), '9': H('#e6c66a'),
+})
+for group, edge in (('KCch', 'j'), ('12', '0'), ('345', 'F'), ('67', 'E'), ('89', 'D')):
+    for ch in group:
+        OUTLINE_OF[ch] = edge
+SHINY |= set('K389')
+
+
+def shift(rows, dy):
+    """Baja (dy > 0) una grilla de texto para centrarla."""
+    blank = "." * 16
+    return ([blank] * dy + rows)[:16] if dy > 0 else rows
+
+
+# Alas de Ícaro: plumas en cuatro tonos con la luz arriba a la izquierda, unidas por cera que gotea.
+ICARUS = grid(shift([
+    "................",
+    ".WW..........WW.",
+    ".wWW........WWw.",
+    ".LwWW......WWwL.",
+    ".LLwwW....WwwLL.",
+    ".lLLwwW..WwwLLl.",
+    ".llLLLw89wLLLll.",
+    "..lllLL98LLlll..",
+    "..l.llL89Lll.l..",
+    "..l.l.l99l.l.l..",
+    "....l..9...l....",
+    ".......8........",
+    "................",
+    "................",
+    "................",
+    "................",
+], 2))
+
+# Vellocino: silueta de piel de carnero (cuello, patas abiertas) con rizos de 2x2 y sombra hacia abajo a la derecha.
+FLEECE_MASK = [
+    "................",
+    "................",
+    ".PPPPPPPPPPPPPP.",
+    ".ppp#pppppp#ppp.",
+    "...###....###...",
+    "...##########...",
+    "...##########...",
+    "....########....",
+    "....########....",
+    "....########....",
+    "....########....",
+    "...##########...",
+    "...###.##.###...",
+    "...##......##...",
+    "................",
+    "................",
+]
+
+
+def fleece():
+    c = [['.'] * 16 for _ in range(16)]
+    for y in range(16):
+        for x in range(16):
+            if FLEECE_MASK[y][x] in 'Pp':
+                c[y][x] = FLEECE_MASK[y][x]          # la rama del roble de la Cólquide
+                continue
+            if FLEECE_MASK[y][x] != '#':
+                continue
+            ox = x + (2 if (y // 2) % 2 else 0)
+            cell = ((ox % 4) // 2, y % 2)          # rizo de 2x2: arriba-izq. claro, abajo-der. sombra
+            curl = {(0, 0): 'G', (1, 0): 'g', (0, 1): 'g', (1, 1): 'd'}[cell]
+            if x + y > 20 and curl == 'g':
+                curl = 'd'                          # la mitad de abajo a la derecha, más en sombra
+            if x + y < 9 and curl == 'd':
+                curl = 'g'
+            c[y][x] = curl
+    return outline(c)
+
+
+def collar():
+    """Collar de cuero negro en elipse, con brillo arriba a la izquierda, púas de plata y la gema de brasa colgando."""
+    c = [['.'] * 16 for _ in range(16)]
+    cx, cy = 7.5, 6.5
+    for y in range(16):
+        for x in range(16):
+            o = ((x - cx) / 6.4) ** 2 + ((y - cy) / 4.4) ** 2
+            i = ((x - cx) / 4.3) ** 2 + ((y - cy) / 2.4) ** 2
+            if o <= 1 and i > 1:
+                light = -(x - cx) / 6.4 - (y - cy) / 4.4
+                c[y][x] = 'I' if light > 0.9 else 'i' if light > 0.0 else 'o'
+    for a in range(0, 360, 45):
+        if 60 < a < 120:
+            continue                                 # abajo cuelga el medallón
+        x = round(cx + 7.2 * math.cos(math.radians(a)))
+        y = round(cy + 5.2 * math.sin(math.radians(a)))
+        if 0 <= x < 16 and 0 <= y < 16 and c[y][x] == '.':
+            c[y][x] = 'M' if a >= 180 else 'm'
+    for x, y, ch in [(7, 11, 'a'), (8, 11, 'a'), (6, 12, 'B'), (7, 12, 'B'), (8, 12, 'b'), (9, 12, 'n'),
+                     (6, 13, 'b'), (7, 13, 'R'), (8, 13, 'r'), (9, 13, 'n'), (7, 14, 'n'), (8, 14, 'n')]:
+        c[y][x] = ch
+    return outline(c)
+
+
+# Jarra de Pandora: pithos con asas y banda de figuras negras, la tapa corrida a un lado y los males saliendo.
+PANDORA = grid([
+    ".....1..2.......",
+    "......21.1......",
+    ".....1.2..cKCc..",
+    "......2.1.hcch..",
+    ".....hjjjjh.....",
+    "......KCCc......",
+    ".....KCCCCc.....",
+    "...KKCCCCCCch...",
+    "..hKjjjjjjjjhh..",
+    "..hKCjCCjCCjch..",
+    "...jjjjjjjjjj...",
+    "...KCCCCCCCch...",
+    "....KCCCCCch....",
+    ".....KCCCch.....",
+    "......hhhh......",
+    "................",
+])
+
+
+def prometheus():
+    """Tallo de hinojo de dos tonos con nudos y hojas finas; arriba, la brasa con núcleo amarillo y la llama."""
+    c = [['.'] * 16 for _ in range(16)]
+    for t in range(10):
+        x, y = 2 + t, 14 - t
+        node = t % 3 == 1
+        c[y][x] = 'y' if node else 'V'
+        c[y][x + 1] = 'y' if node else 'v'
+    for x, y in [(4, 10), (3, 9), (7, 7), (6, 6), (9, 10), (10, 11)]:
+        c[y][x] = 'v'                                # hojas finas del hinojo
+    for x, y, ch in [(11, 4, 'x'), (12, 4, 'x'), (11, 3, 'r'), (12, 3, 'Y'), (13, 3, 'r'),
+                     (11, 2, 'r'), (12, 2, 'Y'), (13, 2, 'R'), (14, 2, 'r'), (12, 1, 'R'), (13, 1, 'Y'), (13, 0, 'r')]:
+        c[y][x] = ch
+    return outline(c)
+
+
+# Frasco con agua del Estigia: tapón de corcho, vidrio y el agua oscura en remolino.
+STYX = grid([
+    "................",
+    "................",
+    ".......pP.......",
+    ".......up.......",
+    "......7667......",
+    ".......67.......",
+    "......6337......",
+    ".....633447.....",
+    "....63344457....",
+    "....63444557....",
+    "....64445557....",
+    "....64455557....",
+    ".....645557.....",
+    "......7777......",
+    "................",
+    "................",
+])
+
+
 ICONS = {
     "hermes_sandals": lambda: outline(HERMES),
     "hades_helm": lambda: outline(HADES),
@@ -234,6 +399,12 @@ ICONS = {
     "ariadne_thread": ariadne,
     "charon_obol": obol,
     "orpheus_lyre": lambda: outline(LYRE),
+    "icarus_wings": lambda: outline(ICARUS),
+    "golden_fleece": fleece,
+    "cerberus_collar": collar,
+    "pandora_jar": lambda: outline(PANDORA),
+    "styx_water": lambda: outline(STYX),
+    "prometheus_fennel": prometheus,
 }
 
 

@@ -48,6 +48,8 @@ CULTURE_INFO = {
             "hermes_sandals": (-2, 2), "hades_helm": (0, 2), "athena_aegis": (2, 2), "perseus_set": (0, 4),
             "medusa_head": (0, 6),
             "ariadne_thread": (-3, 8), "charon_obol": (0, 8), "orpheus_lyre": (3, 8),
+            "icarus_wings": (-2, 11), "golden_fleece": (0, 11), "cerberus_collar": (2, 11),
+            "pandora_jar": (-2, 13), "styx_water": (0, 13), "prometheus_fennel": (2, 13),
         },
     },
 }
@@ -55,10 +57,12 @@ SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus
 SLOT_NAMES = {
     "es_es": {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes",
               "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria",
-              "feet/shoes": "zapatos", "chest/back": "espalda", "hand": "mano", "inventory": "inventario"},
+              "feet/shoes": "zapatos", "chest/back": "espalda", "chest/cape": "capa", "hand": "mano",
+              "inventory": "inventario"},
     "en_us": {"legs/belt": "belt", "head/face": "face", "chest/necklace": "necklace", "hand/glove": "gloves",
               "hand/ring": "ring", "mainhand": "main hand (weapon)", "head/hat": "hat", "offhand": "off hand",
-              "feet/shoes": "shoes", "chest/back": "back", "hand": "hand", "inventory": "inventory"},
+              "feet/shoes": "shoes", "chest/back": "back", "chest/cape": "cape", "hand": "hand",
+              "inventory": "inventory"},
 }
 WORDS = {
     "es_es": {"per_chest": "{p} % por cofre", "per_brush": "{p} % por bloque cepillado",

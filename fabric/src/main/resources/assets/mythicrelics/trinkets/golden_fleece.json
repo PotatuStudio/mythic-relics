@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:golden_fleece"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "body",
+   "model": "mythicrelics:item/golden_fleece_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

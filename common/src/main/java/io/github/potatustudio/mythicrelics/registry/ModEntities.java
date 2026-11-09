@@ -4,6 +4,7 @@ import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.entity.Cerberus;
 import io.github.potatustudio.mythicrelics.entity.Jackal;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
 import net.minecraft.core.registries.Registries;
@@ -30,6 +31,14 @@ public final class ModEntities {
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("jackal"))));
 
+	public static final RegistrySupplier<EntityType<Cerberus>> CERBERUS = ENTITIES.register("cerberus",
+			() -> EntityType.Builder.of(Cerberus::new, MobCategory.MISC)
+					.sized(0.6f, 0.8f)
+					.fireImmune()
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("cerberus"))));
+
 	private ModEntities() {
 	}
 
@@ -37,5 +46,6 @@ public final class ModEntities {
 		ENTITIES.register();
 		EntityAttributeRegistry.register(SCARAB, Scarab::createAttributes);
 		EntityAttributeRegistry.register(JACKAL, Jackal::createAttributes);
+		EntityAttributeRegistry.register(CERBERUS, Cerberus::createAttributes);
 	}
 }

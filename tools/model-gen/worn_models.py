@@ -41,6 +41,8 @@ COLORS = {
     "black_l": "#4a4446", "black": "#1c1719", "black_d": "#0e0b0c", "crest_l": "#ff6a5a", "crest": "#c8302a",
     "crest_d": "#7a1a14", "wing_l": "#f4f8ff", "wing": "#cfe6ff", "wing_d": "#7fb0e0", "leather_l": "#c09060",
     "leather": "#a07848", "leather_d": "#6e4e2c", "stone": "#c9cfc4", "stone_d": "#8f978a", "snake": "#4f8f3a",
+    "wax_l": "#fff2c2", "wax": "#e6c66a", "silver": "#e8e8ec", "silver_d": "#a8a8b0", "bronze": "#e0954a",
+    "bronze_d": "#a85f26", "ember": "#ff8a3a",
 }
 SWATCHES = list(COLORS)
 # Cara de arriba más clara y de abajo más oscura: da volumen aunque cada elemento sea de un color.
@@ -52,7 +54,8 @@ SHADE = {"gold": ("gold_l", "gold_d"), "gold_l": ("gold_l", "gold"), "gold_d": (
          "white": ("white", "white"), "sun": ("sun_l", "sun_d"), "cobra": ("cobra_l", "cobra_d"),
          "fur": ("fur_l", "fur_d"), "fur_l": ("fur_l", "fur"), "ivory": ("ivory", "ivory_d"),
          "black": ("black_l", "black_d"), "crest": ("crest_l", "crest_d"), "wing": ("wing_l", "wing_d"),
-         "leather": ("leather_l", "leather_d"), "stone": ("stone", "stone_d")}
+         "leather": ("leather_l", "leather_d"), "stone": ("stone", "stone_d"), "wax": ("wax_l", "wax"),
+         "silver": ("silver", "silver_d"), "bronze": ("bronze", "bronze_d")}
 
 
 def uv(color):
@@ -285,6 +288,52 @@ def aegis_worn():
     return e
 
 
+def mirror(e):
+    """Copia un elemento al otro lado del cuerpo (x -> 16 - x)."""
+    m = json.loads(json.dumps(e))
+    m["from"][0], m["to"][0] = 16 - e["to"][0], 16 - e["from"][0]
+    return m
+
+
+def icarus_wings():
+    """Arnés de cera en la espalda y dos alas abiertas en escalera: hueso, cobertoras y plumas largas. Van por detrás
+    del vellocino (z < 5,4) para poder llevarlos juntos."""
+    e = [box([6.0, 8.5, 4.75], [10.0, 13.0, 5.35], "wax", "cera")]
+    side = [box([10.0, 12.6, 4.6], [19.0, 14.0, 5.3], "wing", "hueso"),
+            box([10.0, 10.0, 4.7], [20.0, 12.6, 5.2], "wing", "cobertoras")]
+    for i, (x, low) in enumerate(((10.5, 6.0), (13.0, 5.0), (15.5, 4.0), (18.0, 3.2))):
+        side.append(box([x, low, 4.8], [x + 2.4, 10.0, 5.1], "wing_d", f"pluma {i}"))
+    side.append(box([11.0, 13.0, 4.4], [12.0, 13.6, 4.6], "wax", "gota de cera"))
+    return e + side + [mirror(p) for p in side]
+
+
+def golden_fleece():
+    """Piel dorada sobre la espalda y los hombros, con dos patas al frente que se anudan en el pecho. Los hombros quedan
+    dentro de los de la égida (y la cadena de los collares, entre la piel y el cuerpo) para no compartir planos."""
+    e = [box([3.6, 6.5, 5.4], [12.4, 13.95, 5.95], "gold", "lomo"),
+         box([3.6, 13.92, 5.4], [12.4, 14.55, 10.45], "gold", "hombros"),
+         box([3.6, 11.0, 10.05], [6.2, 14.05, 10.45], "gold", "pata der."),
+         box([9.8, 11.0, 10.05], [12.4, 14.05, 10.45], "gold", "pata izq."),
+         box([6.2, 11.6, 10.1], [9.8, 12.3, 10.35], "gold_d", "nudo")]
+    for i, x in enumerate((4.2, 6.4, 8.6, 10.8)):
+        e.append(box([x, 5.6, 5.5], [x + 1.4, 6.5, 5.9], "gold_d", f"rizo {i}"))
+    return e
+
+
+def cerberus_collar():
+    """Collar de cuero negro con púas de plata y un medallón de bronce con tres pares de ojos de brasa."""
+    e = ring(3.55, 12.45, 13.2, 14.2, 5.6, 10.4, 0.6, "black", "cuero")
+    for x in (4.6, 7.6, 10.6):
+        e.append(box([x, 13.45, 10.4], [x + 0.8, 13.95, 11.2], "silver", "púa frente"))
+    for z in (6.8, 8.8):
+        e.append(box([2.75, 13.45, z], [3.55, 13.95, z + 0.8], "silver", "púa der."))
+        e.append(box([12.45, 13.45, z], [13.25, 13.95, z + 0.8], "silver", "púa izq."))
+    e.append(box([6.6, 11.0, 10.4], [9.4, 13.2, 10.9], "bronze", "medallón"))
+    for x in (6.9, 7.8, 8.7):
+        e.append(box([x, 12.2, 10.9], [x + 0.4, 12.5, 11.0], "ember", "ojos"))
+    return e
+
+
 def attach(part, name, offset=(0, 0, 0)):
     return {"type": "model", "model_part": part, "model": f"{NS}:item/{name}_worn", "offset": list(offset), "centered": True}
 
@@ -309,6 +358,10 @@ WORN = {
     "hermes_sandals": (lambda: model(sandal()), [attach("right_leg", "hermes_sandals"), attach("left_leg", "hermes_sandals")]),
     "hades_helm": (lambda: model(helm()), [attach("head", "hades_helm")]),
     "athena_aegis": (lambda: model(aegis_worn()), [attach("body", "athena_aegis")]),
+    # Grecia, tanda 2
+    "icarus_wings": (lambda: model(icarus_wings()), [attach("body", "icarus_wings")]),
+    "golden_fleece": (lambda: model(golden_fleece()), [attach("body", "golden_fleece")]),
+    "cerberus_collar": (lambda: model(cerberus_collar()), [attach("body", "cerberus_collar")]),
 }
 
 

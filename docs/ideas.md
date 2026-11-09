@@ -47,10 +47,11 @@ el agua del Estigia) y el óbolo de Caronte pagaba el pasaje, no evitaba la muer
 | Óbolo de Caronte | inventario | Si mueres con él, conservas inventario y experiencia; se gasta. | Fortalezas del Nether 5 %; arena sospechosa de ruinas de los senderos 3 % |
 | Lira de Orfeo | mano | Mantener clic derecho: los animales a 16 bloques te siguen y los hostiles a 8 bloques se duermen mientras suena (no jefes); no puedes atacar y vas lento. | Ciudades antiguas, 3 % |
 
-Segunda tanda: diseño aprobado el 2026-11-09, falta programarla (página de diseño:
+Segunda tanda: diseño aprobado y programado el 2026-11-09, falta probarla en el juego (página de diseño:
 https://claude.ai/artifact/5Ns8v22pGPS1Ak1iysDDLP). Decisiones del usuario: Ícaro con planeo y 3 aleteos; vellocino
 «rey legítimo» (sin regeneración, que viene de Percy Jackson); Pandora con azar total; Cerbero como un solo perro de tres
 cabezas con modelo propio; agua del Estigia en frasco que no se gasta; «Hinojo de Prometeo» en vez de «antorcha».
+Íconos aprobados: https://claude.ai/artifact/MfyEEQre5quB3ujrwdLiY4
 
 | Reliquia | Espacio | Efecto aprobado | Dónde |
 |---|---|---|---|

@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:cerberus_collar"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "body",
+   "model": "mythicrelics:item/cerberus_collar_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

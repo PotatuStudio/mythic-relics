@@ -12,6 +12,9 @@ import io.github.potatustudio.mythicrelics.egypt.ThothPaletteItem;
 import io.github.potatustudio.mythicrelics.greece.AriadneThreadItem;
 import io.github.potatustudio.mythicrelics.greece.MedusaHeadItem;
 import io.github.potatustudio.mythicrelics.greece.OrpheusLyreItem;
+import io.github.potatustudio.mythicrelics.greece.PandoraJarItem;
+import io.github.potatustudio.mythicrelics.greece.PrometheusFennelItem;
+import io.github.potatustudio.mythicrelics.greece.StyxWaterItem;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
@@ -67,6 +70,15 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> ARIADNE_THREAD = register("ariadne_thread", AriadneThreadItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> CHARON_OBOL = register("charon_obol", RelicItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));
 	public static final RegistrySupplier<Item> ORPHEUS_LYRE = register("orpheus_lyre", OrpheusLyreItem::new, p -> p.rarity(Rarity.EPIC));
+
+	// Grecia, segunda tanda.
+	public static final RegistrySupplier<Item> ICARUS_WINGS = relic("icarus_wings", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> GOLDEN_FLEECE = relic("golden_fleece", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> CERBERUS_COLLAR = relic("cerberus_collar", p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> PANDORA_JAR = register("pandora_jar", PandoraJarItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> STYX_WATER = register("styx_water", StyxWaterItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> PROMETHEUS_FENNEL = register("prometheus_fennel", PrometheusFennelItem::new,
+			p -> p.rarity(Rarity.RARE));
 
 	public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register("main", () -> CreativeTabRegistry.create(builder -> builder
 			.title(Component.translatable("itemGroup.mythicrelics.main"))

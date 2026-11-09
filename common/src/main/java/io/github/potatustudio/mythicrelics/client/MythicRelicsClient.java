@@ -2,6 +2,8 @@ package io.github.potatustudio.mythicrelics.client;
 
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
+import io.github.potatustudio.mythicrelics.client.entity.CerberusModel;
+import io.github.potatustudio.mythicrelics.client.entity.CerberusRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.JackalModel;
 import io.github.potatustudio.mythicrelics.client.entity.JackalRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabModel;
@@ -18,6 +20,8 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.SCARAB, ScarabRenderer::new);
 		EntityModelLayerRegistry.register(JackalModel.LAYER, JackalModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.JACKAL, JackalRenderer::new);
+		EntityModelLayerRegistry.register(CerberusModel.LAYER, CerberusModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.CERBERUS, CerberusRenderer::new);
 		GreeceClient.init();
 	}
 }

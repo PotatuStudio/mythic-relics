@@ -32,5 +32,8 @@ public final class MythicRelicsNeoForgeClient {
 		ICurioRenderer.register(ModItems.HERMES_SANDALS.get(), () -> new CuriosRelicRenderer(Part.BOTH_LEGS, 0f));
 		ICurioRenderer.register(ModItems.HADES_HELM.get(), () -> new CuriosRelicRenderer(Part.HEAD, 0f));
 		ICurioRenderer.register(ModItems.ATHENA_AEGIS.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.ICARUS_WINGS.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.GOLDEN_FLEECE.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.CERBERUS_COLLAR.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 	}
 }

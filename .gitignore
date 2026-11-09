@@ -41,3 +41,4 @@ replay_*.log
 
 # Capturas de las revisiones del visor con Playwright
 .playwright-mcp/
+__pycache__/

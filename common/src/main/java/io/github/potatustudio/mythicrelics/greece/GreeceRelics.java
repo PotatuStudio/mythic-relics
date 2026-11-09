@@ -284,7 +284,7 @@ public final class GreeceRelics {
 			case "medusa_head" -> new Object[] {MEDUSA_TICKS / 20, (int) MEDUSA_RADIUS, MEDUSA_COOLDOWN / 20};
 			case "ariadne_thread" -> new Object[] {ARIADNE_MAX_DISTANCE, ARIADNE_COOLDOWN / 20 / 60};
 			case "orpheus_lyre" -> new Object[] {(int) ORPHEUS_ANIMALS, (int) ORPHEUS_HOSTILES};
-			default -> new Object[0];
+			default -> GreeceHeroes.tooltipArgs(id);
 		};
 	}
 }

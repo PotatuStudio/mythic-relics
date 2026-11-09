@@ -70,8 +70,33 @@ public final class ModLoot {
 			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, List.of(
 					new Drop(0.030f, ModItems.ATHENA_AEGIS))),
 			// Ciudad antigua: el descenso de Orfeo.
+			// Ciudad antigua: el descenso de Orfeo y el río del inframundo.
 			Map.entry(BuiltInLootTables.ANCIENT_CITY, List.of(
-					new Drop(0.030f, ModItems.ORPHEUS_LYRE))));
+					new Drop(0.030f, ModItems.ORPHEUS_LYRE),
+					new Drop(0.020f, ModItems.STYX_WATER))),
+			// Ruinas oceánicas frías: el mar donde cayó Ícaro (grava sospechosa).
+			Map.entry(BuiltInLootTables.OCEAN_RUIN_COLD_ARCHAEOLOGY, List.of(
+					new Drop(0.015f, ModItems.ICARUS_WINGS))),
+			// Casas de pastor y tesoros de naufragio (el Argo).
+			Map.entry(BuiltInLootTables.VILLAGE_SHEPHERD, List.of(
+					new Drop(0.040f, ModItems.GOLDEN_FLEECE))),
+			Map.entry(BuiltInLootTables.SHIPWRECK_TREASURE, List.of(
+					new Drop(0.020f, ModItems.GOLDEN_FLEECE))),
+			// Bastiones: la puerta del Nether que guarda Cerbero.
+			Map.entry(BuiltInLootTables.BASTION_TREASURE, List.of(
+					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
+			Map.entry(BuiltInLootTables.BASTION_OTHER, List.of(
+					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
+			Map.entry(BuiltInLootTables.BASTION_BRIDGE, List.of(
+					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
+			Map.entry(BuiltInLootTables.BASTION_HOGLIN_STABLE, List.of(
+					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
+			// Mansiones del bosque: muy rara.
+			Map.entry(BuiltInLootTables.WOODLAND_MANSION, List.of(
+					new Drop(0.050f, ModItems.PANDORA_JAR))),
+			// Portales en ruinas: el fuego robado.
+			Map.entry(BuiltInLootTables.RUINED_PORTAL, List.of(
+					new Drop(0.030f, ModItems.PROMETHEUS_FENNEL))));
 
 	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre (o por bloque cepillado, en arqueología). */
 	public record Source(ResourceKey<LootTable> table, float chance) {
