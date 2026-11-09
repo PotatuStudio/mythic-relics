@@ -31,6 +31,11 @@ h1 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; margin
 h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; margin: 0 0 4px; color: var(--gold); }
 .sub { color: var(--muted); margin: 0; }
 .grow { flex: 1; min-width: 0; }
+.cultures { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--line); }
+.cultures button { background: transparent; border: 1px solid transparent; border-bottom: 0; color: var(--muted);
+  padding: 8px 18px; font: 400 1.1rem var(--font-display); cursor: pointer; border-radius: 8px 8px 0 0; margin-bottom: -1px; }
+.cultures button[aria-selected="true"] { background: var(--stone); border-color: var(--line); color: var(--gold); }
+.cultures button:hover { color: var(--sand); }
 .toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
 .toggle button { background: transparent; color: var(--muted); border: 0; padding: 6px 12px; font: 600 13px var(--font-body); cursor: pointer; }
 .toggle button[aria-pressed="true"] { background: var(--gold); color: #2a1d05; }
@@ -99,6 +104,8 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button id="langEn" aria-pressed="false">EN</button>
     </div>
   </header>
+
+  <nav class="cultures" id="cultureTabs" role="tablist" aria-label="Cultura"></nav>
 
   <section>
     <div>
@@ -177,7 +184,21 @@ const UI = {
 };
 const RARITY_COLOR = { common: "c-white", uncommon: "c-yellow", rare: "c-aqua", epic: "c-purple" };
 let lang = "es_es";
-let selected = DATA.order[0];
+/* Pestañas por cultura: cada una muestra solo sus reliquias. Se recuerda la última y va en el enlace (#egipto). */
+const CULTURE_HASH = { egypt: "egipto", greece: "grecia" };
+const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia" }, en_us: { egypt: "Egypt", greece: "Greece" } };
+const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
+  greece: ["hermes_sandals", "hades_helm", "athena_aegis"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player"] };
+function cultureFromHash() {
+  const h = location.hash.replace("#", "");
+  return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
+}
+let culture = cultureFromHash();
+try { if (!culture) { const c = localStorage.getItem("mr-culture"); if (c && DATA.cultures[c]) culture = c; } } catch (e) {}
+if (!culture) culture = Object.keys(DATA.cultures)[0];
+const items = () => DATA.cultures[culture];
+let selected = items()[0];
 try { const saved = localStorage.getItem("mr-lang"); if (saved && UI[saved]) lang = saved; } catch (e) {}
 
 function tr(key, args) {
@@ -233,9 +254,9 @@ function iconCanvas(name) {
 function buildSlots() {
   const box = document.getElementById("slots");
   box.innerHTML = "";
-  const total = Math.ceil(DATA.order.length / 9) * 9 + 9;
+  const total = Math.ceil(items().length / 9) * 9 + 9;
   for (let i = 0; i < total; i++) {
-    const name = DATA.order[i];
+    const name = items()[i];
     const b = document.createElement("button");
     b.className = "slot" + (name ? "" : " empty");
     if (name) {
@@ -334,7 +355,32 @@ function renderFacts() {
   }
 }
 
+function buildCultureTabs() {
+  const nav = document.getElementById("cultureTabs");
+  nav.innerHTML = "";
+  for (const c of Object.keys(DATA.cultures)) {
+    const b = document.createElement("button");
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", String(c === culture));
+    b.textContent = CULTURE_NAME[lang][c] + " · " + DATA.cultures[c].length;
+    b.addEventListener("click", () => setCulture(c));
+    nav.appendChild(b);
+  }
+}
+
+function setCulture(c) {
+  if (!DATA.cultures[c]) return;
+  culture = c;
+  selected = items()[0];
+  try { localStorage.setItem("mr-culture", c); } catch (e) {}
+  if (location.hash !== "#" + CULTURE_HASH[c]) history.replaceState(null, "", "#" + CULTURE_HASH[c]);
+  if (typeof applyCultureTo3d === "function") applyCultureTo3d();
+  render();
+}
+window.addEventListener("hashchange", () => { const c = cultureFromHash(); if (c && c !== culture) setCulture(c); });
+
 function render() {
+  buildCultureTabs();
   for (const s of Object.values(sprites)) s.canvases = s.canvases.filter(c => c.isConnected);
   document.querySelectorAll("[data-i18n]").forEach(el => {
     el.textContent = UI[lang][el.dataset.i18n];
@@ -571,7 +617,7 @@ function wornMeshes(name) {
 }
 const TRINKETS = Object.keys(DATA.trinkets);
 const worn = {};
-const wearing = new Set(["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"]);
+const wearing = new Set(CULTURE_WORN[culture]);
 for (const name of TRINKETS) worn[name] = wornMeshes(name);
 function applyWorn() {
   for (const name of TRINKETS) for (const m of worn[name]) m.visible = wearing.has(name);
@@ -579,7 +625,7 @@ function applyWorn() {
 function buildWornControls() {
   const box = document.getElementById("wornControls");
   box.innerHTML = "";
-  for (const name of TRINKETS) {
+  for (const name of TRINKETS.filter(n => items().includes(n))) {
     const b = document.createElement("button");
     b.className = "btn";
     b.setAttribute("aria-pressed", String(wearing.has(name)));
@@ -599,6 +645,17 @@ function buildWornControls() {
   }
 }
 applyWorn();
+
+/* Al cambiar de cultura: sus reliquias puestas por defecto y solo sus modelos (el escarabajo y el chacal son de Egipto). */
+function applyCultureTo3d() {
+  wearing.clear();
+  for (const n of CULTURE_WORN[culture]) wearing.add(n);
+  applyWorn();
+  const allowed = CULTURE_SUBJECTS[culture];
+  document.querySelectorAll("#subjects button").forEach(b => { b.hidden = !allowed.includes(b.dataset.subject); });
+  if (!allowed.includes(subject)) setSubject(allowed[0]);
+  else renderStageText();
+}
 
 /* Animación de marcha (setupAnim de cada modelo) */
 let walkPos = 0, walkSpeed = 0;
@@ -714,7 +771,8 @@ function loop(now) {
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
 }
-setSubject("scarab");
+setSubject(CULTURE_SUBJECTS[culture][0]);
+applyCultureTo3d();
 requestAnimationFrame(loop);
 
 render();
