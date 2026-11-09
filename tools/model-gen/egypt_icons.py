@@ -330,23 +330,22 @@ def bastet():
 
 
 def thoth_palette():
-    """Paleta de escriba: tabla de madera con dos pocillos de tinta (roja y negra) y la ranura de los cálamos."""
+    """Paleta de escriba con el aspecto de la tablilla del borrador: superficie clara con jeroglíficos y, arriba, los dos
+    pocillos de tinta (roja y negra) de las paletas egipcias reales."""
     c = empty_chars()
     for y in range(1, 15):
-        for x in range(4, 12):
-            c[y][x] = 'P' if (x == 4 or y == 1) else ('u' if (x == 11 or y == 14) else 'p')
-    for x, y, ch in [(5, 2, 'X'), (6, 2, 'r'), (5, 3, 'X'), (6, 3, 'X'),   # tinta roja
+        for x in range(3, 13):
+            c[y][x] = 'w' if (x == 3 or y == 1) else ('s' if (x == 12 or y == 14) else 'W')
+    for x, y, ch in [(5, 2, 'r'), (6, 2, 'X'), (5, 3, 'X'), (6, 3, 'X'),    # tinta roja
                      (9, 2, 'O'), (10, 2, 'o'), (9, 3, 'o'), (10, 3, 'o')]:  # tinta negra
         c[y][x] = ch
-    for y in range(5, 14):
-        c[y][7] = 'u'
-        c[y][8] = 'u'
-    for y in range(6, 13):
-        c[y][7] = 'Y'
-    for y in range(7, 13):
-        c[y][8] = 'y'
-    c[5][7] = 'z'
-    c[13][8] = 'z'
+    for x in range(4, 12):
+        c[5][x] = 's'                                                     # borde del área de escritura
+    glyphs = [(5, 7, 'l'), (6, 7, 'l'), (8, 7, 'c'), (10, 7, 'c'), (10, 8, 'c'),
+              (5, 9, 'c'), (5, 10, 'c'), (7, 9, 'g'), (8, 9, 'g'), (7, 10, 'g'), (10, 9, 'l'), (10, 10, 'l'),
+              (5, 12, 'l'), (6, 12, 'l'), (8, 12, 'c'), (9, 12, 'c'), (9, 11, 'c'), (11, 12, 'c')]
+    for x, y, ch in glyphs:
+        c[y][x] = ch
     return finish(c)
 
 
