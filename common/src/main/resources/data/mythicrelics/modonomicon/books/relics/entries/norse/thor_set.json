@@ -1,0 +1,36 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:norse/thor_set",
+  "category": "mythicrelics:norse",
+  "name": "book.mythicrelics.relics.thor_set.name",
+  "icon": "mythicrelics:mjolnir",
+  "x": 0,
+  "y": 4,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "set",
+      "title": "book.mythicrelics.relics.thor_set.name",
+      "text": "book.mythicrelics.relics.entry.thor_set.effect",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.thor_set",
+      "show_title_separator": true
+    }
+  ],
+  "parents": [
+    {
+      "entry": "mythicrelics:norse/jarngreipr"
+    },
+    {
+      "entry": "mythicrelics:norse/megingjord"
+    },
+    {
+      "entry": "mythicrelics:norse/mjolnir"
+    }
+  ]
+}

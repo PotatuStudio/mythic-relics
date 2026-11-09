@@ -36,5 +36,8 @@ public final class MythicRelicsNeoForgeClient {
 		ICurioRenderer.register(ModItems.GOLDEN_FLEECE.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.CERBERUS_COLLAR.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.WOLF_BULLA.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.JARNGREIPR.get(), () -> new CuriosRelicRenderer(Part.BOTH_ARMS, 0f));
+		ICurioRenderer.register(ModItems.MEGINGJORD.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.DRAUPNIR.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
 	}
 }

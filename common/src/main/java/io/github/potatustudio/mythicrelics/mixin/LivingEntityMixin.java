@@ -4,6 +4,7 @@ import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
+import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.server.level.ServerLevel;
@@ -41,7 +42,7 @@ public abstract class LivingEntityMixin {
 		}
 		amount = EgyptGods.modifyIncomingDamage(self, source, amount);
 		amount = GreeceHeroes.modifyIncomingDamage(self, source, GreeceRelics.modifyIncomingDamage(self, source, amount));
-		return RomeRelics.modifyIncomingDamage(self, source, amount);
+		return NorseRelics.modifyIncomingDamage(self, source, RomeRelics.modifyIncomingDamage(self, source, amount));
 	}
 
 	@Inject(method = "canBeAffected", at = @At("HEAD"), cancellable = true)

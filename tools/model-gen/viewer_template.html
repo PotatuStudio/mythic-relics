@@ -188,11 +188,11 @@ const UI = {
 const RARITY_COLOR = { common: "c-white", uncommon: "c-yellow", rare: "c-aqua", epic: "c-purple" };
 let lang = "es_es";
 /* Pestañas por cultura: cada una muestra solo sus reliquias. Se recuerda la última y va en el enlace (#egipto). */
-const CULTURE_HASH = { egypt: "egipto", greece: "grecia", rome: "roma" };
-const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma" }, en_us: { egypt: "Egypt", greece: "Greece", rome: "Rome" } };
+const CULTURE_HASH = { egypt: "egipto", greece: "grecia", rome: "roma", norse: "nordicos" };
+const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma", norse: "Nórdicos" }, en_us: { egypt: "Egypt", greece: "Greece", rome: "Rome", norse: "Norse" } };
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
-  greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"] };
+  greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -224,6 +224,7 @@ function loadSprite(name) {
   sprites[name] = { img, frames: icon.frames, canvases: [] };
 }
 DATA.order.forEach(loadSprite);
+loadSprite("emblem");
 function bindCanvas(name, canvas) { sprites[name].canvases.push(canvas); }
 const start = performance.now();
 function drawSprites(now) {
@@ -403,7 +404,7 @@ function setLang(l) { lang = l; try { localStorage.setItem("mr-lang", l); } catc
 document.getElementById("langEs").addEventListener("click", () => setLang("es_es"));
 document.getElementById("langEn").addEventListener("click", () => setLang("en_us"));
 document.getElementById("modIcon").src = "data:image/png;base64," + DATA.modIcon;
-bindCanvas("ankh", document.getElementById("tabIcon"));
+bindCanvas("emblem", document.getElementById("tabIcon"));
 
 /* ---------------- Modelos 3D ----------------
    Réplicas de ScarabModel.java y JackalModel.java. Coordenadas del modelo en píxeles con Y hacia abajo, como

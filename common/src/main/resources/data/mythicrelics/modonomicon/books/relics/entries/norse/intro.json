@@ -1,0 +1,18 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:norse/intro",
+  "category": "mythicrelics:norse",
+  "name": "book.mythicrelics.relics.norse.intro.name",
+  "icon": "minecraft:packed_ice",
+  "x": 0,
+  "y": 0,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "intro",
+      "title": "book.mythicrelics.relics.norse.intro.name",
+      "text": "lore.mythicrelics.norse.intro",
+      "show_title_separator": true
+    }
+  ]
+}

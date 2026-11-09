@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:norse/idunn_apples",
+  "category": "mythicrelics:norse",
+  "name": "item.mythicrelics.idunn_apples",
+  "icon": "mythicrelics:idunn_apples",
+  "x": 0,
+  "y": 9,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.idunn_apples.effect",
+      "item": "mythicrelics:idunn_apples"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.idunn_apples",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.idunn_apples.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.idunn_apples.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:norse/intro"
+    }
+  ]
+}

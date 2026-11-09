@@ -74,7 +74,8 @@ public final class ModLoot {
 			// Ciudad antigua: el descenso de Orfeo y el río del inframundo.
 			Map.entry(BuiltInLootTables.ANCIENT_CITY, List.of(
 					new Drop(0.030f, ModItems.ORPHEUS_LYRE),
-					new Drop(0.020f, ModItems.STYX_WATER))),
+					new Drop(0.020f, ModItems.STYX_WATER),
+					new Drop(0.030f, ModItems.GLEIPNIR))),
 			// Ruinas oceánicas frías: el mar donde cayó Ícaro (grava sospechosa).
 			Map.entry(BuiltInLootTables.OCEAN_RUIN_COLD_ARCHAEOLOGY, List.of(
 					new Drop(0.015f, ModItems.ICARUS_WINGS))),
@@ -106,7 +107,8 @@ public final class ModLoot {
 					new Drop(0.040f, ModItems.WOLF_BULLA))),
 			// Puestos de saqueadores: la guerra de Marte.
 			Map.entry(BuiltInLootTables.PILLAGER_OUTPOST, List.of(
-					new Drop(0.040f, ModItems.ANCILE))),
+					new Drop(0.040f, ModItems.ANCILE),
+					new Drop(0.040f, ModItems.GJALLARHORN))),
 			// Templo de aldea (clérigo): la ciudad que no cae.
 			Map.entry(BuiltInLootTables.VILLAGE_TEMPLE, List.of(
 					new Drop(0.030f, ModItems.PALLADIUM))),
@@ -115,7 +117,26 @@ public final class ModLoot {
 					new Drop(0.030f, ModItems.VESTA_LAMP))),
 			// Templos de la jungla: las aves de los augures.
 			Map.entry(BuiltInLootTables.JUNGLE_TEMPLE, List.of(
-					new Drop(0.040f, ModItems.AUGUR_LITUUS))));
+					new Drop(0.040f, ModItems.AUGUR_LITUUS))),
+			// ---- Nórdicos ----
+			// Bóvedas ominosas de las cámaras de desafío: el martillo de Thor.
+			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD_OMINOUS, List.of(
+					new Drop(0.020f, ModItems.MJOLNIR))),
+			// Minas abandonadas: las forjas de los enanos.
+			Map.entry(BuiltInLootTables.ABANDONED_MINESHAFT, List.of(
+					new Drop(0.030f, ModItems.JARNGREIPR))),
+			// Iglús: el norte helado.
+			Map.entry(BuiltInLootTables.IGLOO_CHEST, List.of(
+					new Drop(0.060f, ModItems.MEGINGJORD))),
+			// Ciudades del End: el reino de los dioses en lo alto.
+			Map.entry(BuiltInLootTables.END_CITY_TREASURE, List.of(
+					new Drop(0.030f, ModItems.GUNGNIR))),
+			// Tesoros enterrados: el oro de los enanos.
+			Map.entry(BuiltInLootTables.BURIED_TREASURE, List.of(
+					new Drop(0.060f, ModItems.DRAUPNIR))),
+			// Casas de aldeas nevadas: la cesta de Iðunn.
+			Map.entry(BuiltInLootTables.VILLAGE_SNOWY_HOUSE, List.of(
+					new Drop(0.040f, ModItems.IDUNN_APPLES))));
 
 	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre (o por bloque cepillado, en arqueología). */
 	public record Source(ResourceKey<LootTable> table, float chance) {

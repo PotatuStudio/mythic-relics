@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.jei;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class MythicRelicsJeiPlugin implements IModPlugin {
 	public void registerRecipes(IRecipeRegistration registration) {
 		int pages = 0;
 		for (Item item : BuiltInRegistries.ITEM) {
-			if (!BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(MythicRelics.MOD_ID)) {
+			if (!BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(MythicRelics.MOD_ID) || item == ModItems.EMBLEM.get()) {
 				continue;
 			}
 			List<ModLoot.Source> sources = ModLoot.sources(item);

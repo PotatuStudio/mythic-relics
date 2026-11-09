@@ -43,6 +43,7 @@ COLORS = {
     "leather": "#a07848", "leather_d": "#6e4e2c", "stone": "#c9cfc4", "stone_d": "#8f978a", "snake": "#4f8f3a",
     "wax_l": "#fff2c2", "wax": "#e6c66a", "silver": "#e8e8ec", "silver_d": "#a8a8b0", "bronze": "#e0954a",
     "bronze_d": "#a85f26", "ember": "#ff8a3a",
+    "iron_l": "#cfd3dc", "iron": "#8a8f9c", "iron_d": "#4a4e58",
 }
 SWATCHES = list(COLORS)
 # Cara de arriba más clara y de abajo más oscura: da volumen aunque cada elemento sea de un color.
@@ -55,7 +56,7 @@ SHADE = {"gold": ("gold_l", "gold_d"), "gold_l": ("gold_l", "gold"), "gold_d": (
          "fur": ("fur_l", "fur_d"), "fur_l": ("fur_l", "fur"), "ivory": ("ivory", "ivory_d"),
          "black": ("black_l", "black_d"), "crest": ("crest_l", "crest_d"), "wing": ("wing_l", "wing_d"),
          "leather": ("leather_l", "leather_d"), "stone": ("stone", "stone_d"), "wax": ("wax_l", "wax"),
-         "silver": ("silver", "silver_d"), "bronze": ("bronze", "bronze_d")}
+         "silver": ("silver", "silver_d"), "bronze": ("bronze", "bronze_d"), "iron": ("iron_l", "iron_d")}
 
 
 def uv(color):
@@ -320,6 +321,33 @@ def golden_fleece():
     return e
 
 
+def jarngreipr():
+    """Guantelete de hierro hasta la muñeca, puño de oro y remaches al frente. Por dentro de los anillos (5,15..10,85)."""
+    e = ring(5.45, 10.55, 2.0, 7.0, 5.45, 10.55, 0.55, "iron", "guantelete")
+    e += ring(5.3, 10.7, 7.0, 8.2, 5.3, 10.7, 0.5, "gold", "puño")
+    e += [box([5.45, 1.5, 5.45], [10.55, 2.0, 10.55], "iron", "nudillos")]
+    for x in (6.0, 7.4, 8.8):
+        e.append(box([x, 4.4, 10.55], [x + 0.9, 5.2, 10.8], "iron", "remache"))
+    return e
+
+
+def megingjord():
+    """Cinturón de cuero a la cintura con hebilla de oro trenzada y la punta colgando."""
+    e = ring(3.45, 12.55, 2.6, 4.4, 5.45, 10.55, 0.55, "leather", "cinturón")
+    e += [box([6.6, 2.2, 10.55], [9.4, 4.8, 11.25], "gold", "hebilla"),
+          box([7.4, 3.0, 11.25], [8.6, 4.0, 11.45], "gold_d", "nudo"),
+          box([9.6, 1.0, 10.6], [10.4, 2.6, 10.95], "leather", "punta")]
+    return e
+
+
+def draupnir_ring():
+    """Anillo de oro macizo con un sello liso, en el mismo lugar que el anillo de los chacales (no se llevan juntos)."""
+    e = ring(5.15, 10.85, 8.6, 9.6, 5.15, 10.85, 0.5, "gold", "aro")
+    e += [box([7.2, 8.4, 10.85], [8.8, 9.8, 11.4], "gold", "sello"),
+          box([7.6, 8.8, 11.4], [8.4, 9.4, 11.5], "gold_l", "brillo")]
+    return e
+
+
 def wolf_bulla():
     """Cordón de cuero como la cadena del Anj y el relicario redondo de oro con la loba en relieve sobre el pecho."""
     e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "leather_d", "cordón atrás"),
@@ -379,6 +407,10 @@ WORN = {
     "cerberus_collar": (lambda: model(cerberus_collar()), [attach("body", "cerberus_collar")]),
     # Roma
     "wolf_bulla": (lambda: model(wolf_bulla()), [attach("body", "wolf_bulla")]),
+    # Nórdicos
+    "jarngreipr": (lambda: model(jarngreipr()), both_hands("glove", "jarngreipr")),
+    "megingjord": (lambda: model(megingjord()), [attach("body", "megingjord")]),
+    "draupnir": (lambda: model(draupnir_ring()), both_hands("ring", "draupnir", (0, -1, 0))),
 }
 
 

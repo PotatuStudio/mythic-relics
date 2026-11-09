@@ -113,8 +113,8 @@ Ideas originales de Roma (descartadas por ser historia, no mito):
 | Gladius de bronce | arma | Espada corta y rápida; crítico garantizado por la espalda. | Ruinas de los senderos |
 
 ## Nórdicos
-Primera tanda: diseño aprobado el 2026-11-09, falta programarla (página de diseño:
-https://claude.ai/artifact/4Hj4Nnxahhj6uZo5FSR8oV). Decisiones: Mjölnir y Gungnir lanzables con proyectil propio, set
+Primera tanda: diseño aprobado y programado el 2026-11-09, falta probarla en el juego (página de diseño:
+https://claude.ai/artifact/4Hj4Nnxahhj6uZo5FSR8oV; íconos: https://claude.ai/artifact/HDqnE8ahASjLfrKX57DGPZ). Decisiones: Mjölnir y Gungnir lanzables con proyectil propio, set
 de Thor, las 8 reliquias. Correcciones a las ideas iniciales: la «runa de Valhalla» y la «semilla de Yggdrasil» no son
 del mito (cambiadas por Megingjörð y las manzanas de Iðunn), la «cadena de Fenrir» era Gleipnir (una cinta de seda) y
 Mjölnir era de hierro, no de cobre. «Solo los dignos pueden levantarlo» es de Marvel y no se usa. Para la tanda 2:

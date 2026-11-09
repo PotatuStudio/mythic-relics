@@ -1,6 +1,7 @@
 {
-  "replace": false,
-  "values": [
-    "mythicrelics:golden_scarab"
-  ]
+ "replace": false,
+ "values": [
+  "mythicrelics:golden_scarab",
+  "mythicrelics:megingjord"
+ ]
 }

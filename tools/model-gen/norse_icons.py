@@ -1,0 +1,198 @@
+"""Íconos 16x16 nórdicos y el emblema del mod (ícono de la pestaña creativa: escudo con una cultura por cuarto), con
+la paleta y el contorno por material de greece_icons.py.
+
+Uso: python norse_icons.py <carpeta_texturas_item>
+"""
+import math
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from greece_icons import grid, outline, save  # noqa: E402
+
+
+def blank():
+    return [['.'] * 16 for _ in range(16)]
+
+
+def mjolnir():
+    """Mjölnir en diagonal como las herramientas vanilla (mango abajo a la izquierda, cabeza arriba a la derecha),
+    porque en la mano se sostiene como un hacha: cabeza de hierro con banda de nudos de oro y mango corto de cuero."""
+    c = [['.'] * 16 for _ in range(16)]
+    cx, cy = 10.0, 5.0
+    du = (1 / math.sqrt(2), -1 / math.sqrt(2))   # eje del mango (hacia arriba a la derecha)
+    dv = (1 / math.sqrt(2), 1 / math.sqrt(2))    # eje largo de la cabeza
+    for y in range(16):
+        for x in range(16):
+            px, py = x + 0.5 - cx, y + 0.5 - cy
+            u = px * du[0] + py * du[1]
+            v = px * dv[0] + py * dv[1]
+            if abs(u) <= 2.3 and abs(v) <= 4.6:
+                light = -(px + py) / 6
+                ch = 'I' if light > 0.5 else 'i' if light > -0.4 else 'o'
+                if abs(u) < 0.75 and abs(v) < 3.6:
+                    ch = 'g' if (x + y) % 2 else 'd'
+                c[y][x] = ch
+    for i in range(6):
+        x, y = 2 + i, 13 - i
+        c[y][x] = 'P' if i % 2 else 'p'
+        if c[y][x + 1] == '.':
+            c[y][x + 1] = 'u'
+    c[14][1], c[14][2], c[13][1] = 'g', 'd', 'd'
+    return outline(c)
+
+
+# Járngreipr: guantelete de hierro con puño de oro.
+JARNGREIPR = grid([
+    "................",
+    "................",
+    ".....I.I.I......",
+    "....IiIiIiI.....",
+    "....IiIiIiI.....",
+    "..I.IiiiiiI.....",
+    "..IiIiiiiiI.....",
+    "...IiiiiiiI.....",
+    "....IiiiiiO.....",
+    "....ooooooO.....",
+    "...gooooooOg....",
+    "...oOOOOOOOo....",
+    "...oooooooo.....",
+    "................",
+    "................",
+    "................",
+])
+
+# Megingjörð: cinturón de cuero con hebilla de oro trenzada.
+MEGINGJORD = grid([
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    ".PPPPPgGGgPPPPP.",
+    ".pPpPpgdDgpPpPp.",
+    ".uuuuugGGguuuuu.",
+    "..........uP....",
+    "..........Pu....",
+    "..........uP....",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+])
+
+
+def gungnir():
+    """Lanza de Odín en diagonal: asta de fresno, cuello con runas de oro y la punta de plata en hoja."""
+    c = blank()
+    for i in range(9):
+        x, y = 2 + i, 14 - i
+        c[y][x] = 'P' if i % 2 else 'p'
+    for x, y, ch in [(11, 5, 'g'), (10, 5, 'd'), (11, 4, 'M'), (12, 4, 'm'), (12, 3, 'M'), (13, 3, 'm'), (13, 2, 'M'),
+                     (14, 1, 'M'), (12, 5, 'a'), (11, 3, 'a'), (14, 2, 'a')]:
+        c[y][x] = ch
+    return outline(c)
+
+
+def draupnir():
+    """Anillo de oro y, debajo, las gotas de los ocho anillos que caen cada novena noche."""
+    c = blank()
+    cx, cy = 7.5, 6.5
+    for y in range(16):
+        for x in range(16):
+            d = math.hypot(x - cx, y - cy)
+            if 3.0 <= d <= 5.2:
+                light = -(x - cx + y - cy) / 7
+                c[y][x] = 'G' if light > 0.4 else 'g' if light > -0.4 else 'd'
+    for x, y in [(4, 13), (7, 14), (11, 13)]:
+        c[y][x] = 'g'
+        c[y - 1][x] = 'G'
+    return outline(c)
+
+
+def gjallarhorn():
+    """Cuerno curvo de Heimdall: boca ancha abajo a la izquierda, punta arriba a la derecha y bandas de oro."""
+    c = blank()
+    for k in range(40):
+        a = math.pi + k / 39 * (math.pi / 2)
+        cx, cy = 13.0, 13.0
+        r = 9.5
+        x, y = cx + r * math.cos(a), cy + r * math.sin(a)
+        thick = 2.6 - 1.8 * k / 39
+        for yy in range(16):
+            for xx in range(16):
+                if math.hypot(xx - x, yy - y) <= thick / 2 + 0.3:
+                    band = k in (8, 9, 20, 21, 31)
+                    c[yy][xx] = 'g' if band else ('W' if (xx + yy) % 5 == 0 else 'w' if yy < y else 'L')
+    return outline(c)
+
+
+def gleipnir():
+    """Gleipnir: cinta de seda fina, suave como un listón, enroscada en ocho."""
+    c = blank()
+    for k in range(60):
+        t = k / 59 * 2 * math.pi
+        x = 7.5 + 5.5 * math.sin(t)
+        y = 7.5 + 5.5 * math.sin(t) * math.cos(t)
+        xi, yi = int(round(x)), int(round(y))
+        c[yi][xi] = '1' if k % 3 else 'W'
+        if yi + 1 < 16:
+            c[yi + 1][xi] = '2'
+    return outline(c)
+
+
+IDUNN = grid([
+    "................",
+    "....PPPPPPP.....",
+    "...P.......P....",
+    "....V....V......",
+    "...gGgd.gGgd....",
+    "...gggd.gggd....",
+    "..uPPPPPPPPPPu..",
+    "..PpPpPpPpPpPp..",
+    "...pPpPpPpPpP...",
+    "...PpPpPpPpPp...",
+    "....uuuuuuuu....",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+])
+
+
+def emblem():
+    """Escudo cuartelado: anj de oro sobre lapislázuli (Egipto), columna sobre mármol (Grecia), águila de alas abiertas
+    sobre rojo (Roma) y Mjölnir sobre hierro (nórdicos), con borde y cruz de oro."""
+    c = [['.'] * 16 for _ in range(16)]
+    rows = {y: (2, 14) for y in range(1, 13)}
+    rows.update({13: (3, 13), 14: (5, 11), 15: (7, 9)})
+    for y, (x0, x1) in rows.items():
+        for x in range(x0, x1 + 1):
+            if x in (x0, x1) or y in (1, 15) or x == 8 or y == 7:
+                c[y][x] = 'g' if (x + y) % 2 else 'd'
+            else:
+                top, left = y < 7, x < 8
+                c[y][x] = ('l' if left else 'M') if top else ('r' if left else 'I')
+    glyphs = [(4, 2, [".g.", "g.g", "ggg", ".g.", ".g."]),       # anj
+              (10, 2, ["aaa", ".a.", ".a.", ".a.", "aaa"]),      # columna
+              (3, 8, ["g.g.g", "ggggg", ".ggg.", "..g.."]),     # águila
+              (9, 8, ["ooooo", "ooooo", "..p..", "..p.."])]     # Mjölnir
+    for gx, gy, rowsg in glyphs:
+        for dy, row in enumerate(rowsg):
+            for dx, ch in enumerate(row):
+                if ch != '.':
+                    c[gy + dy][gx + dx] = ch
+    return outline(c)
+
+
+ICONS = {"mjolnir": mjolnir, "jarngreipr": lambda: outline(JARNGREIPR), "megingjord": lambda: outline(MEGINGJORD),
+         "gungnir": gungnir, "draupnir": draupnir, "gjallarhorn": gjallarhorn, "gleipnir": gleipnir,
+         "idunn_apples": lambda: outline(IDUNN), "emblem": emblem}
+
+if __name__ == "__main__":
+    out = sys.argv[1]
+    for name, make in ICONS.items():
+        save(out, name, make())
+    print("ok:", ", ".join(ICONS))

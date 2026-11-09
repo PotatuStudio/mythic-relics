@@ -7,6 +7,7 @@ import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.Cerberus;
 import io.github.potatustudio.mythicrelics.entity.Jackal;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
+import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
@@ -38,6 +39,14 @@ public final class ModEntities {
 					.clientTrackingRange(10)
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("cerberus"))));
+
+	/** Mjölnir o Gungnir lanzados. */
+	public static final RegistrySupplier<EntityType<ThrownRelic>> THROWN_RELIC = ENTITIES.register("thrown_relic",
+			() -> EntityType.Builder.<ThrownRelic>of(ThrownRelic::new, MobCategory.MISC)
+					.sized(0.5f, 0.5f)
+					.clientTrackingRange(4)
+					.updateInterval(20)
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("thrown_relic"))));
 
 	private ModEntities() {
 	}

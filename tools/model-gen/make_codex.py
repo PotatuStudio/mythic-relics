@@ -60,8 +60,17 @@ CULTURE_INFO = {
             "wolf_bulla": (-3, 5), "janus_key": (-1, 5), "sibylline_books": (1, 5), "augur_lituus": (3, 5),
         },
     },
+    "norse": {
+        "wiki": "nordicos.md", "title": "Nórdicos", "icon": "mjolnir", "intro_icon": "minecraft:packed_ice",
+        "positions": {
+            "intro": (0, 0),
+            "jarngreipr": (-2, 2), "mjolnir": (0, 2), "megingjord": (2, 2), "thor_set": (0, 4),
+            "gungnir": (-3, 7), "draupnir": (-1, 7), "gjallarhorn": (1, 7), "gleipnir": (3, 7),
+            "idunn_apples": (0, 9),
+        },
+    },
 }
-SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm"}
+SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm", "thor_set": "mjolnir"}
 SLOT_NAMES = {
     "es_es": {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes",
               "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria",

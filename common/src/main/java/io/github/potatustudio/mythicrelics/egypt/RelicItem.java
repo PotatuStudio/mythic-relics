@@ -14,7 +14,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 /**
  * Reliquia. El tooltip sale de {@code item.mythicrelics.<id>.tooltip.1}, {@code .2}… (tantas líneas como haya en la
  * traducción; Minecraft no corta las líneas largas): la primera en dorado con el efecto principal, el resto en gris, con
- * los números de {@link EgyptRelics#tooltipArgs}. Las piezas de los sets (Anubis, Osiris) agregan el bono como los atributos vanilla
+ * los números de {@link EgyptRelics#tooltipArgs}. Las piezas de los sets (Anubis, Osiris, Perseo, Thor) agregan el bono como los atributos vanilla
  * y al final va dónde se encuentra, según {@link ModLoot}.
  */
 public class RelicItem extends Item {
@@ -31,7 +31,8 @@ public class RelicItem extends Item {
 		effectLines(this, tooltip);
 		appendExtraLines(stack, tooltip);
 		String set = EgyptRelics.isAnubisSetPiece(id) ? "anubis_set" : id.startsWith("osiris_") ? "osiris_set"
-				: id.equals("hermes_sandals") || id.equals("hades_helm") || id.equals("athena_aegis") ? "perseus_set" : null;
+				: id.equals("hermes_sandals") || id.equals("hades_helm") || id.equals("athena_aegis") ? "perseus_set"
+				: id.equals("mjolnir") || id.equals("jarngreipr") || id.equals("megingjord") ? "thor_set" : null;
 		if (set != null) {
 			tooltip.accept(Component.empty());
 			tooltip.accept(Component.translatable("tooltip.mythicrelics." + set + ".1").withStyle(ChatFormatting.GRAY));

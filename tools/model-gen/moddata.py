@@ -19,12 +19,14 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
          "ra_disk", "bastet_amulet", "thoth_palette", "osiris_crook", "osiris_flail", "sekhmet_claws",
          "hermes_sandals", "hades_helm", "athena_aegis", "medusa_head", "ariadne_thread", "charon_obol", "orpheus_lyre",
          "icarus_wings", "golden_fleece", "cerberus_collar", "pandora_jar", "styx_water", "prometheus_fennel",
-         "wolf_bulla", "ancile", "palladium", "janus_key", "vesta_lamp", "sibylline_books", "augur_lituus"]
+         "wolf_bulla", "ancile", "palladium", "janus_key", "vesta_lamp", "sibylline_books", "augur_lituus",
+         "mjolnir", "jarngreipr", "megingjord", "gungnir", "draupnir", "gjallarhorn", "gleipnir", "idunn_apples"]
 # Cultura de cada reliquia (categoría del libro y página de la wiki), en el orden en que se muestran.
-CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:]}
+CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:]}
 # Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
 SETS = {"anubis_set": ["anubis_scepter", "jackal_mask", "jackal_ring"], "osiris_set": ["osiris_crook", "osiris_flail"],
-        "perseus_set": ["hermes_sandals", "hades_helm", "athena_aegis"]}
+        "perseus_set": ["hermes_sandals", "hades_helm", "athena_aegis"],
+        "thor_set": ["mjolnir", "jarngreipr", "megingjord"]}
 SET_PIECES = {piece for pieces in SETS.values() for piece in pieces}
 SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "chest/necklace",
          "mummy_wraps": "hand/glove", "anubis_scepter": "mainhand", "jackal_mask": "head/face",
@@ -35,7 +37,9 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "icarus_wings": "chest/back", "golden_fleece": "chest/cape", "cerberus_collar": "chest/necklace",
          "pandora_jar": "hand", "styx_water": "hand", "prometheus_fennel": "hand",
          "wolf_bulla": "chest/necklace", "ancile": "offhand", "palladium": "block", "janus_key": "hand",
-         "vesta_lamp": "offhand", "sibylline_books": "hand", "augur_lituus": "hand"}
+         "vesta_lamp": "offhand", "sibylline_books": "hand", "augur_lituus": "hand",
+         "mjolnir": "mainhand", "jarngreipr": "hand/glove", "megingjord": "legs/belt", "gungnir": "mainhand",
+         "draupnir": "hand/ring", "gjallarhorn": "hand", "gleipnir": "hand", "idunn_apples": "hand"}
 
 
 def read(path):
@@ -51,7 +55,7 @@ def b64(path):
 def constants():
     out = {}
     for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java",
-                 "rome/RomeRelics.java"):
+                 "rome/RomeRelics.java", "norse/NorseRelics.java"):
         src = read(os.path.join(JAVA, *name.split("/")))
         out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
     return out
@@ -117,12 +121,23 @@ def tooltip_args(c):
                             int(c["SIBYL_COOLDOWN"] // 20 // 60)],
         "augur_lituus": [int(c["LITUUS_FAVOR_TICKS"] // 20 // 60), int(c["LITUUS_BAD_TICKS"] // 20 // 60),
                          int(c["LITUUS_BIRD_RADIUS"]), int(c["LITUUS_COOLDOWN"] // 20 // 60)],
+        # Nórdicos (NorseRelics#tooltipArgs)
+        "mjolnir": [int(c["MJOLNIR_RANGE"])],
+        "jarngreipr": [int(c["JARNGREIPR_FIST"])],
+        "megingjord": [round(c["MEGINGJORD_DAMAGE"] * 100), round(c["MEGINGJORD_KNOCKBACK"] * 100)],
+        "gungnir": [int(c["GUNGNIR_RANGE"])],
+        "draupnir": [int(c["DRAUPNIR_NIGHTS"]), int(c["DRAUPNIR_INGOTS"])],
+        "gjallarhorn": [int(c["HORN_USE_TICKS"] // 20), int(c["HORN_ALLY_RADIUS"]), int(c["HORN_BUFF_TICKS"] // 20),
+                        int(c["HORN_SIGHT_RADIUS"]), int(c["HORN_GLOW_TICKS"] // 20), int(c["HORN_COOLDOWN"] // 20 // 60)],
+        "gleipnir": [int(c["GLEIPNIR_TICKS"] // 20), int(c["GLEIPNIR_COOLDOWN"] // 20)],
+        "idunn_apples": [int(c["IDUNN_REGEN_TICKS"] // 20), int(c["IDUNN_ABSORPTION_TICKS"] // 20 // 60), int(c["IDUNN_MAX"])],
     }
 
 
 def set_args(c):
     """Argumentos de las líneas de bono de cada set (el de Osiris muestra la recarga en minutos)."""
-    return {"anubis_set": [], "osiris_set": [int(c["OSIRIS_REBIRTH_COOLDOWN"] // 20 // 60)], "perseus_set": []}
+    return {"anubis_set": [], "osiris_set": [int(c["OSIRIS_REBIRTH_COOLDOWN"] // 20 // 60)], "perseus_set": [],
+            "thor_set": []}
 
 
 def loot():
@@ -144,7 +159,7 @@ def rarity():
 
 def icons():
     out = {}
-    for name in ORDER:
+    for name in ORDER + ["emblem"]:
         png = os.path.join(ASSETS, "textures", "item", name + ".png")
         meta_path = png + ".mcmeta"
         frames = json.loads(read(meta_path))["animation"]["frames"] if os.path.exists(meta_path) else None
@@ -180,7 +195,13 @@ LOOT_TABLE_KEYS = {"desert_pyramid": "loot.mythicrelics.chests.desert_pyramid",
                    "pillager_outpost": "loot.mythicrelics.chests.pillager_outpost",
                    "village_temple": "loot.mythicrelics.chests.village.village_temple",
                    "village_plains_house": "loot.mythicrelics.chests.village.village_plains_house",
-                   "jungle_temple": "loot.mythicrelics.chests.jungle_temple"}
+                   "jungle_temple": "loot.mythicrelics.chests.jungle_temple",
+                   "trial_chambers_reward_ominous": "loot.mythicrelics.chests.trial_chambers.reward_ominous",
+                   "abandoned_mineshaft": "loot.mythicrelics.chests.abandoned_mineshaft",
+                   "igloo_chest": "loot.mythicrelics.chests.igloo_chest",
+                   "end_city_treasure": "loot.mythicrelics.chests.end_city_treasure",
+                   "buried_treasure": "loot.mythicrelics.chests.buried_treasure",
+                   "village_snowy_house": "loot.mythicrelics.chests.village.village_snowy_house"}
 # Tablas de arqueología: la probabilidad es por bloque cepillado, no por cofre.
 ARCHAEOLOGY = {"desert_pyramid_archaeology", "desert_well_archaeology", "trail_ruins_archaeology_rare",
                "ocean_ruin_warm_archaeology", "ocean_ruin_cold_archaeology"}

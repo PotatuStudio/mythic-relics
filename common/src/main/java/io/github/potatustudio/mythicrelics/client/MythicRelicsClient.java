@@ -9,6 +9,7 @@ import io.github.potatustudio.mythicrelics.client.entity.JackalRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabModel;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabRenderer;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 
 /** Inicialización común del cliente (la llaman ambos loaders): modelos y renderizadores de las entidades. */
 public final class MythicRelicsClient {
@@ -22,6 +23,8 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.JACKAL, JackalRenderer::new);
 		EntityModelLayerRegistry.register(CerberusModel.LAYER, CerberusModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.CERBERUS, CerberusRenderer::new);
+		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
+		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, context -> new ThrownItemRenderer<>(context, 1.5f, false));
 		GreeceClient.init();
 	}
 }

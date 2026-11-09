@@ -22,6 +22,14 @@ public final class ModComponents {
 	public static final RegistrySupplier<DataComponentType<GlobalPos>> ARIADNE_ANCHOR = COMPONENTS.register("ariadne_anchor",
 			() -> DataComponentType.<GlobalPos>builder().persistent(GlobalPos.CODEC).networkSynchronized(GlobalPos.STREAM_CODEC).build());
 
+	/** Manzanas que quedan en la cesta de Iðunn (si falta, la cesta está llena). */
+	public static final RegistrySupplier<DataComponentType<Integer>> IDUNN_APPLES = COMPONENTS.register("idunn_apples",
+			() -> DataComponentType.<Integer>builder().persistent(Codec.intRange(0, 64)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+
+	/** Último día de Minecraft en que creció una manzana de Iðunn. */
+	public static final RegistrySupplier<DataComponentType<Long>> IDUNN_DAY = COMPONENTS.register("idunn_day",
+			() -> DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build());
+
 	private ModComponents() {
 	}
 

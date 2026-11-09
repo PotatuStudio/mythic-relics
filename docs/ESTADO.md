@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto tandas 1 y 2, Grecia tandas 1 y 2 y Roma tanda 1 programadas; falta probarlas en el juego).
+Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1 y nórdicos 1 programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -128,6 +128,27 @@ y `BreakDoorGoalMixin` + `DoorInteractGoalAccessor` (los zombis no rompen puerta
 llave cierra y abre con **agachado + clic derecho** (sin agacharse, el clic abre la puerta antes de que actúe el ítem).
 **Sin probar en el juego**: cómo se ve el Ancile en la mano y al bloquear, el rebote de las flechas, el Paladio (modelo y
 que no aparezcan monstruos), los candados (también cofres dobles y puertas) y la búsqueda de estructuras de la sibila.
+
+## Primera tanda nórdica (programada el 2026-11-09)
+Diseño aprobado en `docs/ideas.md`. Código en `norse/`: `NorseRelics` (constantes y lógica: set de Thor, Járngreipr y
+Megingjörð por atributos y daño, Gleipnir con la etiqueta `mythicrelics.bound` que se suelta sola, el tick de Draupnir),
+`DraupnirNights` (cuenta de noches guardada con el mundo), `ThrownRelicItem` (Mjölnir y Gungnir: se cargan como un
+tridente), `GjallarhornItem`, `GleipnirItem` e `IdunnApplesItem` (componentes `idunn_apples` e `idunn_day`). Entidad nueva
+`entity/ThrownRelic` (vuelve como un tridente con Lealtad; Mjölnir llega a 24 bloques y llama un rayo en tormenta o con el
+set; Gungnir persigue al mob al que se apuntó), dibujada con `ThrownItemRenderer` (el ícono de cara a la cámara; un
+renderizador que lo gire en el aire queda pendiente). Mjölnir y Gungnir no se rompen (`unbreakable`) y usan
+`item/handheld`. **Sin probar en el juego**: el lanzamiento y la vuelta, el rayo, la puntería de Gungnir, el aumento de
+Draupnir al amanecer y la cesta de Iðunn al pasar los días.
+
+## Pestaña creativa
+El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
+`tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone
+página. Con una cultura nueva hay que pensar si el escudo se rehace.
+
+## Ítems en la mano
+Las armas y bastones usan `minecraft:item/handheld` y se dibujan en diagonal (mango abajo a la izquierda, punta arriba a
+la derecha), como las herramientas vanilla: así quedan bien orientados en la mano. Las páginas de diseño muestran el ítem
+en la mano con la misma cadena de transformaciones del juego (`egypt2/template.html` en el scratchpad).
 
 ## Herramientas y pruebas
 - **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC

@@ -274,7 +274,7 @@ public final class RomeRelics {
 			case "sibylline_books" -> new Object[] {SIBYL_LEVELS, SIBYL_RADIUS, SIBYL_GLOW_TICKS / 20, SIBYL_COOLDOWN / 20 / 60};
 			case "augur_lituus" -> new Object[] {LITUUS_FAVOR_TICKS / 20 / 60, LITUUS_BAD_TICKS / 20 / 60, LITUUS_BIRD_RADIUS,
 					LITUUS_COOLDOWN / 20 / 60};
-			default -> new Object[0];
+			default -> io.github.potatustudio.mythicrelics.norse.NorseRelics.tooltipArgs(id);
 		};
 	}
 }

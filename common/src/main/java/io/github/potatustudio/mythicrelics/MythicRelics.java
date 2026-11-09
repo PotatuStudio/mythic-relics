@@ -5,6 +5,7 @@ import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
+import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.registry.ModBlocks;
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
 import io.github.potatustudio.mythicrelics.registry.ModEffects;
@@ -39,6 +40,7 @@ public final class MythicRelics {
 		GreeceRelics.init();
 		GreeceHeroes.init();
 		RomeRelics.init();
+		NorseRelics.init();
 		LOGGER.info("Mythic Relics cargado");
 	}
 

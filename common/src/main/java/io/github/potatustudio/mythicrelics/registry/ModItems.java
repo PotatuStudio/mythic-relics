@@ -15,6 +15,10 @@ import io.github.potatustudio.mythicrelics.greece.OrpheusLyreItem;
 import io.github.potatustudio.mythicrelics.greece.PandoraJarItem;
 import io.github.potatustudio.mythicrelics.greece.PrometheusFennelItem;
 import io.github.potatustudio.mythicrelics.greece.StyxWaterItem;
+import io.github.potatustudio.mythicrelics.norse.GjallarhornItem;
+import io.github.potatustudio.mythicrelics.norse.GleipnirItem;
+import io.github.potatustudio.mythicrelics.norse.IdunnApplesItem;
+import io.github.potatustudio.mythicrelics.norse.ThrownRelicItem;
 import io.github.potatustudio.mythicrelics.rome.AugurLituusItem;
 import io.github.potatustudio.mythicrelics.rome.JanusKeyItem;
 import io.github.potatustudio.mythicrelics.rome.PalladiumItem;
@@ -33,6 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.UseCooldown;
 
@@ -103,12 +108,29 @@ public final class ModItems {
 			p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> AUGUR_LITUUS = register("augur_lituus", AugurLituusItem::new, p -> p.rarity(Rarity.RARE));
 
+	// Nórdicos, primera tanda. Las armas lanzables no se rompen (vuelven siempre a la mano).
+	public static final RegistrySupplier<Item> MJOLNIR = register("mjolnir", p -> new ThrownRelicItem(p, false),
+			p -> p.rarity(Rarity.EPIC).axe(ToolMaterial.IRON, 6.0f, -3.1f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> JARNGREIPR = relic("jarngreipr", p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> MEGINGJORD = relic("megingjord", p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> GUNGNIR = register("gungnir", p -> new ThrownRelicItem(p, true),
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 4.0f, -2.9f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> DRAUPNIR = relic("draupnir", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> GJALLARHORN = register("gjallarhorn", GjallarhornItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> GLEIPNIR = register("gleipnir", GleipnirItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> IDUNN_APPLES = register("idunn_apples", IdunnApplesItem::new, p -> p.rarity(Rarity.EPIC));
+
+	/** Emblema del mod (escudo con una cultura por cuarto): solo es el ícono de la pestaña creativa, no se consigue. */
+	public static final RegistrySupplier<Item> EMBLEM = register("emblem", Item::new, p -> p);
+
 	public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register("main", () -> CreativeTabRegistry.create(builder -> builder
 			.title(Component.translatable("itemGroup.mythicrelics.main"))
-			.icon(() -> new ItemStack(ANKH.get()))
+			.icon(() -> new ItemStack(EMBLEM.get()))
 			.displayItems((parameters, output) -> {
 				for (RegistrySupplier<Item> item : ITEMS) {
-					output.accept(item.get());
+					if (item != EMBLEM) {
+						output.accept(item.get());
+					}
 				}
 			})));
 

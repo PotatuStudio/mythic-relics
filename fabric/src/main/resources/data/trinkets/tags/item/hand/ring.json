@@ -1,6 +1,7 @@
 {
-  "replace": false,
-  "values": [
-    "mythicrelics:jackal_ring"
-  ]
+ "replace": false,
+ "values": [
+  "mythicrelics:jackal_ring",
+  "mythicrelics:draupnir"
+ ]
 }
