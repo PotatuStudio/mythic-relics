@@ -1,5 +1,6 @@
-"""Textura 64x32 del Cerbero cachorro (layout de CerberusModel): pelaje de sombra, ojos de brasa, orejas con el interior
-encendido y collar de cuero negro con púas de plata. Uso: python cerberus_texture.py <salida.png>  (requiere Pillow)"""
+"""Textura 64x64 de Cerbero (layout de CerberusModel): pelaje de sombra con cresta más oscura, ojos de brasa, fauces
+rojas con colmillos de marfil, garras, y serpientes verde oscuro de ojos amarillos (cola y lomo).
+Uso: python cerberus_texture.py <salida.png>  (requiere Pillow)"""
 import random
 import sys
 
@@ -9,26 +10,25 @@ random.seed(7)
 FUR = [(30, 26, 36), (36, 31, 43), (25, 21, 30), (43, 37, 51)]
 FUR_HI = (58, 51, 68)
 FUR_SH = (14, 12, 17)
-NOSE = (8, 6, 10)
-EMBER = (255, 138, 58)
-EMBER_CORE = (255, 208, 96)
-LEATHER = (42, 38, 48)
-LEATHER_D = (24, 21, 28)
-SILVER = (232, 232, 236)
+RIDGE = (10, 8, 12)
+EMBER = (255, 110, 40)
+EMBER_CORE = (255, 214, 96)
+MOUTH = (110, 18, 22)
+MOUTH_D = (60, 8, 12)
+FANG = (240, 232, 208)
+CLAW = (214, 204, 180)
+SCALE = [(40, 58, 34), (48, 70, 40), (34, 48, 28)]
+SCALE_BELLY = (104, 120, 70)
+SNAKE_EYE = (255, 210, 58)
+TONGUE = (200, 40, 40)
 
-img = Image.new("RGBA", (64, 32), (0, 0, 0, 0))
+img = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
 px = img.load()
 
 
 def faces(u, v, w, h, d):
-    return {
-        "top": (u + d, v, w, d),
-        "bottom": (u + d + w, v, w, d),
-        "west": (u, v + d, d, h),
-        "front": (u + d, v + d, w, h),
-        "east": (u + d + w, v + d, d, h),
-        "back": (u + 2 * d + w, v + d, w, h),
-    }
+    return {"top": (u + d, v, w, d), "bottom": (u + d + w, v, w, d), "west": (u, v + d, d, h),
+            "front": (u + d, v + d, w, h), "east": (u + d + w, v + d, d, h), "back": (u + 2 * d + w, v + d, w, h)}
 
 
 def fill(rect, fn):
@@ -46,64 +46,79 @@ def fur_top(x, y, w, h):
     return FUR_HI if random.random() < 0.2 else random.choice(FUR)
 
 
-def fur_bottom(x, y, w, h):
-    return FUR_SH
-
-
-def box(u, v, w, h, d, side=fur, top=fur_top, bottom=fur_bottom, front=None):
+def box(u, v, w, h, d, side=fur, top=fur_top, bottom=lambda *a: FUR_SH, front=None, back=None):
     f = faces(u, v, w, h, d)
     fill(f["top"], top)
     fill(f["bottom"], bottom)
-    for k in ("west", "east", "back"):
-        fill(f[k], side)
+    fill(f["west"], side)
+    fill(f["east"], side)
+    fill(f["back"], back or side)
     fill(f["front"], front or side)
 
 
-# Cuerpo (0,0) 6x6x12: el lomo con una franja más oscura.
-box(0, 0, 6, 6, 12, top=lambda x, y, w, h: FUR_SH if x in (2, 3) else fur_top(x, y, w, h))
+# Pecho (0,0) 10x9x8 y cadera (0,17) 8x7x8: cresta oscura a lo largo del lomo y el pelaje erizado en el pecho.
+ridge = lambda x, y, w, h: RIDGE if x in (w // 2 - 1, w // 2) else fur_top(x, y, w, h)
+box(0, 0, 10, 9, 8, top=ridge, front=lambda x, y, w, h: FUR_HI if (x + y) % 4 == 0 else random.choice(FUR))
+box(0, 17, 8, 7, 8, top=ridge)
 
 
-# Collar (36,0) 7x7x1: cuero negro con púas de plata en el borde.
-def collar(x, y, w, h):
-    if (x + y) % 3 == 0 and (x in (0, w - 1) or y in (0, h - 1)):
-        return SILVER
-    return LEATHER if y < h - 1 else LEATHER_D
-
-
-box(36, 0, 7, 7, 1, side=collar, top=lambda x, y, w, h: LEATHER, bottom=lambda x, y, w, h: LEATHER_D, front=collar)
-
-
-# Cabeza (36,8) 5x5x4: ojos de brasa con el centro amarillo.
+# Cráneo (36,0) 6x6x5: ceño marcado y ojos de brasa.
 def skull_front(x, y, w, h):
-    if y == 1 and x in (1, 3):
+    if y == 1 and x in (0, 1, 4, 5):
+        return RIDGE
+    if y == 2 and x in (1, 4):
         return EMBER_CORE
-    if y == 2 and x in (1, 3):
+    if y == 2 and x in (0, 5):
         return EMBER
     return random.choice(FUR)
 
 
-box(36, 8, 5, 5, 4, front=skull_front)
+box(36, 0, 6, 6, 5, front=skull_front)
 
 
-# Hocico (52,17) 3x2x3: la nariz arriba y la boca con un resplandor de brasa.
+# Hocico (36,11) 4x2x5: nariz arriba; por debajo, el paladar rojo con colmillos en los bordes.
+def palate(x, y, w, h):
+    return FANG if x in (0, w - 1) and y % 2 == 0 else MOUTH
+
+
 def snout_front(x, y, w, h):
-    if y == 0 and x == 1:
-        return NOSE
-    return EMBER if y == h - 1 and x == 1 else FUR_SH
+    if y == 0:
+        return (8, 6, 10) if x in (1, 2) else FUR_SH
+    return FANG if x in (0, w - 1) else MOUTH_D
 
 
-box(52, 17, 3, 2, 3, front=snout_front, bottom=lambda x, y, w, h: EMBER if x == 1 else FUR_SH)
-# Oreja (56,8) 2x2x1: por dentro, brasa.
-box(56, 8, 2, 2, 1, front=lambda x, y, w, h: EMBER if y == 1 and x == 1 else random.choice(FUR))
+box(36, 11, 4, 2, 5, front=snout_front, bottom=palate)
 
 
-# Pata (0,18) 2x7x2 y cola (8,18) 2x7x2: patas más oscuras abajo; la punta de la cola encendida.
-def leg(x, y, w, h):
-    return FUR_SH if y == h - 1 else random.choice(FUR)
+# Mandíbula (36,18) 4x1x5: arriba la lengua y los colmillos que suben; el resto, pelaje.
+def jaw_top(x, y, w, h):
+    return FANG if x in (0, w - 1) and y % 2 == 1 else MOUTH
 
 
-box(0, 18, 2, 7, 2, side=leg, front=leg)
-box(8, 18, 2, 7, 2, side=lambda x, y, w, h: EMBER if y == h - 1 else random.choice(FUR))
+box(36, 18, 4, 1, 5, top=jaw_top, front=lambda x, y, w, h: FANG if x in (0, w - 1) else FUR_SH)
+# Oreja (54,11) 2x3x1: en punta, el interior encendido.
+box(54, 11, 2, 3, 1, front=lambda x, y, w, h: EMBER if y >= 1 and x == 1 else RIDGE)
+# Pata (0,32) 3x10x3 y zarpa (12,32) 4x2x4 con garras de marfil al frente.
+box(0, 32, 3, 10, 3, side=lambda x, y, w, h: FUR_SH if y >= h - 2 else random.choice(FUR))
+box(12, 32, 4, 2, 4, front=lambda x, y, w, h: CLAW if y == h - 1 and x % 2 == 0 else FUR_SH,
+    top=lambda x, y, w, h: FUR_SH, side=lambda x, y, w, h: FUR_SH)
+
+
+# Serpientes: escamas verde oscuro, vientre más claro abajo.
+def scales(x, y, w, h):
+    return random.choice(SCALE)
+
+
+snake = dict(side=scales, top=scales, bottom=lambda *a: SCALE_BELLY)
+box(32, 24, 2, 2, 6, **snake)
+box(48, 24, 2, 2, 5, **snake)
+# Cabeza de la cola (28,32) 3x2x3: mira hacia atrás (su "frente" es la cara de atrás del cubo).
+box(28, 32, 3, 2, 3, **snake, back=lambda x, y, w, h: SNAKE_EYE if y == 0 and x in (0, 2) else
+    TONGUE if y == 1 and x == 1 else scales(x, y, w, h))
+# Serpientes del lomo: cuello (40,32) 1x4x1 y cabeza (44,32) 2x1x2 con ojos al frente.
+box(40, 32, 1, 4, 1, **snake)
+box(44, 32, 2, 1, 2, side=scales, top=scales, bottom=lambda *a: SCALE_BELLY,
+    front=lambda x, y, w, h: SNAKE_EYE)
 
 img.save(sys.argv[1])
 print("ok", sys.argv[1])

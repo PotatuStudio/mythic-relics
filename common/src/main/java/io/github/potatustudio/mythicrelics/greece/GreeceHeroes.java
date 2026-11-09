@@ -43,7 +43,7 @@ import net.minecraft.world.phys.Vec3;
  *       sobre la altura {@link #ICARUS_MELT_HEIGHT}, de día y bajo el cielo, la cera se derrite y las alas dejan de
  *       funcionar un rato (la recarga del ítem, que el cliente ve).</li>
  *   <li><b>Vellocino de oro</b> (capa): Héroe de la aldea mientras lo llevas y, al esquilar, alguna pepita de oro.</li>
- *   <li><b>Collar de Cerbero</b> (collar): cuando un mob te hiere aparece un Cerbero cachorro que lo ataca.</li>
+ *   <li><b>Collar de Cerbero</b> (collar): cuando un mob te hiere aparece Cerbero y lo ataca.</li>
  *   <li><b>Agua del Estigia</b>: el efecto «Baño del Estigia» ({@link ModEffects#STYX_BATH}) reduce el daño de frente y
  *       lo duplica por la espalda (el talón).</li>
  *   <li><b>Jarra de Pandora</b> e <b>Hinojo de Prometeo</b>: ítems que se usan ({@link PandoraJarItem},

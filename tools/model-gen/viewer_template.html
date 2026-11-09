@@ -164,7 +164,7 @@ const UI = {
     subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjPlayer: "Reliquias puestas",
     walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
-    footCerberus: "El Cerbero cachorro del collar aparece con llamas de alma y muerde tres veces por ataque, una por cabeza. Las cabezas de los lados miran hacia afuera y cabecean a destiempo.",
+    footCerberus: "Cerbero como lo describe Apolodoro: tres cabezas de perro, cola de serpiente y serpientes en el lomo. Aparece con llamas de alma y muerde tres veces por ataque, una por cabeza; las fauces gruñen a destiempo.",
     footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
     footPlayer: "Muñeco genérico (sin la skin de Mojang) con los modelos 3D de cada reliquia, ubicados con la misma regla que usa Trinkets. Las vendas y el anillo se ponen en ambas manos si hay uno en cada espacio; aquí se ven en las dos. El cetro no se pone: se lleva en la mano.",
     slot: "Espacio", rarity: "Rareza", perPyramid: "Por pirámide (4 cofres)", info: "Información",
@@ -178,7 +178,7 @@ const UI = {
     subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjPlayer: "Worn relics",
     walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
-    footCerberus: "The collar's Cerberus pup appears in soul flames and bites three times per attack, once per head. The side heads look outward and nod out of step.",
+    footCerberus: "Cerberus as Apollodorus describes him: three dog heads, a serpent for a tail and snakes along his back. He appears in soul flames and bites three times per attack, once per head; the jaws snarl out of step.",
     footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
     footPlayer: "Generic figure (no Mojang skin) wearing each relic's 3D model, placed with the same rule Trinkets uses. Wraps and rings show on both hands here. The scepter isn't worn: it's held.",
     slot: "Slot", rarity: "Rarity", perPyramid: "Per pyramid (4 chests)", info: "Information",
@@ -499,12 +499,12 @@ function cube(material, texW, texH, u, v, x0, y0, z0, w, h, d, mirror) {
   return new THREE.Mesh(g, material);
 }
 
-function part(parent, material, offset, rot, cubes) {
+function part(parent, material, offset, rot, cubes, texH = 32) {
   const p = new THREE.Group();
   p.position.set(...offset);
   p.rotation.order = "ZYX";
   p.rotation.set(rot[0], rot[1], rot[2]);
-  for (const c of cubes) p.add(cube(material, 64, 32, ...c));
+  for (const c of cubes) p.add(cube(material, 64, texH, ...c));
   parent.add(p);
   p.userData.base = [...rot];
   return p;
@@ -541,18 +541,27 @@ const jTail = part(jackal.root, jackalMat, [0, 12.5, 6], [Math.PI / 5, 0, 0], [[
 const jLeg = (x, z, mirror) => part(jackal.root, jackalMat, [x, 17, z], [0, 0, 0], [[0, 17, -1, 0, -1, 2, 7, 2, mirror]]);
 const jLF = jLeg(1.5, -4.5, false), jRF = jLeg(-1.5, -4.5, true), jLH = jLeg(1.5, 4.5, false), jRH = jLeg(-1.5, 4.5, true);
 
-/* Cerbero cachorro (CerberusModel.java): tres cabezas; las de los lados giradas hacia afuera. */
+/* Cerbero (CerberusModel.java): tres cabezas con mandíbula, serpientes en el lomo y cola de serpiente. Textura 64x64. */
 const cerberus = entityRoot();
-const C_TURN = 0.45;
-const dogHead = () => [[36, 8, -2.5, -3, -4, 5, 5, 4, false], [52, 17, -1.5, -0.5, -7, 3, 2, 3, false],
-  [56, 8, -2.5, -5, -2, 2, 2, 1, false], [56, 8, 0.5, -5, -2, 2, 2, 1, true]];
-part(cerberus.root, cerberusMat, [0, 14, 0], [0, 0, 0], [[0, 0, -3, -3, -6, 6, 6, 12, false], [36, 0, -3.5, -3.5, -6.5, 7, 7, 1, false]]);
-part(cerberus.root, cerberusMat, [0, 12, -6.5], [0, 0, 0], dogHead());
-const cLeftHead = part(cerberus.root, cerberusMat, [3.2, 13, -5.5], [0, -C_TURN, 0], dogHead());
-const cRightHead = part(cerberus.root, cerberusMat, [-3.2, 13, -5.5], [0, C_TURN, 0], dogHead());
-const cTail = part(cerberus.root, cerberusMat, [0, 12, 6], [Math.PI / 4, 0, 0], [[8, 18, -1, 0, -1, 2, 7, 2, false]]);
-const cLeg = (x, z, mirror) => part(cerberus.root, cerberusMat, [x, 17, z], [0, 0, 0], [[0, 18, -1, 0, -1, 2, 7, 2, mirror]]);
-const cLF = cLeg(1.8, -4.5, false), cRF = cLeg(-1.8, -4.5, true), cLH = cLeg(1.8, 4.5, false), cRH = cLeg(-1.8, 4.5, true);
+const C_TURN = 0.5;
+const cPart = (parent, offset, rot, cubes) => part(parent, cerberusMat, offset, rot, cubes, 64);
+cPart(cerberus.root, [0, 10, 0], [0, 0, 0], [[0, 0, -5, -5, -8, 10, 9, 8, false], [0, 17, -4, -3, 0, 8, 7, 8, false]]);
+const cHeads = [], cJaws = [];
+for (const [offset, turn] of [[[0, 7, -8], 0], [[5, 9, -6.5], -C_TURN], [[-5, 9, -6.5], C_TURN]]) {
+  const h = cPart(cerberus.root, offset, [0, turn, 0], [[36, 0, -3, -3, -5, 6, 6, 5, false], [36, 11, -2, -1, -10, 4, 2, 5, false],
+    [54, 11, -3, -6, -2, 2, 3, 1, false], [54, 11, 1, -6, -2, 2, 3, 1, true]]);
+  cHeads.push(h);
+  cJaws.push(cPart(h, [0, 1, -5], [0, 0, 0], [[36, 18, -2, 0, -5, 4, 1, 5, false]]));
+}
+const C_SNAKES = [[-1.5, 5, -6, -0.35], [1.5, 5, -3.5, -0.45], [-1.5, 5, -1, -0.55], [1.5, 7, 1.5, -0.6], [-1.5, 7, 4, -0.7]];
+const cSnakes = C_SNAKES.map(([x, y, z, tilt]) => cPart(cerberus.root, [x, y, z], [tilt, 0, 0],
+  [[40, 32, -0.5, -4, -0.5, 1, 4, 1, false], [44, 32, -1, -5, -1.5, 2, 1, 2, false]]));
+const cTail = cPart(cerberus.root, [0, 9, 8], [0.5, 0, 0], [[32, 24, -1, -1, 0, 2, 2, 6, false]]);
+const cTailMid = cPart(cTail, [0, 0, 6], [-0.9, 0, 0], [[48, 24, -1, -1, 0, 2, 2, 5, false]]);
+const cTailHead = cPart(cTailMid, [0, 0, 5], [-0.4, 0, 0], [[28, 32, -1.5, -1, 0, 3, 2, 3, false]]);
+const cLeg = (x, y, z, mirror) => cPart(cerberus.root, [x, y, z], [0, 0, 0],
+  [[0, 32, -1.5, 0, -1.5, 3, 10, 3, mirror], [12, 32, -2, 8, -2.5, 4, 2, 4, mirror]]);
+const cLF = cLeg(3.5, 14, -4, false), cRF = cLeg(-3.5, 14, -4, true), cLH = cLeg(3, 14, 5, false), cRH = cLeg(-3, 14, 5, true);
 
 /* Jugador de bloques con las reliquias puestas (assets/mythicrelics/trinkets). Mira hacia +Z. */
 const player = new THREE.Group();
@@ -693,14 +702,19 @@ function setupAnim() {
   jRF.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
   jLF.rotation.x = Math.cos(a) * 1.4 * speed;
   jTail.rotation.set(Math.PI / 5, Math.cos(a) * 1.4 * speed, 0);
-  cRH.rotation.x = Math.cos(a) * 1.4 * speed;
-  cLH.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
-  cRF.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
-  cLF.rotation.x = Math.cos(a) * 1.4 * speed;
-  cTail.rotation.set(Math.PI / 4, Math.cos(a) * 1.4 * speed, 0);
-  const sway = Math.sin(performance.now() / 50 * 0.15) * 0.12;
-  cLeftHead.rotation.set(sway, -C_TURN, 0);
-  cRightHead.rotation.set(-sway, C_TURN, 0);
+  cRH.rotation.x = Math.cos(a) * 1.2 * speed;
+  cLH.rotation.x = Math.cos(a + Math.PI) * 1.2 * speed;
+  cRF.rotation.x = Math.cos(a + Math.PI) * 1.2 * speed;
+  cLF.rotation.x = Math.cos(a) * 1.2 * speed;
+  const age = performance.now() / 50;
+  const sway = Math.sin(age * 0.15) * 0.12;
+  cHeads[1].rotation.set(sway, -C_TURN, 0);
+  cHeads[2].rotation.set(-sway, C_TURN, 0);
+  cJaws.forEach((j, i) => j.rotation.set(0.15 + Math.abs(Math.sin(age * 0.2 + i * 2.1)) * (0.25 + 0.3 * speed), 0, 0));
+  cTail.rotation.set(0.5, Math.sin(age * 0.12) * 0.4, 0);
+  cTailMid.rotation.set(-0.9, Math.sin(age * 0.12 - 1) * 0.5, 0);
+  cTailHead.rotation.set(-0.4, Math.sin(age * 0.12 - 2) * 0.6, 0);
+  cSnakes.forEach((sn, i) => sn.rotation.set(C_SNAKES[i][3] + Math.cos(age * 0.14 + i) * 0.12, 0, Math.sin(age * 0.18 + i * 1.3) * 0.3));
 }
 
 /* Partículas al aparecer: el escarabajo suelta las del bloque que pisa (Minions#dig); el chacal, almas. */
@@ -733,7 +747,7 @@ const speedInput = document.getElementById("speed");
 const VIEWS = {
   scarab: { cam: [0.9, 0.7, 1.1], target: [0, 0.12, 0] },
   jackal: { cam: [1.6, 1.1, 1.8], target: [0, 0.45, 0] },
-  cerberus: { cam: [1.5, 1.1, 1.9], target: [0, 0.5, 0] },
+  cerberus: { cam: [1.9, 1.4, 2.3], target: [0, 0.6, 0] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
 function setSubject(s) {

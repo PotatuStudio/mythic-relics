@@ -33,7 +33,7 @@ public final class ModEntities {
 
 	public static final RegistrySupplier<EntityType<Cerberus>> CERBERUS = ENTITIES.register("cerberus",
 			() -> EntityType.Builder.of(Cerberus::new, MobCategory.MISC)
-					.sized(0.6f, 0.8f)
+					.sized(0.85f, 1.3f)
 					.fireImmune()
 					.clientTrackingRange(10)
 					.noSave()

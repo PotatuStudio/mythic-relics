@@ -49,15 +49,15 @@ el agua del Estigia) y el óbolo de Caronte pagaba el pasaje, no evitaba la muer
 
 Segunda tanda: diseño aprobado y programado el 2026-11-09, falta probarla en el juego (página de diseño:
 https://claude.ai/artifact/5Ns8v22pGPS1Ak1iysDDLP). Decisiones del usuario: Ícaro con planeo y 3 aleteos; vellocino
-«rey legítimo» (sin regeneración, que viene de Percy Jackson); Pandora con azar total; Cerbero como un solo perro de tres
-cabezas con modelo propio; agua del Estigia en frasco que no se gasta; «Hinojo de Prometeo» en vez de «antorcha».
+«rey legítimo» (sin regeneración, que viene de Percy Jackson); Pandora con azar total; Cerbero como bestia mediana de tres
+cabezas con cola de serpiente, serpientes en el lomo, fauces y garras (pedido del usuario: «más monstruo, más fiel»); agua del Estigia en frasco que no se gasta; «Hinojo de Prometeo» en vez de «antorcha».
 Íconos aprobados: https://claude.ai/artifact/MfyEEQre5quB3ujrwdLiY4
 
 | Reliquia | Espacio | Efecto aprobado | Dónde |
 |---|---|---|---|
 | Alas de Ícaro | espalda (compite con la égida) | En el aire, mantener salto planea (más lento que los élitros, sin cohetes); 3 aleteos por vuelo que se recargan en el suelo. Sobre la altura 150, de día y bajo el cielo, la cera se derrite: 30 s sin alas. Tocar el agua termina el planeo. | Grava sospechosa de ruinas oceánicas frías, 1,5 % |
 | Vellocino de oro | capa (espacio nuevo; NeoForge: cuerpo) | Héroe de la aldea I mientras lo llevas; al esquilar, 10 % de una pepita de oro. | Casas de pastor 4 %; tesoro de naufragios 2 % |
-| Collar de Cerbero | collar (compite con el Anj y Bastet) | Cuando un mob te hiere aparece un Cerbero cachorro (modelo propio, tres cabezas) que lo ataca 15 s; cada ataque son 3 mordidas. En el Nether prende fuego 3 s. Recarga 60 s. | Bastiones, 3 % |
+| Collar de Cerbero | collar (compite con el Anj y Bastet) | Cuando un mob te hiere aparece Cerbero (bestia de tres cabezas con cola de serpiente y serpientes en el lomo) y lo ataca 15 s; cada ataque son 3 mordidas. En el Nether prende fuego 3 s. Recarga 60 s. | Bastiones, 3 % |
 | Jarra de Pandora | mano | Abrir tira al azar (recarga 90 s): 40 % un mal sobre ti 10 s; 25 % salen 3 vexes que te atacan 20 s; 25 % tesoro (2–5 esmeraldas, 1–2 diamantes o 1 manzana dorada); 10 % Esperanza (curación completa, quita efectos negativos, Absorción II 2 min). | Mansiones del bosque, 5 % |
 | Agua del Estigia | mano (se bebe, no se gasta) | 3 min con la mitad del daño de frente y de costado; por la espalda, el doble (talón). Recarga 10 min. | Ciudades antiguas, 2 % |
 | Hinojo de Prometeo | mano | Lo que golpeas arde 4 s; clic derecho cocina o funde al instante hasta 8 objetos de la otra mano. Recarga 30 s. | Portales en ruinas, 3 % |

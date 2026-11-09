@@ -7,12 +7,12 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 
-/** Cerbero cachorro: pelaje de sombra, ojos de brasa y collar de cuero con púas de plata. */
+/** Cerbero: pelaje de sombra, ojos de brasa, fauces rojas y serpientes verde oscuro. */
 public class CerberusRenderer extends MobRenderer<Cerberus, LivingEntityRenderState, CerberusModel> {
 	private static final Identifier TEXTURE = MythicRelics.id("textures/entity/cerberus.png");
 
 	public CerberusRenderer(EntityRendererProvider.Context context) {
-		super(context, new CerberusModel(context.bakeLayer(CerberusModel.LAYER)), 0.45f);
+		super(context, new CerberusModel(context.bakeLayer(CerberusModel.LAYER)), 0.7f);
 	}
 
 	@Override

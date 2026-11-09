@@ -168,7 +168,7 @@ Jasón y los argonautas la buscaron porque traerla era la prueba para reclamar e
 
 **Espacio:** collar · **Rareza:** rara
 
-- Cuando un mob te hiere, aparece un Cerbero cachorro que lo ataca durante 15 s: 3 mordidas por ataque
+- Cuando un mob te hiere, aparece Cerbero que lo ataca durante 15 s: 3 mordidas por ataque
 - En el Nether, sus mordidas prenden fuego 3 s
 - Recarga: 60 s
 

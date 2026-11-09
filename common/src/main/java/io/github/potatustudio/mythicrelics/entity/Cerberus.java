@@ -20,7 +20,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.level.Level;
 
 /**
- * Cerbero cachorro del collar de Cerbero: un solo perro de tres cabezas. Cada ataque son tres mordidas seguidas, una por
+ * Cerbero del collar: la bestia de tres cabezas, cola de serpiente y serpientes en el lomo. Cada ataque son tres mordidas seguidas, una por
  * cabeza (la primera es el golpe normal; las otras dos llegan a los pocos ticks). En el Nether, sus mordidas prenden fuego.
  * Como el chacal, no elige objetivos solo ({@code Minions} lo dirige) y no le afecta el fuego.
  */
@@ -37,9 +37,9 @@ public class Cerberus extends PathfinderMob {
 
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0)
+				.add(Attributes.MAX_HEALTH, 30.0)
 				.add(Attributes.MOVEMENT_SPEED, 0.34)
-				.add(Attributes.ATTACK_DAMAGE, 2.5);
+				.add(Attributes.ATTACK_DAMAGE, 3.0);
 	}
 
 	@Override
@@ -110,6 +110,6 @@ public class Cerberus extends PathfinderMob {
 
 	@Override
 	public float getVoicePitch() {
-		return super.getVoicePitch() * 1.4f;
+		return super.getVoicePitch() * 0.8f;
 	}
 }
