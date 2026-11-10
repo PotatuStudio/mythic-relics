@@ -206,6 +206,21 @@ Página de diseño: `tools/design-page/china_*.py`. Fuentes: mitos antiguos (Nü
 | Elixir de Chang'e | mano | Ascenso lunar: saltos altos, caída lenta sin daño, +50 % de daño en el aire; 30/20/10 s según la fase de la luna. Recarga 3 min. | Ciudades del End, 3 % |
 | Piedra de cinco colores | cinturón | Repara 1 de durabilidad cada 10 s en armadura y manos; inmune a los rayos. Rara. | Arqueología de ruinas de los senderos, 1 % |
 
+### China, tanda 2 (efectos y números aprobados el 2026-11-10)
+Faltan los modelos del Perro Celestial y del qilin y los íconos pulidos. Página: `tools/design-page/china2_*.py`.
+
+| Reliquia | Tipo | Efecto | Dónde |
+|---|---|---|---|
+| Lanza de punta de fuego (Nezha) | arma | 8 de daño y fuego 4 s; clic derecho: llamarada en cono de 6 bloques (5 de daño y fuego). Recarga 10 s; 5 s con las ruedas de viento y fuego puestas. | Bastiones, 3 % |
+| Aro del Universo (Nezha) | se lanza | Golpea hasta 3 enemigos a 8 bloques (7 de daño, aturde 1 s) y vuelve. Recarga 4 s. | Recompensas de cámaras de desafío, 3 % |
+| Ojo de Erlang Shen | cara | Los invisibles brillan; los hostiles a 16 bloques brillan a través de las paredes. | Ciudades del End, 3 % |
+| Alabarda de tres puntas | arma | 9 de daño, +1 de alcance, barre a 2 bloques. Set de Erlang (con el Ojo): el Perro Celestial aparece al recibir daño, 45 s, recarga 90 s. | Mansiones del bosque, 4 % |
+| Cuerno del qilin | invoca montura | Qilin propio: rápido, salta alto, sin daño de caída, no pisa cultivos, inmune al fuego y la lava; montado, regeneras tú y los animales y aldeanos a 8 bloques. Se va a los 3 s sin jinete; si muere, 5 min. | Templos de aldea, 3 % |
+| Pulsera del pixiu | anillo | Al matar hostiles, 30 % de 1-3 pepitas de oro; al morir conservas oro, esmeraldas y diamantes. Rara. | Tesoros enterrados, 4 % |
+| Talismanes de papel | uso | Clic derecho a un no-muerto: inmóvil 8 s. Recarga 15 s. Raros. | Mazmorras, 4 % |
+| Saco de Xirang | uso | Muro de tierra de 5x3 frente a ti que corta el agua. 3 cargas, una cada 60 s. Raro. | Arqueología de ruinas de los senderos (raras), 1,5 % |
+| Rama del melocotonero celestial | comida que no se gasta | Un melocotón cada 3 días: Absorción IV 3 min, Regeneración II 10 s y quita efectos negativos. | Templos de la jungla, 3 % |
+
 ## Folclore japonés
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
