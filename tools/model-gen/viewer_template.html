@@ -138,6 +138,8 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button data-subject="jackal" aria-pressed="false" data-i18n="subjJackal">Chacal</button>
       <button data-subject="cerberus" aria-pressed="false" data-i18n="subjCerberus">Cerbero</button>
       <button data-subject="sleipnir" aria-pressed="false" data-i18n="subjSleipnir">Sleipnir</button>
+      <button data-subject="monkey" aria-pressed="false" data-i18n="subjMonkey">Mono guerrero</button>
+      <button data-subject="dragon" aria-pressed="false" data-i18n="subjDragon">Long</button>
       <button data-subject="player" aria-pressed="false" data-i18n="subjPlayer">Reliquias puestas</button>
     </div>
     <div class="stage" id="stage"></div>
@@ -162,7 +164,9 @@ const UI = {
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
     stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
-    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjPlayer: "Reliquias puestas",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjMonkey: "Mono guerrero", subjDragon: "Long", subjPlayer: "Reliquias puestas",
+    footMonkey: "Mono guerrero de los Pelos del Rey Mono: el traje de Sun Wukong en Viaje al Oeste (gorro de alas de fénix con plumas de faisán, diadema de oro, cota de malla dorada, faldellín de tigre y botas de nube) y su bastón de hierro con aros de oro. Los ojos de fuego brillan en la oscuridad.",
+    footDragon: "El long de la Perla del dragón: dragón chino sin alas, de diez segmentos que ondulan al volar, con cuernos de ciervo, bigotes, melena y barba de llamas, garras de águila y la perla llameante delante del hocico (los ojos y la perla brillan). Se monta: el jinete va sobre el segundo segmento.",
     walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
     footSleipnir: "Sleipnir, el caballo de ocho patas de Odín, que llama la herradura: corcel de guerra de Asgard con bardas de hierro rúnico, crin trenzada y cola larga. Las runas y los ojos brillan en la oscuridad y al galopar deja escarcha y chispas (en el agua, salpicaduras). Vuelve a Asgard cuando te bajas.",
@@ -177,7 +181,9 @@ const UI = {
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
     stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
-    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjPlayer: "Worn relics",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjMonkey: "Monkey warrior", subjDragon: "Long", subjPlayer: "Worn relics",
+    footMonkey: "Monkey warrior from the Hairs of the Monkey King: Sun Wukong's outfit in Journey to the West (phoenix-feather cap with pheasant plumes, golden fillet, golden chain mail, tiger-skin kilt and cloud-walking boots) and his iron staff with gold bands. His fiery eyes glow in the dark.",
+    footDragon: "The long of the Dragon Pearl: a wingless Chinese dragon of ten segments that undulate as it flies, with stag antlers, whiskers, a mane and beard of flames, eagle claws and the flaming pearl before its snout (eyes and pearl glow). It can be ridden: the rider sits on the second segment.",
     walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
     footSleipnir: "Sleipnir, Odin's eight-legged horse, called by the horseshoe: an Asgard warhorse with runic iron barding, braided mane and a long tail. Runes and eyes glow in the dark and his gallop leaves frost and sparks (splashes on water). He returns to Asgard when you dismount.",
@@ -196,7 +202,7 @@ const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma",
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
   greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"],
   china: ["wind_fire_wheels", "five_color_stone"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player", "sleipnir"], china: ["player"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player", "sleipnir"], china: ["player", "monkey", "dragon"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -568,6 +574,25 @@ const cLeg = (x, y, z, mirror) => cPart(cerberus.root, [x, y, z], [0, 0, 0],
   [[0, 32, -1.5, 0, -1.5, 3, 10, 3, mirror], [12, 32, -2, 8, -2.5, 4, 2, 4, mirror]]);
 const cLF = cLeg(3.5, 14, -4, false), cRF = cLeg(-3.5, 14, -4, true), cLH = cLeg(3, 14, 5, false), cRH = cLeg(-3, 14, 5, true);
 
+/* Entidades chinas (ChinaModelLayers.java, generado desde el mismo diseño): mono guerrero y long. Las partes raíz
+   llevan el desplazamiento del juego (el long se corre para que el jinete quede en el centro de su caja). */
+function chinaEntity(key) {
+  const e = DATA.china[key];
+  const m = new THREE.MeshLambertMaterial({ map: texFromB64(e.tex), side: THREE.DoubleSide, alphaTest: 0.1,
+    emissiveMap: texFromB64(e.glow), emissive: new THREE.Color(0xffffff) });
+  const ent = entityRoot();
+  const parts = {};
+  for (const p of e.parts) {
+    const off = p.parent ? p.offset : p.offset.map((v, i) => v + e.rootOffset[i]);
+    parts[p.name] = part(p.parent ? parts[p.parent] : ent.root, m, off, p.rot, p.cubes.map(c => [...c, false]), e.texH, e.texW);
+  }
+  ent.parts = parts;
+  return ent;
+}
+const monkey = chinaEntity("monkey");
+const dragon = chinaEntity("dragon");
+function addRot(p, dx = 0, dy = 0, dz = 0) { const b = p.userData.base; p.rotation.set(b[0] + dx, b[1] + dy, b[2] + dz); }
+
 /* Sleipnir (SleipnirModel.java): caballo vanilla con ocho patas, bardas rúnicas, crin trenzada y cola en dos tramos. */
 const sleipnir = entityRoot();
 const sP = (parent, offset, rot, cubes) => part(parent, sleipnirMat, offset, rot, cubes, 64, 128);
@@ -743,6 +768,27 @@ function setupAnim() {
   cTail.rotation.set(C_TAIL[0], Math.sin(age * 0.12) * 0.3, 0);
   cTailMid.rotation.set(C_TAIL[1], Math.sin(age * 0.12 - 1) * 0.3, 0);
   cTailHead.rotation.set(C_TAIL[2] + Math.sin(age * 0.09) * 0.15, Math.sin(age * 0.12 - 2) * 0.4, 0);
+  // Mono guerrero (MonkeyWarriorModel#setupAnim)
+  const M = monkey.parts, mSwing = Math.cos(a) * 1.2 * speed;
+  addRot(M.leg_r, mSwing); addRot(M.leg_l, -mSwing); addRot(M.arm_r, -mSwing * 0.4 - 0.3); addRot(M.arm_l, mSwing);
+  addRot(M.tail, Math.sin(age * 0.1) * 0.15, Math.sin(age * 0.075) * 0.4); addRot(M.tail2, Math.sin(age * 0.12) * 0.2);
+  const fs = 0.08 + speed * 0.15;
+  addRot(M.feather_r, Math.sin(age * 0.15) * fs); addRot(M.feather_l, Math.sin(age * 0.15 + 0.5) * fs);
+  addRot(M.feather_r2, Math.sin(age * 0.15 - 0.6) * fs * 2); addRot(M.feather_l2, Math.sin(age * 0.15 - 0.1) * fs * 2);
+  // Long (LongDragonModel#setupAnim): ondula más al moverse; flota sobre el suelo.
+  const D = dragon.parts, t = age / 20, k = 0.35 + Math.min(1, speed * 2) * 0.65;
+  addRot(D.seg0, 0, Math.sin(t * 0.9) * 0.15 * k);
+  for (let i = 1; i < 10; i++) addRot(D["seg" + i], Math.sin(t * 1.8 - i * 0.7) * 0.16 * k, Math.sin(t * 1.3 - i * 0.6) * 0.22 * k);
+  addRot(D.head, -Math.sin(t * 1.8 + 0.7) * 0.12 * k, -Math.sin(t * 0.9) * 0.12 * k);
+  addRot(D.jaw, Math.max(0, Math.sin(t * 0.8)) * 0.25);
+  for (const s of ["r", "l"]) {
+    addRot(D["whisker_" + s], Math.sin(t * 2.2) * 0.2); addRot(D["whisker2_" + s], Math.sin(t * 2.2 - 0.8) * 0.4);
+    addRot(D["seg1_leg_" + s], Math.sin(t * 2 + (s === "r" ? 0 : 1.6)) * 0.35 * k);
+    addRot(D["seg4_leg_" + s], Math.sin(t * 2 + (s === "r" ? 1.6 : 0)) * 0.35 * k);
+  }
+  addRot(D.tuft, 0, Math.sin(t * 1.3 - 6.6) * 0.3 * k);
+  D.pearl.rotation.y = t * 1.5;
+  dragon.entity.position.y = 1.2 + Math.sin(t * 1.2) * 0.12;
 }
 
 /* Partículas al aparecer: el escarabajo suelta las del bloque que pisa (Minions#dig); el chacal, almas. */
@@ -750,6 +796,7 @@ const particles = [];
 const particleGeo = new THREE.BoxGeometry(0.06, 0.06, 0.06);
 const sandParticles = ["#dbcfa3", "#e9dfb8", "#cdbd8e", "#c9b98a"].map(c => new THREE.MeshLambertMaterial({ color: c }));
 const soulParticles = ["#6fe3e8", "#3fb8c8", "#a8f4f4"].map(c => new THREE.MeshBasicMaterial({ color: c }));
+const cloudParticles = ["#ffffff", "#eef2f8", "#dde4ee"].map(c => new THREE.MeshBasicMaterial({ color: c }));
 function burst(at, mats, count, rise) {
   for (let i = 0; i < count; i++) {
     const m = new THREE.Mesh(particleGeo, mats[i % mats.length]);
@@ -765,6 +812,8 @@ function burst(at, mats, count, rise) {
 document.getElementById("btnDig").addEventListener("click", () => {
   if (subject === "scarab") burst(scarab.entity.position, sandParticles, 24, false);
   if (subject === "jackal" || subject === "cerberus" || subject === "sleipnir") burst({ jackal, cerberus, sleipnir }[subject].entity.position, soulParticles, 12, true);
+  if (subject === "monkey") burst(monkey.entity.position, cloudParticles, 20, true);
+  if (subject === "dragon") burst(dragon.entity.position, cloudParticles, 40, true);
 });
 document.getElementById("btnWalk").addEventListener("click", () => {
   walking = !walking;
@@ -777,6 +826,8 @@ const VIEWS = {
   jackal: { cam: [1.6, 1.1, 1.8], target: [0, 0.45, 0] },
   cerberus: { cam: [1.9, 1.4, 2.3], target: [0, 0.6, 0] },
   sleipnir: { cam: [3.2, 2.0, 3.6], target: [0, 0.9, 0] },
+  monkey: { cam: [1.9, 1.6, 2.6], target: [0, 1.0, 0] },
+  dragon: { cam: [6.5, 3.2, 3.0], target: [0, 1.4, -2.2] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
 function setSubject(s) {
@@ -785,6 +836,10 @@ function setSubject(s) {
   jackal.entity.visible = s === "jackal";
   cerberus.entity.visible = s === "cerberus";
   sleipnir.entity.visible = s === "sleipnir";
+  monkey.entity.visible = s === "monkey";
+  dragon.entity.visible = s === "dragon";
+  monkey.entity.position.set(0, 0, 0); dragon.entity.position.set(0, 1.2, 0);
+  monkey.entity.rotation.y = Math.PI; dragon.entity.rotation.y = Math.PI;
   player.visible = s === "player";
   scarab.entity.position.set(0, 0, 0); jackal.entity.position.set(0, 0, 0); cerberus.entity.position.set(0, 0, 0); sleipnir.entity.position.set(0, 0, 0);
   sleipnir.entity.rotation.y = Math.PI;
@@ -797,7 +852,7 @@ function setSubject(s) {
   renderStageText();
 }
 function renderStageText() {
-  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", player: "footPlayer" }[subject];
+  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", player: "footPlayer" }[subject];
   document.getElementById("stageFoot").textContent = UI[lang][foot];
   document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
   buildWornControls();
@@ -822,11 +877,11 @@ function loop(now) {
     const target = walking ? parseFloat(speedInput.value) : 0;
     walkSpeed += (target - walkSpeed) * 0.4;
     walkPos += walkSpeed;
-    const mob = subject === "scarab" ? scarab : subject === "jackal" ? jackal : subject === "cerberus" ? cerberus : subject === "sleipnir" ? sleipnir : null;
+    const mob = subject === "scarab" ? scarab : subject === "jackal" ? jackal : subject === "cerberus" ? cerberus : subject === "sleipnir" ? sleipnir : subject === "monkey" ? monkey : subject === "dragon" ? dragon : null;
     if (mob && walking && !reduce) {
       angle += (subject === "scarab" ? 0.012 : 0.02) * walkSpeed;
-      const r = subject === "scarab" ? 0.45 : subject === "sleipnir" ? 1.6 : 0.9;
-      mob.entity.position.set(Math.cos(angle) * r - r, 0, Math.sin(angle) * r);
+      const r = subject === "scarab" ? 0.45 : subject === "sleipnir" ? 1.6 : subject === "dragon" ? 2.5 : 0.9;
+      mob.entity.position.set(Math.cos(angle) * r - r, mob === dragon ? mob.entity.position.y : 0, Math.sin(angle) * r);
       mob.entity.rotation.y = Math.PI - angle;
     }
     for (let i = particles.length - 1; i >= 0; i--) {
