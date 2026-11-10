@@ -371,7 +371,7 @@ public final class ChinaRelics {
 			case "change_elixir" -> new Object[] {Math.round(ELIXIR_AIR_DAMAGE * 100), ELIXIR_FULL_SECONDS, ELIXIR_QUARTER_SECONDS,
 					ELIXIR_NEW_SECONDS, ELIXIR_COOLDOWN / 20 / 60};
 			case "five_color_stone" -> new Object[] {STONE_INTERVAL / 20};
-			default -> new Object[0];
+			default -> ChinaGods.tooltipArgs(id);
 		};
 	}
 

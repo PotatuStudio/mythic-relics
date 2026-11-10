@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-10. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2 y China 1
+Última sesión: 2026-11-10. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2 y China 1 y 2
 programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
@@ -170,6 +170,22 @@ soltar y disolver con la calabaza (y que se conserve al salir y volver); el dash
 tercer aleteo; caminar sobre lava con las ruedas; el arco (daño x3, doble botín, tensado); el elixir según la luna; el
 bastón estirado; reparación de la piedra; las ruedas y la piedra puestas en los dos loaders.
 
+## Segunda tanda china (programada el 2026-11-10)
+Diseño aprobado en `docs/ideas.md` (páginas en `tools/design-page/china2_*.py`; los íconos son los del primer borrador,
+que el usuario prefirió). Código en `china/ChinaGods` (constantes; Ojo de Erlang; alcance de la alabarda; set de Erlang
+Shen que trae al Perro Celestial al recibir daño; pixiu: pepitas al matar y los tesoros guardados al morir con
+`CharonStash#keepTreasure`; talismanes que vencen) y los ítems `FireTippedSpearItem` (con las ruedas de Nezha, recarga a
+la mitad), `UniverseRingItem` (el vuelo se muestra como una estela de oro de golpe en golpe; el ítem no sale de la
+mano), `ErlangHalberdItem`, `QilinHornItem`, `FuTalismansItem`, `XirangSackItem` (muro de tierra 5x3; cargas en
+`custom_data`) e `ImmortalPeachBranchItem` (componente `peach_growing`; la definición del ítem cambia el dibujo de la rama
+con o sin melocotón). Entidades: `entity/CelestialDog` (aliado de `Minions`; mordida que inmoviliza) y `entity/Qilin`
+(subclase de `AbstractHorse` como Sleipnir; se dibuja a 1,35 veces). Mixin nuevo: `FarmlandBlockMixin` (el qilin no
+pisotea cultivos). Geometría y texturas desde `tools/model-gen/china2_entities.py` (con `china_entities.py --mod`).
+Íconos: `china2_icons.py`; traducciones: `china2_lang.py`. **Sin probar en el juego**: montar el qilin (altura del
+jinete, tamaño, que no pise cultivos, el aura), que el perro aparezca al recibir daño con el set completo, la llamarada
+de la lanza, el rebote del aro, el brillo del Ojo, el muro de Xirang con agua, los tesoros que guarda el pixiu al morir
+(también junto al óbolo), el melocotón (dibujo con y sin fruto) y el Ojo y la pulsera puestos en los dos loaders.
+
 ## Pestaña creativa
 El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
 `tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone
@@ -198,17 +214,17 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 - `tools/model-gen/coplanar_check.py`: busca caras coplanares entre reliquias del cuerpo que se pueden llevar juntas
   (parpadeo). Correrlo después de `worn_models.py` y agregar las reliquias nuevas a sus grupos.
 - `tools/model-gen/rome_icons.py`, `norse_icons.py` (incluye el emblema de la pestaña), `rome_models.py` (Ancile y
-  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_lang.py` y `china_entities.py`
+  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_lang.py`, `china_entities.py`, `china2_icons.py`, `china2_lang.py`, `china2_entities.py`
   (visor de aliados y, con `--mod`, la geometría en Java y las texturas del mono y del long).
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
 ## Después
 1. **Probar en el juego** (en el PC del usuario) todo lo programado: Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2
-   y China 1 (69 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
+   y China 1 y 2 (78 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
    Gungnir en vuelo (se dibujan como el ícono de cara a la cámara), Sleipnir (patas del medio al galopar, la capa que
    brilla, caminar sobre el agua), el modelo del Paladio, los candados de Jano y la búsqueda de estructuras de la sibila.
 2. **Japón** con los Tres Tesoros (siguiente tanda; los celtas se descartaron el 2026-11-10); Chile/mapuche como tanda
-   especial. Una segunda tanda china es posible (Nezha, Erlang Shen y su perro celestial, el qilin, el fénix).
+   especial. Pendiente para China: las Cuatro Bestias Celestiales como set propio.
 3. Pendiente menor: renderizador propio que gire a Mjölnir y Gungnir en el aire; actualizar el ícono del mod
    (`icon.png`, hoy hecho con íconos de Egipto) al estilo del emblema de la pestaña.
 4. Otras culturas de `docs/ideas.md`.

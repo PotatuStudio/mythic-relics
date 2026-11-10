@@ -78,6 +78,9 @@ CULTURE_INFO = {
             "ruyi_jingu_bang": (-2, 2), "monkey_king_hairs": (0, 2), "purple_gold_gourd": (2, 2),
             "banana_leaf_fan": (-3, 5), "dragon_pearl": (-1, 5), "wind_fire_wheels": (1, 5), "hou_yi_bow": (3, 5),
             "change_elixir": (-1, 8), "five_color_stone": (1, 8),
+            "fire_tipped_spear": (-3, 11), "universe_ring": (-1, 11), "erlang_eye": (1, 11), "erlang_halberd": (3, 11),
+            "qilin_horn": (-3, 14), "pixiu_bracelet": (-1, 14), "fu_talismans": (1, 14), "xirang_sack": (3, 14),
+            "immortal_peach_branch": (0, 16),
         },
     },
 }

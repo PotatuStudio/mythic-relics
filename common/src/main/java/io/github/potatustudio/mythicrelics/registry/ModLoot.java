@@ -53,7 +53,8 @@ public final class ModLoot {
 			// Ruinas de los senderos: las ruinas antiguas (arqueología, por bloque cepillado).
 			Map.entry(BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_RARE, List.of(
 					new Drop(0.020f, ModItems.HERMES_SANDALS),
-					new Drop(0.030f, ModItems.CHARON_OBOL))),
+					new Drop(0.030f, ModItems.CHARON_OBOL),
+					new Drop(0.015f, ModItems.XIRANG_SACK))),
 			// Ruinas oceánicas cálidas: templos hundidos.
 			Map.entry(BuiltInLootTables.OCEAN_RUIN_WARM_ARCHAEOLOGY, List.of(
 					new Drop(0.015f, ModItems.MEDUSA_HEAD),
@@ -71,7 +72,8 @@ public final class ModLoot {
 					new Drop(0.040f, ModItems.SIBYLLINE_BOOKS))),
 			// Cámaras de desafío: las pruebas del héroe.
 			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, List.of(
-					new Drop(0.030f, ModItems.ATHENA_AEGIS))),
+					new Drop(0.030f, ModItems.ATHENA_AEGIS),
+					new Drop(0.030f, ModItems.UNIVERSE_RING))),
 			// Ciudad antigua: el descenso de Orfeo.
 			// Ciudad antigua: el descenso de Orfeo y el río del inframundo.
 			Map.entry(BuiltInLootTables.ANCIENT_CITY, List.of(
@@ -92,14 +94,16 @@ public final class ModLoot {
 					new Drop(0.030f, ModItems.ANDVARANAUT),
 					new Drop(0.050f, ModItems.WIND_FIRE_WHEELS))),
 			Map.entry(BuiltInLootTables.BASTION_OTHER, List.of(
-					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
+					new Drop(0.030f, ModItems.CERBERUS_COLLAR),
+					new Drop(0.030f, ModItems.FIRE_TIPPED_SPEAR))),
 			Map.entry(BuiltInLootTables.BASTION_BRIDGE, List.of(
 					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
 			Map.entry(BuiltInLootTables.BASTION_HOGLIN_STABLE, List.of(
 					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
 			// Mansiones del bosque: muy rara.
 			Map.entry(BuiltInLootTables.WOODLAND_MANSION, List.of(
-					new Drop(0.050f, ModItems.PANDORA_JAR))),
+					new Drop(0.050f, ModItems.PANDORA_JAR),
+					new Drop(0.040f, ModItems.ERLANG_HALBERD))),
 			// Portales en ruinas: el fuego robado.
 			// Portales en ruinas: el fuego robado y las puertas de Jano.
 			Map.entry(BuiltInLootTables.RUINED_PORTAL, List.of(
@@ -117,14 +121,16 @@ public final class ModLoot {
 					new Drop(0.040f, ModItems.GJALLARHORN))),
 			// Templo de aldea (clérigo): la ciudad que no cae.
 			Map.entry(BuiltInLootTables.VILLAGE_TEMPLE, List.of(
-					new Drop(0.030f, ModItems.PALLADIUM))),
+					new Drop(0.030f, ModItems.PALLADIUM),
+					new Drop(0.030f, ModItems.QILIN_HORN))),
 			// Casas de aldeas de llanura: el hogar de Vesta.
 			Map.entry(BuiltInLootTables.VILLAGE_PLAINS_HOUSE, List.of(
 					new Drop(0.030f, ModItems.VESTA_LAMP))),
 			// Templos de la jungla: las aves de los augures.
 			Map.entry(BuiltInLootTables.JUNGLE_TEMPLE, List.of(
 					new Drop(0.040f, ModItems.AUGUR_LITUUS),
-					new Drop(0.040f, ModItems.MONKEY_KING_HAIRS))),
+					new Drop(0.040f, ModItems.MONKEY_KING_HAIRS),
+					new Drop(0.030f, ModItems.IMMORTAL_PEACH_BRANCH))),
 			// ---- Nórdicos ----
 			// Bóvedas ominosas de las cámaras de desafío: el martillo de Thor.
 			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD_OMINOUS, List.of(
@@ -140,10 +146,12 @@ public final class ModLoot {
 			Map.entry(BuiltInLootTables.END_CITY_TREASURE, List.of(
 					new Drop(0.030f, ModItems.GUNGNIR),
 					new Drop(0.030f, ModItems.ODIN_RAVENS),
-					new Drop(0.030f, ModItems.CHANGE_ELIXIR))),
+					new Drop(0.030f, ModItems.CHANGE_ELIXIR),
+					new Drop(0.030f, ModItems.ERLANG_EYE))),
 			// Tesoros enterrados: el oro de los enanos.
 			Map.entry(BuiltInLootTables.BURIED_TREASURE, List.of(
-					new Drop(0.060f, ModItems.DRAUPNIR))),
+					new Drop(0.060f, ModItems.DRAUPNIR),
+					new Drop(0.040f, ModItems.PIXIU_BRACELET))),
 			// Casas de aldeas nevadas: la cesta de Iðunn.
 			Map.entry(BuiltInLootTables.VILLAGE_SNOWY_HOUSE, List.of(
 					new Drop(0.040f, ModItems.IDUNN_APPLES))),
@@ -164,7 +172,8 @@ public final class ModLoot {
 					new Drop(0.030f, ModItems.DRAGON_PEARL))),
 			// Mazmorras: las cuevas de los demonios Cuerno de Oro y Cuerno de Plata.
 			Map.entry(BuiltInLootTables.SIMPLE_DUNGEON, List.of(
-					new Drop(0.030f, ModItems.PURPLE_GOLD_GOURD))),
+					new Drop(0.030f, ModItems.PURPLE_GOLD_GOURD),
+					new Drop(0.040f, ModItems.FU_TALISMANS))),
 			// Ruinas de los senderos (arqueología común): las piedras que sobraron del cielo remendado.
 			Map.entry(BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_COMMON, List.of(
 					new Drop(0.010f, ModItems.FIVE_COLOR_STONE))));

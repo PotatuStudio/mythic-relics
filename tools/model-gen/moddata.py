@@ -23,7 +23,9 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
          "mjolnir", "jarngreipr", "megingjord", "gungnir", "draupnir", "gjallarhorn", "gleipnir", "idunn_apples",
          "sleipnir_horseshoe", "odin_ravens", "brisingamen", "skidbladnir", "mimir_head", "andvaranaut", "odrerir",
          "ruyi_jingu_bang", "monkey_king_hairs", "purple_gold_gourd", "banana_leaf_fan", "dragon_pearl", "wind_fire_wheels",
-         "hou_yi_bow", "change_elixir", "five_color_stone"]
+         "hou_yi_bow", "change_elixir", "five_color_stone",
+         "fire_tipped_spear", "universe_ring", "erlang_eye", "erlang_halberd", "qilin_horn", "pixiu_bracelet", "fu_talismans",
+         "xirang_sack", "immortal_peach_branch"]
 # Cultura de cada reliquia (categoría del libro y página de la wiki), en el orden en que se muestran.
 CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:48], "china": ORDER[48:]}
 # Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
@@ -47,7 +49,10 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "mimir_head": "offhand", "andvaranaut": "hand/ring", "odrerir": "hand",
          "ruyi_jingu_bang": "mainhand", "monkey_king_hairs": "hand", "purple_gold_gourd": "hand", "banana_leaf_fan": "mainhand",
          "dragon_pearl": "hand", "wind_fire_wheels": "feet/shoes", "hou_yi_bow": "mainhand", "change_elixir": "hand",
-         "five_color_stone": "legs/belt"}
+         "five_color_stone": "legs/belt",
+         "fire_tipped_spear": "mainhand", "universe_ring": "hand", "erlang_eye": "head/face", "erlang_halberd": "mainhand",
+         "qilin_horn": "hand", "pixiu_bracelet": "hand/ring", "fu_talismans": "hand", "xirang_sack": "hand",
+         "immortal_peach_branch": "hand"}
 
 
 def read(path):
@@ -64,7 +69,7 @@ def constants():
     out = {}
     for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java",
                  "rome/RomeRelics.java", "norse/NorseRelics.java",
-                 "norse/NorseGods.java", "china/ChinaRelics.java"):
+                 "norse/NorseGods.java", "china/ChinaRelics.java", "china/ChinaGods.java"):
         src = read(os.path.join(JAVA, *name.split("/")))
         out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
     return out
@@ -161,6 +166,19 @@ def tooltip_args(c):
         "change_elixir": [round(c["ELIXIR_AIR_DAMAGE"] * 100), int(c["ELIXIR_FULL_SECONDS"]), int(c["ELIXIR_QUARTER_SECONDS"]),
                           int(c["ELIXIR_NEW_SECONDS"]), int(c["ELIXIR_COOLDOWN"] // 20 // 60)],
         "five_color_stone": [int(c["STONE_INTERVAL"] // 20)],
+        # China, tanda 2 (ChinaGods#tooltipArgs)
+        "fire_tipped_spear": [int(c["SPEAR_BURN_SECONDS"]), int(c["SPEAR_FLAME_RANGE"]), int(c["SPEAR_FLAME_DAMAGE"]),
+                              int(c["SPEAR_COOLDOWN"] // 20), int(c["SPEAR_COOLDOWN"] // 40)],
+        "universe_ring": [int(c["RING_TARGETS"]), int(c["RING_RANGE"]), int(c["RING_DAMAGE"]), int(c["RING_STUN_TICKS"] // 20),
+                          int(c["RING_COOLDOWN"] // 20)],
+        "erlang_eye": [int(c["ERLANG_SIGHT_RADIUS"])],
+        "erlang_halberd": [int(c["HALBERD_REACH"]), int(c["HALBERD_SWEEP_RADIUS"]), int(c["DOG_TICKS"] // 20), int(c["DOG_COOLDOWN"] // 20)],
+        "qilin_horn": [int(c["QILIN_AURA_RADIUS"]), int(c["QILIN_LEAVE_TICKS"] // 20), int(c["QILIN_COOLDOWN"] // 20 // 60)],
+        "pixiu_bracelet": [round(c["PIXIU_CHANCE"] * 100), int(c["PIXIU_MAX_NUGGETS"])],
+        "fu_talismans": [int(c["TALISMAN_TICKS"] // 20), int(c["TALISMAN_COOLDOWN"] // 20)],
+        "xirang_sack": [int(c["XIRANG_WIDTH"]), int(c["XIRANG_HEIGHT"]), int(c["XIRANG_CHARGES"]), int(c["XIRANG_RECHARGE_TICKS"] // 20)],
+        "immortal_peach_branch": [int(c["PEACH_GROW_TICKS"] // 24000), int(c["PEACH_ABSORPTION_TICKS"] // 20 // 60),
+                                  int(c["PEACH_REGEN_TICKS"] // 20)],
     }
 
 

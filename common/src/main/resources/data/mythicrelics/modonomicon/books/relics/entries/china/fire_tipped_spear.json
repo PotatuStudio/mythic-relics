@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:china/fire_tipped_spear",
+  "category": "mythicrelics:china",
+  "name": "item.mythicrelics.fire_tipped_spear",
+  "icon": "mythicrelics:fire_tipped_spear",
+  "x": -3,
+  "y": 11,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.fire_tipped_spear.effect",
+      "item": "mythicrelics:fire_tipped_spear"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.fire_tipped_spear",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.fire_tipped_spear.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.fire_tipped_spear.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:china/intro"
+    }
+  ]
+}

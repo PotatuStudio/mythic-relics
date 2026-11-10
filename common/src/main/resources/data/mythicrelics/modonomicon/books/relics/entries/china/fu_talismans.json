@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:china/fu_talismans",
+  "category": "mythicrelics:china",
+  "name": "item.mythicrelics.fu_talismans",
+  "icon": "mythicrelics:fu_talismans",
+  "x": 1,
+  "y": 14,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.fu_talismans.effect",
+      "item": "mythicrelics:fu_talismans"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.fu_talismans",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.fu_talismans.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.fu_talismans.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:china/intro"
+    }
+  ]
+}

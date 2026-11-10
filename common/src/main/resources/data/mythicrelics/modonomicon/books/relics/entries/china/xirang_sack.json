@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:china/xirang_sack",
+  "category": "mythicrelics:china",
+  "name": "item.mythicrelics.xirang_sack",
+  "icon": "mythicrelics:xirang_sack",
+  "x": 3,
+  "y": 14,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.xirang_sack.effect",
+      "item": "mythicrelics:xirang_sack"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.xirang_sack",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.xirang_sack.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.xirang_sack.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:china/intro"
+    }
+  ]
+}

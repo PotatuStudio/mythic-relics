@@ -4,10 +4,12 @@ import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.entity.CelestialDog;
 import io.github.potatustudio.mythicrelics.entity.Cerberus;
 import io.github.potatustudio.mythicrelics.entity.Jackal;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
+import io.github.potatustudio.mythicrelics.entity.Qilin;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
 import io.github.potatustudio.mythicrelics.entity.Sleipnir;
 import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
@@ -76,6 +78,25 @@ public final class ModEntities {
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("long_dragon"))));
 
+	/** Perro Celestial de Erlang Shen (aliado temporal del set). */
+	public static final RegistrySupplier<EntityType<CelestialDog>> CELESTIAL_DOG = ENTITIES.register("celestial_dog",
+			() -> EntityType.Builder.of(CelestialDog::new, MobCategory.MISC)
+					.sized(0.6f, 0.9f)
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("celestial_dog"))));
+
+	/** El qilin del cuerno: montura del tamaño de un caballo, inmune al fuego; no se guarda con el mundo. */
+	public static final RegistrySupplier<EntityType<Qilin>> QILIN = ENTITIES.register("qilin",
+			() -> EntityType.Builder.of(Qilin::new, MobCategory.CREATURE)
+					.sized(1.3f, 1.8f)
+					.eyeHeight(1.7f)
+					.passengerAttachments(1.5f)
+					.fireImmune()
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("qilin"))));
+
 	private ModEntities() {
 	}
 
@@ -87,5 +108,7 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(SLEIPNIR, Sleipnir::createAttributes);
 		EntityAttributeRegistry.register(MONKEY_WARRIOR, MonkeyWarrior::createAttributes);
 		EntityAttributeRegistry.register(LONG_DRAGON, LongDragon::createAttributes);
+		EntityAttributeRegistry.register(CELESTIAL_DOG, CelestialDog::createAttributes);
+		EntityAttributeRegistry.register(QILIN, Qilin::createAttributes);
 	}
 }

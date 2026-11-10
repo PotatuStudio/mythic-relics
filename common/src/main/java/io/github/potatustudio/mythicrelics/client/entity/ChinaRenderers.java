@@ -1,8 +1,11 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.entity.CelestialDog;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
+import io.github.potatustudio.mythicrelics.entity.Qilin;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -15,8 +18,9 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Mob;
 
 /**
- * Renderizadores de las entidades chinas. Las dos tienen una segunda textura que brilla en la oscuridad (como los ojos
- * de la araña): los ojos de fuego del mono; los ojos del long y su perla llameante.
+ * Renderizadores de las entidades chinas. Todas tienen una segunda textura que brilla en la oscuridad (como los ojos
+ * de la araña): los ojos de fuego del mono; los ojos del long y su perla llameante; los ojos del perro; las llamas del
+ * qilin.
  */
 public final class ChinaRenderers {
 	private ChinaRenderers() {
@@ -71,6 +75,27 @@ public final class ChinaRenderers {
 		@Override
 		protected boolean affectedByCulling(LongDragon entity) {
 			return false;
+		}
+	}
+
+	/** Perro Celestial. */
+	public static class Dog extends Glowing<CelestialDog, CelestialDogModel> {
+		public Dog(EntityRendererProvider.Context context) {
+			super(context, new CelestialDogModel(context.bakeLayer(CelestialDogModel.LAYER)), 0.5f, "celestial_dog");
+		}
+	}
+
+	/** Qilin: se dibuja más grande que su geometría, del tamaño de un caballo. */
+	public static class QilinRenderer extends Glowing<Qilin, QilinModel> {
+		public static final float SCALE = 1.35f;
+
+		public QilinRenderer(EntityRendererProvider.Context context) {
+			super(context, new QilinModel(context.bakeLayer(QilinModel.LAYER)), 0.9f, "qilin");
+		}
+
+		@Override
+		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+			poseStack.scale(SCALE, SCALE, SCALE);
 		}
 	}
 }

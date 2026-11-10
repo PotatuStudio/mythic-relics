@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:china/erlang_halberd",
+  "category": "mythicrelics:china",
+  "name": "item.mythicrelics.erlang_halberd",
+  "icon": "mythicrelics:erlang_halberd",
+  "x": 3,
+  "y": 11,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.erlang_halberd.effect",
+      "item": "mythicrelics:erlang_halberd"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.erlang_halberd",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.erlang_halberd.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.erlang_halberd.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:china/intro"
+    }
+  ]
+}

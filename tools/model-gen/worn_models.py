@@ -423,6 +423,25 @@ def five_color_stone():
     return e
 
 
+def erlang_eye():
+    """Cabeza (4..12, frente en z 12): diadema de oro alrededor de la frente y el tercer ojo vertical al frente, con iris
+    de oro y pupila oscura (Erlang Shen)."""
+    e = ring(3.25, 12.75, 9.65, 10.65, 3.25, 12.75, 0.6, "gold", "diadema")
+    e += [box([7.3, 9.05, 12.75], [8.7, 11.85, 12.95], "white", "ojo"),
+          box([7.6, 9.65, 12.95], [8.4, 11.25, 13.1], "gold_l", "iris"),
+          box([7.85, 10.05, 13.1], [8.15, 10.85, 13.2], "onyx", "pupila")]
+    return e
+
+
+def pixiu_bracelet():
+    """Muñeca (la mano llega a y 2): cuentas de jade alrededor del brazo y el pixiu de oro arriba. Más afuera y más
+    arriba que los guantes, para no compartir planos con ellos."""
+    y0, y1 = 3.6, 4.6
+    e = ring(5.35, 10.65, y0, y1, 5.35, 10.65, 0.6, "turq", "cuentas")
+    e.append(box([7.0, y0 - 0.2, 10.65], [9.0, y1 + 0.4, 11.35], "gold", "pixiu"))
+    return e
+
+
 def attach(part, name, offset=(0, 0, 0)):
     return {"type": "model", "model_part": part, "model": f"{NS}:item/{name}_worn", "offset": list(offset), "centered": True}
 
@@ -463,6 +482,9 @@ WORN = {
     "wind_fire_wheels": (lambda: model(wind_fire_wheels()),
                          [attach("right_leg", "wind_fire_wheels"), attach("left_leg", "wind_fire_wheels")]),
     "five_color_stone": (lambda: model(five_color_stone()), [attach("body", "five_color_stone")]),
+    # China, tanda 2
+    "erlang_eye": (lambda: model(erlang_eye()), [attach("head", "erlang_eye")]),
+    "pixiu_bracelet": (lambda: model(pixiu_bracelet()), both_hands("ring", "pixiu_bracelet", (0, -1, 0))),
 }
 
 

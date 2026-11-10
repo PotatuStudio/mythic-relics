@@ -4,8 +4,16 @@ import json
 import os
 
 ASSETS = r"C:\dev\mods\mythic-relics\common\src\main\resources\assets\mythicrelics\models\item"
-GROUPS = {"collar": ["ankh", "bastet_amulet", "cerberus_collar", "wolf_bulla", "brisingamen"], "cinturón": ["golden_scarab", "megingjord", "five_color_stone"],
-          "espalda": ["athena_aegis", "icarus_wings"], "capa": ["golden_fleece"]}
+# Grupos de espacios que se pueden llevar a la vez, por parte del cuerpo (solo se comparan los de la misma parte:
+# cada parte tiene sus propias coordenadas).
+PARTS = {
+    "cuerpo": {"collar": ["ankh", "bastet_amulet", "cerberus_collar", "wolf_bulla", "brisingamen"],
+               "cinturón": ["golden_scarab", "megingjord", "five_color_stone"],
+               "espalda": ["athena_aegis", "icarus_wings"], "capa": ["golden_fleece"]},
+    "cabeza": {"cara": ["eye_of_horus", "jackal_mask", "erlang_eye"], "sombrero": ["ra_disk", "hades_helm"]},
+    "brazo": {"anillo": ["jackal_ring", "draupnir", "andvaranaut", "pixiu_bracelet"],
+              "guantes": ["mummy_wraps", "sekhmet_claws", "jarngreipr"]},
+}
 
 
 def els(name):
@@ -26,7 +34,8 @@ def overlap(r1, r2):
 
 
 bad = 0
-for g1, g2 in itertools.combinations(GROUPS, 2):
+for GROUPS in PARTS.values():
+  for g1, g2 in itertools.combinations(GROUPS, 2):
     for a in GROUPS[g1]:
         for b in GROUPS[g2]:
             for ea in els(a):

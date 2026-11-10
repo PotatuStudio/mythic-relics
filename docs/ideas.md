@@ -206,8 +206,8 @@ Página de diseño: `tools/design-page/china_*.py`. Fuentes: mitos antiguos (Nü
 | Elixir de Chang'e | mano | Ascenso lunar: saltos altos, caída lenta sin daño, +50 % de daño en el aire; 30/20/10 s según la fase de la luna. Recarga 3 min. | Ciudades del End, 3 % |
 | Piedra de cinco colores | cinturón | Repara 1 de durabilidad cada 10 s en armadura y manos; inmune a los rayos. Rara. | Arqueología de ruinas de los senderos, 1 % |
 
-### China, tanda 2 (efectos y números aprobados el 2026-11-10)
-Faltan los modelos del Perro Celestial y del qilin y los íconos pulidos. Página: `tools/design-page/china2_*.py`.
+### China, tanda 2 (aprobada y programada el 2026-11-10)
+Modelos del Perro Celestial y del qilin aprobados; íconos: los del primer borrador. Página: `tools/design-page/china2_*.py`.
 
 | Reliquia | Tipo | Efecto | Dónde |
 |---|---|---|---|

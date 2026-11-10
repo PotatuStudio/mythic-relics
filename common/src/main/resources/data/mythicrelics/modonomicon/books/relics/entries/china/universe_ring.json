@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:china/universe_ring",
+  "category": "mythicrelics:china",
+  "name": "item.mythicrelics.universe_ring",
+  "icon": "mythicrelics:universe_ring",
+  "x": -1,
+  "y": 11,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.universe_ring.effect",
+      "item": "mythicrelics:universe_ring"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.universe_ring",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.universe_ring.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.universe_ring.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:china/intro"
+    }
+  ]
+}

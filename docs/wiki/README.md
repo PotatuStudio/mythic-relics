@@ -12,4 +12,4 @@ En el juego, todo esto está en el **Códice de reliquias** (requiere Modonomico
 - [Grecia](grecia.md): 13 reliquias, con Set de Perseo.
 - [Roma](roma.md): 7 reliquias.
 - [Nórdicos](nordicos.md): 15 reliquias, con Set de Thor.
-- [China](china.md): 9 reliquias.
+- [China](china.md): 18 reliquias.

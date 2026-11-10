@@ -121,6 +121,36 @@ public final class CharonStash extends SavedData {
 		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 1.0f, 0.6f);
 	}
 
+	/**
+	 * Pulsera del pixiu: guarda los objetos de valor que cumplen {@code keep} (sin la experiencia) para devolverlos al
+	 * reaparecer. Si el óbolo ya pagó el pasaje, el inventario está vacío y no hace nada.
+	 */
+	public static void keepTreasure(ServerPlayer player, java.util.function.Predicate<ItemStack> keep) {
+		if (player.level().getGameRules().get(GameRules.KEEP_INVENTORY) || player.isSpectator()) {
+			return;
+		}
+		CharonStash data = get(player);
+		if (data.stash.containsKey(player.getUUID())) {
+			return;
+		}
+		Inventory inventory = player.getInventory();
+		List<Slot> slots = new ArrayList<>();
+		for (int i = 0; i < inventory.getContainerSize(); i++) {
+			ItemStack stack = inventory.getItem(i);
+			if (!stack.isEmpty() && keep.test(stack)) {
+				slots.add(new Slot(i, stack.copy()));
+				inventory.setItem(i, ItemStack.EMPTY);
+			}
+		}
+		if (slots.isEmpty()) {
+			return;
+		}
+		// Nivel -1: no se tocó la experiencia (se suelta como siempre).
+		data.stash.put(player.getUUID(), new Entry(player.getUUID(), slots, -1, 0, 0));
+		data.setDirty();
+		player.level().sendParticles(ParticleTypes.WAX_ON, player.getX(), player.getY() + 1, player.getZ(), 20, 0.4, 0.6, 0.4, 0.05);
+	}
+
 	private static void restore(ServerPlayer player) {
 		CharonStash data = get(player);
 		Entry entry = data.stash.remove(player.getUUID());
@@ -135,6 +165,10 @@ public final class CharonStash extends SavedData {
 			} else if (!inventory.add(slot.stack())) {
 				player.drop(slot.stack(), false, Prediction.SERVER_ONLY);
 			}
+		}
+		if (entry.level() < 0) {
+			player.sendOverlayMessage(Component.translatable("message.mythicrelics.pixiu_kept").withStyle(ChatFormatting.GOLD));
+			return;
 		}
 		player.experienceLevel = entry.level();
 		player.experienceProgress = entry.progress();

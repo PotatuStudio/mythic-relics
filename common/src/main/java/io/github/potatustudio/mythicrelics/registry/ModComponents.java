@@ -30,6 +30,10 @@ public final class ModComponents {
 	public static final RegistrySupplier<DataComponentType<Long>> IDUNN_DAY = COMPONENTS.register("idunn_day",
 			() -> DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build());
 
+	/** Rama del melocotonero: tick del juego en que se comió el último melocotón (si falta, hay uno maduro). */
+	public static final RegistrySupplier<DataComponentType<Long>> PEACH_GROWING = COMPONENTS.register("peach_growing",
+			() -> DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build());
+
 	private ModComponents() {
 	}
 
