@@ -6,6 +6,8 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.Cerberus;
 import io.github.potatustudio.mythicrelics.entity.Jackal;
+import io.github.potatustudio.mythicrelics.entity.LongDragon;
+import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
 import io.github.potatustudio.mythicrelics.entity.Sleipnir;
 import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
@@ -58,6 +60,22 @@ public final class ModEntities {
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("sleipnir"))));
 
+	/** Mono guerrero de los Pelos del Rey Mono (aliado temporal). */
+	public static final RegistrySupplier<EntityType<MonkeyWarrior>> MONKEY_WARRIOR = ENTITIES.register("monkey_warrior",
+			() -> EntityType.Builder.of(MonkeyWarrior::new, MobCategory.MISC)
+					.sized(0.6f, 1.8f)
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("monkey_warrior"))));
+
+	/** El long de la Perla del dragón: la caja es la del lomo donde va el jinete; el cuerpo largo sigue detrás. */
+	public static final RegistrySupplier<EntityType<LongDragon>> LONG_DRAGON = ENTITIES.register("long_dragon",
+			() -> EntityType.Builder.of(LongDragon::new, MobCategory.CREATURE)
+					.sized(1.6f, 1.0f)
+					.clientTrackingRange(12)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("long_dragon"))));
+
 	private ModEntities() {
 	}
 
@@ -67,5 +85,7 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(JACKAL, Jackal::createAttributes);
 		EntityAttributeRegistry.register(CERBERUS, Cerberus::createAttributes);
 		EntityAttributeRegistry.register(SLEIPNIR, Sleipnir::createAttributes);
+		EntityAttributeRegistry.register(MONKEY_WARRIOR, MonkeyWarrior::createAttributes);
+		EntityAttributeRegistry.register(LONG_DRAGON, LongDragon::createAttributes);
 	}
 }

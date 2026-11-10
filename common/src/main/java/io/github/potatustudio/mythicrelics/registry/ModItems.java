@@ -4,6 +4,13 @@ import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.china.BananaLeafFanItem;
+import io.github.potatustudio.mythicrelics.china.ChangeElixirItem;
+import io.github.potatustudio.mythicrelics.china.DragonPearlItem;
+import io.github.potatustudio.mythicrelics.china.HouYiBowItem;
+import io.github.potatustudio.mythicrelics.china.MonkeyHairsItem;
+import io.github.potatustudio.mythicrelics.china.PurpleGoldGourdItem;
+import io.github.potatustudio.mythicrelics.china.RuyiJinguBangItem;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.egypt.OsirisCrookItem;
@@ -133,6 +140,22 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> MIMIR_HEAD = relic("mimir_head", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ANDVARANAUT = relic("andvaranaut", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ODRERIR = register("odrerir", OdrerirItem::new, p -> p.rarity(Rarity.RARE));
+
+	// China, primera tanda. Las armas no se rompen.
+	public static final RegistrySupplier<Item> RUYI_JINGU_BANG = register("ruyi_jingu_bang", RuyiJinguBangItem::new,
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -3.0f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> MONKEY_KING_HAIRS = register("monkey_king_hairs", MonkeyHairsItem::new,
+			p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> PURPLE_GOLD_GOURD = register("purple_gold_gourd", PurpleGoldGourdItem::new,
+			p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> BANANA_LEAF_FAN = register("banana_leaf_fan", BananaLeafFanItem::new,
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.WOOD, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> DRAGON_PEARL = register("dragon_pearl", DragonPearlItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> WIND_FIRE_WHEELS = relic("wind_fire_wheels", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> HOU_YI_BOW = register("hou_yi_bow", HouYiBowItem::new,
+			p -> p.rarity(Rarity.EPIC).durability(384).enchantable(1).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> CHANGE_ELIXIR = register("change_elixir", ChangeElixirItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> FIVE_COLOR_STONE = relic("five_color_stone", p -> p.rarity(Rarity.RARE));
 
 	/** Emblema del mod (escudo con una cultura por cuarto): solo es el ícono de la pestaña creativa, no se consigue. */
 	public static final RegistrySupplier<Item> EMBLEM = register("emblem", Item::new, p -> p);

@@ -41,5 +41,7 @@ public final class MythicRelicsNeoForgeClient {
 		ICurioRenderer.register(ModItems.DRAUPNIR.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
 		ICurioRenderer.register(ModItems.BRISINGAMEN.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.ANDVARANAUT.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
+		ICurioRenderer.register(ModItems.WIND_FIRE_WHEELS.get(), () -> new CuriosRelicRenderer(Part.BOTH_LEGS, 0f));
+		ICurioRenderer.register(ModItems.FIVE_COLOR_STONE.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 	}
 }

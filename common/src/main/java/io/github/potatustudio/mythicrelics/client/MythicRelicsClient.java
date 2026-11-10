@@ -3,6 +3,9 @@ package io.github.potatustudio.mythicrelics.client;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import io.github.potatustudio.mythicrelics.client.entity.CerberusModel;
+import io.github.potatustudio.mythicrelics.client.entity.ChinaRenderers;
+import io.github.potatustudio.mythicrelics.client.entity.LongDragonModel;
+import io.github.potatustudio.mythicrelics.client.entity.MonkeyWarriorModel;
 import io.github.potatustudio.mythicrelics.client.entity.CerberusRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.JackalModel;
 import io.github.potatustudio.mythicrelics.client.entity.SleipnirModel;
@@ -27,6 +30,10 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.CERBERUS, CerberusRenderer::new);
 		EntityModelLayerRegistry.register(SleipnirModel.LAYER, SleipnirModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.SLEIPNIR, SleipnirRenderer::new);
+		EntityModelLayerRegistry.register(MonkeyWarriorModel.LAYER, MonkeyWarriorModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.MONKEY_WARRIOR, ChinaRenderers.Monkey::new);
+		EntityModelLayerRegistry.register(LongDragonModel.LAYER, LongDragonModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.LONG_DRAGON, ChinaRenderers.Dragon::new);
 		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
 		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, context -> new ThrownItemRenderer<>(context, 1.5f, false));
 		GreeceClient.init();

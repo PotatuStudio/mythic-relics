@@ -4,7 +4,7 @@ import json
 import os
 
 ASSETS = r"C:\dev\mods\mythic-relics\common\src\main\resources\assets\mythicrelics\models\item"
-GROUPS = {"collar": ["ankh", "bastet_amulet", "cerberus_collar", "wolf_bulla", "brisingamen"], "cinturón": ["golden_scarab", "megingjord"],
+GROUPS = {"collar": ["ankh", "bastet_amulet", "cerberus_collar", "wolf_bulla", "brisingamen"], "cinturón": ["golden_scarab", "megingjord", "five_color_stone"],
           "espalda": ["athena_aegis", "icarus_wings"], "capa": ["golden_fleece"]}
 
 

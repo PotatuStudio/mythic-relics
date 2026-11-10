@@ -71,6 +71,15 @@ CULTURE_INFO = {
             "skidbladnir": (-2, 14), "andvaranaut": (0, 14), "odrerir": (2, 14),
         },
     },
+    "china": {
+        "wiki": "china.md", "title": "China", "icon": "dragon_pearl", "intro_icon": "minecraft:red_glazed_terracotta",
+        "positions": {
+            "intro": (0, 0),
+            "ruyi_jingu_bang": (-2, 2), "monkey_king_hairs": (0, 2), "purple_gold_gourd": (2, 2),
+            "banana_leaf_fan": (-3, 5), "dragon_pearl": (-1, 5), "wind_fire_wheels": (1, 5), "hou_yi_bow": (3, 5),
+            "change_elixir": (-1, 8), "five_color_stone": (1, 8),
+        },
+    },
 }
 SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm", "thor_set": "mjolnir"}
 SLOT_NAMES = {

@@ -1,6 +1,7 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-09. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1 y nórdicos 1 y 2 programadas; falta probarlas en el juego).
+Última sesión: 2026-11-10. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2 y China 1
+programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -153,6 +154,22 @@ favor de Skíðblañir lo aplica el cliente (`GreeceClient`). Mixin nuevo: `Pigl
 Andvaranaut). **Sin probar en el juego**: montar a Sleipnir y su velocidad sobre el agua, que se vaya al bajarte, el bote
 que se pliega, el doble de oro y de trueques, los avisos de Mímir y el crecimiento con Brísingamen.
 
+## Primera tanda china (programada el 2026-11-10)
+Diseño aprobado en `docs/ideas.md` (páginas en `tools/design-page/china_*.py`). Código en `china/ChinaRelics` (constantes,
+daño, ruedas, piedra, ascenso lunar, aleteos y nube de lluvia del abanico) y los ítems `RuyiJinguBangItem`,
+`MonkeyHairsItem`, `PurpleGoldGourdItem` (el mob va en `custom_data` del ítem), `BananaLeafFanItem` (cargas en
+`custom_data`, barra del ítem), `DragonPearlItem`, `HouYiBowItem` (subclase de `BowItem`, con los tres cuadros tensados)
+y `ChangeElixirItem` (fase de la luna con `EnvironmentAttributes.MOON_PHASE`). Entidades nuevas: `entity/MonkeyWarrior`
+(aliado de `Minions`) y `entity/LongDragon` (montura voladora que se maneja como el ghast feliz). Su geometría y texturas
+salen de `tools/model-gen/china_entities.py --mod` (escribe `client/entity/ChinaModelLayers.java`, generado, y las
+texturas con la capa que brilla), el mismo diseño que el visor de aliados. Íconos: `tools/model-gen/china_icons.py`;
+traducciones: `china_lang.py`. Mixin: `LivingEntityMixin#canStandOnFluid` (las ruedas cruzan lava corriendo).
+**Sin probar en el juego**: montar y manejar al long (subir con salto, bajar mirando abajo, nadar), que el jinete no
+quede mal ubicado sobre el lomo ni el cuerpo se vea cortado; los monos (aparición, pelea, que se vayan); capturar,
+soltar y disolver con la calabaza (y que se conserve al salir y volver); el dash del abanico (distancia) y la lluvia del
+tercer aleteo; caminar sobre lava con las ruedas; el arco (daño x3, doble botín, tensado); el elixir según la luna; el
+bastón estirado; reparación de la piedra; las ruedas y la piedra puestas en los dos loaders.
+
 ## Pestaña creativa
 El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
 `tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone
@@ -181,16 +198,17 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 - `tools/model-gen/coplanar_check.py`: busca caras coplanares entre reliquias del cuerpo que se pueden llevar juntas
   (parpadeo). Correrlo después de `worn_models.py` y agregar las reliquias nuevas a sus grupos.
 - `tools/model-gen/rome_icons.py`, `norse_icons.py` (incluye el emblema de la pestaña), `rome_models.py` (Ancile y
-  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`.
+  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_lang.py` y `china_entities.py`
+  (visor de aliados y, con `--mod`, la geometría en Java y las texturas del mono y del long).
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
 ## Después
-1. **Probar en el juego** (en el PC del usuario) todo lo programado: Egipto 1 y 2, Grecia 1 y 2, Roma 1 y nórdicos 1 y 2
-   (60 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
+1. **Probar en el juego** (en el PC del usuario) todo lo programado: Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2
+   y China 1 (69 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
    Gungnir en vuelo (se dibujan como el ícono de cara a la cámara), Sleipnir (patas del medio al galopar, la capa que
    brilla, caminar sobre el agua), el modelo del Paladio, los candados de Jano y la búsqueda de estructuras de la sibila.
-2. **China** (siguiente tanda; los celtas se descartaron el 2026-11-10) y después **Japón** con los Tres Tesoros;
-   Chile/mapuche como tanda especial.
+2. **Japón** con los Tres Tesoros (siguiente tanda; los celtas se descartaron el 2026-11-10); Chile/mapuche como tanda
+   especial. Una segunda tanda china es posible (Nezha, Erlang Shen y su perro celestial, el qilin, el fénix).
 3. Pendiente menor: renderizador propio que gire a Mjölnir y Gungnir en el aire; actualizar el ícono del mod
    (`icon.png`, hoy hecho con íconos de Egipto) al estilo del emblema de la pestaña.
 4. Otras culturas de `docs/ideas.md`.

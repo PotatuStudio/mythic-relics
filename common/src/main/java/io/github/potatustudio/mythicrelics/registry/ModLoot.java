@@ -56,11 +56,13 @@ public final class ModLoot {
 					new Drop(0.030f, ModItems.CHARON_OBOL))),
 			// Ruinas oceánicas cálidas: templos hundidos.
 			Map.entry(BuiltInLootTables.OCEAN_RUIN_WARM_ARCHAEOLOGY, List.of(
-					new Drop(0.015f, ModItems.MEDUSA_HEAD))),
+					new Drop(0.015f, ModItems.MEDUSA_HEAD),
+					new Drop(0.010f, ModItems.DRAGON_PEARL))),
 			// Fortaleza del Nether: el reino de Hades.
 			Map.entry(BuiltInLootTables.NETHER_BRIDGE, List.of(
 					new Drop(0.040f, ModItems.HADES_HELM),
-					new Drop(0.050f, ModItems.CHARON_OBOL))),
+					new Drop(0.050f, ModItems.CHARON_OBOL),
+					new Drop(0.040f, ModItems.HOU_YI_BOW))),
 			// Fortaleza: el laberinto.
 			Map.entry(BuiltInLootTables.STRONGHOLD_CORRIDOR, List.of(
 					new Drop(0.060f, ModItems.ARIADNE_THREAD))),
@@ -87,7 +89,8 @@ public final class ModLoot {
 			// Bastiones: la puerta del Nether que guarda Cerbero.
 			Map.entry(BuiltInLootTables.BASTION_TREASURE, List.of(
 					new Drop(0.030f, ModItems.CERBERUS_COLLAR),
-					new Drop(0.030f, ModItems.ANDVARANAUT))),
+					new Drop(0.030f, ModItems.ANDVARANAUT),
+					new Drop(0.050f, ModItems.WIND_FIRE_WHEELS))),
 			Map.entry(BuiltInLootTables.BASTION_OTHER, List.of(
 					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
 			Map.entry(BuiltInLootTables.BASTION_BRIDGE, List.of(
@@ -101,7 +104,8 @@ public final class ModLoot {
 			// Portales en ruinas: el fuego robado y las puertas de Jano.
 			Map.entry(BuiltInLootTables.RUINED_PORTAL, List.of(
 					new Drop(0.030f, ModItems.PROMETHEUS_FENNEL),
-					new Drop(0.030f, ModItems.JANUS_KEY))),
+					new Drop(0.030f, ModItems.JANUS_KEY),
+					new Drop(0.040f, ModItems.BANANA_LEAF_FAN))),
 			// ---- Roma ----
 			// Casas de aldeas de taiga: los lobos.
 			Map.entry(BuiltInLootTables.VILLAGE_TAIGA_HOUSE, List.of(
@@ -119,7 +123,8 @@ public final class ModLoot {
 					new Drop(0.030f, ModItems.VESTA_LAMP))),
 			// Templos de la jungla: las aves de los augures.
 			Map.entry(BuiltInLootTables.JUNGLE_TEMPLE, List.of(
-					new Drop(0.040f, ModItems.AUGUR_LITUUS))),
+					new Drop(0.040f, ModItems.AUGUR_LITUUS),
+					new Drop(0.040f, ModItems.MONKEY_KING_HAIRS))),
 			// ---- Nórdicos ----
 			// Bóvedas ominosas de las cámaras de desafío: el martillo de Thor.
 			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD_OMINOUS, List.of(
@@ -134,7 +139,8 @@ public final class ModLoot {
 			// Ciudades del End: el reino de los dioses en lo alto.
 			Map.entry(BuiltInLootTables.END_CITY_TREASURE, List.of(
 					new Drop(0.030f, ModItems.GUNGNIR),
-					new Drop(0.030f, ModItems.ODIN_RAVENS))),
+					new Drop(0.030f, ModItems.ODIN_RAVENS),
+					new Drop(0.030f, ModItems.CHANGE_ELIXIR))),
 			// Tesoros enterrados: el oro de los enanos.
 			Map.entry(BuiltInLootTables.BURIED_TREASURE, List.of(
 					new Drop(0.060f, ModItems.DRAUPNIR))),
@@ -149,7 +155,19 @@ public final class ModLoot {
 					new Drop(0.040f, ModItems.SKIDBLADNIR))),
 			// Cruces de la fortaleza: la cabeza que guarda lo oculto.
 			Map.entry(BuiltInLootTables.STRONGHOLD_CROSSING, List.of(
-					new Drop(0.040f, ModItems.MIMIR_HEAD))));
+					new Drop(0.040f, ModItems.MIMIR_HEAD))),
+			// ---- China ----
+			// Ruinas submarinas: el palacio del Rey Dragón del Mar del Este.
+			Map.entry(BuiltInLootTables.UNDERWATER_RUIN_BIG, List.of(
+					new Drop(0.040f, ModItems.RUYI_JINGU_BANG))),
+			Map.entry(BuiltInLootTables.UNDERWATER_RUIN_SMALL, List.of(
+					new Drop(0.030f, ModItems.DRAGON_PEARL))),
+			// Mazmorras: las cuevas de los demonios Cuerno de Oro y Cuerno de Plata.
+			Map.entry(BuiltInLootTables.SIMPLE_DUNGEON, List.of(
+					new Drop(0.030f, ModItems.PURPLE_GOLD_GOURD))),
+			// Ruinas de los senderos (arqueología común): las piedras que sobraron del cielo remendado.
+			Map.entry(BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_COMMON, List.of(
+					new Drop(0.010f, ModItems.FIVE_COLOR_STONE))));
 
 	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre (o por bloque cepillado, en arqueología). */
 	public record Source(ResourceKey<LootTable> table, float chance) {

@@ -394,6 +394,35 @@ def cerberus_collar():
     return e
 
 
+# --- China (2026-11-10) ---
+def wind_fire_wheels():
+    """En cada pierna, a la altura del tobillo (el pie llega a y 2): un aro de oro con cuatro rayos hacia afuera y
+    lenguas de fuego detrás (hacia atrás es z bajo)."""
+    y0, y1 = 2.2, 3.2
+    e = ring(4.6, 11.4, y0, y1, 4.6, 11.4, 0.8, "gold", "aro")
+    e += [box([5.6, y0 - 0.2, 4.0], [7.2, y1 + 0.2, 4.6], "gold_d", "rayo atrás der."),
+          box([8.8, y0 - 0.2, 4.0], [10.4, y1 + 0.2, 4.6], "gold_d", "rayo atrás izq."),
+          box([4.0, y0 - 0.2, 7.4], [4.6, y1 + 0.2, 8.6], "gold_d", "rayo der."),
+          box([11.4, y0 - 0.2, 7.4], [12.0, y1 + 0.2, 8.6], "gold_d", "rayo izq.")]
+    for i, (x0, h) in enumerate([(5.0, 2.4), (6.6, 3.4), (8.2, 2.8), (9.8, 3.6)]):
+        e.append(box([x0, y1, 3.5], [x0 + 1.2, y1 + h, 4.3], "sun" if i % 2 else "ember", "llama"))
+        e.append(box([x0 + 0.3, y1 + h, 3.6], [x0 + 0.9, y1 + h + 0.8, 4.2], "amber", "punta de llama"))
+    return e
+
+
+def five_color_stone():
+    """Cordón de seda roja a la cintura con la piedra de Nüwa al frente: verde azulada con vetas de los otros cuatro
+    colores (amarillo, blanco, rojo y negro)."""
+    e = ring(3.45, 12.55, 2.6, 3.4, 5.45, 10.55, 0.5, "crest", "cordón")
+    e += [box([6.8, 1.0, 10.55], [9.2, 3.6, 11.35], "turq", "piedra"),
+          box([7.1, 1.4, 11.35], [7.8, 2.2, 11.55], "amber", "veta amarilla"),
+          box([8.1, 2.4, 11.35], [8.9, 3.2, 11.55], "white", "veta blanca"),
+          box([7.2, 2.6, 11.35], [7.8, 3.2, 11.55], "ruby", "veta roja"),
+          box([8.2, 1.4, 11.35], [8.9, 2.0, 11.55], "onyx", "veta negra"),
+          box([7.6, 3.6, 10.6], [8.4, 4.2, 11.1], "gold", "engarce")]
+    return e
+
+
 def attach(part, name, offset=(0, 0, 0)):
     return {"type": "model", "model_part": part, "model": f"{NS}:item/{name}_worn", "offset": list(offset), "centered": True}
 
@@ -430,6 +459,10 @@ WORN = {
     "draupnir": (lambda: model(draupnir_ring()), both_hands("ring", "draupnir", (0, -1, 0))),
     "brisingamen": (lambda: model(brisingamen()), [attach("body", "brisingamen")]),
     "andvaranaut": (lambda: model(andvaranaut()), both_hands("ring", "andvaranaut", (0, -1, 0))),
+    # China: las ruedas van en las dos piernas.
+    "wind_fire_wheels": (lambda: model(wind_fire_wheels()),
+                         [attach("right_leg", "wind_fire_wheels"), attach("left_leg", "wind_fire_wheels")]),
+    "five_color_stone": (lambda: model(five_color_stone()), [attach("body", "five_color_stone")]),
 }
 
 

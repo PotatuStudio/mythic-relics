@@ -1,0 +1,29 @@
+{
+ "target": [
+  "mythicrelics:wind_fire_wheels"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "right_leg",
+   "model": "mythicrelics:item/wind_fire_wheels_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  },
+  {
+   "type": "model",
+   "model_part": "left_leg",
+   "model": "mythicrelics:item/wind_fire_wheels_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

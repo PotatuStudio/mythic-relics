@@ -21,9 +21,11 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
          "icarus_wings", "golden_fleece", "cerberus_collar", "pandora_jar", "styx_water", "prometheus_fennel",
          "wolf_bulla", "ancile", "palladium", "janus_key", "vesta_lamp", "sibylline_books", "augur_lituus",
          "mjolnir", "jarngreipr", "megingjord", "gungnir", "draupnir", "gjallarhorn", "gleipnir", "idunn_apples",
-         "sleipnir_horseshoe", "odin_ravens", "brisingamen", "skidbladnir", "mimir_head", "andvaranaut", "odrerir"]
+         "sleipnir_horseshoe", "odin_ravens", "brisingamen", "skidbladnir", "mimir_head", "andvaranaut", "odrerir",
+         "ruyi_jingu_bang", "monkey_king_hairs", "purple_gold_gourd", "banana_leaf_fan", "dragon_pearl", "wind_fire_wheels",
+         "hou_yi_bow", "change_elixir", "five_color_stone"]
 # Cultura de cada reliquia (categoría del libro y página de la wiki), en el orden en que se muestran.
-CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:]}
+CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:48], "china": ORDER[48:]}
 # Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
 SETS = {"anubis_set": ["anubis_scepter", "jackal_mask", "jackal_ring"], "osiris_set": ["osiris_crook", "osiris_flail"],
         "perseus_set": ["hermes_sandals", "hades_helm", "athena_aegis"],
@@ -42,7 +44,10 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "mjolnir": "mainhand", "jarngreipr": "hand/glove", "megingjord": "legs/belt", "gungnir": "mainhand",
          "draupnir": "hand/ring", "gjallarhorn": "hand", "gleipnir": "hand", "idunn_apples": "hand",
          "sleipnir_horseshoe": "hand", "odin_ravens": "hand", "brisingamen": "chest/necklace", "skidbladnir": "hand",
-         "mimir_head": "offhand", "andvaranaut": "hand/ring", "odrerir": "hand"}
+         "mimir_head": "offhand", "andvaranaut": "hand/ring", "odrerir": "hand",
+         "ruyi_jingu_bang": "mainhand", "monkey_king_hairs": "hand", "purple_gold_gourd": "hand", "banana_leaf_fan": "mainhand",
+         "dragon_pearl": "hand", "wind_fire_wheels": "feet/shoes", "hou_yi_bow": "mainhand", "change_elixir": "hand",
+         "five_color_stone": "legs/belt"}
 
 
 def read(path):
@@ -59,7 +64,7 @@ def constants():
     out = {}
     for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java",
                  "rome/RomeRelics.java", "norse/NorseRelics.java",
-                 "norse/NorseGods.java"):
+                 "norse/NorseGods.java", "china/ChinaRelics.java"):
         src = read(os.path.join(JAVA, *name.split("/")))
         out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
     return out
@@ -143,6 +148,19 @@ def tooltip_args(c):
         "mimir_head": [int(c["MIMIR_RADIUS"]), int(c["MIMIR_INTERVAL"] // 20)],
         "andvaranaut": [int(c["ANDVARANAUT_HEALTH"] // 2)],
         "odrerir": [int(c["ODRERIR_LEVELS"]), int(c["ODRERIR_HASTE_TICKS"] // 20 // 60)],
+        # China (ChinaRelics#tooltipArgs)
+        "ruyi_jingu_bang": [fmt(c["RUYI_REACH"]), int(c["RUYI_LENGTH"]), int(c["RUYI_STRETCH_DAMAGE"]), int(c["RUYI_COOLDOWN"] // 20)],
+        "monkey_king_hairs": [int(c["HAIRS_MONKEYS"]), int(c["HAIRS_TICKS"] // 20), int(c["MONKEY_HEALTH"]), int(c["MONKEY_DAMAGE"]),
+                              int(c["HAIRS_COOLDOWN"] // 20 // 60)],
+        "purple_gold_gourd": [int(c["GOURD_MAX_HEALTH"]), int(c["GOURD_DISSOLVE_TICKS"] // 20 // 60), int(c["GOURD_COOLDOWN"] // 20)],
+        "banana_leaf_fan": [int(c["FAN_BLADE_RANGE"]), int(c["FAN_BLADE_DAMAGE"]), int(c["FAN_DASH_BLOCKS"]), int(c["FAN_CHARGES"]),
+                            int(c["FAN_RECHARGE_TICKS"] // 20), int(c["FAN_THIRD_WINDOW"] // 20), int(c["FAN_RAIN_TICKS"] // 20)],
+        "dragon_pearl": [int(c["DRAGON_LEAVE_TICKS"] // 20), int(c["DRAGON_COOLDOWN"] // 20 // 60)],
+        "wind_fire_wheels": [round(c["WHEELS_SPEED"] * 100)],
+        "hou_yi_bow": [round(c["HOU_YI_DAMAGE"] * 100), int(c["HOU_YI_SUN_FACTOR"])],
+        "change_elixir": [round(c["ELIXIR_AIR_DAMAGE"] * 100), int(c["ELIXIR_FULL_SECONDS"]), int(c["ELIXIR_QUARTER_SECONDS"]),
+                          int(c["ELIXIR_NEW_SECONDS"]), int(c["ELIXIR_COOLDOWN"] // 20 // 60)],
+        "five_color_stone": [int(c["STONE_INTERVAL"] // 20)],
     }
 
 
@@ -216,10 +234,14 @@ LOOT_TABLE_KEYS = {"desert_pyramid": "loot.mythicrelics.chests.desert_pyramid",
                    "village_snowy_house": "loot.mythicrelics.chests.village.village_snowy_house",
                    "village_savanna_house": "loot.mythicrelics.chests.village.village_savanna_house",
                    "shipwreck_supply": "loot.mythicrelics.chests.shipwreck_supply",
-                   "stronghold_crossing": "loot.mythicrelics.chests.stronghold_crossing"}
+                   "stronghold_crossing": "loot.mythicrelics.chests.stronghold_crossing",
+                   "underwater_ruin_big": "loot.mythicrelics.chests.underwater_ruin_big",
+                   "underwater_ruin_small": "loot.mythicrelics.chests.underwater_ruin_small",
+                   "simple_dungeon": "loot.mythicrelics.chests.simple_dungeon",
+                   "trail_ruins_archaeology_common": "loot.mythicrelics.archaeology.trail_ruins_common"}
 # Tablas de arqueología: la probabilidad es por bloque cepillado, no por cofre.
 ARCHAEOLOGY = {"desert_pyramid_archaeology", "desert_well_archaeology", "trail_ruins_archaeology_rare",
-               "ocean_ruin_warm_archaeology", "ocean_ruin_cold_archaeology"}
+               "ocean_ruin_warm_archaeology", "ocean_ruin_cold_archaeology", "trail_ruins_archaeology_common"}
 
 
 

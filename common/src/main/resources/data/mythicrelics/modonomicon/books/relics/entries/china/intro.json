@@ -1,0 +1,18 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:china/intro",
+  "category": "mythicrelics:china",
+  "name": "book.mythicrelics.relics.china.intro.name",
+  "icon": "minecraft:red_glazed_terracotta",
+  "x": 0,
+  "y": 0,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "intro",
+      "title": "book.mythicrelics.relics.china.intro.name",
+      "text": "lore.mythicrelics.china.intro",
+      "show_title_separator": true
+    }
+  ]
+}

@@ -254,7 +254,7 @@ public final class NorseGods {
 			case "mimir_head" -> new Object[] {MIMIR_RADIUS, MIMIR_INTERVAL / 20};
 			case "andvaranaut" -> new Object[] {(int) (ANDVARANAUT_HEALTH / 2)};
 			case "odrerir" -> new Object[] {ODRERIR_LEVELS, ODRERIR_HASTE_TICKS / 20 / 60};
-			default -> new Object[0];
+			default -> io.github.potatustudio.mythicrelics.china.ChinaRelics.tooltipArgs(id);
 		};
 	}
 }

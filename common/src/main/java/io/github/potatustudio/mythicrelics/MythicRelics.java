@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics;
 
+import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
@@ -43,6 +44,7 @@ public final class MythicRelics {
 		RomeRelics.init();
 		NorseRelics.init();
 		NorseGods.init();
+		ChinaRelics.init();
 		LOGGER.info("Mythic Relics cargado");
 	}
 

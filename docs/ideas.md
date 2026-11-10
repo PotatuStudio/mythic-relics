@@ -201,7 +201,7 @@ Página de diseño: `tools/design-page/china_*.py`. Fuentes: mitos antiguos (Nü
 | Calabaza roja de oro púrpura | mano | Atrapa un mob de 40 de vida o menos (no jefes ni jugadores) y lo suelta después; un hostil dentro 5 min se disuelve y da botín y experiencia. Recarga 20 s. | Mazmorras, 3 % |
 | Abanico de hoja de plátano | arma | 6 de daño + cuchilla de viento (12 bloques, 4 de daño); dash de 10 bloques con 3 cargas (6 s cada una); 3 aleteos en 4 s traen lluvia 15 s que apaga el fuego. | Portales en ruinas, 4 % |
 | Perla del dragón | mano | Llama a un long (dragón chino sin alas) que se monta, vuela y nada; respiras bajo el agua; agachado llama o detiene la lluvia. Vuelve en 5 min si muere. | Cofre chico de ruinas submarinas 3 %; arqueología de ruinas cálidas 1 % |
-| Ruedas de viento y fuego | pies | +40 % de velocidad, sube bloques; estela de llamas que quema mobs e inmune al fuego al correr; corriendo cruzas lava. | Tesoro de bastiones, 5 % |
+| Ruedas de viento y fuego | pies | +40 % de velocidad, sube bloques; estela de llamas que quema hostiles e inmune al fuego al correr; corriendo cruzas lava. | Tesoro de bastiones, 5 % |
 | Arco de Hou Yi | arco | +50 % de daño; triple contra mobs de fuego y voladores (blaze, ghast, cubo de magma, phantom, vex), que caen como cuervo de tres patas con botín doble. | Fortalezas del Nether, 4 % |
 | Elixir de Chang'e | mano | Ascenso lunar: saltos altos, caída lenta sin daño, +50 % de daño en el aire; 30/20/10 s según la fase de la luna. Recarga 3 min. | Ciudades del End, 3 % |
 | Piedra de cinco colores | cinturón | Repara 1 de durabilidad cada 10 s en armadura y manos; inmune a los rayos. Rara. | Arqueología de ruinas de los senderos, 1 % |

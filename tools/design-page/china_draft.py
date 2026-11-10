@@ -169,7 +169,7 @@ def wheel():
     return outline(c)
 
 
-def bow():
+def bow(pull=0):
     """Arco de Hou Yi: la silueta del arco de Minecraft (curva arriba y a la izquierda, cuerda en diagonal), lacado en
     rojo, con las puntas y la empuñadura de oro y la cuerda blanca de seda."""
     c = blank()
@@ -184,10 +184,25 @@ def bow():
         ix, iy = int(round(x + 0.8)), int(round(y + 0.8))
         if c[iy][ix] == '.':
             c[iy][ix] = 'd' if gold else 'r'
-    for k in range(11):
-        x, y = 13 - k, 2 + k
-        if c[y][x] == '.':
-            c[y][x] = 'm'
+    if pull == 0:
+        for k in range(11):
+            x, y = 13 - k, 2 + k
+            if c[y][x] == '.':
+                c[y][x] = 'm'
+    else:
+        # Tensado: la cuerda se abre hacia abajo a la derecha y aparece la flecha blanca (las de Hou Yi eran blancas)
+        # con punta de hierro, que cruza el arco.
+        px, py = 7 + pull, 8 + pull
+        for i in range(0, 10):
+            x, y = px - i, py - i
+            if 0 <= x < 16 and 0 <= y < 16:
+                c[y][x] = 'I' if i >= 8 else 'W' if i <= 1 else 'w'
+        for x0, y0 in ((13, 2), (2, 13)):
+            for i in range(25):
+                t = i / 24
+                x, y = round(x0 + (px - x0) * t), round(y0 + (py - y0) * t)
+                if c[y][x] == '.':
+                    c[y][x] = 'm'
     return outline(c)
 
 

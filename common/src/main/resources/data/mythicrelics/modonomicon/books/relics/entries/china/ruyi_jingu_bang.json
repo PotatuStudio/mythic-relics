@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:china/ruyi_jingu_bang",
+  "category": "mythicrelics:china",
+  "name": "item.mythicrelics.ruyi_jingu_bang",
+  "icon": "mythicrelics:ruyi_jingu_bang",
+  "x": -2,
+  "y": 2,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.ruyi_jingu_bang.effect",
+      "item": "mythicrelics:ruyi_jingu_bang"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.ruyi_jingu_bang",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.ruyi_jingu_bang.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.ruyi_jingu_bang.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:china/intro"
+    }
+  ]
+}

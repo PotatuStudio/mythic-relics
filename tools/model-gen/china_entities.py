@@ -9,7 +9,8 @@ ModelPart con cubos y UV de caja de Minecraft, y en Minecraft la y crece hacia a
   de águila, cresta dorsal y la perla llameante delante del hocico (brilla).
 
 Escribe un JSON con las partes y las texturas (normal y la que brilla) en base64.
-Uso: python china_entities.py <salida.json> [<carpeta_png>]"""
+Uso: python china_entities.py <salida.json> [<carpeta_png>]   (visor)
+     python china_entities.py --mod                         (texturas y ChinaModelLayers.java del mod)"""
 import base64
 import io
 import json
@@ -472,7 +473,73 @@ def b64(img):
     return base64.b64encode(buf.getvalue()).decode()
 
 
+# ---------------------------------------------------------------- mod: texturas y geometría en Java
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+ENTITY_TEX = os.path.join(ROOT, "common", "src", "main", "resources", "assets", "mythicrelics", "textures", "entity")
+JAVA_OUT = os.path.join(ROOT, "common", "src", "main", "java", "io", "github", "potatustudio", "mythicrelics", "client",
+                        "entity", "ChinaModelLayers.java")
+# Desplazamiento de las partes raíz en el juego: el long se baja y se corre hacia adelante para que el centro de su caja
+# (donde va el jinete) quede sobre el segundo segmento; el mono ya tiene el suelo en y = 24.
+ROOT_OFFSET = {"monkey": (0, 0, 0), "dragon": (0, 16, -16)}
+NAMES = {"monkey": ("monkeyWarrior", "monkey_warrior"), "dragon": ("longDragon", "long_dragon")}
+
+
+def jf(v):
+    v = float(v)
+    return f"{v:.4g}f".replace("e", "E") if v != int(v) else f"{int(v)}.0f"
+
+
+def java_layer(key, parts, tex_w, tex_h):
+    method, _ = NAMES[key]
+    dx, dy, dz = ROOT_OFFSET[key]
+    out = [f"\tpublic static LayerDefinition {method}() {{",
+           "\t\tMeshDefinition mesh = new MeshDefinition();",
+           "\t\tPartDefinition root = mesh.getRoot();"]
+    for p in parts:
+        ox, oy, oz = p["offset"]
+        if p["parent"] is None:
+            ox, oy, oz = ox + dx, oy + dy, oz + dz
+        cubes = "".join(f"\n\t\t\t\t.texOffs({u}, {v}).addBox({jf(x)}, {jf(y)}, {jf(z)}, {jf(w)}, {jf(h)}, {jf(d)})"
+                        for u, v, x, y, z, w, h, d in p["cubes"])
+        rx, ry, rz = p["rot"]
+        pose = (f"PartPose.offsetAndRotation({jf(ox)}, {jf(oy)}, {jf(oz)}, {jf(rx)}, {jf(ry)}, {jf(rz)})"
+                if (rx, ry, rz) != (0, 0, 0) else f"PartPose.offset({jf(ox)}, {jf(oy)}, {jf(oz)})")
+        parent = "root" if p["parent"] is None else "p_" + p["parent"]
+        out.append(f"\t\tPartDefinition p_{p['name']} = {parent}.addOrReplaceChild(\"{p['name']}\", CubeListBuilder.create(){cubes},"
+                   f"\n\t\t\t\t{pose});")
+    out.append(f"\t\treturn LayerDefinition.create(mesh, {tex_w}, {tex_h});")
+    out.append("\t}")
+    return "\n".join(out)
+
+
+def write_mod(baked):
+    os.makedirs(ENTITY_TEX, exist_ok=True)
+    methods = []
+    for key, (parts, img, glow, w, h) in baked.items():
+        name = NAMES[key][1]
+        img.save(os.path.join(ENTITY_TEX, name + ".png"))
+        glow.save(os.path.join(ENTITY_TEX, name + "_glow.png"))
+        methods.append(java_layer(key, parts, w, h))
+    src = ("package io.github.potatustudio.mythicrelics.client.entity;\n\n"
+           "import net.minecraft.client.model.geom.PartPose;\n"
+           "import net.minecraft.client.model.geom.builders.CubeListBuilder;\n"
+           "import net.minecraft.client.model.geom.builders.LayerDefinition;\n"
+           "import net.minecraft.client.model.geom.builders.MeshDefinition;\n"
+           "import net.minecraft.client.model.geom.builders.PartDefinition;\n\n"
+           "/**\n * Geometría de las entidades chinas (mono guerrero y long). GENERADO por tools/model-gen/china_entities.py\n"
+           " * --mod a partir del mismo diseño que el visor: no editar a mano.\n */\n"
+           "@SuppressWarnings(\"unused\")\n"
+           "public final class ChinaModelLayers {\n\tprivate ChinaModelLayers() {\n\t}\n\n"
+           + "\n\n".join(methods) + "\n}\n")
+    with open(JAVA_OUT, "w", encoding="utf-8", newline="\n") as f:
+        f.write(src)
+
+
 if __name__ == "__main__":
+    if sys.argv[1] == "--mod":
+        write_mod({"monkey": bake(monkey(), 64), "dragon": bake(dragon(), 256)})
+        print("ok: texturas en", ENTITY_TEX, "y", JAVA_OUT)
+        sys.exit(0)
     out = {}
     folder = sys.argv[2] if len(sys.argv) > 2 else None
     for name, make, tw in (("monkey", monkey, 64), ("dragon", dragon, 256)):
