@@ -223,8 +223,8 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
    y China 1 y 2 (78 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
    Gungnir en vuelo (se dibujan como el ícono de cara a la cámara), Sleipnir (patas del medio al galopar, la capa que
    brilla, caminar sobre el agua), el modelo del Paladio, los candados de Jano y la búsqueda de estructuras de la sibila.
-2. **Japón** con los Tres Tesoros (siguiente tanda; los celtas se descartaron el 2026-11-10); Chile/mapuche como tanda
-   especial. Pendiente para China: las Cuatro Bestias Celestiales como set propio.
+2. **Japón**, tanda 1: diseño aprobado en `docs/ideas.md`; faltan los modelos del kitsune y de la tortuga, los íconos
+   y programarla. Después, Chile/mapuche como tanda especial (los celtas se descartaron el 2026-11-10). Pendiente para China: las Cuatro Bestias Celestiales como set propio.
 3. Pendiente menor: renderizador propio que gire a Mjölnir y Gungnir en el aire; actualizar el ícono del mod
    (`icon.png`, hoy hecho con íconos de Egipto) al estilo del emblema de la pestaña.
 4. Otras culturas de `docs/ideas.md`.

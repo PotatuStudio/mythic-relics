@@ -221,13 +221,24 @@ Modelos del Perro Celestial y del qilin aprobados; íconos: los del primer borra
 | Saco de Xirang | uso | Muro de tierra de 5x3 frente a ti que corta el agua. 3 cargas, una cada 60 s. Raro. | Arqueología de ruinas de los senderos (raras), 1,5 % |
 | Rama del melocotonero celestial | comida que no se gasta | Un melocotón cada 3 días: Absorción IV 3 min, Regeneración II 10 s y quita efectos negativos. | Templos de la jungla, 3 % |
 
-## Folclore japonés
-| Reliquia | Espacio | Efecto | Dónde |
+## Japón
+Tanda 1: efectos y números aprobados el 2026-11-10 (faltan los modelos del kitsune y de la tortuga y los íconos
+pulidos). Página: `tools/design-page/japan_*.py`. Fuentes: Kojiki y Nihon Shoki, los dioses del trueno y el folclore.
+
+| Reliquia | Tipo | Efecto | Dónde |
 |---|---|---|---|
-| Máscara de oni | sombrero | Los mobs hostiles débiles huyen de ti. | — |
-| Máscara de kitsune | sombrero | Al recibir daño, 15 % de dejar un clon de humo que distrae. | Bosques de cerezos (arqueología) |
-| Abanico del tengu | mano | Ráfaga en cono que empuja lejos. | Picos nevados |
-| Tambor de Raijin | espalda | Golpes seguidos llaman una pequeña tormenta eléctrica. | Cámaras de desafío |
+| Kusanagi no Tsurugi | arma | 8 de daño; clic derecho: tajo de viento en arco de 5 bloques (6 de daño, empuje, corta hierba alta, apaga fuego). Recarga 8 s. | Bóvedas ominosas, 2 % |
+| Yata no Kagami | mano secundaria | Devuelve flechas y bolas de fuego; clic derecho: ciega a los hostiles a 12 bloques 5 s. Recarga 30 s. | Ciudades antiguas, 3 % |
+| Yasakani no Magatama | collar | De día bajo el cielo, medio corazón cada 5 s. Set de los Tres Tesoros (espada, espejo y joya): de día +20 % de daño y Resistencia I. | Arqueología de ruinas de los senderos (raras), 1,5 % |
+| Tambor de Raijin | espalda | Cada 4 golpes seguidos (menos de 3 s entre golpes) cae un rayo sobre el objetivo; los rayos no te dañan. | Recompensas de cámaras de desafío, 3 % |
+| Kanabō del oni | arma | 11 de daño, muy lento, ignora la mitad de la armadura y lanza lejos. | Puentes de bastiones, 3 % |
+| Esfera estelar del kitsune | invoca aliado | Zorro blanco de nueve colas 60 s (30 de vida, 6 de daño); kitsunebi cada 3 s (fuego 2 s y Náusea). Recarga 4 min. | Casas de aldeas de taiga, 3 % |
+| Joyas de la marea | uso | Kanju: pasillo seco de 12 bloques (3 de ancho) durante 20 s; manju (agachado): ola que arrastra 8 bloques y apaga fuego. Recarga 60 s. | Cofre grande de ruinas submarinas, 3 % |
+| Mazo de la suerte | uso | Creces 1,6 veces 30 s (más alcance y 4 corazones). Recarga 3 min. Agachado: cultivos y crías a 4 bloques crecen al instante (recarga 10 s). | Tesoros enterrados, 3 % |
+| Kibi dango de Momotarō | comida que no se gasta | Doma al instante lobos, zorros y loros; comer una da Fuerza I 60 s. Bolsa de 3, una por día. Rara. | Casas de aldeas de llanura, 4 % |
+| Caña de Urashima | invoca montura | Tortuga marina gigante: muy rápida bajo el agua, montado respiras y ves bajo el agua; lenta en tierra. Se va a los 3 s; si muere, 5 min. | Tesoros de naufragios, 3 % |
+
+Para más adelante: la bolsa de vientos de Fūjin y el abanico del tengu (se parecen al abanico chino).
 
 ## Otras culturas
 | Reliquia | Cultura | Espacio | Efecto |
