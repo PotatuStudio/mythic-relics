@@ -189,8 +189,9 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
    (60 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
    Gungnir en vuelo (se dibujan como el ícono de cara a la cámara), Sleipnir (patas del medio al galopar, la capa que
    brilla, caminar sobre el agua), el modelo del Paladio, los candados de Jano y la búsqueda de estructuras de la sibila.
-2. **Celtas**: propuesta sin aprobar en `docs/ideas.md` (8 reliquias); falta armar la página de diseño y preguntar.
+2. **China** (siguiente tanda; los celtas se descartaron el 2026-11-10) y después **Japón** con los Tres Tesoros;
+   Chile/mapuche como tanda especial.
 3. Pendiente menor: renderizador propio que gire a Mjölnir y Gungnir en el aire; actualizar el ícono del mod
    (`icon.png`, hoy hecho con íconos de Egipto) al estilo del emblema de la pestaña.
-4. Folclore japonés y otras culturas de `docs/ideas.md`.
+4. Otras culturas de `docs/ideas.md`.
 5. Portar Misfit Relics a Architectury (mismo esquema de módulos).

@@ -1,0 +1,285 @@
+<title>China · Aliados</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;600&display=swap">
+<style>
+/* Visor de las dos entidades de la tanda 1 china: el mono guerrero y el long. La geometría es la del juego (partes y
+   cubos de ModelPart, UV de caja) y las texturas son las que se usarían. */
+:root {
+  --night: #140b0a; --stone: #22110f; --stone-2: #2c1714; --line: #4a2620;
+  --sand: #f3e2c8; --muted: #b8998a; --gold: #f0c04a; --jade: #7fd6c2;
+  --font-display: "Marcellus", Georgia, serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--night); color: var(--sand); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px; margin: 0; }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 24px; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: 2.1rem; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; margin: 0; color: var(--gold); }
+h3 { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 4px; font-weight: 600; }
+p { margin: 0; }
+.lead { color: var(--muted); max-width: 72ch; }
+.box { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; }
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #120a09; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { font: inherit; font-size: 14px; color: var(--sand); background: var(--stone-2); border: 1px solid var(--line);
+  border-radius: 999px; padding: 6px 14px; cursor: pointer; min-height: 36px; }
+.btn[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+.btn:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 10px; align-content: start; }
+.fid { display: grid; gap: 6px; }
+.fid p b { color: var(--jade); font-weight: 600; }
+ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.note { color: var(--muted); font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="box" style="background:none;border:none;padding:0">
+    <h1>China · Aliados</h1>
+    <p class="lead">Los dos aliados de la tanda 1, con la geometría y la textura que tendrían en el juego. Gira con el mouse o el dedo y acerca con la rueda. Las partes que brillan (ojos y perla) se ven más en la escena nocturna.</p>
+  </header>
+
+  <section class="box">
+    <div class="controls" id="subjects">
+      <button class="btn" data-s="monkey" aria-pressed="true">Mono guerrero</button>
+      <button class="btn" data-s="monkeys" aria-pressed="false">Los cuatro monos</button>
+      <button class="btn" data-s="dragon" aria-pressed="false">Long</button>
+      <button class="btn" data-s="rider" aria-pressed="false">Long con jinete</button>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="controls">
+      <button class="btn" id="anim" aria-pressed="true">Movimiento</button>
+      <button class="btn" id="night" aria-pressed="false">De noche</button>
+      <button class="btn" id="puff" aria-pressed="false">Aparecer</button>
+    </div>
+  </section>
+
+  <div class="cards">
+    <article class="card">
+      <h2>Mono guerrero</h2>
+      <p class="note">Sale de los Pelos del Rey Mono: 4 a la vez, 60 s, 20 de vida y 5 de daño cada uno.</p>
+      <div class="fid">
+        <h3>Aspecto</h3>
+        <ul>
+          <li>Cara peluda y hocico saliente de «dios del trueno» (<i>lei gong zui</i>).</li>
+          <li>Ojos de fuego dorados (<i>huo yan jin jing</i>), que brillan.</li>
+          <li>Gorro púrpura y dorado con alas de fénix y dos plumas largas de faisán.</li>
+          <li>Diadema de oro, cota de malla dorada con faja roja y faldellín de piel de tigre.</li>
+          <li>Botas para andar sobre las nubes, cola de mono y su bastón de hierro con aros de oro.</li>
+        </ul>
+        <h3>Fidelidad</h3>
+        <p><b>Fiel:</b> la cota de malla dorada, el gorro de alas de fénix y las botas de nube son los que les quitó a los Reyes Dragón en <i>Viaje al Oeste</i>. La piel de tigre es la del tigre que mató. La diadema se la pone Guanyin más adelante.</p>
+        <p><b>Licencia:</b> las plumas de faisán vienen de la ópera de Pekín, no de la novela. Los clones copian el traje completo.</p>
+        <p><b>Pop:</b> nada. No se parece al Goku de Dragon Ball ni al Wukong de Black Myth.</p>
+      </div>
+    </article>
+    <article class="card">
+      <h2>Long, el dragón</h2>
+      <p class="note">Lo llama la Perla del dragón: se monta, vuela y nada; vuelve en 5 min si muere.</p>
+      <div class="fid">
+        <h3>Aspecto</h3>
+        <ul>
+          <li>Diez segmentos encadenados que ondulan al volar, sin alas.</li>
+          <li>Cuernos de ciervo, bigotes largos dorados, melena y barba de llamas.</li>
+          <li>Escamas de carpa azul verdosas con el borde claro, y vientre de placas crema.</li>
+          <li>Cuatro patas con garras de águila, cresta dorsal de fuego y mechón en la cola.</li>
+          <li>Ojos rojo dorado y la perla llameante delante del hocico, que brillan.</li>
+        </ul>
+        <h3>Fidelidad</h3>
+        <p><b>Fiel:</b> las «nueve semejanzas» del dragón chino (cuernos de ciervo, cuello de serpiente, vientre de almeja, escamas de carpa, garras de águila), los bigotes, la perla llameante y el azul verdoso del Dragón Azur del Este.</p>
+        <p><b>Licencia:</b> que se monte; las garras se ven de 3 dedos más un espolón (el dragón imperial tiene 5).</p>
+        <p><b>Pop:</b> nada. No tiene alas ni escupe fuego, que es del dragón europeo.</p>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DATA = __DATA__;
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+renderer.outputEncoding = THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x120a09);
+const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.05, 200);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+const hemi = new THREE.HemisphereLight(0xfff2e0, 0x40201a, 0.85); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffffff, 0.75); sun.position.set(3, 6, 4); scene.add(sun);
+
+function texFromB64(b64) {
+  const img = new Image(); const tex = new THREE.Texture(img);
+  img.onload = () => { tex.needsUpdate = true; };
+  img.src = "data:image/png;base64," + b64;
+  tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; tex.encoding = THREE.sRGBEncoding;
+  return tex;
+}
+/* Suelo de piedra roja procedural. */
+function groundTexture() {
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16; const g = c.getContext("2d");
+  const tones = ["#8c3a2e", "#9a4434", "#7d3228", "#a34c3a", "#86362b"]; let seed = 11;
+  const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) { g.fillStyle = tones[Math.floor(rnd() * tones.length)]; g.fillRect(x, y, 1, 1); }
+  const t = new THREE.CanvasTexture(c); t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding; return t;
+}
+const groundMat = new THREE.MeshLambertMaterial({ map: groundTexture() });
+const ground = new THREE.Group(); scene.add(ground);
+for (let x = -5; x <= 5; x++) for (let z = -5; z <= 5; z++) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), groundMat); m.position.set(x, -0.5, z); ground.add(m);
+}
+
+/* Cubo con UV de caja de Minecraft (igual que ModelPart.Cube). */
+function cube(material, texW, texH, u, v, x0, y0, z0, w, h, d) {
+  const x1 = x0 + w, y1 = y0 + h, z1 = z0 + d;
+  const v000 = [x0, y0, z0], v100 = [x1, y0, z0], v110 = [x1, y1, z0], v010 = [x0, y1, z0];
+  const v001 = [x0, y0, z1], v101 = [x1, y0, z1], v111 = [x1, y1, z1], v011 = [x0, y1, z1];
+  const f8 = u + d, f9 = u + d + w, f10 = u + d + w + w, f11 = u + d + w + d, f12 = u + d + w + d + w, f13 = v + d, f14 = v + d + h;
+  const faces = [
+    [[v101, v001, v000, v100], f8, v, f9, f13],
+    [[v110, v010, v011, v111], f9, f13, f10, v],
+    [[v000, v001, v011, v010], u, f13, f8, f14],
+    [[v100, v000, v010, v110], f8, f13, f9, f14],
+    [[v101, v100, v110, v111], f9, f13, f11, f14],
+    [[v001, v101, v111, v011], f11, f13, f12, f14],
+  ];
+  const pos = [], uv = [], idx = [];
+  for (const [verts, u1, v1, u2, v2] of faces) {
+    const base = pos.length / 3; const uvs = [[u2, v1], [u1, v1], [u1, v2], [u2, v2]];
+    verts.forEach((p, i) => { pos.push(...p); uv.push(uvs[i][0] / texW, 1 - uvs[i][1] / texH); });
+    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return new THREE.Mesh(g, material);
+}
+function material(e) {
+  return new THREE.MeshLambertMaterial({ map: texFromB64(e.tex), side: THREE.DoubleSide, alphaTest: 0.1,
+    emissiveMap: texFromB64(e.glow), emissive: new THREE.Color(0xffffff) });
+}
+/* Arma una entidad: raíz con la escala del juego (-1/16, -1/16, 1/16) y el suelo en y = 24. */
+function build(e, mat) {
+  const entity = new THREE.Group(); const root = new THREE.Group();
+  root.scale.set(-1 / 16, -1 / 16, 1 / 16); root.position.y = 1.5; entity.add(root);
+  const parts = {};
+  for (const p of e.parts) {
+    const g = new THREE.Group(); g.position.set(...p.offset); g.rotation.order = "ZYX"; g.rotation.set(...p.rot);
+    for (const c of p.cubes) g.add(cube(mat, e.texW, e.texH, ...c));
+    (p.parent ? parts[p.parent] : root).add(g); g.userData.base = [...p.rot]; parts[p.name] = g;
+  }
+  entity.rotation.y = Math.PI; scene.add(entity);
+  return { entity, parts };
+}
+const monkeyMat = material(DATA.monkey), dragonMat = material(DATA.dragon);
+const monkeys = [0, 1, 2, 3].map(() => build(DATA.monkey, monkeyMat));
+const dragon = build(DATA.dragon, dragonMat);
+
+/* Jinete: muñeco del jugador sentado sobre el segundo segmento. */
+const rider = new THREE.Group();
+function rbox(color, x, y, z, w, h, d, parent = rider) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w / 16, h / 16, d / 16), new THREE.MeshLambertMaterial({ color }));
+  m.position.set(x / 16, y / 16, z / 16); parent.add(m); return m;
+}
+rbox(0xc69c6d, 0, 22, 0, 8, 8, 8); rbox(0x2b2118, 0, 25.2, 0, 8.4, 2.4, 8.4);
+rbox(0x3d6fb0, 0, 12, 0, 8, 12, 4); rbox(0xc69c6d, -6, 12, 0, 4, 12, 4); rbox(0xc69c6d, 6, 12, 0, 4, 12, 4);
+const legR = rbox(0x3a3a6a, -2, 4, -4, 4, 4, 12), legL = rbox(0x3a3a6a, 2, 4, -4, 4, 4, 12);
+legR.rotation.z = 0.5; legR.position.x = -5 / 16; legL.rotation.z = -0.5; legL.position.x = 5 / 16;
+dragon.parts.seg1.add(rider);
+rider.scale.set(-16, -16, 16); rider.rotation.set(0, 0, 0); rider.position.set(0, -2.5, 6);
+
+/* Nubecitas al aparecer. */
+const puffs = [];
+const puffMat = new THREE.MeshLambertMaterial({ color: 0xf4f6fb, transparent: true, opacity: 0.9 });
+function puff(at, n, spread) {
+  for (let i = 0; i < n; i++) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.18, 0.18), puffMat.clone());
+    m.position.set(at.x + (Math.random() - 0.5) * spread, at.y + Math.random() * 1.6, at.z + (Math.random() - 0.5) * spread);
+    m.userData.v = new THREE.Vector3((Math.random() - 0.5) * 0.6, 0.4 + Math.random() * 0.5, (Math.random() - 0.5) * 0.6);
+    m.userData.life = 1.2; scene.add(m); puffs.push(m);
+  }
+}
+
+let subject = "monkey", animate = true;
+const CAMS = {
+  monkey: { cam: [2.2, 1.7, 3.2], target: [0, 1.05, 0] },
+  monkeys: { cam: [3.6, 2.4, 4.8], target: [0, 1.0, -0.6] },
+  dragon: { cam: [7.0, 3.2, 1.0], target: [0, 1.5, -3.2] },
+  rider: { cam: [5.0, 3.2, 3.0], target: [0, 1.8, -1.0] },
+};
+const FORMATION = [[0, 0], [-1.4, 0.9], [1.4, 0.9], [0, 1.8]];
+function show(s) {
+  subject = s;
+  document.querySelectorAll("#subjects .btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === s)));
+  monkeys.forEach((m, i) => { m.entity.visible = s === "monkey" ? i === 0 : s === "monkeys"; m.entity.position.set(...(s === "monkeys" ? [FORMATION[i][0], 0, -FORMATION[i][1]] : [0, 0, 0])); });
+  dragon.entity.visible = s === "dragon" || s === "rider";
+  rider.visible = s === "rider";
+  const c = CAMS[s]; camera.position.set(...c.cam); controls.target.set(...c.target);
+}
+document.querySelectorAll("#subjects .btn").forEach(b => b.addEventListener("click", () => show(b.dataset.s)));
+document.getElementById("anim").addEventListener("click", e => { animate = !animate; e.target.setAttribute("aria-pressed", String(animate)); });
+document.getElementById("night").addEventListener("click", e => {
+  const night = e.target.getAttribute("aria-pressed") !== "true"; e.target.setAttribute("aria-pressed", String(night));
+  hemi.intensity = night ? 0.18 : 0.85; sun.intensity = night ? 0.1 : 0.75;
+  scene.background = new THREE.Color(night ? 0x05070d : 0x120a09);
+});
+document.getElementById("puff").addEventListener("click", () => {
+  if (subject.startsWith("monkey")) monkeys.filter(m => m.entity.visible).forEach(m => puff(m.entity.position, 14, 1.0));
+  else puff(new THREE.Vector3(0, 1.5, 0), 40, 5);
+});
+show("monkey");
+
+const clock = new THREE.Clock(); let t = 0;
+function setRot(p, dx = 0, dy = 0, dz = 0) { const b = p.userData.base; p.rotation.set(b[0] + dx, b[1] + dy, b[2] + dz); }
+function animateMonkey(m, t, phase) {
+  const P = m.parts, s = Math.sin(t * 6 + phase), w = animate ? 0.6 : 0;
+  setRot(P.leg_r, s * w); setRot(P.leg_l, -s * w);
+  setRot(P.arm_r, -s * w * 0.4 - 0.3); setRot(P.arm_l, s * w);
+  setRot(P.tail, Math.sin(t * 2 + phase) * 0.15, Math.sin(t * 1.5 + phase) * 0.4);
+  setRot(P.tail2, Math.sin(t * 2.4 + phase) * 0.2);
+  setRot(P.feather_r, Math.sin(t * 3 + phase) * 0.08 * (animate ? 1 : 0)); setRot(P.feather_l, Math.sin(t * 3 + phase + 0.5) * 0.08 * (animate ? 1 : 0));
+  setRot(P.feather_r2, Math.sin(t * 3 + phase - 0.6) * 0.15 * (animate ? 1 : 0)); setRot(P.feather_l2, Math.sin(t * 3 + phase - 0.1) * 0.15 * (animate ? 1 : 0));
+  m.entity.position.y = animate ? Math.abs(Math.sin(t * 6 + phase)) * 0.03 : 0;
+}
+function animateDragon(t) {
+  const P = dragon.parts, k = animate ? 1 : 0.25;
+  for (let i = 0; i < 10; i++) {
+    const seg = P["seg" + i];
+    setRot(seg, i === 0 ? 0 : Math.sin(t * 1.8 - i * 0.7) * 0.16 * k, i === 0 ? Math.sin(t * 0.9) * 0.15 * k : Math.sin(t * 1.3 - i * 0.6) * 0.22 * k);
+  }
+  setRot(P.head, Math.sin(t * 1.8 + 0.7) * -0.12 * k, Math.sin(t * 0.9) * -0.12 * k);
+  setRot(P.jaw, Math.max(0, Math.sin(t * 0.8)) * 0.25 * k);
+  for (const side of ["r", "l"]) {
+    setRot(P["whisker_" + side], Math.sin(t * 2.2) * 0.2 * k); setRot(P["whisker2_" + side], Math.sin(t * 2.2 - 0.8) * 0.4 * k);
+    setRot(P["seg1_leg_" + side], Math.sin(t * 2 + (side === "r" ? 0 : 1.6)) * 0.35 * k);
+    setRot(P["seg4_leg_" + side], Math.sin(t * 2 + (side === "r" ? 1.6 : 0)) * 0.35 * k);
+  }
+  setRot(P.tuft, 0, Math.sin(t * 1.3 - 6.6) * 0.3 * k);
+  P.pearl.rotation.y = t * 1.5;
+  dragon.entity.position.set(0, 1.4 + Math.sin(t * 1.2) * 0.15 * k, 0);
+}
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage); resize();
+(function loop() {
+  const dt = Math.min(0.05, clock.getDelta()); t += dt;
+  monkeys.forEach((m, i) => animateMonkey(m, t, i * 1.3));
+  animateDragon(t);
+  for (let i = puffs.length - 1; i >= 0; i--) {
+    const p = puffs[i]; p.userData.life -= dt; p.position.addScaledVector(p.userData.v, dt);
+    p.scale.setScalar(1 + (1.2 - p.userData.life) * 1.5); p.material.opacity = Math.max(0, p.userData.life / 1.2) * 0.9;
+    if (p.userData.life <= 0) { scene.remove(p); puffs.splice(i, 1); }
+  }
+  controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop);
+})();
+</script>

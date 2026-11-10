@@ -161,6 +161,9 @@ Ideas originales nórdicas (punto de partida):
 | Semilla de Yggdrasil | collar | Cultivos y árboles cercanos crecen más rápido. | Ruinas de los senderos |
 
 ## Celtas
+**Descartada (2026-11-10):** al usuario no le aporta variedad frente a otras mitologías; prefiere la china y la
+japonesa, más llamativas en lo visual y lo jugable. Se deja lo pensado como referencia.
+
 Propuesta para la tanda 1 (sin aprobar; se empezaron borradores de íconos, no hay página todavía). Criterio: mitología
 irlandesa propia (los tesoros de los Tuatha Dé Danann, Manannán, la Morrígan). El torque de oro es historia, no mito:
 preguntar si va.
@@ -183,6 +186,25 @@ Ideas originales celtas (punto de partida):
 | Caldero del Dagda | mano | Una vez al día, estofado que llena el hambre y regenera. | Cabañas de bruja |
 | Pluma de la Morrígan | collar | Al matar, un cuervo marca al enemigo más cercano. | Mansiones |
 | Torque de oro | collar | Más armadura cuantas menos piezas de armadura llevas. | Pirámides |
+
+## China
+Tanda 1 aprobada el 2026-11-10: efectos, números y modelos de los aliados (long de 8 bloques azul verdoso; monos
+guerreros con el traje de la novela, en `tools/model-gen/china_entities.py`) e íconos (en
+`tools/design-page/china_draft.py`). La calabaza se llama «Calabaza roja de oro púrpura»: *zijin* es un oro rojizo.
+Página de diseño: `tools/design-page/china_*.py`. Fuentes: mitos antiguos (Nüwa, Hou Yi, Chang'e), *Viaje al Oeste* y
+*La investidura de los dioses*.
+
+| Reliquia | Espacio | Efecto | Dónde |
+|---|---|---|---|
+| Ruyi Jingu Bang | arma | 9 de daño, +1,5 de alcance; clic derecho: se estira 10 bloques en línea (10 de daño y empuje). Recarga 8 s. Hierro negro con aros de oro (el rojo es de Dragon Ball). | Cofre grande de ruinas submarinas, 4 % |
+| Pelos del Rey Mono | mano | 4 monos guerreros (20 de vida, 5 de daño) durante 60 s. Recarga 4 min. Aspecto de la novela. | Templos de la jungla, 4 % |
+| Calabaza roja de oro púrpura | mano | Atrapa un mob de 40 de vida o menos (no jefes ni jugadores) y lo suelta después; un hostil dentro 5 min se disuelve y da botín y experiencia. Recarga 20 s. | Mazmorras, 3 % |
+| Abanico de hoja de plátano | arma | 6 de daño + cuchilla de viento (12 bloques, 4 de daño); dash de 10 bloques con 3 cargas (6 s cada una); 3 aleteos en 4 s traen lluvia 15 s que apaga el fuego. | Portales en ruinas, 4 % |
+| Perla del dragón | mano | Llama a un long (dragón chino sin alas) que se monta, vuela y nada; respiras bajo el agua; agachado llama o detiene la lluvia. Vuelve en 5 min si muere. | Cofre chico de ruinas submarinas 3 %; arqueología de ruinas cálidas 1 % |
+| Ruedas de viento y fuego | pies | +40 % de velocidad, sube bloques; estela de llamas que quema mobs e inmune al fuego al correr; corriendo cruzas lava. | Tesoro de bastiones, 5 % |
+| Arco de Hou Yi | arco | +50 % de daño; triple contra mobs de fuego y voladores (blaze, ghast, cubo de magma, phantom, vex), que caen como cuervo de tres patas con botín doble. | Fortalezas del Nether, 4 % |
+| Elixir de Chang'e | mano | Ascenso lunar: saltos altos, caída lenta sin daño, +50 % de daño en el aire; 30/20/10 s según la fase de la luna. Recarga 3 min. | Ciudades del End, 3 % |
+| Piedra de cinco colores | cinturón | Repara 1 de durabilidad cada 10 s en armadura y manos; inmune a los rayos. Rara. | Arqueología de ruinas de los senderos, 1 % |
 
 ## Folclore japonés
 | Reliquia | Espacio | Efecto | Dónde |
