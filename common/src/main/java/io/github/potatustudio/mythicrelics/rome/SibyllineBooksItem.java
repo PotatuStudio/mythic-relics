@@ -5,6 +5,7 @@ import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -29,13 +30,23 @@ import net.minecraft.world.level.levelgen.structure.Structure;
  * cuánto queda la estructura más cercana de una lista corta (solo en el Overworld; buscar estructuras es caro).
  */
 public class SibyllineBooksItem extends RelicItem {
-	private record Sight(TagKey<Structure> tag, String name) {
+	private record Sight(TagKey<Structure> tag, String name, net.minecraft.core.Holder<net.minecraft.world.level.saveddata.maps.MapDecorationType> icon) {
 	}
 
-	private static final List<Sight> SIGHTS = List.of(new Sight(StructureTags.VILLAGE, "village"),
-			new Sight(StructureTags.RUINED_PORTAL, "ruined_portal"), new Sight(StructureTags.ON_DESERT_PYRAMID_MAPS, "desert_pyramid"),
-			new Sight(StructureTags.ON_JUNGLE_PYRAMID_MAPS, "jungle_temple"), new Sight(StructureTags.ON_WOODLAND_MANSION_MAPS, "mansion"),
-			new Sight(StructureTags.EYE_OF_ENDER_LOCATED, "stronghold"));
+	/** Rastro de letras hacia la estructura profetizada: destino y tick en que se apaga. */
+	private record Guide(BlockPos target, long until) {
+	}
+
+	private static final java.util.Map<java.util.UUID, Guide> GUIDES = new java.util.concurrent.ConcurrentHashMap<>();
+	private static final int GUIDE_TICKS = 300;
+
+	private static final List<Sight> SIGHTS = List.of(
+			new Sight(StructureTags.VILLAGE, "village", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.PLAINS_VILLAGE),
+			new Sight(StructureTags.RUINED_PORTAL, "ruined_portal", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.RED_X),
+			new Sight(StructureTags.ON_DESERT_PYRAMID_MAPS, "desert_pyramid", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.DESERT_PYRAMID),
+			new Sight(StructureTags.ON_JUNGLE_PYRAMID_MAPS, "jungle_temple", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.JUNGLE_TEMPLE),
+			new Sight(StructureTags.ON_WOODLAND_MANSION_MAPS, "mansion", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.WOODLAND_MANSION),
+			new Sight(StructureTags.EYE_OF_ENDER_LOCATED, "stronghold", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.TARGET_X));
 	private static final int SEARCH_CHUNKS = 32;
 	private static final String[] DIRECTIONS = {"south", "southwest", "west", "northwest", "north", "northeast", "east", "southeast"};
 
@@ -81,7 +92,8 @@ public class SibyllineBooksItem extends RelicItem {
 		BlockPos best = null;
 		Sight bestSight = null;
 		for (Sight sight : SIGHTS) {
-			BlockPos found = level.findNearestMapStructure(sight.tag(), here, SEARCH_CHUNKS, false);
+			// Como los mapas del cartógrafo: lo ya profetizado no se repite, la siguiente consulta busca otra.
+			BlockPos found = level.findNearestMapStructure(sight.tag(), here, SEARCH_CHUNKS, true);
 			if (found != null && (best == null || found.distSqr(here) < best.distSqr(here))) {
 				best = found;
 				bestSight = sight;
@@ -100,5 +112,43 @@ public class SibyllineBooksItem extends RelicItem {
 		player.sendSystemMessage(Component.translatable("message.mythicrelics.sibyl_sees",
 				Component.translatable("structure.mythicrelics." + bestSight.name()),
 				Component.translatable("direction.mythicrelics." + DIRECTIONS[sector]), distance).withStyle(ChatFormatting.DARK_PURPLE));
+		// El mapa de la profecía, ya dibujado, con la estructura marcada.
+		ItemStack map = net.minecraft.world.item.MapItem.create(level, best.getX(), best.getZ(), (byte) 2, true, true);
+		net.minecraft.world.item.MapItem.renderBiomePreviewMap(level, map);
+		net.minecraft.world.level.saveddata.maps.MapItemSavedData.addTargetDecoration(map, best, "+", bestSight.icon());
+		map.set(net.minecraft.core.component.DataComponents.ITEM_NAME, Component.translatable("item.mythicrelics.sibyl_map",
+				Component.translatable("structure.mythicrelics." + bestSight.name())));
+		if (!player.getInventory().add(map)) {
+			player.drop(map, false, net.minecraft.util.Prediction.SERVER_ONLY);
+		}
+		GUIDES.put(player.getUUID(), new Guide(best, level.getGameTime() + GUIDE_TICKS));
+	}
+
+	/** Las letras de la sibila: un rastro de runas encantadas que sale de ti hacia la estructura, solo para ti. */
+	public static void init() {
+		dev.architectury.event.events.common.TickEvent.SERVER_POST.register(server -> {
+			if (server.getTickCount() % 4 != 0 || GUIDES.isEmpty()) {
+				return;
+			}
+			long now = server.overworld().getGameTime();
+			GUIDES.entrySet().removeIf(e -> e.getValue().until() <= now || server.getPlayerList().getPlayer(e.getKey()) == null);
+			GUIDES.forEach((id, guide) -> {
+				ServerPlayer player = server.getPlayerList().getPlayer(id);
+				if (player == null || player.level().dimension() != Level.OVERWORLD) {
+					return;
+				}
+				net.minecraft.world.phys.Vec3 from = player.position().add(0, 1.2, 0);
+				net.minecraft.world.phys.Vec3 dir = new net.minecraft.world.phys.Vec3(guide.target().getX() + 0.5 - from.x, 0,
+						guide.target().getZ() + 0.5 - from.z);
+				if (dir.lengthSqr() < 16) {
+					return;
+				}
+				dir = dir.normalize();
+				for (int i = 1; i <= 8; i++) {
+					net.minecraft.world.phys.Vec3 p = from.add(dir.scale(i * 1.2)).add(0, Math.sin((now / 4.0 + i) * 0.8) * 0.15, 0);
+					player.level().sendParticles(player, ParticleTypes.ENCHANT, true, false, p.x, p.y, p.z, 2, 0.05, 0.05, 0.05, 0.0);
+				}
+			});
+		});
 	}
 }

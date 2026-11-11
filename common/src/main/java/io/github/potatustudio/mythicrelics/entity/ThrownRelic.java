@@ -125,14 +125,9 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 		float damage = isMjolnir() ? NorseRelics.MJOLNIR_DAMAGE : NorseRelics.GUNGNIR_DAMAGE;
 		if (level() instanceof ServerLevel level && target.hurtServer(level, source, damage)) {
 			if (isMjolnir() && (level.isThundering() || NorseRelics.hasThorSet(owner))) {
-				LightningBolt bolt = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
-				if (bolt != null) {
-					bolt.snapTo(target.getX(), target.getY(), target.getZ());
-					if (owner instanceof ServerPlayer player) {
-						bolt.setCause(player);
-					}
-					level.addFreshEntity(bolt);
-				}
+				// Rayo sin fuego: no quema el terreno.
+				io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, target.getX(), target.getY(), target.getZ(),
+						owner instanceof ServerPlayer player ? player : null);
 			}
 		}
 		setDeltaMovement(getDeltaMovement().multiply(-0.01, -0.1, -0.01));

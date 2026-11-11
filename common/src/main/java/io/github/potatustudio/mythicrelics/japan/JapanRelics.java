@@ -170,12 +170,7 @@ public final class JapanRelics {
 				0.8f, 0.5f + drum[0] * 0.15f);
 		if (drum[0] >= (JapanGods.hasWindAndThunder(player) ? JapanGods.SET_RAIJIN_HITS : RAIJIN_HITS)) {
 			drum[0] = 0;
-			LightningBolt bolt = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
-			if (bolt != null) {
-				bolt.snapTo(target.getX(), target.getY(), target.getZ());
-				bolt.setCause(player);
-				level.addFreshEntity(bolt);
-			}
+			io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, target.getX(), target.getY(), target.getZ(), player);
 			if (JapanGods.hasWindAndThunder(player)) {
 				// Set de Fūjin y Raijin: el viento lleva el rayo a los hostiles más cercanos.
 				level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(8),
@@ -183,12 +178,7 @@ public final class JapanRelics {
 										&& !io.github.potatustudio.mythicrelics.china.ChinaRelics.isFriend(player, e))
 						.stream().sorted(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(target)))
 						.limit(JapanGods.SET_CHAIN_TARGETS).forEach(e -> {
-							LightningBolt chain = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
-							if (chain != null) {
-								chain.snapTo(e.getX(), e.getY(), e.getZ());
-								chain.setCause(player);
-								level.addFreshEntity(chain);
-							}
+							io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, e.getX(), e.getY(), e.getZ(), player);
 						});
 			}
 		}

@@ -24,7 +24,8 @@ Roma no dejó estructuras en el mundo: cada reliquia está donde su mito calza.
 
 - Tus lobos a 16 bloques tienen Regeneración I y Fuerza I
 - Los lobos salvajes no te atacan
-- Con 3 corazones o menos aúllas: 2 lobos salvajes cercanos se vuelven tuyos. Recarga: 5 min
+- Con 3 corazones o menos aúllas: acuden 2 lobos aliados por 30 s
+- Recarga: 5 min
 
 **Mito.** Una loba amamantó a Rómulo y Remo junto al Tíber, y por eso la loba es el símbolo de Roma.  
 Los niños romanos llevaban al cuello una bulla, un relicario contra el mal, hasta hacerse adultos.
@@ -68,7 +69,7 @@ Eneas la llevó a Italia y los romanos la custodiaban en el templo de Vesta.
 
 **Espacio:** mano · **Rareza:** rara
 
-- Agachado y clic derecho en una puerta, trampilla, valla o cofre: lo cierras con llave (solo tú lo abres)
+- Agachado y clic derecho en una puerta, trampilla, valla o cofre: lo cierras con llave y cuelga un candado (solo tú lo abres)
 - Otra vez, lo abres. Los zombis no rompen esas puertas
 - En la mano: los mobs que te persiguen por detrás brillan
 
@@ -84,9 +85,10 @@ Se lo representaba con una llave; su templo se abría en guerra y se cerraba en 
 
 **Espacio:** mano secundaria · **Rareza:** rara
 
-- En la mano secundaria, junto a una fogata encendida
-- (5 bloques): Regeneración II
-- El hambre baja al 50% y la nieve polvo no te congela
+- Clic derecho en el suelo: enciendes el fuego del hogar (2 min)
+- En la mano secundaria, a 5 bloques de una fogata: Regeneración II
+- En la mano secundaria, siempre: el hambre baja al 50% y la nieve polvo no te congela
+- Recarga del fuego: 3 min
 
 **Mito.** Vesta era la diosa del hogar. Su fuego sagrado ardía siempre en su templo, cuidado por las vestales.  
 Si se apagaba, era un presagio terrible para Roma.
@@ -101,8 +103,9 @@ Si se apagaba, era un presagio terrible para Roma.
 **Espacio:** mano · **Rareza:** épica
 
 - Clic derecho: consultas a la sibila (3 niveles)
-- Los hostiles a 48 bloques brillan 15 s y te dice hacia dónde queda la estructura más cercana
+- Los hostiles a 48 bloques brillan 15 s y te da un mapa con la estructura más cercana; letras mágicas te guían a ella
 - Recarga: 2 min
+- Cada consulta profetiza una estructura distinta
 
 **Mito.** La sibila de Cumas le ofreció nueve libros de profecías al rey Tarquinio. Como no quiso pagar, quemó tres, y luego tres más; el rey terminó pagando el precio completo por los últimos tres.  
 Roma los consultaba en las crisis.

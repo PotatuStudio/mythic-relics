@@ -160,4 +160,10 @@ public class Qilin extends AbstractHorse {
 	public float getVoicePitch() {
 		return 0.8f;
 	}
+
+	/** No se guarda con el mundo (no puede ser {@code noSave}: no se podría montar). */
+	@Override
+	public boolean shouldBeSaved() {
+		return false;
+	}
 }

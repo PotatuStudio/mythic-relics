@@ -47,7 +47,7 @@ public class JanusKeyItem extends RelicItem {
 		}
 		UUID owner = JanusLocks.owner(level, pos);
 		if (owner == null) {
-			JanusLocks.lock(level, pos, player);
+			JanusLocks.lock(level, pos, player, context.getClickedFace());
 			tell(player, "janus_lock", ChatFormatting.GOLD);
 			level.playSound(null, pos, SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.8f, 1.4f);
 		} else if (owner.equals(player.getUUID())) {
@@ -55,7 +55,7 @@ public class JanusKeyItem extends RelicItem {
 			tell(player, "janus_unlock", ChatFormatting.GRAY);
 			level.playSound(null, pos, SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS, 0.8f, 1.4f);
 		} else {
-			tell(player, "janus_locked", ChatFormatting.GRAY);
+			player.sendOverlayMessage(RomeRelics.lockedBy(level, owner));
 		}
 		return InteractionResult.SUCCESS;
 	}

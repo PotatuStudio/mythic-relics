@@ -56,7 +56,8 @@ import net.minecraft.world.phys.Vec3;
 public final class RomeRelics {
 	public static final int WOLF_RADIUS = 16;
 	public static final int WOLF_HOWL_HEALTH = 6;
-	public static final int WOLF_HOWL_TAMES = 2;
+	public static final int WOLF_HOWL_WOLVES = 2;
+	public static final int WOLF_HOWL_TICKS = 600;
 	public static final int WOLF_HOWL_COOLDOWN = 6000;
 
 	public static final int ANCILE_RAID_RADIUS = 32;
@@ -66,6 +67,8 @@ public final class RomeRelics {
 
 	public static final int VESTA_RADIUS = 5;
 	public static final float VESTA_HUNGER_FACTOR = 0.5f;
+	public static final int VESTA_FIRE_TICKS = 2400;
+	public static final int VESTA_FIRE_COOLDOWN = 3600;
 
 	public static final int SIBYL_LEVELS = 3;
 	public static final int SIBYL_RADIUS = 48;
@@ -84,6 +87,7 @@ public final class RomeRelics {
 	}
 
 	public static void init() {
+		SibyllineBooksItem.init();
 		EntityEvent.LIVING_CHECK_SPAWN.register(RomeRelics::checkSpawn);
 		InteractionEvent.RIGHT_CLICK_BLOCK.register(RomeRelics::onUseBlock);
 		BlockEvent.BREAK.register(RomeRelics::onBreak);
@@ -143,12 +147,19 @@ public final class RomeRelics {
 
 	// ---- Llave de Jano: candados ---------------------------------------------------------------------------------
 
+	/** «Cerrado con llave por Fulano» (o «por otro jugador» si no está conectado). */
+	static Component lockedBy(ServerLevel level, java.util.UUID owner) {
+		net.minecraft.server.level.ServerPlayer who = owner == null ? null : level.getServer().getPlayerList().getPlayer(owner);
+		Component name = who != null ? who.getDisplayName() : Component.translatable("message.mythicrelics.janus_someone");
+		return Component.translatable("message.mythicrelics.janus_locked_by", name).withStyle(ChatFormatting.GOLD);
+	}
+
 	private static EventResult onUseBlock(Player player, InteractionHand hand, BlockPos pos, net.minecraft.core.Direction face) {
 		if (!(player.level() instanceof ServerLevel level) || player.isShiftKeyDown() && player.getItemInHand(hand).is(ModItems.JANUS_KEY.get())) {
 			return EventResult.pass();
 		}
 		if (JanusLocks.lockedAgainst(level, pos, player)) {
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.janus_locked").withStyle(ChatFormatting.GRAY));
+			player.sendOverlayMessage(lockedBy(level, JanusLocks.owner(level, pos)));
 			level.playSound(null, pos, SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 0.8f, 1.0f);
 			return EventResult.interruptFalse();
 		}
@@ -160,7 +171,7 @@ public final class RomeRelics {
 			return EventResult.pass();
 		}
 		if (JanusLocks.lockedAgainst(server, pos, player) && !player.isCreative()) {
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.janus_locked").withStyle(ChatFormatting.GRAY));
+			player.sendOverlayMessage(lockedBy(server, JanusLocks.owner(server, pos)));
 			return EventResult.interruptFalse();
 		}
 		JanusLocks.unlock(server, pos);
@@ -171,6 +182,7 @@ public final class RomeRelics {
 
 	private static void tick(MinecraftServer server) {
 		reflect();
+		VestaLampItem.tick(server);
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
 			if (player.tickCount % 20 == 0 && EgyptRelics.isWearing(player, ModItems.WOLF_BULLA)) {
@@ -211,7 +223,7 @@ public final class RomeRelics {
 		}
 	}
 
-	/** Bulla: refuerza a tus lobos, calma a los salvajes y, en apuros, aúllas y dos salvajes se vuelven tuyos. */
+	/** Bula: refuerza a tus lobos, calma a los salvajes y, en apuros, aúllas y acuden dos lobos aliados por un rato. */
 	private static void wolves(ServerLevel level, ServerPlayer player) {
 		List<Wolf> wild = new ArrayList<>();
 		for (Wolf wolf : level.getEntitiesOfClass(Wolf.class, player.getBoundingBox().inflate(WOLF_RADIUS))) {
@@ -226,15 +238,21 @@ public final class RomeRelics {
 				wild.add(wolf);
 			}
 		}
-		if (player.getHealth() <= WOLF_HOWL_HEALTH && !wild.isEmpty()
+		if (player.getHealth() <= WOLF_HOWL_HEALTH
 				&& RelicCooldowns.tryStart(player, "wolf_bulla", WOLF_HOWL_COOLDOWN, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(ModItems.WOLF_BULLA.get()))) {
 			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FOX_SCREECH, SoundSource.PLAYERS, 1.0f, 0.5f);
-			wild.sort((a, b) -> Double.compare(a.distanceToSqr(player), b.distanceToSqr(player)));
-			for (int i = 0; i < Math.min(WOLF_HOWL_TAMES, wild.size()); i++) {
-				Wolf wolf = wild.get(i);
-				wolf.tame(player);
-				wolf.setOrderedToSit(false);
-				level.sendParticles(ParticleTypes.HEART, wolf.getX(), wolf.getY() + 0.8, wolf.getZ(), 5, 0.3, 0.3, 0.3, 0.0);
+			for (int i = 0; i < WOLF_HOWL_WOLVES; i++) {
+				double a = Math.toRadians(player.getYRot() + (i == 0 ? 120 : -120));
+				double x = player.getX() - Math.sin(a) * 2, z = player.getZ() + Math.cos(a) * 2;
+				net.minecraft.world.entity.Mob mob = io.github.potatustudio.mythicrelics.minion.Minions.summon(level, player,
+						net.minecraft.world.entity.EntityTypes.WOLF, x, player.getY(), z, WOLF_HOWL_TICKS,
+						Component.translatable("entity.mythicrelics.howl_wolf"));
+				if (mob instanceof Wolf wolf) {
+					wolf.tame(player);
+					wolf.setOrderedToSit(false);
+					wolf.addEffect(new MobEffectInstance(MobEffects.STRENGTH, WOLF_HOWL_TICKS, 0, true, true));
+					level.sendParticles(ParticleTypes.CLOUD, x, player.getY() + 0.5, z, 12, 0.3, 0.3, 0.3, 0.02);
+				}
 			}
 			player.sendOverlayMessage(Component.translatable("message.mythicrelics.wolf_howl").withStyle(ChatFormatting.GOLD));
 		}
@@ -274,10 +292,11 @@ public final class RomeRelics {
 	/** Números de los tooltips de Roma (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
-			case "wolf_bulla" -> new Object[] {WOLF_RADIUS, WOLF_HOWL_HEALTH / 2, WOLF_HOWL_TAMES, WOLF_HOWL_COOLDOWN / 20 / 60};
+			case "wolf_bulla" -> new Object[] {WOLF_RADIUS, WOLF_HOWL_HEALTH / 2, WOLF_HOWL_WOLVES, WOLF_HOWL_TICKS / 20, WOLF_HOWL_COOLDOWN / 20 / 60};
 			case "ancile" -> new Object[] {ANCILE_RAID_RADIUS, Math.round(ANCILE_RAID_FACTOR * 100)};
 			case "palladium" -> new Object[] {PALLADIUM_RADIUS};
-			case "vesta_lamp" -> new Object[] {VESTA_RADIUS, Math.round(VESTA_HUNGER_FACTOR * 100)};
+			case "vesta_lamp" -> new Object[] {VESTA_RADIUS, Math.round(VESTA_HUNGER_FACTOR * 100), VESTA_FIRE_TICKS / 20 / 60,
+					VESTA_FIRE_COOLDOWN / 20 / 60};
 			case "sibylline_books" -> new Object[] {SIBYL_LEVELS, SIBYL_RADIUS, SIBYL_GLOW_TICKS / 20, SIBYL_COOLDOWN / 20 / 60};
 			case "augur_lituus" -> new Object[] {LITUUS_FAVOR_TICKS / 20 / 60, LITUUS_BAD_TICKS / 20 / 60, LITUUS_BIRD_RADIUS,
 					LITUUS_COOLDOWN / 20 / 60};

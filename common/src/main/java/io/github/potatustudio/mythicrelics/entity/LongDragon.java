@@ -232,4 +232,10 @@ public class LongDragon extends PathfinderMob {
 	public int getAmbientSoundInterval() {
 		return 400;
 	}
+
+	/** No se guarda con el mundo (no puede ser {@code noSave}: no se podría montar). */
+	@Override
+	public boolean shouldBeSaved() {
+		return false;
+	}
 }

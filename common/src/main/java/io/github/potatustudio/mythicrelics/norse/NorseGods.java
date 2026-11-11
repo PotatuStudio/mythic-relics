@@ -98,6 +98,8 @@ public final class NorseGods {
 		EntityEvent.LIVING_DEATH.register(NorseGods::onDeath);
 		BlockEvent.BREAK.register(NorseGods::onBreak);
 		TickEvent.SERVER_POST.register(NorseGods::tick);
+		TickEvent.SERVER_POST.register(MimirHead::tick);
+		MimirHead.init();
 	}
 
 	static void launched(Entity boat) {
@@ -159,7 +161,10 @@ public final class NorseGods {
 			}
 			if (player.getOffhandItem().is(ModItems.MIMIR_HEAD.get())) {
 				if (player.tickCount % MIMIR_INTERVAL == 0) {
-					hiddenOres(level, player);
+					MimirHead.outlineOres(level, player);
+				}
+				if (player.tickCount % MimirHead.WHISPER_INTERVAL == 0) {
+					MimirHead.whisper(level, player);
 				}
 				if (player.tickCount % 5 == 0) {
 					creeperWarning(level, player);
@@ -214,19 +219,6 @@ public final class NorseGods {
 		for (AgeableMob baby : level.getEntitiesOfClass(AgeableMob.class, player.getBoundingBox().inflate(BRISINGAMEN_RADIUS),
 				m -> m.getAge() < 0)) {
 			baby.setAge(Math.min(0, baby.getAge() + 20));
-		}
-	}
-
-	/** Cabeza de Mímir: partículas sobre los minerales valiosos cercanos, que solo ve quien la lleva. */
-	private static void hiddenOres(ServerLevel level, ServerPlayer player) {
-		BlockPos center = player.blockPosition();
-		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-MIMIR_RADIUS, -MIMIR_RADIUS, -MIMIR_RADIUS),
-				center.offset(MIMIR_RADIUS, MIMIR_RADIUS, MIMIR_RADIUS))) {
-			BlockState state = level.getBlockState(pos);
-			if (state.is(BlockTags.GOLD_ORES) || PRECIOUS.contains(state.getBlock())) {
-				level.sendParticles(player, ParticleTypes.WAX_OFF, true, true, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-						6, 0.3, 0.3, 0.3, 0.0);
-			}
 		}
 	}
 

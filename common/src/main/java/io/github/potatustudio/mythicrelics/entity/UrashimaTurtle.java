@@ -219,4 +219,10 @@ public class UrashimaTurtle extends PathfinderMob {
 	public float getVoicePitch() {
 		return 0.6f;
 	}
+
+	/** No se guarda con el mundo (no puede ser {@code noSave}: no se podría montar). */
+	@Override
+	public boolean shouldBeSaved() {
+		return false;
+	}
 }

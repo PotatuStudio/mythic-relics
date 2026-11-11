@@ -21,7 +21,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
-/** Entidades del mod. Los aliados no se guardan con el mundo ({@code noSave}): desaparecen al descargarse. */
+/**
+ * Entidades del mod. Los aliados no se guardan con el mundo ({@code noSave}): desaparecen al descargarse. Las monturas
+ * no pueden ser {@code noSave} (en 26.3 el servidor no deja montar esas entidades): se descartan con
+ * {@code shouldBeSaved() = false}.
+ */
 public final class ModEntities {
 	private static final DeferredRegister<EntityType<?>> ENTITIES =
 			DeferredRegister.create(MythicRelics.MOD_ID, Registries.ENTITY_TYPE);
@@ -62,7 +66,6 @@ public final class ModEntities {
 					.sized(1.3964844f, 1.6f)
 					.eyeHeight(1.52f)
 					.clientTrackingRange(10)
-					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("sleipnir"))));
 
 	/** Mono guerrero de los Pelos del Rey Mono (aliado temporal). */
@@ -78,7 +81,6 @@ public final class ModEntities {
 			() -> EntityType.Builder.of(LongDragon::new, MobCategory.CREATURE)
 					.sized(1.6f, 1.0f)
 					.clientTrackingRange(12)
-					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("long_dragon"))));
 
 	/** Perro Celestial de Erlang Shen (aliado temporal del set). */
@@ -97,7 +99,6 @@ public final class ModEntities {
 					.passengerAttachments(1.5f)
 					.fireImmune()
 					.clientTrackingRange(10)
-					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("qilin"))));
 
 	/** Kitsune de nueve colas de la esfera estelar (aliado temporal); se dibuja a 1,5 veces. */
@@ -114,7 +115,6 @@ public final class ModEntities {
 			() -> EntityType.Builder.of(UrashimaTurtle::new, MobCategory.WATER_CREATURE)
 					.sized(1.9f, 1.2f)
 					.clientTrackingRange(10)
-					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("urashima_turtle"))));
 
 	/** Sombra de Yamata no Orochi de la escama (aliado temporal, quieto); se dibuja al doble; no se guarda con el mundo. */

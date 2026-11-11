@@ -159,4 +159,10 @@ public class Sleipnir extends AbstractHorse {
 	protected SoundEvent getDeathSound() {
 		return SoundEvents.HORSE_DEATH;
 	}
+
+	/** No se guarda con el mundo (no puede ser {@code noSave}: no se podría montar). */
+	@Override
+	public boolean shouldBeSaved() {
+		return false;
+	}
 }

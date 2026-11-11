@@ -89,7 +89,7 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> MUMMY_WRAPS = relic("mummy_wraps", p -> p.rarity(Rarity.UNCOMMON));
 	// Set de Anubis.
 	public static final RegistrySupplier<Item> ANUBIS_SCEPTER = relic("anubis_scepter", p -> p.rarity(Rarity.EPIC)
-			.sword(ToolMaterial.GOLD, 3.0f, -2.4f));
+			.sword(ToolMaterial.GOLD, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
 	public static final RegistrySupplier<Item> JACKAL_MASK = relic("jackal_mask", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> JACKAL_RING = relic("jackal_ring", p -> p.rarity(Rarity.RARE));
 
@@ -133,7 +133,7 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> PALLADIUM = register("palladium",
 			p -> new PalladiumItem(ModBlocks.PALLADIUM.get(), p), p -> p.rarity(Rarity.EPIC).useItemDescriptionPrefix());
 	public static final RegistrySupplier<Item> JANUS_KEY = register("janus_key", JanusKeyItem::new, p -> p.rarity(Rarity.RARE));
-	public static final RegistrySupplier<Item> VESTA_LAMP = relic("vesta_lamp", p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> VESTA_LAMP = register("vesta_lamp", io.github.potatustudio.mythicrelics.rome.VestaLampItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> SIBYLLINE_BOOKS = register("sibylline_books", SibyllineBooksItem::new,
 			p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> AUGUR_LITUUS = register("augur_lituus", AugurLituusItem::new, p -> p.rarity(Rarity.RARE));
@@ -222,6 +222,9 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> STONE_STATUE = register("stone_statue",
 			io.github.potatustudio.mythicrelics.greece.StoneStatueItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));
 
+	/** Candado que cuelga de lo cerrado con la llave de Jano (solo se ve en el mundo, no se consigue). */
+	public static final RegistrySupplier<Item> PADLOCK = register("padlock", Item::new, p -> p);
+
 	/** Emblema del mod (escudo con una cultura por cuarto): solo es el ícono de la pestaña creativa, no se consigue. */
 	public static final RegistrySupplier<Item> EMBLEM = register("emblem", Item::new, p -> p);
 
@@ -230,7 +233,7 @@ public final class ModItems {
 			.icon(() -> new ItemStack(EMBLEM.get()))
 			.displayItems((parameters, output) -> {
 				for (RegistrySupplier<Item> item : ITEMS) {
-					if (item != EMBLEM && item != STONE_STATUE) {
+					if (item != EMBLEM && item != STONE_STATUE && item != PADLOCK) {
 						output.accept(item.get());
 					}
 				}

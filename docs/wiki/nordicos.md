@@ -213,7 +213,8 @@ Freyja era diosa del amor y la fertilidad, y recibía en su salón a la mitad de
 
 **Espacio:** mano secundaria · **Rareza:** épica
 
-- En la mano secundaria: cada 10 s, los minerales valiosos a 8 bloques sueltan partículas a través de la piedra
+- En la mano secundaria: cada 10 s, los minerales valiosos a 8 bloques brillan a través de la piedra
+- Mímir te susurra pistas: minerales, cofres, generadores y peligros
 - Te avisa cuando un creeper empieza a explotar
 
 **Mito.** Mímir era el más sabio de los dioses. Cuando los vanir lo decapitaron, Odín untó su cabeza con hierbas para que no se pudriera y le cantó encantamientos.  

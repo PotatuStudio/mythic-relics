@@ -100,7 +100,62 @@ public final class JanusLocks extends SavedData {
 		return owner(level, pos) != null;
 	}
 
-	static void lock(ServerLevel level, BlockPos pos, Player player) {
+	private static final String PADLOCK_TAG = io.github.potatustudio.mythicrelics.MythicRelics.MOD_ID + ".padlock";
+
+	/** Candado dorado que cuelga de la cara del bloque cerrado: un ítem en exhibición (se guarda con el mundo). */
+	private static void hangPadlock(ServerLevel level, BlockPos pos, Direction face) {
+		net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
+		tag.putString("id", "minecraft:item_display");
+		net.minecraft.nbt.CompoundTag item = new net.minecraft.nbt.CompoundTag();
+		item.putString("id", io.github.potatustudio.mythicrelics.MythicRelics.id("padlock").toString());
+		item.putInt("count", 1);
+		tag.put("item", item);
+		tag.putString("item_display", "fixed");
+		net.minecraft.nbt.CompoundTag transform = new net.minecraft.nbt.CompoundTag();
+		transform.put("left_rotation", floats(0, 0, 0, 1));
+		transform.put("right_rotation", floats(0, 0, 0, 1));
+		transform.put("translation", floats(0, 0, 0));
+		transform.put("scale", floats(0.45f, 0.45f, 0.45f));
+		tag.put("transformation", transform);
+		net.minecraft.nbt.ListTag tags = new net.minecraft.nbt.ListTag();
+		tags.add(net.minecraft.nbt.StringTag.valueOf(PADLOCK_TAG));
+		tag.put("Tags", tags);
+		double x = pos.getX() + 0.5 + face.getStepX() * 0.53;
+		double y = pos.getY() + 0.5 + face.getStepY() * 0.53;
+		double z = pos.getZ() + 0.5 + face.getStepZ() * 0.53;
+		float yaw = face.getAxis().isHorizontal() ? face.toYRot() : 0;
+		float pitch = face == Direction.UP ? -90 : face == Direction.DOWN ? 90 : 0;
+		net.minecraft.world.entity.Entity display = net.minecraft.world.entity.EntityType.loadEntityRecursive(
+				net.minecraft.world.level.storage.TagValueInput.create(net.minecraft.util.ProblemReporter.DISCARDING, level.registryAccess(), tag),
+				level, net.minecraft.world.entity.EntitySpawnReason.TRIGGERED, e -> {
+					e.snapTo(x, y, z, yaw, pitch);
+					return e;
+				});
+		if (display != null) {
+			level.addFreshEntity(display);
+		}
+	}
+
+	private static net.minecraft.nbt.ListTag floats(float... values) {
+		net.minecraft.nbt.ListTag list = new net.minecraft.nbt.ListTag();
+		for (float v : values) {
+			list.add(net.minecraft.nbt.FloatTag.valueOf(v));
+		}
+		return list;
+	}
+
+	/** Quita los candados que cuelgan de ese bloque (y de su otra mitad). */
+	private static void removePadlocks(ServerLevel level, List<BlockPos> keys) {
+		for (BlockPos key : keys) {
+			for (net.minecraft.world.entity.Display.ItemDisplay d : level.getEntitiesOfClass(net.minecraft.world.entity.Display.ItemDisplay.class,
+					new net.minecraft.world.phys.AABB(key).inflate(0.6, 1.6, 0.6), e -> e.entityTags().contains(PADLOCK_TAG))) {
+				d.discard();
+			}
+		}
+	}
+
+	static void lock(ServerLevel level, BlockPos pos, Player player, Direction face) {
+		hangPadlock(level, pos, face);
 		JanusLocks data = get(level);
 		for (BlockPos key : keys(level, pos)) {
 			data.locks.put(GlobalPos.of(level.dimension(), key), player.getUUID());
@@ -111,7 +166,9 @@ public final class JanusLocks extends SavedData {
 	static void unlock(ServerLevel level, BlockPos pos) {
 		JanusLocks data = get(level);
 		boolean changed = false;
-		for (BlockPos key : keys(level, pos)) {
+		List<BlockPos> keys = keys(level, pos);
+		removePadlocks(level, keys);
+		for (BlockPos key : keys) {
 			changed |= data.locks.remove(GlobalPos.of(level.dimension(), key)) != null;
 		}
 		if (changed) {
