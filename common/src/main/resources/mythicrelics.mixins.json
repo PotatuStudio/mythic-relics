@@ -9,8 +9,13 @@
 		"FarmlandBlockMixin",
 		"FoxAccessor",
 		"LivingEntityMixin",
+		"MobMixin",
 		"PiglinAiMixin",
 		"PlayerMixin"
+	],
+	"client": [
+		"client.LivingEntityRendererMixin",
+		"client.LivingEntityRenderStateMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

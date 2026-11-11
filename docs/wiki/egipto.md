@@ -28,7 +28,7 @@ Mientras más poderosa la reliquia, más difícil es dar con ella.
 
 **Espacio:** cinturón · **Rareza:** rara
 
-- Al bajar de 3 corazones, Jepri te hace renacer
+- Al bajar de 3 corazones o ante un golpe mortal, Jepri te hace renacer
 - Absorción II y dos escarabajos aliados por 15 s
 - Recarga: 60 s
 

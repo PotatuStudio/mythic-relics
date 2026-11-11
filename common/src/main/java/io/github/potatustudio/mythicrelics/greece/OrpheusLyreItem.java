@@ -68,6 +68,8 @@ public class OrpheusLyreItem extends RelicItem {
 		for (Mob mob : server.getEntitiesOfClass(Mob.class, user.getBoundingBox().inflate(GreeceRelics.ORPHEUS_HOSTILES),
 				m -> m instanceof Enemy && !GreeceRelics.isBoss(m))) {
 			// Dormido: no se mueve ni ataca mientras suena la lira.
+			// Dormido mientras siga sonando (TargetVeto le niega cualquier objetivo).
+			io.github.potatustudio.mythicrelics.relic.TargetVeto.lull(mob, server.getGameTime() + 25);
 			mob.setTarget(null);
 			mob.getNavigation().stop();
 			mob.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 9, false, false), user);

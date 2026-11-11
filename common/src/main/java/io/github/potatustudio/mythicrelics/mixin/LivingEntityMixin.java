@@ -92,7 +92,8 @@ public abstract class LivingEntityMixin {
 
 	@Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
 	private void mythicrelics$osirisRebirth(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-		if (EgyptGods.osirisRebirth((LivingEntity) (Object) this, source)) {
+		if (EgyptGods.osirisRebirth((LivingEntity) (Object) this, source)
+				|| io.github.potatustudio.mythicrelics.egypt.EgyptRelics.scarabSave((LivingEntity) (Object) this, source)) {
 			cir.setReturnValue(true);
 		}
 	}

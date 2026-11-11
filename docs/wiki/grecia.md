@@ -78,7 +78,7 @@ Atenea le dio a Perseo el escudo pulido para no mirar a Medusa.
 
 **Espacio:** mano secundaria · **Rareza:** épica
 
-- Clic derecho: petrifica 5 s a los mobs que te miran a 16 bloques (no a los jefes)
+- Clic derecho: petrifica 5 s a los hostiles que tienes delante hasta 16 bloques (no a los jefes). Si mueren así se derrumban: doble botín y a veces su estatua
 - Recarga: 60 s
 
 **Mito.** Medusa, la gorgona, convertía en piedra a quien la miraba.  
@@ -220,7 +220,8 @@ En Troya, Paris lo mató con una flecha en el talón.
 **Espacio:** mano · **Rareza:** rara
 
 - Lo que golpeas arde 4 s
-- Clic derecho: cocina o funde al instante hasta 8 objetos de la otra mano. Recarga: 30 s
+- Clic derecho: cocina o funde al instante el stack entero de la otra mano
+- Recarga: 1 s por objeto (mínimo 5 s)
 
 **Mito.** El titán Prometeo robó el fuego de los dioses escondiendo una brasa en un tallo hueco de hinojo, y se lo dio a los humanos junto con las artes.  
 Zeus lo encadenó a una roca, donde un águila le comía el hígado cada día.

@@ -54,18 +54,24 @@ public class PrometheusFennelItem extends RelicItem {
 			serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.prometheus_nothing").withStyle(ChatFormatting.GRAY));
 			return InteractionResult.PASS;
 		}
-		if (!RelicCooldowns.tryStart(serverPlayer, "prometheus_fennel", GreeceHeroes.PROMETHEUS_COOLDOWN, BuiltInRegistries.ITEM.getKey(this))) {
+		int count = other.getCount();
+		int cooldown = Math.max(GreeceHeroes.PROMETHEUS_COOLDOWN_MIN, count * GreeceHeroes.PROMETHEUS_COOLDOWN_PER_ITEM);
+		if (!RelicCooldowns.tryStart(serverPlayer, "prometheus_fennel", cooldown, BuiltInRegistries.ITEM.getKey(this))) {
 			return InteractionResult.PASS;
 		}
-		ItemStack result = recipe.get().value().assemble(input);
-		int count = Math.min(other.getCount(), GreeceHeroes.PROMETHEUS_COOK_MAX);
-		result.setCount(Math.min(result.getCount() * count, result.getMaxStackSize()));
+		ItemStack one = recipe.get().value().assemble(input);
+		int total = one.getCount() * count;
 		other.shrink(count);
-		if (!player.getInventory().add(result)) {
-			// Lo que no cabe en el inventario cae a los pies, sin demora para recogerlo.
-			ItemEntity drop = new ItemEntity(server, player.getX(), player.getY() + 0.5, player.getZ(), result);
-			drop.setNoPickUpDelay();
-			server.addFreshEntity(drop);
+		// El stack entero: el resultado se reparte en stacks llenos.
+		while (total > 0) {
+			ItemStack result = one.copyWithCount(Math.min(total, one.getMaxStackSize()));
+			total -= result.getCount();
+			if (!player.getInventory().add(result)) {
+				// Lo que no cabe en el inventario cae a los pies, sin demora para recogerlo.
+				ItemEntity drop = new ItemEntity(server, player.getX(), player.getY() + 0.5, player.getZ(), result);
+				drop.setNoPickUpDelay();
+				server.addFreshEntity(drop);
+			}
 		}
 		server.sendParticles(ParticleTypes.FLAME, player.getX(), player.getY() + 1.2, player.getZ(), 16, 0.3, 0.3, 0.3, 0.02);
 		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.6f, 1.2f);

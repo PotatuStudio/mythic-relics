@@ -7,6 +7,7 @@ import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.network.HermesJumpPayload;
+import io.github.potatustudio.mythicrelics.network.PetrifyPayload;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,6 +69,10 @@ public final class GreeceRelics {
 	public static final double MEDUSA_RADIUS = 16.0;
 	public static final int MEDUSA_COOLDOWN = 1200;
 	public static final float PERSEUS_PETRIFIED_BONUS = 0.5f;
+	/** Coseno del medio ángulo del cono de la mirada de Medusa (50°). */
+	public static final double MEDUSA_CONE = 0.64;
+	/** Probabilidad de que lo que muere petrificado deje su estatua de piedra. */
+	public static final float MEDUSA_STATUE_CHANCE = 0.15f;
 	public static final String PETRIFIED_TAG = MythicRelics.MOD_ID + ".petrified";
 
 	public static final int ARIADNE_MAX_DISTANCE = 256;
@@ -92,7 +97,16 @@ public final class GreeceRelics {
 						hermesJumped(player);
 					}
 				}));
+		if (dev.architectury.platform.Platform.getEnvironment() == dev.architectury.utils.Env.SERVER) {
+			NetworkManager.registerS2CPayloadType(PetrifyPayload.TYPE, PetrifyPayload.CODEC);
+		}
 		EntityEvent.ADD.register(GreeceRelics::onEntityAdded);
+		EntityEvent.LIVING_DEATH.register((victim, source) -> {
+			if (victim instanceof Mob mob && mob.entityTags().contains(PETRIFIED_TAG) && mob.level() instanceof ServerLevel level) {
+				crumble(level, mob, source);
+			}
+			return EventResult.pass();
+		});
 		EntityEvent.LIVING_DAMAGE_POST.register((entity, source, baseDamage, damageTaken, blocked) -> {
 			// Atacar rompe la invisibilidad del yelmo.
 			if (source.getEntity() instanceof ServerPlayer attacker) {
@@ -202,23 +216,30 @@ public final class GreeceRelics {
 		return entity instanceof WitherBoss || entity instanceof EnderDragon || entity instanceof Warden || entity instanceof ElderGuardian;
 	}
 
-	/** Petrifica a los mobs que miran a {@code player}; devuelve cuántos. */
+	/**
+	 * Petrifica a los hostiles que tienes delante (en un cono de 100° hasta {@link #MEDUSA_RADIUS} bloques, con línea de
+	 * vista); devuelve cuántos. Se quedan quietos y se ven de piedra; si mueren así, se derrumban ({@link #crumble}).
+	 */
 	public static int petrify(ServerPlayer player) {
 		ServerLevel level = player.level();
 		Vec3 eyes = player.getEyePosition();
+		Vec3 look = player.getLookAngle();
 		int count = 0;
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(MEDUSA_RADIUS),
-				m -> m.isAlive() && !isBoss(m) && m.distanceToSqr(player) <= MEDUSA_RADIUS * MEDUSA_RADIUS)) {
-			Vec3 toPlayer = eyes.subtract(mob.getEyePosition()).normalize();
-			boolean looking = mob.getTarget() == player || mob.getViewVector(1.0f).dot(toPlayer) > 0.9;
-			if (!looking || !mob.hasLineOfSight(player)) {
+				m -> m.isAlive() && m instanceof net.minecraft.world.entity.monster.Enemy && !isBoss(m)
+						&& m.distanceToSqr(player) <= MEDUSA_RADIUS * MEDUSA_RADIUS)) {
+			Vec3 toMob = mob.getBoundingBox().getCenter().subtract(eyes).normalize();
+			if (look.dot(toMob) < MEDUSA_CONE || !player.hasLineOfSight(mob)) {
 				continue;
 			}
 			mob.setNoAi(true);
+			mob.setDeltaMovement(Vec3.ZERO);
 			mob.addTag(PETRIFIED_TAG);
 			PETRIFIED.put(mob.getUUID(), level.getGameTime() + MEDUSA_TICKS);
+			sync(level, mob, true);
 			level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
-					mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 20, 0.3, 0.5, 0.3, 0.1);
+					mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 30, 0.3, 0.5, 0.3, 0.1);
+			level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_PLACE, SoundSource.HOSTILE, 1.0f, 0.6f);
 			count++;
 		}
 		return count;
@@ -227,6 +248,41 @@ public final class GreeceRelics {
 	private static void release(Mob mob) {
 		mob.setNoAi(false);
 		mob.removeTag(PETRIFIED_TAG);
+		if (mob.level() instanceof ServerLevel level) {
+			sync(level, mob, false);
+			level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GRAVEL.defaultBlockState()),
+					mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 15, 0.3, 0.5, 0.3, 0.1);
+		}
+	}
+
+	/** Avisa a los jugadores cercanos para que el mob se dibuje de piedra (o vuelva a su color). */
+	private static void sync(ServerLevel level, Mob mob, boolean on) {
+		java.util.List<ServerPlayer> near = level.players().stream().filter(p -> p.distanceToSqr(mob) < 128 * 128).toList();
+		NetworkManager.sendToPlayers(near, new PetrifyPayload(mob.getId(), on));
+	}
+
+	/** Lo que muere petrificado se derrumba: polvo de piedra, el doble de botín y a veces su estatua. */
+	private static void crumble(ServerLevel level, Mob mob, DamageSource source) {
+		PETRIFIED.remove(mob.getUUID());
+		sync(level, mob, false);
+		double cy = mob.getY() + mob.getBbHeight() / 2;
+		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
+				mob.getX(), cy, mob.getZ(), 60, mob.getBbWidth() * 0.4, mob.getBbHeight() * 0.4, mob.getBbWidth() * 0.4, 0.15);
+		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GRAVEL.defaultBlockState()),
+				mob.getX(), cy, mob.getZ(), 30, mob.getBbWidth() * 0.4, mob.getBbHeight() * 0.4, mob.getBbWidth() * 0.4, 0.1);
+		level.sendParticles(ParticleTypes.CLOUD, mob.getX(), mob.getY() + 0.2, mob.getZ(), 12, 0.4, 0.1, 0.4, 0.02);
+		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1.4f, 0.6f);
+		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.DEEPSLATE_BRICKS_BREAK, SoundSource.HOSTILE, 1.0f, 0.5f);
+		net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> table =
+				mob.getType().getDefaultLootTable().orElse(null);
+		if (table != null) {
+			mob.dropFromLootTable(level, source, true, table);
+		}
+		if (level.getRandom().nextFloat() < MEDUSA_STATUE_CHANCE) {
+			net.minecraft.world.entity.item.ItemEntity drop = new net.minecraft.world.entity.item.ItemEntity(level, mob.getX(),
+					mob.getY() + 0.5, mob.getZ(), StoneStatueItem.of(mob.getType()));
+			level.addFreshEntity(drop);
+		}
 	}
 
 	/** Daño recibido: lo petrificado recibe +50 % si el atacante lleva el set de Perseo. */
@@ -254,6 +310,15 @@ public final class GreeceRelics {
 		while (it.hasNext()) {
 			Map.Entry<UUID, Long> e = it.next();
 			if (e.getValue() > now) {
+				if (now % 10 == 0) {
+					for (ServerLevel level : server.getAllLevels()) {
+						if (level.getEntity(e.getKey()) instanceof Mob mob) {
+							level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
+									mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), 3, 0.25, 0.4, 0.25, 0.0);
+							break;
+						}
+					}
+				}
 				continue;
 			}
 			for (ServerLevel level : server.getAllLevels()) {

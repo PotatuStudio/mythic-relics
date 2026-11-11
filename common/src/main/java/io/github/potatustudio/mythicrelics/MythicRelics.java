@@ -40,6 +40,7 @@ public final class MythicRelics {
 		ModLoot.init();
 		Minions.init();
 		RelicCooldowns.init();
+		io.github.potatustudio.mythicrelics.relic.RelicSets.init();
 		EgyptRelics.init();
 		EgyptGods.init();
 		GreeceRelics.init();

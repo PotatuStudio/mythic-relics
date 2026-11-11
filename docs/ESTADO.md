@@ -220,6 +220,21 @@ mensajes al secarse y mojarse); el disfraz del tanuki (que los hostiles dejen de
 talar con el hacha agachado; la muñeca colocada (modelo, orientación, Suerte y precios de los aldeanos); la isla de la
 lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y el plato puestos en los dos loaders.
 
+## Arreglos tras la primera prueba en NeoForge (2026-11-10)
+- Objetivos negados en el origen (`relic/TargetVeto` + `mixin/MobMixin` en `setTarget`/`getTarget`): set de Anubis,
+  vendas de momia, lira de Orfeo y hoja del tanuki ya no dejan que el mob apunte y dispare entre limpiezas.
+- Doble salto (Hermes y tengu): pide soltar y volver a pulsar en el aire (antes se disparaba al mantener el primer salto).
+- Recargas: las pasivas (escarabajo, anillo de chacal, uraeus, bula) también se muestran en el ícono; el tooltip dice
+  cuánto falta (`client/RelicTooltips`).
+- Tooltip: etiqueta de mitología bajo el nombre (`relic/RelicCultures`, generado por `make_codex.py`) y si el set está
+  activo; los sets avisan al activarse y al romperse (`relic/RelicSets`).
+- Escarabajo dorado: también salva de un golpe mortal (mismo gancho que el tótem y Osiris).
+- Cabeza de Medusa rehecha: cono de 100° a los hostiles, se ven de piedra (`PetrifyPayload` + `mixin/client`), si mueren
+  así se derrumban con doble botín y 15 % de soltar su estatua (`entity/StoneStatue`, `StoneStatueItem`).
+- Óbolo de Caronte: también guarda los accesorios puestos (Curios `DropRulesEvent`, Trinkets `TrinketDropCallback`).
+- Cerbero a 1,7 veces; sorbos al beber el agua del Estigia; el hinojo funde el stack entero (1 s de recarga por objeto).
+- Para ver la vida de los mobs se recomienda Jade (cliente; hay versión 26.3 para NeoForge).
+
 ## Pestaña creativa
 El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
 `tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone

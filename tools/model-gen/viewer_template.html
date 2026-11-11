@@ -582,6 +582,7 @@ for (const [offset, turn] of [[[0, 7, -8], 0], [[5, 9, -6.5], -C_TURN], [[-5, 9,
   cJaws.push(cPart(h, [0, 1, -5], [0, 0, 0], [[36, 18, -2, 0, -5, 4, 1, 5, false]]));
 }
 const C_TAIL = [0.9, 1.1, 0.9];
+cerberus.entity.scale.setScalar(1.7);   // CerberusRenderer.SCALE
 const cTail = cPart(cerberus.root, [0, 9, 8], [C_TAIL[0], 0, 0], [[32, 24, -1, -1, 0, 2, 2, 6, false]]);
 const cTailMid = cPart(cTail, [0, 0, 6], [C_TAIL[1], 0, 0], [[48, 24, -1, -1, 0, 2, 2, 5, false]]);
 const cTailHead = cPart(cTailMid, [0, 0, 5], [C_TAIL[2], 0, 0], [[28, 32, -1.5, -1, 0, 3, 2, 4, false], [42, 32, -0.5, 0.5, 4, 1, 0, 2, false]]);
@@ -888,7 +889,7 @@ const speedInput = document.getElementById("speed");
 const VIEWS = {
   scarab: { cam: [0.9, 0.7, 1.1], target: [0, 0.12, 0] },
   jackal: { cam: [1.6, 1.1, 1.8], target: [0, 0.45, 0] },
-  cerberus: { cam: [1.9, 1.4, 2.3], target: [0, 0.6, 0] },
+  cerberus: { cam: [3.0, 2.2, 3.6], target: [0, 1.0, 0] },
   sleipnir: { cam: [3.2, 2.0, 3.6], target: [0, 0.9, 0] },
   monkey: { cam: [1.9, 1.6, 2.6], target: [0, 1.0, 0] },
   dragon: { cam: [6.5, 3.2, 3.0], target: [0, 1.4, -2.2] },

@@ -227,7 +227,7 @@ public final class RomeRelics {
 			}
 		}
 		if (player.getHealth() <= WOLF_HOWL_HEALTH && !wild.isEmpty()
-				&& RelicCooldowns.tryStart(player, "wolf_bulla", WOLF_HOWL_COOLDOWN, null)) {
+				&& RelicCooldowns.tryStart(player, "wolf_bulla", WOLF_HOWL_COOLDOWN, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(ModItems.WOLF_BULLA.get()))) {
 			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FOX_SCREECH, SoundSource.PLAYERS, 1.0f, 0.5f);
 			wild.sort((a, b) -> Double.compare(a.distanceToSqr(player), b.distanceToSqr(player)));
 			for (int i = 0; i < Math.min(WOLF_HOWL_TAMES, wild.size()); i++) {

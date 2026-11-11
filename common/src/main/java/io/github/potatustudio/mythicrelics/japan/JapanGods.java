@@ -111,6 +111,10 @@ public final class JapanGods {
 		return EgyptRelics.isWearing(player, ModItems.KAPPA_DISH) && !DRY.contains(player.getUUID());
 	}
 
+	public static boolean isDisguised(Player player) {
+		return DISGUISED.containsKey(player.getUUID());
+	}
+
 	static void disguise(ServerPlayer player) {
 		DISGUISED.put(player.getUUID(), player.level().getGameTime() + TANUKI_TICKS);
 	}
@@ -211,7 +215,8 @@ public final class JapanGods {
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
 			if (DISGUISED.containsKey(player.getUUID())) {
-				for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(32), m -> m.getTarget() == player)) {
+				// Los objetivos los niega TargetVeto; aquí solo se sueltan los que ya lo tenían fijado.
+				for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(32), m -> m.getTargetUnchecked() == player)) {
 					mob.setTarget(null);
 				}
 				if (player.tickCount % 10 == 0) {

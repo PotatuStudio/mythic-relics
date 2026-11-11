@@ -42,7 +42,7 @@ public final class ModEntities {
 
 	public static final RegistrySupplier<EntityType<Cerberus>> CERBERUS = ENTITIES.register("cerberus",
 			() -> EntityType.Builder.of(Cerberus::new, MobCategory.MISC)
-					.sized(0.85f, 1.3f)
+					.sized(1.4f, 2.2f)
 					.fireImmune()
 					.clientTrackingRange(10)
 					.noSave()
@@ -125,6 +125,14 @@ public final class ModEntities {
 					.clientTrackingRange(10)
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("orochi_shadow"))));
+
+	/** Estatua de piedra de un mob (decorativa, se guarda con el mundo). */
+	public static final RegistrySupplier<EntityType<io.github.potatustudio.mythicrelics.entity.StoneStatue>> STONE_STATUE =
+			ENTITIES.register("stone_statue", () -> EntityType.Builder.of(io.github.potatustudio.mythicrelics.entity.StoneStatue::new,
+							MobCategory.MISC)
+					.sized(0.8f, 1.9f)
+					.clientTrackingRange(10)
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("stone_statue"))));
 
 	private ModEntities() {
 	}

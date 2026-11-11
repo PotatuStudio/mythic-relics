@@ -32,7 +32,7 @@ import net.minecraft.world.level.saveddata.SavedDataType;
  * inventario (menos un óbolo) y la experiencia se guardan aquí y se devuelven al reaparecer. Se guarda con el mundo,
  * así que no se pierde si te desconectas en la pantalla de muerte o se reinicia el servidor.
  *
- * <p>Los espacios de accesorios (Trinkets/Curios) siguen sus propias reglas al morir.
+ * <p>Los accesorios puestos (Trinkets/Curios) también se quedan: cada loader le pregunta a {@link #paidPassage} al morir.
  */
 public final class CharonStash extends SavedData {
 	private record Slot(int index, ItemStack stack) {
@@ -57,6 +57,8 @@ public final class CharonStash extends SavedData {
 			DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
 
 	private final Map<UUID, Entry> stash = new HashMap<>();
+	/** Jugadores que pagaron el pasaje en esta muerte: sus accesorios no se sueltan. */
+	private static final java.util.Set<UUID> PAID = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
 	private CharonStash() {
 	}
@@ -101,6 +103,7 @@ public final class CharonStash extends SavedData {
 			return;
 		}
 		inventory.getItem(obol).shrink(1);
+		PAID.add(player.getUUID());
 		List<Slot> slots = new ArrayList<>();
 		for (int i = 0; i < inventory.getContainerSize(); i++) {
 			ItemStack stack = inventory.getItem(i);
@@ -151,7 +154,13 @@ public final class CharonStash extends SavedData {
 		player.level().sendParticles(ParticleTypes.WAX_ON, player.getX(), player.getY() + 1, player.getZ(), 20, 0.4, 0.6, 0.4, 0.05);
 	}
 
+	/** ¿Pagó el pasaje al morir? Entonces los accesorios puestos se quedan puestos. */
+	public static boolean paidPassage(net.minecraft.world.entity.LivingEntity entity) {
+		return PAID.contains(entity.getUUID());
+	}
+
 	private static void restore(ServerPlayer player) {
+		PAID.remove(player.getUUID());
 		CharonStash data = get(player);
 		Entry entry = data.stash.remove(player.getUUID());
 		if (entry == null) {

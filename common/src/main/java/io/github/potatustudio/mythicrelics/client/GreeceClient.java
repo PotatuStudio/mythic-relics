@@ -28,6 +28,8 @@ public final class GreeceClient {
 
 	private static boolean jumpWasDown;
 	private static boolean doubleJumpUsed;
+	/** Se soltó el salto ya en el aire: el doble salto pide una segunda pulsación, no mantener la del primer salto. */
+	private static boolean releasedInAir;
 	private static int icarusFlaps;
 	private static int glideTicks;
 
@@ -52,8 +54,11 @@ public final class GreeceClient {
 		boolean grounded = player.onGround() || player.isInWater() || player.getAbilities().flying || player.isPassenger();
 		if (grounded) {
 			doubleJumpUsed = false;
+			releasedInAir = false;
 			icarusFlaps = GreeceHeroes.ICARUS_FLAPS;
-		} else if (pressed && !doubleJumpUsed && (WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())
+		} else if (!jumpDown) {
+			releasedInAir = true;
+		} else if (pressed && releasedInAir && !doubleJumpUsed && (WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())
 				|| WornRelics.isWearing(player, ModItems.TENGU_MASK.get()))) {
 			Vec3 motion = player.getDeltaMovement();
 			player.setDeltaMovement(motion.x, GreeceRelics.HERMES_JUMP, motion.z);

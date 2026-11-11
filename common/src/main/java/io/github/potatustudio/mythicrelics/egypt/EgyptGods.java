@@ -144,7 +144,7 @@ public final class EgyptGods {
 	}
 
 	private static void uraeus(ServerLevel level, ServerPlayer player, LivingEntity attacker) {
-		if (!RelicCooldowns.tryStart(player, "uraeus", URAEUS_COOLDOWN, null)) {
+		if (!RelicCooldowns.tryStart(player, "uraeus", URAEUS_COOLDOWN, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(ModItems.RA_DISK.get()))) {
 			return;
 		}
 		attacker.igniteForSeconds(URAEUS_BURN_SECONDS);

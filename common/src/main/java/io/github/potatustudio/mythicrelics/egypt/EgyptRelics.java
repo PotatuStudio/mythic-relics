@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -33,6 +34,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.zombie.Husk;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -160,7 +162,7 @@ public final class EgyptRelics {
 	}
 
 	/** Set de Anubis completo: máscara y anillo puestos y el cetro en cualquier parte del inventario. */
-	public static boolean hasAnubisSet(ServerPlayer player) {
+	public static boolean hasAnubisSet(Player player) {
 		return isWearing(player, ModItems.JACKAL_MASK) && isWearing(player, ModItems.JACKAL_RING)
 				&& player.getInventory().contains(stack -> stack.is(ModItems.ANUBIS_SCEPTER.get()));
 	}
@@ -202,8 +204,22 @@ public final class EgyptRelics {
 		return value == Math.floor(value) ? Integer.toString((int) value) : Double.toString(value);
 	}
 
+	/**
+	 * Escarabajo dorado ante un golpe mortal (lo llama el mixin en la misma comprobación que el tótem): si no está en
+	 * recarga, Jepri te deja con {@link #SCARAB_THRESHOLD} de vida y activa lo mismo que al bajar de esa vida.
+	 */
+	public static boolean scarabSave(LivingEntity self, net.minecraft.world.damagesource.DamageSource source) {
+		if (!(self instanceof ServerPlayer player) || source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)
+				|| !isWearing(player, ModItems.GOLDEN_SCARAB) || !RelicCooldowns.ready(player, "golden_scarab")) {
+			return false;
+		}
+		player.setHealth(SCARAB_THRESHOLD);
+		scarab(player.level(), player);
+		return true;
+	}
+
 	private static void scarab(ServerLevel level, ServerPlayer player) {
-		if (!RelicCooldowns.tryStart(player, "golden_scarab", SCARAB_COOLDOWN, null)) {
+		if (!RelicCooldowns.tryStart(player, "golden_scarab", SCARAB_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.GOLDEN_SCARAB.get()))) {
 			return;
 		}
 		player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 300, SCARAB_ABSORPTION));
@@ -240,7 +256,7 @@ public final class EgyptRelics {
 	/** Anillo de los chacales: de noche o bajo tierra, los guardianes de la tumba acuden al golpe. */
 	private static void jackals(ServerLevel level, ServerPlayer player) {
 		boolean dark = level.isDarkOutside() || !level.canSeeSky(player.blockPosition());
-		if (!dark || !RelicCooldowns.tryStart(player, "jackal_ring", RING_COOLDOWN, null)) {
+		if (!dark || !RelicCooldowns.tryStart(player, "jackal_ring", RING_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.JACKAL_RING.get()))) {
 			return;
 		}
 		for (int i = 0; i < RING_JACKALS; i++) {

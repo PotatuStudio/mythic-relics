@@ -218,6 +218,10 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> AME_NO_NUBOKO = register("ame_no_nuboko", AmeNoNubokoItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> OROCHI_SCALE = register("orochi_scale", OrochiScaleItem::new, p -> p.rarity(Rarity.EPIC));
 
+	/** Estatua de piedra de un mob que murió petrificado por la cabeza de Medusa (no es una reliquia). */
+	public static final RegistrySupplier<Item> STONE_STATUE = register("stone_statue",
+			io.github.potatustudio.mythicrelics.greece.StoneStatueItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));
+
 	/** Emblema del mod (escudo con una cultura por cuarto): solo es el ícono de la pestaña creativa, no se consigue. */
 	public static final RegistrySupplier<Item> EMBLEM = register("emblem", Item::new, p -> p);
 
@@ -226,7 +230,7 @@ public final class ModItems {
 			.icon(() -> new ItemStack(EMBLEM.get()))
 			.displayItems((parameters, output) -> {
 				for (RegistrySupplier<Item> item : ITEMS) {
-					if (item != EMBLEM) {
+					if (item != EMBLEM && item != STONE_STATUE) {
 						output.accept(item.get());
 					}
 				}

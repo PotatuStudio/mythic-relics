@@ -79,8 +79,9 @@ public final class GreeceHeroes {
 	public static final float STYX_HEEL_FACTOR = 2.0f;
 
 	public static final int PROMETHEUS_BURN_SECONDS = 4;
-	public static final int PROMETHEUS_COOK_MAX = 8;
-	public static final int PROMETHEUS_COOLDOWN = 600;
+	/** Funde el stack entero de la otra mano; la recarga es de 1 s por objeto, con un mínimo. */
+	public static final int PROMETHEUS_COOLDOWN_PER_ITEM = 20;
+	public static final int PROMETHEUS_COOLDOWN_MIN = 100;
 
 	private GreeceHeroes() {
 	}
@@ -215,7 +216,7 @@ public final class GreeceHeroes {
 					PANDORA_VEXES, PANDORA_VEX_TICKS / 20, PANDORA_TREASURE_CHANCE, PANDORA_HOPE_CHANCE,
 					PANDORA_HOPE_ABSORPTION_TICKS / 20 / 60};
 			case "styx_water" -> new Object[] {STYX_TICKS / 20 / 60, Math.round(STYX_FRONT_FACTOR * 100), STYX_COOLDOWN / 20 / 60};
-			case "prometheus_fennel" -> new Object[] {PROMETHEUS_BURN_SECONDS, PROMETHEUS_COOK_MAX, PROMETHEUS_COOLDOWN / 20};
+			case "prometheus_fennel" -> new Object[] {PROMETHEUS_BURN_SECONDS, PROMETHEUS_COOLDOWN_PER_ITEM / 20, PROMETHEUS_COOLDOWN_MIN / 20};
 			default -> io.github.potatustudio.mythicrelics.rome.RomeRelics.tooltipArgs(id);
 		};
 	}

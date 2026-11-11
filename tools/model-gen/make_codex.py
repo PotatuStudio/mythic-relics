@@ -320,7 +320,25 @@ def write_wiki(langs, args, sources, rar, sargs):
         f.write("\n".join(index))
 
 
+def write_cultures():
+    """Genera relic/RelicCultures.java (cultura de cada reliquia, para la etiqueta del tooltip) desde moddata.CULTURES."""
+    from moddata import CULTURES, JAVA
+    rows = []
+    for culture, ids in CULTURES.items():
+        rows.extend(f'\t\tCULTURE.put("{i}", "{culture}");' for i in ids)
+    src = ("package io.github.potatustudio.mythicrelics.relic;\n\n"
+           "import java.util.HashMap;\nimport java.util.Map;\nimport org.jspecify.annotations.Nullable;\n\n"
+           "/** Cultura de cada reliquia. GENERADO por tools/model-gen/make_codex.py desde moddata.CULTURES: no editar a mano. */\n"
+           "public final class RelicCultures {\n\tprivate static final Map<String, String> CULTURE = new HashMap<>();\n\n"
+           "\tstatic {\n" + "\n".join(rows) + "\n\t}\n\n\tprivate RelicCultures() {\n\t}\n\n"
+           "\t/** egypt, greece, rome, norse, china o japan; null si no es una reliquia. */\n"
+           "\tpublic static @Nullable String of(String id) {\n\t\treturn CULTURE.get(id);\n\t}\n}\n")
+    with open(os.path.join(JAVA, "relic", "RelicCultures.java"), "w", encoding="utf-8", newline="\n") as f:
+        f.write(src)
+
+
 if __name__ == "__main__":
+    write_cultures()
     langs = lang()
     consts = constants()
     args = tooltip_args(consts)

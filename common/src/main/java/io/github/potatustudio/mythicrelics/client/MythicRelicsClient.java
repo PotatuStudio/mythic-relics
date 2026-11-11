@@ -52,5 +52,8 @@ public final class MythicRelicsClient {
 		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
 		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, context -> new ThrownItemRenderer<>(context, 1.5f, false));
 		GreeceClient.init();
+		RelicTooltips.init();
+		PetrifiedClient.init();
+		EntityRendererRegistry.register(ModEntities.STONE_STATUE, io.github.potatustudio.mythicrelics.client.entity.StoneStatueRenderer::new);
 	}
 }

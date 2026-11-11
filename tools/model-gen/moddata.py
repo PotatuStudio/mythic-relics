@@ -134,8 +134,8 @@ def tooltip_args(c):
                         int(c["PANDORA_TREASURE_CHANCE"]), int(c["PANDORA_HOPE_CHANCE"]),
                         int(c["PANDORA_HOPE_ABSORPTION_TICKS"] // 20 // 60)],
         "styx_water": [int(c["STYX_TICKS"] // 20 // 60), round(c["STYX_FRONT_FACTOR"] * 100), int(c["STYX_COOLDOWN"] // 20 // 60)],
-        "prometheus_fennel": [int(c["PROMETHEUS_BURN_SECONDS"]), int(c["PROMETHEUS_COOK_MAX"]),
-                              int(c["PROMETHEUS_COOLDOWN"] // 20)],
+        "prometheus_fennel": [int(c["PROMETHEUS_BURN_SECONDS"]), int(c["PROMETHEUS_COOLDOWN_PER_ITEM"] // 20),
+                              int(c["PROMETHEUS_COOLDOWN_MIN"] // 20)],
         # Roma (RomeRelics#tooltipArgs)
         "wolf_bulla": [int(c["WOLF_RADIUS"]), int(c["WOLF_HOWL_HEALTH"] // 2), int(c["WOLF_HOWL_TAMES"]),
                        int(c["WOLF_HOWL_COOLDOWN"] // 20 // 60)],
