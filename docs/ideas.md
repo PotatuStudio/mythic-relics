@@ -237,7 +237,20 @@ Tanda 1: aprobada y programada el 2026-11-10 (kitsune a 1,5 veces, del tamaño d
 | Kibi dango de Momotarō | comida que no se gasta | Doma al instante lobos, zorros y loros; comer una da Fuerza I 60 s. Bolsa de 3, una por día. Rara. | Casas de aldeas de llanura, 4 % |
 | Caña de Urashima | invoca montura | Tortuga marina gigante: muy rápida bajo el agua, montado respiras y ves bajo el agua; lenta en tierra. Se va a los 3 s; si muere, 5 min. | Tesoros de naufragios, 3 % |
 
-Para más adelante: la bolsa de vientos de Fūjin y el abanico del tengu (se parecen al abanico chino).
+Tanda 2: efectos y números aprobados el 2026-11-10 (falta el modelo de Orochi y los íconos). Página:
+`tools/design-page/japan2_*.py`.
+
+| Reliquia | Tipo | Efecto | Dónde |
+|---|---|---|---|
+| Bolsa de vientos de Fūjin | uso | Corriente que te eleva ~10 bloques y planeas 6 s; agachado: ventarrón a 8 bloques. Recarga 20 s. Set de Fūjin y Raijin (bolsa en el inventario y tambor puesto): rayo cada 3 golpes que salta a 2 mobs. | Recompensas de cámaras de desafío, 3 % |
+| Máscara de tengu | cara | Doble salto; críticos +50 % de daño. | Puestos de saqueadores, 3 % |
+| Sake de Yashiori | uso | Salpica a 4 bloques donde miras (hasta 12): mobs borrachos 10 s, lentos y confundidos; los hostiles se atacan entre ellos. Recarga 60 s. Raro. | Provisiones de naufragios, 3 % |
+| Plato del kappa | sombrero | Bajo el agua: nado muy rápido y +30 % de daño; tras 60 s fuera del agua al sol se seca hasta mojarte. Raro. | Cofre chico de ruinas submarinas, 3 % |
+| Hoja del tanuki | uso | 30 s en que los hostiles no te ven si no atacas. Recarga 2 min. Rara. | Mansiones del bosque, 3 % |
+| Hacha de Kintarō | arma y herramienta | 10 de daño, +50 % contra bestias grandes; agachado tala el árbol entero (hasta 64 troncos). | Herreros de herramientas de aldea, 4 % |
+| Muñeca de zashiki-warashi | bloque | Jugadores a 16 bloques: Suerte I y mejores precios (Héroe de la aldea I). | Casas de aldeas nevadas, 3 % |
+| Ame-no-nuboko | uso | Mirando al agua (hasta 16 bloques): brota una isla de arena y pasto de 7 de ancho. Recarga 30 s. | Mapas de naufragios, 3 % |
+| Escama de Yamata no Orochi | invoca aliado | Sombra de ocho cabezas, quieta a tu lado 45 s; cada cabeza muerde a los hostiles a 6 bloques (4 de daño). Recarga 5 min. Licencia grande: en el mito es el monstruo vencido. | Ciudades antiguas, 2 % |
 
 ## Otras culturas
 | Reliquia | Cultura | Espacio | Efecto |
