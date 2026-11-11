@@ -82,10 +82,22 @@ public class StoneStatue extends Entity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!level().isClientSide() && !onGround() && !isNoGravity()) {
-			setDeltaMovement(getDeltaMovement().add(0, -0.04, 0));
-			move(net.minecraft.world.entity.MoverType.SELF, getDeltaMovement());
-			setDeltaMovement(getDeltaMovement().scale(0.98));
+		// Nunca se mueve (en 26.3 este tipo de entidad no puede simular movimiento: mover() crashea). Si le quitan el
+		// bloque de abajo, se cae como ítem.
+		if (level() instanceof ServerLevel level && tickCount % 20 == 0) {
+			net.minecraft.core.BlockPos below = net.minecraft.core.BlockPos.containing(getX(), getY() - 0.1, getZ());
+			if (level.getBlockState(below).getCollisionShape(level, below).isEmpty()) {
+				EntityType<?> mob = getMob();
+				if (mob != null) {
+					level.addFreshEntity(new ItemEntity(level, getX(), getY() + 0.3, getZ(), StoneStatueItem.of(mob)));
+				}
+				discard();
+			}
 		}
+	}
+
+	@Override
+	public boolean isNoGravity() {
+		return true;
 	}
 }
