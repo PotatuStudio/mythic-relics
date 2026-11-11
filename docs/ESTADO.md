@@ -1,7 +1,8 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-10. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
-programadas; falta probarlas en el juego).
+Última sesión: 2026-11-11. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
+programadas). El usuario ya empezó a probar en NeoForge (con `runClient` en su PC) y se hicieron cuatro rondas de
+arreglos con lo que reportó; ver «Arreglos tras…» y «Después». Para retomar: leer «Después», punto 1.
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -250,6 +251,18 @@ lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y 
   bloque de set igual en todas las piezas (`set.mythicrelics.<set>.bonus.N`).
 - Página de revisión de modelos: `tools/design-page/revision2_build.py`.
 
+## Cuarta ronda de arreglos (2026-11-11)
+- Estatua de piedra: en 26.3 `move()` lanza `IllegalStateException` en esta entidad; ya no se mueve nunca y cae como
+  ítem si le quitan el suelo. Regla general: no llamar `move()` en entidades propias que no sean `LivingEntity`.
+- Jade 26.3.5 (Modrinth) como `localRuntime` en Fabric y NeoForge y declarado opcional (ver vida de los mobs).
+- Ícono del mod: copia `mythicrelics_icon.png` en la raíz de recursos de cada loader (en desarrollo no veía el de common).
+- Yelmo de Hades rehecho (corintio, abertura en T, cimera de crin); sin planos coplanares (`coplanar_check.py`).
+- Sleipnir y qilin: `isSaddled() = true` y `getControllingPassenger()` devuelve al jinete (no respondían ni saltaban).
+- Cuervos: `setNoAi(true)` (el `travel` de `Mob` los movía además de nuestro `setPos` y giraban sobre sí mismos).
+- Gungnir con la geometría y los `display` del tridente vanilla (`trident_in_hand` y `trident_throwing`, con scale 2:
+  ver `tri()` en `norse_models.py`); en vuelo `ThrownRelicRenderer` lo centra y lo dobla igual que el tridente.
+- Paladio sin caras coplanares del mismo lado; candado de Jano en el punto exacto del clic; mástil de Skíðblaðnir a popa.
+
 ## Pestaña creativa
 El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
 `tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone
@@ -283,13 +296,35 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
 ## Después
-1. **Probar en el juego** (en el PC del usuario) todo lo programado: Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2
-   y China 1 y 2 y Japón 1 y 2 (97 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
-   Gungnir en vuelo (se dibujan como el ícono de cara a la cámara), Sleipnir (patas del medio al galopar, la capa que
-   brilla, caminar sobre el agua), el modelo del Paladio, los candados de Jano y la búsqueda de estructuras de la sibila.
-2. **Chile/mapuche** como tanda especial (los celtas se descartaron el 2026-11-10). Pendientes posibles: las Cuatro
-   Bestias Celestiales chinas como set. Pendiente para China: las Cuatro Bestias Celestiales como set propio.
-3. Pendiente menor: renderizador propio que gire a Mjölnir y Gungnir en el aire; actualizar el ícono del mod
-   (`icon.png`, hoy hecho con íconos de Egipto) al estilo del emblema de la pestaña.
-4. Otras culturas de `docs/ideas.md`.
+1. **Seguir probando en el juego** (NeoForge en el PC del usuario, con Jade para ver la vida). Lo pendiente de confirmar
+   tras la cuarta ronda:
+   - Montar y controlar Sleipnir, qilin, long y tortuga (correr, saltar, nadar); Skíðblaðnir (vista, vela, plegado).
+   - Cuervos de Odín: que se posen y se queden quietos mirando; graznido ocasional; hostiles brillando.
+   - Gungnir en la mano, al cargar y en vuelo; Mjölnir en la mano y en vuelo (sus `display` son estimados); Ruyi estirado.
+   - Estatuas de Medusa: colocar, romper, que no crasheen; textura de piedra sobre los mobs petrificados.
+   - Paladio (modelo y parpadeo), candado de Jano en puertas, trampillas, vallas y cofres, yelmo de Hades puesto.
+   - Set de Anubis y lira (que los mobs no disparen), doble salto de Hermes y tengu, recarga y bloque de set en los
+     tooltips, pestañas por mitología, ícono del mod en la lista.
+   - Todo lo de Japón 2 (ver su sección) y lo de las rondas de arreglos.
+   Después, probar también en Fabric (Trinkets).
+2. **Cuando el usuario apruebe las pruebas: Chile/mapuche** como tanda especial (los celtas se descartaron el
+   2026-11-10). Flujo: enseñar el mito, proponer reliquias (fiel / licencia / pop), página de diseño, preguntas con
+   opciones, entidades 3D, íconos, programar, commit y push, visor global, lista de pruebas.
+3. Pendientes posibles: las Cuatro Bestias Celestiales chinas como set; luego India, aztecas, eslavos, Mesopotamia
+   (`docs/ideas.md`).
+4. Pendientes menores:
+   - visor global sin los cuervos ni el barco en 3D (están en `tools/design-page/revision2_build.py`);
+   - ícono del mod (`icon.png`) todavía hecho con íconos de Egipto: rehacer al estilo del emblema;
+   - la sombra de Orochi abre las mandíbulas en bucle, no al morder;
+   - el rescate del xirang al vacío usa el último suelo firme (o el punto de aparición).
 5. Portar Misfit Relics a Architectury (mismo esquema de módulos).
+
+## Cómo trabajar (recordatorio)
+- No abrir el juego en este PC: solo `./gradlew build` (con conexión la primera vez que cambia una dependencia).
+- Push con la cuenta Friedpotatu (ver memoria «push-friedpotatu»).
+- Modelos y texturas se generan con `tools/model-gen/*.py` (no editar los JSON ni `MythicModelLayers.java` a mano);
+  textos con los `*_lang.py`; libro y wiki con `make_codex.py` (también genera `relic/RelicCultures.java`).
+- Visor global: `python tools/model-gen/make_viewer.py tools/design-page/viewer_check.html` y publicarlo en
+  https://claude.ai/artifact/KmBKXReYGwHWo2DGQRyHgh al cerrar cada tanda.
+- Revisiones visuales: Chrome sin ventana sobre una copia del HTML con la escena a pantalla completa (ver memoria
+  «revisar-modelos-3d»).
