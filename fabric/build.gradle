@@ -29,6 +29,8 @@ dependencies {
 
 	// Solo desarrollo (runClient): no van dentro del jar.
 	localRuntime "maven.modrinth:modmenu:$rootProject.modmenu_version"
+	// Jade: al mirar un mob muestra su vida (para probar el daño de las reliquias).
+	localRuntime "maven.modrinth:jade:${rootProject.jade_version}+fabric"
 	compileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:$rootProject.jei_version"
 	localRuntime "mezz.jei:jei-${rootProject.minecraft_version}-fabric:$rootProject.jei_version"
 	// Libro de reliquias (solo datos). Sin transitivas: el jar ya trae sus bibliotecas.

@@ -82,7 +82,7 @@ public class StoneStatue extends Entity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!onGround() && !isNoGravity()) {
+		if (!level().isClientSide() && !onGround() && !isNoGravity()) {
 			setDeltaMovement(getDeltaMovement().add(0, -0.04, 0));
 			move(net.minecraft.world.entity.MoverType.SELF, getDeltaMovement());
 			setDeltaMovement(getDeltaMovement().scale(0.98));

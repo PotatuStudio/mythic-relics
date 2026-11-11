@@ -263,17 +263,36 @@ def sandal():
 
 
 def helm():
-    """Yelmo corintio: casco negro alrededor de la cabeza, protectores de mejillas y la cimera roja.
+    """Yelmo corintio de Hades (el kunée que vuelve invisible): hierro oscuro con bordes de plata, abertura en T al
+    frente (ojos y boca) con la nasal al medio, guardanuca abierta atrás y una cimera alta de crin roja sobre un soporte de
+    oro, de la frente a la nuca.
 
     Va un poco más afuera (2,95..13,05) que las piezas de cara y la corona de Ra, para no compartir planos con ellas."""
-    e = ring(2.95, 13.05, 7.1, 12.85, 2.95, 13.05, 0.7, "black", "casco")
-    e += [box([2.95, 12.85, 2.95], [13.05, 13.55, 13.05], "black", "tapa"),
-          box([2.95, 3.1, 12.35], [6.4, 7.1, 13.05], "black", "mejilla der."),
-          box([9.6, 3.1, 12.35], [13.05, 7.1, 13.05], "black", "mejilla izq."),
-          box([7.35, 5.1, 12.35], [8.65, 9.6, 13.05], "black", "nasal"),
-          box([2.95, 3.1, 2.95], [13.05, 7.1, 3.65], "black", "nuca"),
-          box([7.05, 13.55, 2.45], [8.95, 16.1, 13.45], "crest", "cimera"),
-          box([7.25, 16.1, 3.45], [8.75, 16.7, 12.05], "crest", "crin")]
+    e = []
+    # Casco: costados y nuca (la cabeza va de 4 a 12; el frente es z 12).
+    e += [box([2.95, 3.1, 2.95], [3.65, 12.85, 12.35], "iron", "costado der."),
+          box([12.35, 3.1, 2.95], [13.05, 12.85, 12.35], "iron", "costado izq."),
+          box([3.65, 4.6, 2.95], [12.35, 12.85, 3.65], "iron", "nuca"),
+          box([2.95, 12.85, 2.95], [13.05, 13.55, 13.05], "iron", "cúpula"),
+          box([3.6, 13.55, 3.6], [12.45, 14.05, 12.45], "iron_d", "cúpula alta")]
+    # Guardanuca que se abre hacia afuera.
+    e.append(box([3.3, 3.1, 2.45], [12.7, 4.6, 2.95], "iron_d", "guardanuca"))
+    # Frente con abertura en T: frente, cejas de plata, nasal y mejillas.
+    e += [box([3.65, 9.7, 12.35], [12.35, 12.85, 13.05], "iron", "frente"),
+          box([3.4, 9.55, 13.05], [12.6, 10.15, 13.27], "silver", "ceja"),
+          box([7.35, 5.6, 12.35], [8.65, 9.7, 13.2], "iron", "nasal"),
+          box([3.65, 3.1, 12.35], [6.9, 7.6, 13.05], "iron", "mejilla der."),
+          box([9.1, 3.1, 12.35], [12.35, 7.6, 13.05], "iron", "mejilla izq."),
+          box([3.65, 7.6, 12.35], [4.5, 9.7, 13.05], "iron", "sien der."),
+          box([11.5, 7.6, 12.35], [12.35, 9.7, 13.05], "iron", "sien izq.")]
+    # Bordes de plata de las mejillas.
+    e += [box([3.4, 2.8, 12.25], [7.1, 3.1, 13.25], "silver", "borde mejilla der."),
+          box([8.9, 2.8, 12.25], [12.6, 3.1, 13.25], "silver", "borde mejilla izq.")]
+    # Cimera: soporte de oro y crin roja alta, de la frente a la nuca.
+    e += [box([7.3, 14.05, 3.0], [8.7, 14.75, 13.0], "gold", "soporte"),
+          box([7.05, 14.75, 2.0], [8.95, 17.6, 13.6], "crest", "crin"),
+          box([7.25, 17.6, 3.0], [8.75, 18.4, 12.6], "crest_l", "crin alta"),
+          box([7.05, 12.0, 1.4], [8.95, 14.75, 2.95], "crest_d", "cola de crin")]
     return e
 
 

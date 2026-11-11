@@ -9,7 +9,7 @@ version = "${version}"
 displayName = "Mythic Relics"
 authors = "PotatuStudio"
 description = '''Mythological relics (Egypt, Greece, Norse...) as RPG gear.'''
-iconFile = "assets/mythicrelics/icon.png"
+iconFile = "mythicrelics_icon.png"
 
 [[mixins]]
 config = "mythicrelics.mixins.json"
@@ -48,6 +48,13 @@ type = "optional"
 versionRange = "[31.17,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.mythicrelics]]
+modId = "jade"
+type = "optional"
+versionRange = "[26.3,)"
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.mythicrelics]]
 modId = "modonomicon"

@@ -11,7 +11,7 @@
 		"issues": "https://github.com/PotatuStudio/mythic-relics/issues"
 	},
 	"license": "MIT",
-	"icon": "assets/mythicrelics/icon.png",
+	"icon": "mythicrelics_icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": ["io.github.potatustudio.mythicrelics.fabric.MythicRelicsFabric"],
@@ -29,6 +29,7 @@
 	},
 	"suggests": {
 		"jei": "*",
+		"jade": "*",
 		"modonomicon": ">=2.20.1"
 	}
 }

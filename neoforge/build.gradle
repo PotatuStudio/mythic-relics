@@ -31,6 +31,8 @@ dependencies {
 	// JEI: compila contra la API común; en desarrollo (runClient) corre JEI completo. No va dentro del jar.
 	compileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:$rootProject.jei_version"
 	localRuntime "mezz.jei:jei-${rootProject.minecraft_version}-neoforge:$rootProject.jei_version"
+	// Jade: al mirar un mob muestra su vida (para probar el daño de las reliquias).
+	localRuntime "maven.modrinth:jade:${rootProject.jade_version}+neoforge"
 	// Libro de reliquias (solo datos). Sin transitivas: el jar ya trae sus bibliotecas.
 	localRuntime("com.klikli_dev:modonomicon-${rootProject.minecraft_version}-neoforge:$rootProject.modonomicon_version") { transitive = false }
 
