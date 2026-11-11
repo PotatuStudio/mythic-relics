@@ -169,9 +169,9 @@ Hermóðr lo montó para bajar hasta Hel a pedir por Balder.
 
 **Espacio:** mano · **Rareza:** épica
 
-- Huginn (clic derecho): los hostiles a 48 bloques brillan 15 s
-- Muninn (agachado): dónde moriste y dónde está tu cama
-- Recarga: 60 s
+- Clic derecho: salen Huginn y Muninn; otra vez, vuelven con Odín
+- Se posan cerca de ti y te miran; mientras están afuera, los hostiles a 32 bloques brillan
+- Agachado: Muninn te recuerda dónde moriste y dónde está tu cama
 
 **Mito.** Los cuervos de Odín, Pensamiento y Memoria. Cada mañana vuelan por todo el mundo y al volver le cuentan al oído todo lo que vieron.
 

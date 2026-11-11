@@ -62,9 +62,7 @@ public final class NorseGods {
 	public static final int SLEIPNIR_LEAVE_TICKS = 60;
 	public static final int SLEIPNIR_COOLDOWN = 6000;
 
-	public static final int RAVENS_RADIUS = 48;
-	public static final int RAVENS_GLOW_TICKS = 300;
-	public static final int RAVENS_COOLDOWN = 1200;
+	public static final int RAVENS_RADIUS = 32;
 
 	public static final int BRISINGAMEN_RADIUS = 8;
 	public static final int BRISINGAMEN_GROWTH_TICKS = 8;
@@ -99,6 +97,7 @@ public final class NorseGods {
 		BlockEvent.BREAK.register(NorseGods::onBreak);
 		TickEvent.SERVER_POST.register(NorseGods::tick);
 		TickEvent.SERVER_POST.register(MimirHead::tick);
+		TickEvent.SERVER_POST.register(OdinRavensItem::tick);
 		MimirHead.init();
 	}
 
@@ -240,7 +239,7 @@ public final class NorseGods {
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
 			case "sleipnir_horseshoe" -> new Object[] {SLEIPNIR_LEAVE_TICKS / 20, SLEIPNIR_COOLDOWN / 20 / 60};
-			case "odin_ravens" -> new Object[] {RAVENS_RADIUS, RAVENS_GLOW_TICKS / 20, RAVENS_COOLDOWN / 20};
+			case "odin_ravens" -> new Object[] {RAVENS_RADIUS};
 			case "brisingamen" -> new Object[] {BRISINGAMEN_RADIUS, (int) (BRISINGAMEN_HEAL / 2)};
 			case "skidbladnir" -> new Object[] {Math.round(SKIDBLADNIR_BOOST * 100)};
 			case "mimir_head" -> new Object[] {MIMIR_RADIUS, MIMIR_INTERVAL / 20};

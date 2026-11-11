@@ -50,6 +50,10 @@ public enum RelicSets {
 		return key;
 	}
 
+	public List<String> pieces() {
+		return pieces;
+	}
+
 	public boolean isComplete(Player player) {
 		return complete.test(player);
 	}

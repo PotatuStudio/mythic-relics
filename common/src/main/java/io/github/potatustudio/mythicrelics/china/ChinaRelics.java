@@ -68,8 +68,11 @@ import net.minecraft.world.phys.Vec3;
 public final class ChinaRelics {
 	public static final float RUYI_REACH = 1.5f;
 	public static final int RUYI_LENGTH = 10;
-	public static final float RUYI_STRETCH_DAMAGE = 10.0f;
-	public static final int RUYI_COOLDOWN = 160;
+	public static final float RUYI_STRETCH_DAMAGE = 18.0f;
+	public static final int RUYI_COOLDOWN = 600;
+	public static final int RUYI_EXTENDED_TICKS = 200;
+	public static final float RUYI_EXTENDED_REACH = 4.0f;
+	public static final float RUYI_SWEEP_RADIUS = 2.5f;
 
 	public static final int HAIRS_MONKEYS = 4;
 	public static final int HAIRS_TICKS = 1200;
@@ -79,10 +82,11 @@ public final class ChinaRelics {
 
 	public static final int GOURD_MAX_HEALTH = 40;
 	public static final int GOURD_DISSOLVE_TICKS = 6000;
-	public static final int GOURD_COOLDOWN = 400;
+	public static final int GOURD_COOLDOWN = 60;
 
 	public static final int FAN_BLADE_RANGE = 12;
-	public static final float FAN_BLADE_DAMAGE = 4.0f;
+	public static final float FAN_BLADE_DAMAGE = 6.0f;
+	public static final float FAN_DASH_DAMAGE = 12.0f;
 	public static final int FAN_DASH_BLOCKS = 10;
 	public static final int FAN_CHARGES = 3;
 	public static final int FAN_RECHARGE_TICKS = 120;
@@ -118,6 +122,10 @@ public final class ChinaRelics {
 	private static final Map<UUID, Long> LUNAR = new HashMap<>();
 	/** Jugador en pleno aleteo del abanico -> ticks que le quedan (empuja a los mobs que cruza y no recibe daño de caída). */
 	private static final Map<UUID, Integer> DASHING = new HashMap<>();
+	/** Mobs ya golpeados por el dash en curso de cada jugador. */
+	private static final Map<UUID, java.util.Set<UUID>> DASH_HIT = new HashMap<>();
+	/** Evita que el barrido del Ruyi se barra a sí mismo. */
+	private static final ThreadLocal<Boolean> RUYI_SWEEPING = ThreadLocal.withInitial(() -> false);
 	/** Últimos aleteos de cada jugador (para el tercer aleteo seguido). */
 	private static final Map<UUID, Deque<Long>> FLAPS = new HashMap<>();
 
@@ -157,6 +165,23 @@ public final class ChinaRelics {
 		}
 		if (source.is(DamageTypeTags.IS_LIGHTNING) && EgyptRelics.isWearing(self, ModItems.FIVE_COLOR_STONE)) {
 			return 0;
+		}
+		if (source.getEntity() instanceof Player attacker && source.getDirectEntity() == attacker && !RUYI_SWEEPING.get()
+				&& RuyiJinguBangItem.isExtended(attacker.getMainHandItem(), attacker.level().getGameTime())) {
+			// Ruyi estirado: golpes al doble que barren a los de alrededor.
+			amount *= 2.0f;
+			if (attacker.level() instanceof ServerLevel level) {
+				RUYI_SWEEPING.set(true);
+				try {
+					for (LivingEntity near : level.getEntitiesOfClass(LivingEntity.class, self.getBoundingBox().inflate(RUYI_SWEEP_RADIUS),
+							e -> e != self && e != attacker && e.isAlive() && !isFriend(attacker, e))) {
+						near.hurtServer(level, level.damageSources().playerAttack(attacker), amount * 0.5f);
+					}
+				} finally {
+					RUYI_SWEEPING.set(false);
+				}
+				level.sendParticles(ParticleTypes.SWEEP_ATTACK, self.getX(), self.getY(0.5), self.getZ(), 3, 0.8, 0.2, 0.8, 0.0);
+			}
 		}
 		if (fromHouYi(source) && isSun(self)) {
 			amount *= HOU_YI_SUN_FACTOR;
@@ -216,18 +241,7 @@ public final class ChinaRelics {
 	/** Registra un aleteo: el dash empuja a los mobs que cruza; si son tres en poco tiempo, llueve. */
 	static void flap(ServerPlayer player, int dashTicks) {
 		DASHING.put(player.getUUID(), dashTicks);
-		long now = player.level().getGameTime();
-		Deque<Long> flaps = FLAPS.computeIfAbsent(player.getUUID(), k -> new ArrayDeque<>());
-		flaps.addLast(now);
-		while (!flaps.isEmpty() && now - flaps.peekFirst() > FAN_THIRD_WINDOW) {
-			flaps.removeFirst();
-		}
-		if (flaps.size() >= FAN_CHARGES) {
-			flaps.clear();
-			ServerLevel level = player.level();
-			CLOUDS.add(new RainCloud(level, player.position(), new int[] {FAN_RAIN_TICKS}));
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 1.5f, 1.0f);
-		}
+		DASH_HIT.put(player.getUUID(), new java.util.HashSet<>());
 	}
 
 	private static void rain(RainCloud cloud) {
@@ -254,12 +268,18 @@ public final class ChinaRelics {
 	private static void dashPush(ServerPlayer player) {
 		player.resetFallDistance();
 		ServerLevel level = player.level();
-		Vec3 push = player.getDeltaMovement().multiply(1, 0, 1).normalize().scale(1.4).add(0, 0.35, 0);
-		for (LivingEntity mob : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1.5),
+		Vec3 push = player.getDeltaMovement().multiply(1, 0, 1).normalize().scale(2.2).add(0, 0.7, 0);
+		java.util.Set<UUID> hit = DASH_HIT.computeIfAbsent(player.getUUID(), k -> new java.util.HashSet<>());
+		for (LivingEntity mob : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(2.0),
 				e -> e != player && e.isAlive() && !isFriend(player, e))) {
+			if (hit.add(mob.getUUID())) {
+				mob.hurtServer(level, level.damageSources().playerAttack(player), FAN_DASH_DAMAGE);
+				level.sendParticles(ParticleTypes.SWEEP_ATTACK, mob.getX(), mob.getY(0.5), mob.getZ(), 1, 0, 0, 0, 0);
+			}
 			mob.push(push.x, push.y, push.z);
 			mob.needsSync = true;
 		}
+		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.5, player.getZ(), 4, 0.3, 0.2, 0.3, 0.02);
 		level.sendParticles(ParticleTypes.GUST, player.getX(), player.getY() + 0.8, player.getZ(), 1, 0.2, 0.2, 0.2, 0.0);
 	}
 
@@ -289,8 +309,11 @@ public final class ChinaRelics {
 		LUNAR.values().removeIf(until -> until <= now);
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
+			ItemStack main = player.getMainHandItem();
 			setModifier(player, Attributes.ENTITY_INTERACTION_RANGE, RUYI_REACH_ID,
-					player.getMainHandItem().is(ModItems.RUYI_JINGU_BANG.get()) ? RUYI_REACH : 0, AttributeModifier.Operation.ADD_VALUE);
+					!main.is(ModItems.RUYI_JINGU_BANG.get()) ? 0
+							: RuyiJinguBangItem.isExtended(main, now) ? RUYI_REACH + RUYI_EXTENDED_REACH : RUYI_REACH,
+					AttributeModifier.Operation.ADD_VALUE);
 			boolean wheels = EgyptRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS);
 			setModifier(player, Attributes.MOVEMENT_SPEED, WHEELS_SPEED_ID, wheels ? WHEELS_SPEED : 0,
 					AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
@@ -360,11 +383,12 @@ public final class ChinaRelics {
 	/** Números de los tooltips chinos (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
-			case "ruyi_jingu_bang" -> new Object[] {fmt(RUYI_REACH), RUYI_LENGTH, (int) RUYI_STRETCH_DAMAGE, RUYI_COOLDOWN / 20};
+			case "ruyi_jingu_bang" -> new Object[] {fmt(RUYI_REACH), RUYI_LENGTH, (int) RUYI_STRETCH_DAMAGE, RUYI_COOLDOWN / 20,
+					RUYI_EXTENDED_TICKS / 20, (int) RUYI_EXTENDED_REACH};
 			case "monkey_king_hairs" -> new Object[] {HAIRS_MONKEYS, HAIRS_TICKS / 20, MONKEY_HEALTH, MONKEY_DAMAGE, HAIRS_COOLDOWN / 20 / 60};
 			case "purple_gold_gourd" -> new Object[] {GOURD_MAX_HEALTH, GOURD_DISSOLVE_TICKS / 20 / 60, GOURD_COOLDOWN / 20};
 			case "banana_leaf_fan" -> new Object[] {FAN_BLADE_RANGE, (int) FAN_BLADE_DAMAGE, FAN_DASH_BLOCKS, FAN_CHARGES,
-					FAN_RECHARGE_TICKS / 20, FAN_THIRD_WINDOW / 20, FAN_RAIN_TICKS / 20};
+					FAN_RECHARGE_TICKS / 20, (int) FAN_DASH_DAMAGE};
 			case "dragon_pearl" -> new Object[] {DRAGON_LEAVE_TICKS / 20, DRAGON_COOLDOWN / 20 / 60};
 			case "wind_fire_wheels" -> new Object[] {Math.round(WHEELS_SPEED * 100)};
 			case "hou_yi_bow" -> new Object[] {Math.round(HOU_YI_DAMAGE * 100), HOU_YI_SUN_FACTOR};

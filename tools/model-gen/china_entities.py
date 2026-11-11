@@ -481,10 +481,12 @@ JAVA_OUT = os.path.join(ROOT, "common", "src", "main", "java", "io", "github", "
 # Desplazamiento de las partes raíz en el juego: el long se baja y se corre hacia adelante para que el centro de su caja
 # (donde va el jinete) quede sobre el segundo segmento; el mono ya tiene el suelo en y = 24.
 ROOT_OFFSET = {"monkey": (0, 0, 0), "dragon": (0, 16, -16), "dog": (0, 0, 0), "qilin": (0, 0, 0), "kitsune": (0, 0, 0),
-               "turtle": (0, 0, 0), "orochi": (0, 0, 0)}
+               "turtle": (0, 0, 0), "orochi": (0, 0, 0),
+               "raven": (0, 0, 0), "skidbladnir": (0, 0, 0)}
 NAMES = {"monkey": ("monkeyWarrior", "monkey_warrior"), "dragon": ("longDragon", "long_dragon"),
          "dog": ("celestialDog", "celestial_dog"), "qilin": ("qilin", "qilin"), "kitsune": ("kitsune", "kitsune"),
-         "turtle": ("urashimaTurtle", "urashima_turtle"), "orochi": ("orochiShadow", "orochi_shadow")}
+         "turtle": ("urashimaTurtle", "urashima_turtle"), "orochi": ("orochiShadow", "orochi_shadow"),
+         "raven": ("odinRaven", "odin_raven"), "skidbladnir": ("skidbladnir", "boat/skidbladnir")}
 
 
 def jf(v):
@@ -547,6 +549,10 @@ if __name__ == "__main__":
         import japan_entities as JE  # noqa: E402
         for key in JE.MODELS:
             baked[key] = JE.bake_one(key)
+        import norse_entities as NE  # noqa: E402
+        for key in NE.MODELS:
+            baked[key] = NE.bake_one(key)
+        os.makedirs(os.path.join(ENTITY_TEX, "boat"), exist_ok=True)
         write_mod(baked)
         print("ok: texturas en", ENTITY_TEX, "y", JAVA_OUT)
         sys.exit(0)

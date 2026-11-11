@@ -34,9 +34,9 @@ A eso se suman los dioses del trueno y del mar y el folclore: los kitsune, los o
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Clic derecho: tajo de viento en arco de 5 bloques, 6 de daño y empuje
+- Clic derecho: tajo de viento en arco de 5 bloques, 16 de daño y empuje
 - Siega la hierba y apaga el fuego que alcanza
-- Recarga: 8 s. Parte del set de los Tres Tesoros
+- Recarga: 8 s
 
 **Mito.** La espada que Susanoo encontró dentro de la cola de Yamata no Orochi, la serpiente de ocho cabezas.  
 Su nombre, «cortadora de hierba», viene de Yamato Takeru: atrapado en un campo en llamas, segó la hierba con ella y el viento volvió el fuego contra sus enemigos.
@@ -52,7 +52,7 @@ Su nombre, «cortadora de hierba», viene de Yamato Takeru: atrapado en un campo
 
 - En la mano secundaria: las flechas y bolas de fuego rebotan hacia quien las lanzó
 - Clic derecho: un destello de sol ciega a los hostiles a 12 bloques durante 5 s
-- Recarga: 30 s. Parte del set de los Tres Tesoros
+- Recarga: 30 s
 
 **Mito.** El espejo de bronce que los dioses colgaron frente a la cueva donde se había encerrado Amaterasu, la diosa del sol.  
 Al asomarse, ella vio su propio brillo reflejado y salió: la luz volvió al mundo.
@@ -67,7 +67,6 @@ Al asomarse, ella vio su propio brillo reflejado y salió: la luz volvió al mun
 **Espacio:** collar · **Rareza:** épica
 
 - De día y bajo el cielo recuperas medio corazón cada 5 s
-- Set de los Tres Tesoros (Kusanagi en una mano, el espejo en la otra y la magatama puesta): de día +20% de daño y Resistencia I
 
 **Mito.** La joya curva de jade que colgaba del árbol frente a la cueva de Amaterasu, junto al espejo.  
 Es la tercera insignia imperial y simboliza el alma y la bondad del linaje del sol.
@@ -127,7 +126,7 @@ Guardan su poder en una hoshi no tama, una esfera blanca con una llama, y encien
 
 **Espacio:** mano · **Rareza:** épica
 
-- Kanju (clic derecho): el agua se aparta en un pasillo seco de 12 bloques durante 20 s
+- Kanju (clic derecho): una burbuja sin agua de 3 bloques te rodea y te sigue durante 20 s
 - Manju (agachado): una ola que arrastra a los mobs 8 bloques y apaga el fuego
 - Recarga: 60 s
 
@@ -144,6 +143,7 @@ Se las prestó a la emperatriz Jingū para vencer a una flota enemiga.
 **Espacio:** mano · **Rareza:** épica
 
 - Clic derecho: creces 1.6 veces durante 30 s, con más alcance y 4 corazones más
+- Grande: más fuerza, saltas más alto, subes bloques sin saltar y te empujan menos
 - Recarga: 3 min
 - Agachado: los cultivos y crías a 4 bloques crecen al instante
 
@@ -194,7 +194,6 @@ Agradecida, la tortuga lo llevó sobre su caparazón al Ryūgū-jō, el palacio 
 - Clic derecho: una corriente te eleva y bajas planeando 6 s
 - Agachado: un ventarrón empuja lejos todo lo que hay a 8 bloques
 - Recarga: 20 s
-- Set de Fūjin y Raijin (la bolsa en el inventario y el tambor puesto): el rayo cae cada 3 golpes y salta a 2 hostiles cercanos
 
 **Mito.** Fūjin, el dios del viento, carga sobre los hombros un saco con todos los vientos del mundo y los suelta al abrirlo.  
 Siempre aparece junto a Raijin, el dios del trueno, como en el famoso biombo de Tawaraya Sōtatsu.

@@ -235,6 +235,21 @@ lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y 
 - Cerbero a 1,7 veces; sorbos al beber el agua del Estigia; el hinojo funde el stack entero (1 s de recarga por objeto).
 - Para ver la vida de los mobs se recomienda Jade (cliente; hay versión 26.3 para NeoForge).
 
+## Arreglos tras la segunda y tercera prueba (2026-11-10)
+- Monturas: en 26.3 el servidor no deja montar entidades `noSave`; Sleipnir, qilin, long, tortuga y Skíðblaðnir se
+  guardan como tipo pero se descartan con `shouldBeSaved() = false`.
+- Impulsos al jugador desde el servidor (`relic/RelicMotion`): hay que mandarle el paquete de movimiento.
+- Libros sibilinos con mapa de la estructura (sin repetir) y rastro de letras; Mímir con contornos (Display de bloque
+  que brilla) y susurros; candado de Jano (Display de ítem `padlock`); fuego del hogar de Vesta.
+- Cuervos de Odín (`entity/OdinRaven`): mascotas que se posan cerca y miran al dueño; hostiles brillan mientras están.
+- Skíðblaðnir: bote propio (`entity/SkidbladnirBoat`, capa `boat/skidbladnir` con vela y proa de dragón).
+- Mjölnir y Gungnir con modelo 3D en la mano y en vuelo (`norse_models.py`, `ThrownRelicRenderer`); Paladio rehecho.
+- Ruyi estirado 10 s (marca de `custom_model_data`, modelo `ruyi_jingu_bang_extended`); abanico como arma de viento;
+  kanju en burbuja; mazo con fuerza, salto y paso; xirang rescata de la lava o el vacío.
+- Activas al menos al doble del golpe básico; aliados atacan al hostil más cercano; una pestaña creativa por mitología;
+  bloque de set igual en todas las piezas (`set.mythicrelics.<set>.bonus.N`).
+- Página de revisión de modelos: `tools/design-page/revision2_build.py`.
+
 ## Pestaña creativa
 El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
 `tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone

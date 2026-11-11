@@ -53,6 +53,14 @@ public class ChangeElixirItem extends RelicItem {
 		return ItemUseAnimation.DRINK;
 	}
 
+	/** Sorbos mientras se bebe, como una poción. */
+	@Override
+	public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remaining) {
+		if (remaining % 4 == 0) {
+			entity.playSound(net.minecraft.sounds.SoundEvents.GENERIC_DRINK.value(), 0.5f, level.getRandom().nextFloat() * 0.1f + 0.9f);
+		}
+	}
+
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
 		if (!(entity instanceof ServerPlayer player) || !(level instanceof ServerLevel server)

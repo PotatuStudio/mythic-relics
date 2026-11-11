@@ -103,18 +103,33 @@ def shield_display(blocking):
 
 # ---- Paladio ------------------------------------------------------------------------------------------------------
 def palladium_elements():
+    """Estatuilla de Palas Atenea sobre un pedestal de dos escalones: peplo con pliegues, égida dorada con la gorgona en el
+    pecho, yelmo con cimera alta, escudo redondo en la izquierda y la lanza en alto en la derecha, apoyada sobre el
+    escalón (no lo atraviesa). La cara mira al frente (norte, z bajo)."""
     t = "#p"
     return [
-        box([4, 0, 4], [12, 2, 12], "stone", t, "base"),
-        box([6, 2, 6], [10, 9, 10], "wood", t, "túnica"),
-        box([5.5, 7, 6.5], [10.5, 9.5, 9.5], "wood", t, "hombros"),
-        box([6.75, 9.5, 6.75], [9.25, 12, 9.25], "wood", t, "cabeza"),
-        box([6.5, 11, 6.5], [9.5, 12.75, 9.5], "gold", t, "yelmo"),
-        box([7.6, 12.75, 6.0], [8.4, 14.5, 10.0], "gold", t, "cimera"),
-        box([3.6, 3.5, 6.5], [5.5, 8.5, 9.5], "bronze", t, "escudo"),
-        box([10.5, 6, 7.5], [11.5, 7, 8.5], "wood", t, "brazo"),
-        box([11.5, 1, 7.6], [12.3, 13.5, 8.4], "wood", t, "lanza"),
-        box([11.4, 13.5, 7.5], [12.4, 15.5, 8.5], "silver", t, "punta"),
+        box([3, 0, 3], [13, 1.5, 13], "stone", t, "pedestal"),
+        box([4, 1.5, 4], [12.8, 2.5, 12], "stone", t, "escalón"),
+        box([6, 2.5, 6.2], [10, 8, 10], "wood", t, "peplo"),
+        box([6.6, 2.5, 6.0], [7.0, 7.6, 6.2], "wood_d", t, "pliegue"),
+        box([7.8, 2.5, 6.0], [8.2, 7.6, 6.2], "wood_d", t, "pliegue"),
+        box([9.0, 2.5, 6.0], [9.4, 7.6, 6.2], "wood_d", t, "pliegue"),
+        box([5.8, 7.4, 6.0], [10.2, 8.0, 10.2], "gold", t, "cinturón"),
+        box([6.3, 8, 6.5], [9.7, 10.5, 9.7], "wood", t, "torso"),
+        box([6.6, 8.5, 6.3], [9.4, 10.3, 6.5], "gold", t, "égida"),
+        box([7.6, 9.0, 6.1], [8.4, 9.8, 6.3], "bronze", t, "gorgona"),
+        box([5.6, 9.8, 6.8], [10.4, 10.6, 9.4], "wood", t, "hombros"),
+        box([6.8, 10.6, 6.8], [9.2, 12.6, 9.2], "wood_l", t, "cara"),
+        box([6.6, 11.6, 6.6], [9.4, 13.0, 9.4], "bronze", t, "yelmo"),
+        box([7.6, 13.0, 6.2], [8.4, 15.2, 10.2], "gold", t, "cimera"),
+        box([7.6, 14.6, 10.2], [8.4, 15.2, 11.2], "gold", t, "penacho"),
+        box([5.0, 7.6, 7.4], [5.6, 10.0, 8.6], "wood", t, "brazo izq."),
+        box([3.4, 4.6, 6.0], [4.6, 9.8, 10.0], "bronze", t, "escudo"),
+        box([3.1, 6.6, 7.4], [3.4, 7.8, 8.6], "gold", t, "umbo"),
+        box([10.4, 8.0, 7.4], [11.2, 10.6, 8.4], "wood", t, "brazo der."),
+        box([11.0, 10.2, 7.4], [11.7, 11.0, 8.4], "wood_l", t, "mano"),
+        box([11.7, 2.5, 7.6], [12.3, 14.6, 8.2], "wood_d", t, "lanza"),
+        box([11.6, 14.6, 7.5], [12.4, 16.4, 8.3], "silver", t, "punta"),
     ]
 
 

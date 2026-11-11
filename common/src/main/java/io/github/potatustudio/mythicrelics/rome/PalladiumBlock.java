@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * bloques ({@link Palladiums} guarda dónde está). Mira hacia quien lo coloca.
  */
 public class PalladiumBlock extends HorizontalDirectionalBlock {
-	private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 15, 13);
+	private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 16, 13);
 
 	public PalladiumBlock(Properties properties) {
 		super(properties);

@@ -48,9 +48,9 @@ import net.minecraft.world.level.Level;
  */
 public final class NorseRelics {
 	public static final int MJOLNIR_RANGE = 24;
-	public static final float MJOLNIR_DAMAGE = 9.0f;
+	public static final float MJOLNIR_DAMAGE = 18.0f;
 	public static final int GUNGNIR_RANGE = 32;
-	public static final float GUNGNIR_DAMAGE = 8.0f;
+	public static final float GUNGNIR_DAMAGE = 14.0f;
 	public static final int GUNGNIR_CONE_DEGREES = 30;
 
 	public static final float JARNGREIPR_FIST = 3.0f;

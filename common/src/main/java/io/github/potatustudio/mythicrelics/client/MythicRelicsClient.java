@@ -48,9 +48,17 @@ public final class MythicRelicsClient {
 		EntityModelLayerRegistry.register(UrashimaTurtleModel.LAYER, UrashimaTurtleModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.URASHIMA_TURTLE, ChinaRenderers.TurtleRenderer::new);
 		EntityModelLayerRegistry.register(OrochiModel.LAYER, OrochiModel::createBodyLayer);
+		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.OdinRavenModel.LAYER,
+				io.github.potatustudio.mythicrelics.client.entity.OdinRavenModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.ODIN_RAVEN, ChinaRenderers.RavenRenderer::new);
+		// Skíðblaðnir: el renderizador de botes vanilla con el modelo y la textura propios (textures/entity/boat/skidbladnir.png).
+		net.minecraft.client.model.geom.ModelLayerLocation ship = new net.minecraft.client.model.geom.ModelLayerLocation(
+				io.github.potatustudio.mythicrelics.MythicRelics.id("boat/skidbladnir"), "main");
+		EntityModelLayerRegistry.register(ship, io.github.potatustudio.mythicrelics.client.entity.MythicModelLayers::skidbladnir);
+		EntityRendererRegistry.register(ModEntities.SKIDBLADNIR_BOAT, context -> new net.minecraft.client.renderer.entity.BoatRenderer(context, ship));
 		EntityRendererRegistry.register(ModEntities.OROCHI_SHADOW, ChinaRenderers.OrochiRenderer::new);
 		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
-		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, context -> new ThrownItemRenderer<>(context, 1.5f, false));
+		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, io.github.potatustudio.mythicrelics.client.entity.ThrownRelicRenderer::new);
 		GreeceClient.init();
 		RelicTooltips.init();
 		PetrifiedClient.init();

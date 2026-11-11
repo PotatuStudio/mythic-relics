@@ -228,16 +228,26 @@ public final class ModItems {
 	/** Emblema del mod (escudo con una cultura por cuarto): solo es el ícono de la pestaña creativa, no se consigue. */
 	public static final RegistrySupplier<Item> EMBLEM = register("emblem", Item::new, p -> p);
 
-	public static final RegistrySupplier<CreativeModeTab> TAB = TABS.register("main", () -> CreativeTabRegistry.create(builder -> builder
-			.title(Component.translatable("itemGroup.mythicrelics.main"))
-			.icon(() -> new ItemStack(EMBLEM.get()))
-			.displayItems((parameters, output) -> {
-				for (RegistrySupplier<Item> item : ITEMS) {
-					if (item != EMBLEM && item != STONE_STATUE && item != PADLOCK) {
-						output.accept(item.get());
+	/** Una pestaña creativa por mitología, en el orden del libro; cada una con una reliquia emblemática de ícono. */
+	public static final RegistrySupplier<CreativeModeTab> TAB_EGYPT = cultureTab("egypt", () -> ANKH.get());
+	public static final RegistrySupplier<CreativeModeTab> TAB_GREECE = cultureTab("greece", () -> MEDUSA_HEAD.get());
+	public static final RegistrySupplier<CreativeModeTab> TAB_ROME = cultureTab("rome", () -> ANCILE.get());
+	public static final RegistrySupplier<CreativeModeTab> TAB_NORSE = cultureTab("norse", () -> MJOLNIR.get());
+	public static final RegistrySupplier<CreativeModeTab> TAB_CHINA = cultureTab("china", () -> RUYI_JINGU_BANG.get());
+	public static final RegistrySupplier<CreativeModeTab> TAB_JAPAN = cultureTab("japan", () -> KUSANAGI.get());
+
+	private static RegistrySupplier<CreativeModeTab> cultureTab(String culture, java.util.function.Supplier<Item> icon) {
+		return TABS.register(culture, () -> CreativeTabRegistry.create(builder -> builder
+				.title(Component.translatable("itemGroup.mythicrelics." + culture))
+				.icon(() -> new ItemStack(icon.get()))
+				.displayItems((parameters, output) -> {
+					for (RegistrySupplier<Item> item : ITEMS) {
+						if (culture.equals(io.github.potatustudio.mythicrelics.relic.RelicCultures.of(item.getId().getPath()))) {
+							output.accept(item.get());
+						}
 					}
-				}
-			})));
+				})));
+	}
 
 	private ModItems() {
 	}

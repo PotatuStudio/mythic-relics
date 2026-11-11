@@ -36,7 +36,7 @@ public class SkidbladnirItem extends RelicItem {
 			return InteractionResult.PASS;
 		}
 		if (level instanceof ServerLevel server) {
-			AbstractBoat boat = EntityTypes.SPRUCE_BOAT.create(server, EntitySpawnReason.SPAWN_ITEM_USE);
+			AbstractBoat boat = io.github.potatustudio.mythicrelics.registry.ModEntities.SKIDBLADNIR_BOAT.get().create(server, EntitySpawnReason.SPAWN_ITEM_USE);
 			if (boat == null) {
 				return InteractionResult.PASS;
 			}

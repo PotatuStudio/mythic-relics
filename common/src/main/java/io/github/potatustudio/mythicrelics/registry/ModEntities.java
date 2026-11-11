@@ -134,6 +134,25 @@ public final class ModEntities {
 					.clientTrackingRange(10)
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("stone_statue"))));
 
+	/** Huginn y Muninn, los cuervos de Odín (mascotas pasivas; no se guardan con el mundo). */
+	public static final RegistrySupplier<EntityType<io.github.potatustudio.mythicrelics.entity.OdinRaven>> ODIN_RAVEN =
+			ENTITIES.register("odin_raven", () -> EntityType.Builder.of(io.github.potatustudio.mythicrelics.entity.OdinRaven::new,
+							MobCategory.MISC)
+					.sized(0.6f, 0.5f)
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("odin_raven"))));
+
+	/** Skíðblaðnir desplegado (bote con modelo propio; se descarta solo, pero no es noSave para poder montarlo). */
+	public static final RegistrySupplier<EntityType<io.github.potatustudio.mythicrelics.entity.SkidbladnirBoat>> SKIDBLADNIR_BOAT =
+			ENTITIES.register("skidbladnir_boat", () -> EntityType.Builder.<io.github.potatustudio.mythicrelics.entity.SkidbladnirBoat>of(
+							io.github.potatustudio.mythicrelics.entity.SkidbladnirBoat::new, MobCategory.MISC)
+					.noLootTable()
+					.sized(1.375f, 0.5625f)
+					.eyeHeight(0.5625f)
+					.clientTrackingRange(10)
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("skidbladnir_boat"))));
+
 	private ModEntities() {
 	}
 
@@ -150,5 +169,6 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(KITSUNE, Kitsune::createAttributes);
 		EntityAttributeRegistry.register(URASHIMA_TURTLE, UrashimaTurtle::createAttributes);
 		EntityAttributeRegistry.register(OROCHI_SHADOW, OrochiShadow::createAttributes);
+		EntityAttributeRegistry.register(ODIN_RAVEN, io.github.potatustudio.mythicrelics.entity.OdinRaven::createAttributes);
 	}
 }

@@ -48,9 +48,9 @@ public class FujinWindBagItem extends RelicItem {
 			server.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.5, player.getZ(), 40, 3.0, 0.5, 3.0, 0.15);
 		} else {
 			Vec3 v = player.getDeltaMovement();
-			player.setDeltaMovement(v.x, JapanGods.WIND_LIFT, v.z);
-			player.needsSync = true;
-			player.resetFallDistance();
+			if (player instanceof net.minecraft.server.level.ServerPlayer sp) {
+				io.github.potatustudio.mythicrelics.relic.RelicMotion.launch(sp, new Vec3(v.x, JapanGods.WIND_LIFT, v.z));
+			}
 			player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, JapanGods.WIND_GLIDE_TICKS + 40, 0, true, false));
 			server.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY(), player.getZ(), 30, 0.6, 0.2, 0.6, 0.08);
 			server.sendParticles(ParticleTypes.GUST, player.getX(), player.getY() + 0.5, player.getZ(), 2, 0.3, 0.3, 0.3, 0);

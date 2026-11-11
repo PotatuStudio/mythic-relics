@@ -30,15 +30,7 @@ public class RelicItem extends Item {
 		String id = BuiltInRegistries.ITEM.getKey(this).getPath();
 		effectLines(this, tooltip);
 		appendExtraLines(stack, tooltip);
-		String set = EgyptRelics.isAnubisSetPiece(id) ? "anubis_set" : id.startsWith("osiris_") ? "osiris_set"
-				: id.equals("hermes_sandals") || id.equals("hades_helm") || id.equals("athena_aegis") ? "perseus_set"
-				: id.equals("mjolnir") || id.equals("jarngreipr") || id.equals("megingjord") ? "thor_set" : null;
-		if (set != null) {
-			tooltip.accept(Component.empty());
-			tooltip.accept(Component.translatable("tooltip.mythicrelics." + set + ".1").withStyle(ChatFormatting.GRAY));
-			tooltip.accept(Component.translatable("tooltip.mythicrelics." + set + ".2", EgyptGods.rebirthMinutes()).withStyle(ChatFormatting.BLUE));
-			tooltip.accept(Component.translatable("tooltip.mythicrelics." + set + ".3", EgyptGods.rebirthMinutes()).withStyle(ChatFormatting.BLUE));
-		}
+		// El bloque del set (igual para todas las piezas) lo agrega el cliente: client/RelicTooltips.
 		ModLoot.appendWhere(this, tooltip);
 	}
 

@@ -1,6 +1,8 @@
 package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.entity.OdinRaven;
+import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
@@ -33,6 +35,9 @@ public class OdinRavensItem extends RelicItem {
 		super(properties);
 	}
 
+	/** Cuervos afuera por dueño (se sacan del mapa cuando ya no existen). */
+	private static final java.util.Map<java.util.UUID, java.util.List<OdinRaven>> OUT = new java.util.concurrent.ConcurrentHashMap<>();
+
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		if (player.getCooldowns().isOnCooldown(player.getItemInHand(hand))) {
@@ -41,21 +46,59 @@ public class OdinRavensItem extends RelicItem {
 		if (!(player instanceof ServerPlayer serverPlayer) || !(level instanceof ServerLevel server)) {
 			return InteractionResult.SUCCESS;
 		}
-		if (!RelicCooldowns.tryStart(serverPlayer, "odin_ravens", NorseGods.RAVENS_COOLDOWN, BuiltInRegistries.ITEM.getKey(this))) {
-			return InteractionResult.PASS;
-		}
-		server.sendParticles(ParticleTypes.SMOKE, player.getX(), player.getY() + 2.0, player.getZ(), 16, 0.6, 0.3, 0.6, 0.05);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_FLY, SoundSource.PLAYERS, 1.0f, 0.6f);
+		player.getCooldowns().addCooldown(player.getItemInHand(hand), 20);
 		if (player.isShiftKeyDown()) {
 			memory(serverPlayer);
-		} else {
-			for (LivingEntity foe : server.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(NorseGods.RAVENS_RADIUS),
-					e -> e instanceof Enemy && e.isAlive())) {
-				foe.addEffect(new MobEffectInstance(MobEffects.GLOWING, NorseGods.RAVENS_GLOW_TICKS, 0, false, false));
-			}
-			serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.huginn").withStyle(ChatFormatting.DARK_GRAY));
+			server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_AMBIENT, SoundSource.PLAYERS, 1.0f, 0.5f);
+			return InteractionResult.SUCCESS;
 		}
+		java.util.List<OdinRaven> out = OUT.remove(player.getUUID());
+		if (out != null && out.stream().anyMatch(r -> !r.isRemoved())) {
+			// Vuelven con Odín.
+			for (OdinRaven r : out) {
+				server.sendParticles(ParticleTypes.SMOKE, r.getX(), r.getY() + 0.3, r.getZ(), 10, 0.3, 0.3, 0.3, 0.03);
+				r.discard();
+			}
+			serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.ravens_away").withStyle(ChatFormatting.DARK_GRAY));
+			server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_FLY, SoundSource.PLAYERS, 1.0f, 0.6f);
+			return InteractionResult.SUCCESS;
+		}
+		java.util.List<OdinRaven> ravens = new java.util.ArrayList<>();
+		String[] names = {"huginn", "muninn"};
+		for (int i = 0; i < 2; i++) {
+			OdinRaven raven = ModEntities.ODIN_RAVEN.get().create(server, net.minecraft.world.entity.EntitySpawnReason.MOB_SUMMONED);
+			if (raven == null) {
+				continue;
+			}
+			raven.bind(player, i);
+			raven.snapTo(player.getX(), player.getY() + 1.8, player.getZ(), player.getYRot(), 0);
+			raven.setCustomName(Component.translatable("entity.mythicrelics." + names[i]));
+			server.addFreshEntity(raven);
+			ravens.add(raven);
+		}
+		OUT.put(player.getUUID(), ravens);
+		server.sendParticles(ParticleTypes.SMOKE, player.getX(), player.getY() + 2.0, player.getZ(), 16, 0.6, 0.3, 0.6, 0.05);
+		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_FLY, SoundSource.PLAYERS, 1.0f, 0.6f);
+		serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.huginn").withStyle(ChatFormatting.DARK_GRAY));
 		return InteractionResult.SUCCESS;
+	}
+
+	/** Mientras los cuervos están afuera, los hostiles cercanos al dueño brillan sin parar. */
+	static void tick(net.minecraft.server.MinecraftServer server) {
+		if (server.getTickCount() % 20 != 0) {
+			return;
+		}
+		OUT.entrySet().removeIf(e -> e.getValue().stream().allMatch(net.minecraft.world.entity.Entity::isRemoved));
+		OUT.forEach((id, ravens) -> {
+			ServerPlayer player = server.getPlayerList().getPlayer(id);
+			if (player == null) {
+				return;
+			}
+			for (LivingEntity foe : player.level().getEntitiesOfClass(LivingEntity.class,
+					player.getBoundingBox().inflate(NorseGods.RAVENS_RADIUS), e -> e instanceof Enemy && e.isAlive())) {
+				foe.addEffect(new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false));
+			}
+		});
 	}
 
 	/** Muninn: la última muerte y la cama, con dirección y distancia (o en qué dimensión están). */

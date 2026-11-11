@@ -47,17 +47,9 @@ public class TideJewelsItem extends RelicItem {
 
 	/** Kanju: pasillo seco de 3 de ancho, desde tus pies hasta 12 bloques adelante, de 3 abajo a 4 arriba. */
 	private static void ebb(ServerLevel level, Player player) {
-		Direction facing = player.getDirection();
-		Direction side = facing.getClockWise();
-		BlockPos base = player.blockPosition();
-		int half = JapanRelics.TIDE_WIDTH / 2;
-		BlockPos a = base.relative(side, -half).below(3);
-		BlockPos b = base.relative(facing, JapanRelics.TIDE_LENGTH).relative(side, half).above(4);
-		JapanRelics.openCorridor(level, a, b);
-		for (int i = 1; i <= JapanRelics.TIDE_LENGTH; i++) {
-			BlockPos p = base.relative(facing, i);
-			level.sendParticles(ParticleTypes.SPLASH, p.getX() + 0.5, p.getY() + 1, p.getZ() + 0.5, 10, 1.0, 0.8, 1.0, 0.1);
-		}
+		JapanRelics.startBubble(player);
+		level.sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY() + 1, player.getZ(), 60, 1.5, 1.0, 1.5, 0.2);
+		level.sendParticles(ParticleTypes.BUBBLE_POP, player.getX(), player.getY() + 1, player.getZ(), 40, 1.5, 1.0, 1.5, 0.05);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CONDUIT_ACTIVATE, SoundSource.PLAYERS, 1.2f, 0.8f);
 	}
 

@@ -34,8 +34,8 @@ Los dragones chinos (long) no tienen alas ni escupen fuego: vuelan entre las nub
 **Espacio:** mano (arma) · **Rareza:** épica
 
 - Arma pesada con 1.5 bloques más de alcance
-- Clic derecho: se estira 10 bloques en línea recta y golpea a todo con 10 de daño
-- Recarga: 8 s
+- Clic derecho: se estira 10 bloques golpeando todo en línea recta (18 de daño) y queda largo 10 s: +4 bloques de alcance y golpes al doble que barren alrededor
+- Recarga: 30 s
 
 **Mito.** El bastón del Rey Mono. Era la columna de hierro con que el Rey Dragón del Mar del Este medía la profundidad del océano; pesaba 13.500 jin y obedecía a Sun Wukong.  
 Crecía hasta el cielo o se encogía hasta caber detrás de su oreja. Es de hierro negro con un aro de oro en cada punta.
@@ -68,7 +68,7 @@ Así enfrentó solo a los ejércitos del Cielo.
 - Clic derecho a un mob: lo atrapas dentro (40 de vida o menos; no jefes, jugadores ni invocaciones)
 - Clic derecho otra vez: lo sueltas donde miras
 - Un hostil que pasa 5 min dentro se disuelve: te da su botín y su experiencia
-- Recarga: 20 s
+- Recarga: 3 s
 
 **Mito.** El tesoro de los demonios Cuerno de Oro y Cuerno de Plata en Viaje al Oeste. Si la calabaza decía tu nombre y respondías, quedabas atrapado dentro, y a las pocas horas te disolvías. Wukong cayó en ella y escapó con un engaño.  
 Su nombre, zijin hong hulu, es «calabaza roja de oro púrpura»: el oro púrpura es un oro rojizo, no el color morado.
@@ -82,10 +82,9 @@ Su nombre, zijin hong hulu, es «calabaza roja de oro púrpura»: el oro púrpur
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Cada golpe lanza una cuchilla de viento: 12 bloques, 4 de daño a lo que cruza
-- Clic derecho: un aleteo, un dash de viento de unos 10 bloques que empuja a los mobs
+- Cada golpe lanza una cuchilla de viento: 12 bloques, 6 de daño a lo que cruza
+- Clic derecho: dash de viento de unos 10 bloques; hiere (12) y lanza lejos a los mobs que atraviesas
 - 3 aleteos; cada uno vuelve en 6 s
-- Tres aleteos en 4 s: nubes y lluvia durante 15 s que apagan el fuego cercano
 
 **Mito.** El abanico de la Princesa Abanico de Hierro. Un aleteo levantaba el viento, el segundo traía las nubes y el tercero la lluvia: así se apagaban las Montañas Llameantes.  
 Con un solo aleteo mandó a Wukong volando a miles de leguas.
@@ -179,7 +178,7 @@ Una de las que sobraron es la piedra de «Sueño en el pabellón rojo».
 **Espacio:** mano (arma) · **Rareza:** épica
 
 - Prende fuego al golpeado 4 s
-- Clic derecho: llamarada en cono de 6 bloques, 5 de daño y fuego
+- Clic derecho: llamarada en cono de 6 bloques, 16 de daño y fuego
 - Recarga: 10 s (5 s con las ruedas de viento y fuego puestas)
 
 **Mito.** La lanza de Nezha en La investidura de los dioses (huojian qiang): su punta ardía y con ella derrotó a ejércitos enteros, junto con sus ruedas de viento y fuego.
@@ -194,7 +193,7 @@ Una de las que sobraron es la piedra de «Sueño en el pabellón rojo».
 **Espacio:** mano · **Rareza:** épica
 
 - Clic derecho: lanzas el aro, golpea hasta 3 enemigos a 8 bloques y vuelve
-- 7 de daño a cada uno y los deja aturdidos 1 s
+- 12 de daño a cada uno y los deja aturdidos 1 s
 - Recarga: 4 s
 
 **Mito.** El qiankun quan, el aro de oro con que nació Nezha. Lo lanzaba como un arma y volvía a su mano; con él mató al hijo del Rey Dragón del Mar del Este.
@@ -224,8 +223,6 @@ Así descubrió a Wukong aunque se transformara en templo, pez o pájaro.
 **Espacio:** mano (arma) · **Rareza:** épica
 
 - 1 bloque más de alcance; cada golpe barre a los mobs a 2 bloques
-- Set de Erlang Shen (con el Ojo puesto): cuando un mob te hiere, aparece el Perro Celestial durante 45 s
-- Recarga del perro: 90 s
 
 **Mito.** El arma de Erlang Shen, la sanjian liangren dao: una alabarda de tres puntas y doble filo con la que peleó trescientos asaltos contra el Rey Mono.  
 Su perro, el Xiaotian Quan, le mordió la pierna a Wukong para que Erlang lo atrapara.
@@ -288,6 +285,7 @@ En el folclore, uno pegado en la frente de un jiangshi (el cadáver que salta) l
 
 - Clic derecho: crece frente a ti un muro de tierra de 5 de ancho y 3 de alto que corta el agua
 - 3 puñados; vuelve uno cada 60 s
+- Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga 2 min)
 
 **Mito.** El xirang era la tierra que crecía sola. Gun la robó del Cielo para contener el Gran Diluvio; su hijo Yu el Grande la usó para levantar diques y abrir canales hasta domar las aguas.
 

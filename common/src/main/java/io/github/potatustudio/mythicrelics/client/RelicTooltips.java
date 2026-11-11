@@ -53,9 +53,55 @@ public final class RelicTooltips {
 		}
 		RelicSets set = RelicSets.of(key.getPath());
 		if (set != null) {
-			boolean on = set.isComplete(player);
-			lines.add(Component.translatable(on ? "tooltip.mythicrelics.set_active" : "tooltip.mythicrelics.set_inactive",
-					set.displayName()).withStyle(on ? ChatFormatting.GREEN : ChatFormatting.DARK_GRAY));
+			setBlock(lines, set, player);
 		}
+	}
+
+	/**
+	 * Bloque del set, igual en todas sus piezas: el nombre en violeta con cuántas piezas tienes, cada pieza marcada (✔ la
+	 * tienes contigo, ✘ te falta), el bono en azul y si está activo. Va justo antes de «Se encuentra en».
+	 */
+	private static void setBlock(List<Component> lines, RelicSets set, Player player) {
+		int at = lines.size();
+		for (int i = lines.size() - 1; i >= 0; i--) {
+			if (lines.get(i).getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t
+					&& t.getKey().equals("tooltip.mythicrelics.found_in")) {
+				at = i;
+				break;
+			}
+		}
+		List<Component> block = new java.util.ArrayList<>();
+		int have = 0;
+		net.minecraft.network.chat.MutableComponent pieces = Component.literal(" ");
+		boolean first = true;
+		for (String id : set.pieces()) {
+			net.minecraft.world.item.Item item = BuiltInRegistries.ITEM.getValue(MythicRelics.id(id));
+			boolean has = player.getInventory().contains(s -> s.is(item))
+					|| io.github.potatustudio.mythicrelics.relic.WornRelics.isWearing(player, item);
+			if (has) {
+				have++;
+			}
+			if (!first) {
+				pieces.append(Component.literal(", ").withStyle(ChatFormatting.DARK_GRAY));
+			}
+			first = false;
+			pieces.append(Component.literal(has ? "✔ " : "✘ ").append(new net.minecraft.world.item.ItemStack(item).getHoverName())
+					.withStyle(has ? ChatFormatting.GREEN : ChatFormatting.DARK_GRAY));
+		}
+		block.add(Component.empty());
+		block.add(Component.literal("◈ ").append(set.displayName()).append(Component.literal(" · " + have + "/" + set.pieces().size()))
+				.withStyle(ChatFormatting.LIGHT_PURPLE));
+		block.add(pieces);
+		for (int i = 1; i <= 3; i++) {
+			String k = "set.mythicrelics." + set.key() + ".bonus." + i;
+			if (net.minecraft.locale.Language.getInstance().has(k)) {
+				block.add(Component.literal(" ").append(Component.translatable(k,
+						io.github.potatustudio.mythicrelics.egypt.EgyptGods.rebirthMinutes())).withStyle(ChatFormatting.BLUE));
+			}
+		}
+		boolean on = set.isComplete(player);
+		block.add(Component.literal(" ").append(Component.translatable(on ? "tooltip.mythicrelics.set_active" : "tooltip.mythicrelics.set_inactive",
+				set.displayName())).withStyle(on ? ChatFormatting.GREEN : ChatFormatting.DARK_GRAY));
+		lines.addAll(at, block);
 	}
 }

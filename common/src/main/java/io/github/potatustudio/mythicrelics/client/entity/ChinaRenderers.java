@@ -130,6 +130,20 @@ public final class ChinaRenderers {
 		}
 	}
 
+	/** Huginn y Muninn: cuervos de Odín (los ojos brillan). */
+	public static class RavenRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.OdinRaven, OdinRavenModel> {
+		public RavenRenderer(EntityRendererProvider.Context context) {
+			super(context, new OdinRavenModel(context.bakeLayer(OdinRavenModel.LAYER)), 0.3f, "odin_raven");
+		}
+
+		@Override
+		public void extractRenderState(io.github.potatustudio.mythicrelics.entity.OdinRaven raven, LivingEntityRenderState state, float partialTick) {
+			super.extractRenderState(raven, state, partialTick);
+			// Posado: alas plegadas (el modelo lo lee de la velocidad de "caminar").
+			state.walkAnimationSpeed = raven.isPerched() ? 0.0f : 1.0f;
+		}
+	}
+
 	/** Sombra de Orochi: serpiente de ocho cabezas, al doble de su geometría; no se oculta si su caja sale de la vista. */
 	public static class OrochiRenderer extends Glowing<OrochiShadow, OrochiModel> {
 		public static final float SCALE = 2.0f;

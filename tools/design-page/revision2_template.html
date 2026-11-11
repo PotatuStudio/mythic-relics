@@ -1,0 +1,287 @@
+<title>Revisión de modelos nórdicos y romanos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: banda superior con la escena 3D a todo el ancho; debajo, la ficha del modelo elegido. */
+:root {
+  --bg: #f3efe6; --panel: #fbf8f1; --ink: #23201a; --muted: #6b6455; --line: #d9d1bf;
+  --accent: #9a6a12; --accent-ink: #fff8e6; --stage: #14120f;
+  --display: "Cormorant SC", "Palatino Linotype", Georgia, serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #16140f; --panel: #1f1c16; --ink: #ece5d4; --muted: #a59c86; --line: #3a3428;
+  --accent: #e2b04a; --accent-ink: #1a1408; --stage: #0c0b09; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #16140f; --panel: #1f1c16; --ink: #ece5d4; --muted: #a59c86; --line: #3a3428;
+  --accent: #e2b04a; --accent-ink: #1a1408; --stage: #0c0b09; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 1100px; margin: 0 auto; padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 18px; }
+h1 { font-family: var(--display); font-size: clamp(30px, 5vw, 44px); margin: 0; letter-spacing: .02em; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 68ch; margin: 0; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tabs button { font: 600 14px var(--body); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink); cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 100%; background: var(--stage); border-radius: 10px; overflow: hidden; }
+.stage canvas { display: block; width: 100%; height: 100%; }
+.hint { position: absolute; left: 12px; bottom: 10px; color: #cfc6b0; font-size: 12px; opacity: .8; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: grid; gap: 10px; }
+.card h2 { font-family: var(--display); font-size: 26px; margin: 0; }
+.card p { margin: 0; max-width: 72ch; }
+.card ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-width: 72ch; }
+.tag { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); font-weight: 600; }
+</style>
+
+<div class="wrap">
+  <header style="display:grid; gap:8px">
+    <span class="tag">Mythic Relics · revisión antes de programar</span>
+    <h1>Modelos nuevos: cuervos, barco, armas y paladio</h1>
+    <p class="lede">Lo que pediste tras probar en NeoForge, dibujado con la misma geometría que tendrá en el juego. Arrastra para girar y usa la rueda para acercar.</p>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Modelo">
+    <button data-s="ravens" aria-pressed="true">Huginn y Muninn</button>
+    <button data-s="ship" aria-pressed="false">Skíðblaðnir</button>
+    <button data-s="mjolnir" aria-pressed="false">Mjölnir</button>
+    <button data-s="gungnir" aria-pressed="false">Gungnir</button>
+    <button data-s="palladium" aria-pressed="false">Paladio</button>
+    <button data-s="padlock" aria-pressed="false">Candado de Jano</button>
+  </nav>
+  <div class="stage" id="stage"><span class="hint">El bloque de arena mide 1 metro (un bloque).</span></div>
+  <article class="card" id="card"></article>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DATA = __DATA__;
+const CARDS = {
+  ravens: ["Huginn y Muninn", "Cuervos de Odín · mascotas pasivas", [
+    "Clic derecho con el ítem: salen los dos cuervos; otra vez, vuelven. No atacan ni se pueden herir.",
+    "Vuelan en círculos a media distancia (unos 4 bloques) y siempre te miran.",
+    "Mientras están afuera, los hostiles a 24 bloques brillan sin parar.",
+    "Negro azabache con brillo azulado, pico grueso y ojos dorados que brillan en la oscuridad.",
+    "Muninn sigue diciendo dónde moriste y dónde está tu cama (agachado y clic derecho)."]],
+  ship: ["Skíðblaðnir", "El barco de Freyr", [
+    "Mismo casco que el bote vanilla (flota y se maneja igual), con su propia textura: fresno claro casi dorado, borde de oro y una línea de runas azules que brillan.",
+    "Lo que lo distingue: proa con cabeza de dragón, mástil y vela a franjas blancas y doradas con el sol de Freyr.",
+    "Sigue plegándose solo al bajarte y con viento a favor va más rápido."]],
+  mjolnir: ["Mjölnir", "Modelo 3D en la mano y en vuelo", [
+    "Cabeza corta y ancha de acero oscuro con bandas de plata, nudo dorado y una runa azul en cada cara.",
+    "Mango corto (el defecto que le dejó Loki) envuelto en cuero, pomo de oro y anilla.",
+    "En la mano y lanzado se ve en 3D, girando de punta a punta; en el inventario sigue el ícono plano, como el tridente."]],
+  gungnir: ["Gungnir", "Modelo 3D como el tridente", [
+    "Lanza larga de fresno con regatón y casquillo de oro y punta de hoja de acero con runas doradas.",
+    "En la mano se sostiene en alto como el tridente; lanzada vuela con la punta hacia adelante.",
+    "En el inventario sigue el ícono plano."]],
+  palladium: ["Paladio", "Estatuilla de Palas Atenea", [
+    "A la derecha, el nuevo; a la izquierda, el actual. La lanza ya no atraviesa el pedestal: se apoya en el escalón.",
+    "Pedestal de piedra de dos escalones, peplo con pliegues, cinturón y égida de oro con la gorgona en el pecho.",
+    "Yelmo de bronce con cimera alta y penacho, escudo redondo con umbo y la lanza en alto en la mano derecha."]],
+  padlock: ["Candado de Jano", "Lo cerrado con llave se nota", [
+    "Al cerrar con la llave, cuelga un candado dorado de la cara del bloque que tocaste (puerta, trampilla, valla o cofre).",
+    "Al abrir con la llave o romper el bloque, el candado desaparece.",
+    "Si alguien más intenta abrirlo, suena el candado y dice quién lo cerró."]],
+};
+
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x14120f);
+const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.01, 200);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const sun = new THREE.DirectionalLight(0xfff1d6, 0.75); sun.position.set(-2, 5, 3); scene.add(sun);
+const fill = new THREE.DirectionalLight(0xb8c8ff, 0.3); fill.position.set(3, 2, -3); scene.add(fill);
+
+function tex(b64) {
+  const img = new Image(); const t = new THREE.Texture(img);
+  img.onload = () => { t.needsUpdate = true; };
+  img.src = "data:image/png;base64," + b64;
+  t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding;
+  return t;
+}
+function sandTexture() {
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16;
+  const g = c.getContext("2d"); const tones = ["#dbcfa3", "#e3d8af", "#d4c597", "#e9dfb8", "#cdbd8e"];
+  let s = 11; const r = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) { g.fillStyle = tones[Math.floor(r() * 5)]; g.fillRect(x, y, 1, 1); }
+  const t = new THREE.CanvasTexture(c); t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding;
+  return t;
+}
+const sandMat = new THREE.MeshLambertMaterial({ map: sandTexture() });
+const ground = new THREE.Group(); scene.add(ground);
+for (let x = -4; x <= 4; x++) for (let z = -4; z <= 4; z++) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sandMat); m.position.set(x, -0.5, z); ground.add(m);
+}
+const refBlock = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sandMat); scene.add(refBlock);
+
+/* Cubos con UV de caja de ModelPart (igual que el visor global). */
+function cube(material, texW, texH, u, v, x0, y0, z0, w, h, d) {
+  const x1 = x0 + w, y1 = y0 + h, z1 = z0 + d;
+  const v000 = [x0, y0, z0], v100 = [x1, y0, z0], v110 = [x1, y1, z0], v010 = [x0, y1, z0];
+  const v001 = [x0, y0, z1], v101 = [x1, y0, z1], v111 = [x1, y1, z1], v011 = [x0, y1, z1];
+  const f8 = u + d, f9 = u + d + w, f10 = u + d + w + w, f11 = u + d + w + d, f12 = u + d + w + d + w, f13 = v + d, f14 = v + d + h;
+  const faces = [[[v101, v001, v000, v100], f8, v, f9, f13], [[v110, v010, v011, v111], f9, f13, f10, v],
+    [[v000, v001, v011, v010], u, f13, f8, f14], [[v100, v000, v010, v110], f8, f13, f9, f14],
+    [[v101, v100, v110, v111], f9, f13, f11, f14], [[v001, v101, v111, v011], f11, f13, f12, f14]];
+  const pos = [], uv = [], idx = [];
+  for (const [verts, u1, v1, u2, v2] of faces) {
+    const b = pos.length / 3; const uvs = [[u2, v1], [u1, v1], [u1, v2], [u2, v2]];
+    verts.forEach((p, i) => { pos.push(...p); uv.push(uvs[i][0] / texW, 1 - uvs[i][1] / texH); });
+    idx.push(b, b + 1, b + 2, b, b + 2, b + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return new THREE.Mesh(g, material);
+}
+function entity(key, rootY) {
+  const e = DATA.entities[key];
+  const m = new THREE.MeshLambertMaterial({ map: tex(e.tex), side: THREE.DoubleSide, alphaTest: 0.1,
+    emissiveMap: tex(e.glow), emissive: new THREE.Color(0xffffff) });
+  const outer = new THREE.Group(); const root = new THREE.Group();
+  root.scale.set(-1 / 16, -1 / 16, 1 / 16); root.position.y = rootY; outer.add(root);
+  const parts = {};
+  for (const p of e.parts) {
+    const g = new THREE.Group(); g.position.set(...p.offset); g.rotation.order = "ZYX"; g.rotation.set(...p.rot);
+    g.userData.base = [...p.rot];
+    for (const c of p.cubes) g.add(cube(m, e.texW, e.texH, ...c));
+    (p.parent ? parts[p.parent] : root).add(g); parts[p.name] = g;
+  }
+  return { outer, parts };
+}
+function addRot(p, dx = 0, dy = 0, dz = 0) { const b = p.userData.base; p.rotation.set(b[0] + dx, b[1] + dy, b[2] + dz); }
+
+/* Modelos de bloque/ítem (elementos JSON con paleta de 2x2 px), en bloques y centrados en (8, 8, 8). */
+const FACE_ORDER = ["east", "west", "up", "down", "south", "north"];
+function elements(list, paletteB64) {
+  const mat = new THREE.MeshLambertMaterial({ map: tex(paletteB64) });
+  const g = new THREE.Group();
+  for (const el of list) {
+    const [x0, y0, z0] = el.from, [x1, y1, z1] = el.to;
+    const geo = new THREE.BoxGeometry((x1 - x0) / 16, (y1 - y0) / 16, (z1 - z0) / 16);
+    const uvA = geo.attributes.uv;
+    FACE_ORDER.forEach((f, i) => { const fd = el.faces[f]; if (!fd) return; const [u1, v1, u2, v2] = fd.uv;
+      [[u1, v1], [u2, v1], [u1, v2], [u2, v2]].forEach(([u, v], k) => uvA.setXY(i * 4 + k, u / 16, 1 - v / 16)); });
+    uvA.needsUpdate = true;
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(((x0 + x1) / 2 - 8) / 16, ((y0 + y1) / 2 - 8) / 16, ((z0 + z1) / 2 - 8) / 16);
+    g.add(mesh);
+  }
+  return g;
+}
+
+/* Jugador de referencia (colores lisos), de frente a +z. */
+function player() {
+  const g = new THREE.Group();
+  const box = (c, w, h, d, x, y, z) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w / 16, h / 16, d / 16),
+    new THREE.MeshLambertMaterial({ color: c })); m.position.set(x / 16, y / 16, z / 16); g.add(m); return m; };
+  box(0xc9a27a, 8, 8, 8, 0, 28, 0); box(0x3d6fa8, 8, 12, 4, 0, 18, 0);
+  box(0x2c3f66, 4, 12, 4, -2, 6, 0); box(0x2c3f66, 4, 12, 4, 2, 6, 0);
+  const armR = new THREE.Group(); armR.position.set(-6 / 16, 22 / 16, 0); g.add(armR);
+  const a = new THREE.Mesh(new THREE.BoxGeometry(4 / 16, 12 / 16, 4 / 16), new THREE.MeshLambertMaterial({ color: 0xc9a27a }));
+  a.position.y = -4 / 16; armR.add(a);
+  box(0xc9a27a, 4, 12, 4, 6, 18, 0);
+  g.userData.armR = armR;
+  return g;
+}
+
+const S = {};   // grupos por escena
+function scenery(name) { const g = new THREE.Group(); g.visible = false; scene.add(g); S[name] = g; return g; }
+
+// Cuervos alrededor del jugador.
+const ravensG = scenery("ravens");
+const p1 = player(); ravensG.add(p1);
+const ravens = [entity("raven", 1.5), entity("raven", 1.5)];
+ravens.forEach(r => ravensG.add(r.outer));
+
+// Barco sobre el agua.
+const shipG = scenery("ship");
+const water = new THREE.Mesh(new THREE.BoxGeometry(9, 0.9, 9), new THREE.MeshLambertMaterial({ color: 0x2f5f9a, transparent: true, opacity: 0.85 }));
+water.position.y = -0.45; shipG.add(water);
+const ship = entity("skidbladnir", 0.375); ship.outer.position.y = 0.0; ship.outer.rotation.y = Math.PI / 2; shipG.add(ship.outer);
+const sailor = player(); sailor.scale.setScalar(1); sailor.position.set(0, -0.1, 0); shipG.add(sailor);
+
+// Mjölnir y Gungnir: grande girando, en la mano y en vuelo.
+function weaponScene(name, list, held, fly) {
+  const g = scenery(name);
+  const big = elements(list, DATA.norsePalette); big.scale.setScalar(name === "gungnir" ? 1.2 : 2.2); big.position.set(-1.6, name === "gungnir" ? 0.9 : 1.4, 0); g.add(big);
+  const p = player(); p.position.set(0.9, 0, 0); p.rotation.y = -0.5; g.add(p);
+  const inHand = elements(list, DATA.norsePalette); held(inHand); p.userData.armR.add(inHand);
+  const flying = elements(list, DATA.norsePalette); g.add(flying);
+  g.userData = { big, flying, fly };
+  return g;
+}
+weaponScene("mjolnir", DATA.mjolnir, m => { m.scale.setScalar(0.85); m.rotation.set(-1.0, 0, 0); m.position.set(0, -0.62, 0.05); },
+  (m, t) => { m.position.set(3.0 + Math.cos(t) * 0.0, 1.6, -2 + ((t * 2) % 4)); m.rotation.set(-t * 12, 0, 0); });
+weaponScene("gungnir", DATA.gungnir, m => { m.scale.setScalar(0.85); m.position.set(0, -0.62 - 3.5 / 16 * 0.85, 0.05); m.rotation.set(0, 0, 0); },
+  (m, t) => { m.position.set(3.0, 1.8, -2 + ((t * 2) % 4)); m.rotation.set(Math.PI / 2, 0, 0); });
+
+// Paladio: actual a la izquierda, nuevo a la derecha.
+const palG = scenery("palladium");
+const oldP = elements(DATA.palladiumOld, DATA.romePalette); oldP.position.set(-0.8, 0.5, 0); palG.add(oldP);
+const newP = elements(DATA.palladium, DATA.romePalette); newP.position.set(0.8, 0.5, 0); palG.add(newP);
+
+// Candado sobre un cofre.
+const lockG = scenery("padlock");
+const chest = new THREE.Group(); lockG.add(chest);
+const wood = new THREE.MeshLambertMaterial({ color: 0x9a6a32 }), woodD = new THREE.MeshLambertMaterial({ color: 0x5e3a18 });
+const body = new THREE.Mesh(new THREE.BoxGeometry(14 / 16, 10 / 16, 14 / 16), wood); body.position.y = 5 / 16; chest.add(body);
+const lid = new THREE.Mesh(new THREE.BoxGeometry(14.2 / 16, 4 / 16, 14.2 / 16), woodD); lid.position.y = 12 / 16; chest.add(lid);
+chest.position.set(0, 0, 0);
+const lockMat = new THREE.MeshLambertMaterial({ map: tex(DATA.padlock), transparent: true, alphaTest: 0.1, side: THREE.DoubleSide });
+const lock = new THREE.Mesh(new THREE.PlaneGeometry(0.45, 0.45), lockMat); lock.position.set(0, 0.5, 0.5 + 0.03); lockG.add(lock);
+
+
+const VIEWS = {
+  ravens: { cam: [4.2, 3.0, 5.0], target: [0, 1.6, 0], block: [-2.2, 0.5, -1.5] },
+  ship: { cam: [4.6, 3.2, 4.8], target: [0, 0.8, 0], block: [-3.5, 0.5, -3.5] },
+  mjolnir: { cam: [1.2, 2.2, 5.2], target: [0.6, 1.3, 0], block: [-3.2, 0.5, -1.5] },
+  gungnir: { cam: [1.2, 2.2, 6.0], target: [0.4, 1.5, 0], block: [-3.2, 0.5, -1.5] },
+  palladium: { cam: [0.4, 1.4, 2.6], target: [0, 0.5, 0], block: [2.4, 0.5, -0.6] },
+  padlock: { cam: [1.3, 1.2, 2.2], target: [0.2, 0.5, 0], block: [-1.6, 0.5, -0.8] },
+};
+let current = "ravens";
+function show(s) {
+  current = s;
+  for (const k in S) S[k].visible = k === s;
+  ground.visible = s !== "ship";
+  const v = VIEWS[s]; camera.position.set(...v.cam); controls.target.set(...v.target); refBlock.position.set(...v.block);
+  document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === s)));
+  const [t, sub, items] = CARDS[s];
+  document.getElementById("card").innerHTML = `<span class="tag">${sub}</span><h2>${t}</h2><ul>${items.map(i => `<li>${i}</li>`).join("")}</ul>`;
+}
+document.querySelectorAll("#tabs button").forEach(b => b.addEventListener("click", () => show(b.dataset.s)));
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage); resize();
+const t0 = performance.now();
+function loop(now) {
+  const t = reduce ? 1.2 : (now - t0) / 1000;
+  ravens.forEach((r, i) => {
+    const a = t * 0.5 + i * Math.PI, rad = 4;
+    r.outer.position.set(Math.cos(a) * rad, 2.0 + Math.sin(t * 1.3 + i) * 0.25, Math.sin(a) * rad);
+    r.outer.rotation.y = Math.atan2(-Math.cos(a), -Math.sin(a)) + Math.PI;   // de frente al jugador
+    const f = Math.sin(t * 9 + i) * 0.55;
+    addRot(r.parts.wing_r, 0, 0, f); addRot(r.parts.wing_l, 0, 0, -f);
+    addRot(r.parts.tail, Math.sin(t * 2 + i) * 0.1);
+  });
+  ship.outer.position.y = Math.sin(t * 1.2) * 0.03;
+  addRot(ship.parts.sail, 0, Math.sin(t * 0.8) * 0.05);
+  for (const n of ["mjolnir", "gungnir"]) { const u = S[n].userData; u.big.rotation.y = t * 0.6; u.fly(u.flying, t); }
+  oldP.rotation.y = newP.rotation.y = Math.sin(t * 0.4) * 0.5;
+  controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop);
+}
+show("ravens");
+requestAnimationFrame(loop);
+</script>

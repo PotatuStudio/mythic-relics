@@ -173,7 +173,14 @@ public final class Minions {
 			return hit;
 		}
 		LivingEntity attacker = owner.getLastHurtByMob();
-		return valid(owner, mob, attacker, owner.getLastHurtByMobTimestamp()) ? attacker : null;
+		if (valid(owner, mob, attacker, owner.getLastHurtByMobTimestamp())) {
+			return attacker;
+		}
+		// Si nadie pelea con su dueño, van por el hostil más cercano (a la vista del aliado).
+		return mob.level().getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(SEARCH_RANGE),
+						e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive() && ownerOf(e) == null
+								&& !isAlly(e, owner.getUUID()) && mob.hasLineOfSight(e))
+				.stream().min(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(mob))).orElse(null);
 	}
 
 	private static boolean valid(Player owner, Mob mob, @Nullable LivingEntity t, int timestamp) {

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -56,12 +57,12 @@ import net.minecraft.world.level.Level;
 public final class ChinaGods {
 	public static final int SPEAR_BURN_SECONDS = 4;
 	public static final int SPEAR_FLAME_RANGE = 6;
-	public static final float SPEAR_FLAME_DAMAGE = 5.0f;
+	public static final float SPEAR_FLAME_DAMAGE = 16.0f;
 	public static final int SPEAR_COOLDOWN = 200;
 
 	public static final int RING_TARGETS = 3;
 	public static final int RING_RANGE = 8;
-	public static final float RING_DAMAGE = 7.0f;
+	public static final float RING_DAMAGE = 12.0f;
 	public static final int RING_STUN_TICKS = 20;
 	public static final int RING_COOLDOWN = 80;
 
@@ -88,6 +89,7 @@ public final class ChinaGods {
 	public static final int XIRANG_HEIGHT = 3;
 	public static final int XIRANG_CHARGES = 3;
 	public static final int XIRANG_RECHARGE_TICKS = 1200;
+	public static final int XIRANG_RESCUE_COOLDOWN = 2400;
 
 	public static final int PEACH_GROW_TICKS = 72000;
 	public static final int PEACH_ABSORPTION_TICKS = 3600;
@@ -182,6 +184,49 @@ public final class ChinaGods {
 
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------
 
+	/** Último suelo firme de cada jugador (a donde lo devuelve el xirang si cae al vacío). */
+	private static final Map<UUID, BlockPos> SAFE_GROUND = new HashMap<>();
+
+	/** Saco de xirang: la tierra crece bajo tus pies y te saca de la lava o del vacío. */
+	private static void xirangRescue(ServerPlayer player) {
+		if (!RelicCooldowns.tryStart(player, "xirang_rescue", XIRANG_RESCUE_COOLDOWN,
+				net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(ModItems.XIRANG_SACK.get()))) {
+			return;
+		}
+		ServerLevel level = player.level();
+		BlockPos feet;
+		if (player.isInLava()) {
+			// Sube hasta la superficie de la lava.
+			feet = player.blockPosition();
+			while (level.getFluidState(feet).is(net.minecraft.tags.FluidTags.LAVA) && feet.getY() < level.getMaxY()) {
+				feet = feet.above();
+			}
+		} else {
+			feet = SAFE_GROUND.getOrDefault(player.getUUID(), level.getRespawnData().pos()).above();
+		}
+		for (BlockPos p : BlockPos.betweenClosed(feet.offset(-1, -1, -1), feet.offset(1, -1, 1))) {
+			if (level.getBlockState(p).canBeReplaced() || level.getFluidState(p).is(net.minecraft.tags.FluidTags.LAVA)) {
+				level.setBlockAndUpdate(p, net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState());
+			}
+		}
+		for (BlockPos p : BlockPos.betweenClosed(feet, feet.above())) {
+			if (level.getFluidState(p).is(net.minecraft.tags.FluidTags.LAVA)) {
+				level.setBlockAndUpdate(p, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+			}
+		}
+		player.teleportTo(feet.getX() + 0.5, feet.getY(), feet.getZ() + 0.5);
+		player.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+		player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(player));
+		player.resetFallDistance();
+		player.clearFire();
+		player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.FIRE_RESISTANCE, 100, 0));
+		level.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK,
+				net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState()), player.getX(), player.getY(), player.getZ(), 40, 1.0, 0.3, 1.0, 0.1);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), net.minecraft.sounds.SoundEvents.ROOTED_DIRT_PLACE,
+				net.minecraft.sounds.SoundSource.PLAYERS, 1.2f, 0.7f);
+		player.sendOverlayMessage(Component.translatable("message.mythicrelics.xirang_rescue").withStyle(ChatFormatting.GOLD));
+	}
+
 	private static void tick(MinecraftServer server) {
 		long now = server.overworld().getGameTime();
 		Iterator<Map.Entry<UUID, Long>> it = SEALED.entrySet().iterator();
@@ -204,6 +249,13 @@ public final class ChinaGods {
 			}
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+			if (player.onGround() && !player.isInLava()) {
+				SAFE_GROUND.put(player.getUUID(), player.blockPosition());
+			}
+			if ((player.isInLava() || player.getY() < player.level().getMinY() - 8) && !player.isSpectator()
+					&& player.getInventory().contains(s -> s.is(ModItems.XIRANG_SACK.get()))) {
+				xirangRescue(player);
+			}
 			setModifier(player, Attributes.ENTITY_INTERACTION_RANGE, HALBERD_REACH_ID,
 					player.getMainHandItem().is(ModItems.ERLANG_HALBERD.get()) ? HALBERD_REACH : 0);
 			if (player.tickCount % 10 == 0 && EgyptRelics.isWearing(player, ModItems.ERLANG_EYE)) {
@@ -246,7 +298,8 @@ public final class ChinaGods {
 			case "qilin_horn" -> new Object[] {QILIN_AURA_RADIUS, QILIN_LEAVE_TICKS / 20, QILIN_COOLDOWN / 20 / 60};
 			case "pixiu_bracelet" -> new Object[] {Math.round(PIXIU_CHANCE * 100), PIXIU_MAX_NUGGETS};
 			case "fu_talismans" -> new Object[] {TALISMAN_TICKS / 20, TALISMAN_COOLDOWN / 20};
-			case "xirang_sack" -> new Object[] {XIRANG_WIDTH, XIRANG_HEIGHT, XIRANG_CHARGES, XIRANG_RECHARGE_TICKS / 20};
+			case "xirang_sack" -> new Object[] {XIRANG_WIDTH, XIRANG_HEIGHT, XIRANG_CHARGES, XIRANG_RECHARGE_TICKS / 20,
+					XIRANG_RESCUE_COOLDOWN / 20 / 60};
 			case "immortal_peach_branch" -> new Object[] {PEACH_GROW_TICKS / 24000, PEACH_ABSORPTION_TICKS / 20 / 60, PEACH_REGEN_TICKS / 20};
 			default -> io.github.potatustudio.mythicrelics.japan.JapanRelics.tooltipArgs(id);
 		};

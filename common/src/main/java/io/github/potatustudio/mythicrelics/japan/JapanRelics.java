@@ -50,7 +50,7 @@ import net.minecraft.world.phys.Vec3;
  * </ul>
  */
 public final class JapanRelics {
-	public static final float KUSANAGI_SLASH_DAMAGE = 6.0f;
+	public static final float KUSANAGI_SLASH_DAMAGE = 16.0f;
 	public static final int KUSANAGI_SLASH_RANGE = 5;
 	public static final int KUSANAGI_COOLDOWN = 160;
 
@@ -96,6 +96,12 @@ public final class JapanRelics {
 	private static final Identifier MALLET_HEALTH_ID = MythicRelics.id("lucky_mallet_health");
 	private static final Identifier MALLET_REACH_ID = MythicRelics.id("lucky_mallet_reach");
 	private static final Identifier MALLET_BLOCK_REACH_ID = MythicRelics.id("lucky_mallet_block_reach");
+	private static final Identifier MALLET_DAMAGE_ID = MythicRelics.id("lucky_mallet_damage");
+	private static final Identifier MALLET_JUMP_ID = MythicRelics.id("lucky_mallet_jump");
+	private static final Identifier MALLET_STEP_ID = MythicRelics.id("lucky_mallet_step");
+	private static final Identifier MALLET_FALL_ID = MythicRelics.id("lucky_mallet_fall");
+	private static final Identifier MALLET_KNOCKBACK_ID = MythicRelics.id("lucky_mallet_knockback");
+	public static final float MALLET_DAMAGE = 4.0f;
 
 	/** Golpes seguidos con el tambor de Raijin: [cantidad, tick del último golpe]. */
 	private static final Map<UUID, long[]> DRUM = new HashMap<>();
@@ -107,6 +113,31 @@ public final class JapanRelics {
 	}
 
 	private static final java.util.List<Corridor> CORRIDORS = new java.util.ArrayList<>();
+	/** Burbuja de kanju: jugador -> tick en que se acaba. */
+	private static final Map<UUID, Long> BUBBLES = new HashMap<>();
+	public static final int TIDE_BUBBLE_RADIUS = 3;
+
+	static void startBubble(Player player) {
+		BUBBLES.put(player.getUUID(), player.level().getGameTime() + TIDE_TICKS);
+	}
+
+	/** Seca una esfera alrededor del jugador (el agua vuelve sola al apartarse o al acabar la burbuja). */
+	private static void bubble(ServerLevel level, Player player) {
+		BlockPos c = BlockPos.containing(player.getX(), player.getY() + 1, player.getZ());
+		int r = TIDE_BUBBLE_RADIUS;
+		for (BlockPos pos : BlockPos.betweenClosed(c.offset(-r, -r, -r), c.offset(r, r, r))) {
+			if (pos.distSqr(c) <= r * r + 1 && level.getBlockState(pos).is(Blocks.WATER)) {
+				level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+			}
+		}
+		if (player.tickCount % 6 == 0) {
+			for (int i = 0; i < 12; i++) {
+				double a = Math.PI * 2 * i / 12 + player.tickCount * 0.05;
+				level.sendParticles(ParticleTypes.BUBBLE_POP, c.getX() + 0.5 + Math.cos(a) * r, c.getY() + 0.5 + Math.sin(a * 2) * 1.5,
+						c.getZ() + 0.5 + Math.sin(a) * r, 1, 0, 0, 0, 0);
+			}
+		}
+	}
 
 	private JapanRelics() {
 	}
@@ -208,6 +239,11 @@ public final class JapanRelics {
 		setModifier(player, Attributes.MAX_HEALTH, MALLET_HEALTH_ID, MALLET_HEALTH);
 		setModifier(player, Attributes.ENTITY_INTERACTION_RANGE, MALLET_REACH_ID, 1.5);
 		setModifier(player, Attributes.BLOCK_INTERACTION_RANGE, MALLET_BLOCK_REACH_ID, 1.5);
+		setModifier(player, Attributes.ATTACK_DAMAGE, MALLET_DAMAGE_ID, MALLET_DAMAGE);
+		setModifier(player, Attributes.JUMP_STRENGTH, MALLET_JUMP_ID, 0.15);
+		setModifier(player, Attributes.STEP_HEIGHT, MALLET_STEP_ID, 0.6);
+		setModifier(player, Attributes.SAFE_FALL_DISTANCE, MALLET_FALL_ID, 4.0);
+		setModifier(player, Attributes.KNOCKBACK_RESISTANCE, MALLET_KNOCKBACK_ID, 0.5);
 		player.heal(MALLET_HEALTH);
 	}
 
@@ -216,6 +252,11 @@ public final class JapanRelics {
 		setModifier(player, Attributes.MAX_HEALTH, MALLET_HEALTH_ID, 0);
 		setModifier(player, Attributes.ENTITY_INTERACTION_RANGE, MALLET_REACH_ID, 0);
 		setModifier(player, Attributes.BLOCK_INTERACTION_RANGE, MALLET_BLOCK_REACH_ID, 0);
+		setModifier(player, Attributes.ATTACK_DAMAGE, MALLET_DAMAGE_ID, 0);
+		setModifier(player, Attributes.JUMP_STRENGTH, MALLET_JUMP_ID, 0);
+		setModifier(player, Attributes.STEP_HEIGHT, MALLET_STEP_ID, 0);
+		setModifier(player, Attributes.SAFE_FALL_DISTANCE, MALLET_FALL_ID, 0);
+		setModifier(player, Attributes.KNOCKBACK_RESISTANCE, MALLET_KNOCKBACK_ID, 0);
 		if (player.getHealth() > player.getMaxHealth()) {
 			player.setHealth(player.getMaxHealth());
 		}
@@ -235,7 +276,11 @@ public final class JapanRelics {
 				drain(c.level(), c.from(), c.to());
 			}
 		}
+		BUBBLES.values().removeIf(until -> until <= now);
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+			if (now % 2 == 0 && BUBBLES.containsKey(player.getUUID())) {
+				bubble(player.level(), player);
+			}
 			Long until = GROWN.get(player.getUUID());
 			if (until != null && until <= now) {
 				GROWN.remove(player.getUUID());
@@ -286,7 +331,7 @@ public final class JapanRelics {
 			case "oni_kanabo" -> new Object[] {Math.round(KANABO_ARMOR_IGNORED * 100)};
 			case "kitsune_star_ball" -> new Object[] {KITSUNE_TICKS / 20, KITSUNE_HEALTH, KITSUNE_DAMAGE, KITSUNEBI_INTERVAL / 20,
 					KITSUNEBI_BURN_SECONDS, KITSUNE_COOLDOWN / 20 / 60};
-			case "tide_jewels" -> new Object[] {TIDE_LENGTH, TIDE_TICKS / 20, TIDE_WAVE_RANGE, TIDE_COOLDOWN / 20};
+			case "tide_jewels" -> new Object[] {TIDE_BUBBLE_RADIUS, TIDE_TICKS / 20, TIDE_WAVE_RANGE, TIDE_COOLDOWN / 20};
 			case "lucky_mallet" -> new Object[] {fmt(1 + MALLET_SCALE), MALLET_TICKS / 20, MALLET_HEALTH / 2, MALLET_COOLDOWN / 20 / 60,
 					MALLET_GROW_RADIUS};
 			case "kibi_dango" -> new Object[] {KIBI_STRENGTH_TICKS / 20, KIBI_MAX};

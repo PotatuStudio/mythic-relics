@@ -652,4 +652,74 @@ public final class MythicModelLayers {
 				PartPose.offsetAndRotation(4.21f, -1.5f, -10.16f, 0.0f, 5.891f, 0.0f));
 		return LayerDefinition.create(mesh, 128, 128);
 	}
+
+	public static LayerDefinition odinRaven() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p_body = root.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-2.5f, -2.5f, -4.0f, 5.0f, 5.0f, 8.0f),
+				PartPose.offset(0.0f, 18.0f, 0.0f));
+		PartDefinition p_head = root.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(26, 0).addBox(-2.0f, -3.0f, -3.5f, 4.0f, 4.0f, 4.0f)
+				.texOffs(30, 20).addBox(-1.5f, 0.0f, -3.0f, 3.0f, 1.0f, 3.0f),
+				PartPose.offset(0.0f, 16.0f, -4.0f));
+		PartDefinition p_beak = p_head.addOrReplaceChild("beak", CubeListBuilder.create()
+				.texOffs(20, 20).addBox(-1.0f, -1.0f, -3.0f, 2.0f, 2.0f, 3.0f),
+				PartPose.offsetAndRotation(0.0f, -1.0f, -3.5f, 0.12f, 0.0f, 0.0f));
+		PartDefinition p_wing_r = p_body.addOrReplaceChild("wing_r", CubeListBuilder.create()
+				.texOffs(0, 13).addBox(-9.0f, -0.5f, 0.0f, 9.0f, 1.0f, 6.0f),
+				PartPose.offset(-2.5f, -2.0f, -2.0f));
+		PartDefinition p_wing_l = p_body.addOrReplaceChild("wing_l", CubeListBuilder.create()
+				.texOffs(30, 13).addBox(0.0f, -0.5f, 0.0f, 9.0f, 1.0f, 6.0f),
+				PartPose.offset(2.5f, -2.0f, -2.0f));
+		PartDefinition p_tail = p_body.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(0, 20).addBox(-2.5f, 0.0f, 0.0f, 5.0f, 1.0f, 5.0f),
+				PartPose.offsetAndRotation(0.0f, -1.0f, 4.0f, -0.25f, 0.0f, 0.0f));
+		PartDefinition p_leg_r = p_body.addOrReplaceChild("leg_r", CubeListBuilder.create()
+				.texOffs(42, 20).addBox(-0.5f, 0.0f, 0.0f, 1.0f, 3.0f, 1.0f),
+				PartPose.offsetAndRotation(-1.2f, 2.5f, 0.0f, 0.6f, 0.0f, 0.0f));
+		PartDefinition p_leg_l = p_body.addOrReplaceChild("leg_l", CubeListBuilder.create()
+				.texOffs(46, 20).addBox(-0.5f, 0.0f, 0.0f, 1.0f, 3.0f, 1.0f),
+				PartPose.offsetAndRotation(1.2f, 2.5f, 0.0f, 0.6f, 0.0f, 0.0f));
+		return LayerDefinition.create(mesh, 64, 32);
+	}
+
+	public static LayerDefinition skidbladnir() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p_bottom = root.addOrReplaceChild("bottom", CubeListBuilder.create()
+				.texOffs(40, 36).addBox(-14.0f, -9.0f, -3.0f, 28.0f, 16.0f, 3.0f),
+				PartPose.offsetAndRotation(0.0f, 3.0f, 1.0f, 1.571f, 0.0f, 0.0f));
+		PartDefinition p_back = root.addOrReplaceChild("back", CubeListBuilder.create()
+				.texOffs(28, 56).addBox(-13.0f, -7.0f, -1.0f, 18.0f, 6.0f, 2.0f),
+				PartPose.offsetAndRotation(-15.0f, 4.0f, 4.0f, 0.0f, 4.712f, 0.0f));
+		PartDefinition p_front = root.addOrReplaceChild("front", CubeListBuilder.create()
+				.texOffs(68, 56).addBox(-8.0f, -7.0f, -1.0f, 16.0f, 6.0f, 2.0f),
+				PartPose.offsetAndRotation(15.0f, 4.0f, 0.0f, 0.0f, 1.571f, 0.0f));
+		PartDefinition p_right = root.addOrReplaceChild("right", CubeListBuilder.create()
+				.texOffs(0, 69).addBox(-14.0f, -7.0f, -1.0f, 28.0f, 6.0f, 2.0f),
+				PartPose.offsetAndRotation(0.0f, 4.0f, -9.0f, 0.0f, 3.142f, 0.0f));
+		PartDefinition p_left = root.addOrReplaceChild("left", CubeListBuilder.create()
+				.texOffs(60, 69).addBox(-14.0f, -7.0f, -1.0f, 28.0f, 6.0f, 2.0f),
+				PartPose.offset(0.0f, 4.0f, 9.0f));
+		PartDefinition p_left_paddle = root.addOrReplaceChild("left_paddle", CubeListBuilder.create()
+				.texOffs(50, 0).addBox(-1.0f, 0.0f, -5.0f, 2.0f, 2.0f, 18.0f)
+				.texOffs(102, 36).addBox(-1.001f, -3.0f, 8.0f, 1.0f, 6.0f, 7.0f),
+				PartPose.offsetAndRotation(3.0f, -5.0f, 9.0f, 0.0f, 0.0f, 0.1963f));
+		PartDefinition p_right_paddle = root.addOrReplaceChild("right_paddle", CubeListBuilder.create()
+				.texOffs(0, 36).addBox(-1.0f, 0.0f, -5.0f, 2.0f, 2.0f, 18.0f)
+				.texOffs(0, 56).addBox(0.001f, -3.0f, 8.0f, 1.0f, 6.0f, 7.0f),
+				PartPose.offsetAndRotation(3.0f, -5.0f, -9.0f, 0.0f, 3.142f, 0.1963f));
+		PartDefinition p_prow = root.addOrReplaceChild("prow", CubeListBuilder.create()
+				.texOffs(16, 56).addBox(-1.0f, -9.0f, -1.5f, 3.0f, 10.0f, 3.0f)
+				.texOffs(0, 77).addBox(1.0f, -11.0f, -1.5f, 5.0f, 3.0f, 3.0f),
+				PartPose.offset(16.0f, -2.0f, 0.0f));
+		PartDefinition p_mast = root.addOrReplaceChild("mast", CubeListBuilder.create()
+				.texOffs(42, 0).addBox(-1.0f, -30.0f, -1.0f, 2.0f, 30.0f, 2.0f),
+				PartPose.offset(2.0f, 1.0f, 0.0f));
+		PartDefinition p_sail = p_mast.addOrReplaceChild("sail", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-0.5f, 0.0f, -10.0f, 1.0f, 16.0f, 20.0f),
+				PartPose.offset(0.0f, -27.0f, 0.0f));
+		return LayerDefinition.create(mesh, 128, 128);
+	}
 }

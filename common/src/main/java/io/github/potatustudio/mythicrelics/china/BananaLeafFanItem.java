@@ -30,9 +30,8 @@ import org.jspecify.annotations.Nullable;
  * nubes y el tercero la lluvia. Es un arma de viento:
  * <ul>
  *   <li>cada golpe lanza también una cuchilla de viento que corta lo que encuentra en línea recta;</li>
- *   <li>clic derecho: un aleteo, un dash de viento que empuja a los mobs que atraviesas (tres cargas que se recuperan
- *       solas; la barra del ítem muestra cuántas quedan);</li>
- *   <li>tres aleteos seguidos traen nubes y lluvia que apagan el fuego alrededor ({@link ChinaRelics#flap}).</li>
+ *   <li>clic derecho: un aleteo, un dash de viento de unos 8 bloques que hiere y lanza lejos a los mobs que atraviesas
+ *       (tres cargas que se recuperan solas; la barra del ítem muestra cuántas quedan).</li>
  * </ul>
  * Las cargas van en los datos del ítem: cuántas había y desde qué tick se recuperan.
  */
@@ -40,7 +39,7 @@ public class BananaLeafFanItem extends RelicItem {
 	private static final String CHARGES = "fan_charges";
 	private static final String SINCE = "fan_since";
 	private static final int DASH_TICKS = 8;
-	private static final double DASH_SPEED = 1.35;
+	private static final double DASH_SPEED = 1.8;
 
 	public BananaLeafFanItem(Properties properties) {
 		super(properties);
@@ -92,10 +91,10 @@ public class BananaLeafFanItem extends RelicItem {
 		store(stack, left - 1, now);
 		Vec3 look = player.getLookAngle();
 		Vec3 flat = new Vec3(look.x, 0, look.z).normalize();
-		player.setDeltaMovement(flat.x * DASH_SPEED, Math.max(0.25, look.y * DASH_SPEED * 0.7), flat.z * DASH_SPEED);
-		player.needsSync = true;
-		player.resetFallDistance();
+		io.github.potatustudio.mythicrelics.relic.RelicMotion.launch(serverPlayer,
+				new Vec3(flat.x * DASH_SPEED, Math.max(0.3, look.y * DASH_SPEED * 0.7), flat.z * DASH_SPEED));
 		ChinaRelics.flap(serverPlayer, DASH_TICKS);
+		server.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.5, player.getZ(), 25, 0.5, 0.3, 0.5, 0.15);
 		server.sendParticles(ParticleTypes.GUST, player.getX(), player.getY() + 1.0, player.getZ(), 2, 0.3, 0.3, 0.3, 0.0);
 		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BREEZE_WIND_CHARGE_BURST.value(), SoundSource.PLAYERS,
 				0.9f, 1.1f);
@@ -118,9 +117,10 @@ public class BananaLeafFanItem extends RelicItem {
 				hit.hurtServer(server, server.damageSources().playerAttack(player), ChinaRelics.FAN_BLADE_DAMAGE);
 			}
 		}
-		for (int i = 2; i <= ChinaRelics.FAN_BLADE_RANGE; i += 2) {
+		for (int i = 1; i <= ChinaRelics.FAN_BLADE_RANGE; i++) {
 			Vec3 p = from.add(dir.scale(i));
 			server.sendParticles(ParticleTypes.SWEEP_ATTACK, p.x, p.y - 0.3, p.z, 1, 0.0, 0.0, 0.0, 0.0);
+			server.sendParticles(ParticleTypes.CLOUD, p.x, p.y - 0.3, p.z, 2, 0.1, 0.1, 0.1, 0.02);
 		}
 		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BREEZE_SHOOT, SoundSource.PLAYERS, 0.6f, 1.4f);
 	}
