@@ -1,0 +1,73 @@
+{
+ "parent": "mythicrelics:item/gungnir_3d",
+ "display": {
+  "thirdperson_righthand": {
+   "rotation": [
+    0,
+    90,
+    180
+   ],
+   "translation": [
+    8,
+    -17,
+    9
+   ],
+   "scale": [
+    2,
+    2,
+    2
+   ]
+  },
+  "thirdperson_lefthand": {
+   "rotation": [
+    0,
+    90,
+    180
+   ],
+   "translation": [
+    8,
+    -17,
+    -7
+   ],
+   "scale": [
+    2,
+    2,
+    2
+   ]
+  },
+  "firstperson_righthand": {
+   "rotation": [
+    0,
+    -90,
+    25
+   ],
+   "translation": [
+    -3,
+    17,
+    1
+   ],
+   "scale": [
+    2,
+    2,
+    2
+   ]
+  },
+  "firstperson_lefthand": {
+   "rotation": [
+    0,
+    90,
+    -25
+   ],
+   "translation": [
+    13,
+    17,
+    1
+   ],
+   "scale": [
+    2,
+    2,
+    2
+   ]
+  }
+ }
+}

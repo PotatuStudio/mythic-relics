@@ -103,7 +103,7 @@ public final class JanusLocks extends SavedData {
 	private static final String PADLOCK_TAG = io.github.potatustudio.mythicrelics.MythicRelics.MOD_ID + ".padlock";
 
 	/** Candado dorado que cuelga de la cara del bloque cerrado: un ítem en exhibición (se guarda con el mundo). */
-	private static void hangPadlock(ServerLevel level, BlockPos pos, Direction face) {
+	private static void hangPadlock(ServerLevel level, net.minecraft.world.phys.Vec3 at, Direction face) {
 		net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
 		tag.putString("id", "minecraft:item_display");
 		net.minecraft.nbt.CompoundTag item = new net.minecraft.nbt.CompoundTag();
@@ -120,9 +120,9 @@ public final class JanusLocks extends SavedData {
 		net.minecraft.nbt.ListTag tags = new net.minecraft.nbt.ListTag();
 		tags.add(net.minecraft.nbt.StringTag.valueOf(PADLOCK_TAG));
 		tag.put("Tags", tags);
-		double x = pos.getX() + 0.5 + face.getStepX() * 0.53;
-		double y = pos.getY() + 0.5 + face.getStepY() * 0.53;
-		double z = pos.getZ() + 0.5 + face.getStepZ() * 0.53;
+		double x = at.x + face.getStepX() * 0.04;
+		double y = at.y + face.getStepY() * 0.04;
+		double z = at.z + face.getStepZ() * 0.04;
 		float yaw = face.getAxis().isHorizontal() ? face.toYRot() : 0;
 		float pitch = face == Direction.UP ? -90 : face == Direction.DOWN ? 90 : 0;
 		net.minecraft.world.entity.Entity display = net.minecraft.world.entity.EntityType.loadEntityRecursive(
@@ -154,8 +154,8 @@ public final class JanusLocks extends SavedData {
 		}
 	}
 
-	static void lock(ServerLevel level, BlockPos pos, Player player, Direction face) {
-		hangPadlock(level, pos, face);
+	static void lock(ServerLevel level, BlockPos pos, Player player, Direction face, net.minecraft.world.phys.Vec3 at) {
+		hangPadlock(level, at, face);
 		JanusLocks data = get(level);
 		for (BlockPos key : keys(level, pos)) {
 			data.locks.put(GlobalPos.of(level.dimension(), key), player.getUUID());

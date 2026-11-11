@@ -38,6 +38,7 @@ public class OdinRaven extends Mob {
 	public OdinRaven(EntityType<? extends OdinRaven> type, Level level) {
 		super(type, level);
 		setNoGravity(true);
+		setNoAi(true);
 		noPhysics = true;
 	}
 
@@ -99,7 +100,7 @@ public class OdinRaven extends Mob {
 		if (dist > 0.15) {
 			// Vuela en arco: sube un poco a mitad de camino.
 			Vec3 step = to.normalize().scale(Math.min(FLY_SPEED, dist)).add(0, dist > 2 ? 0.08 : 0, 0);
-			setDeltaMovement(step);
+			setDeltaMovement(Vec3.ZERO);
 			setPos(getX() + step.x, getY() + step.y, getZ() + step.z);
 			face(step.x, step.z);
 			entityData.set(PERCHED, false);

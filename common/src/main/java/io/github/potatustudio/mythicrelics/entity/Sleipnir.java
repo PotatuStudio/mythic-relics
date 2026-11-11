@@ -165,4 +165,16 @@ public class Sleipnir extends AbstractHorse {
 	public boolean shouldBeSaved() {
 		return false;
 	}
+
+	/** El jinete la controla siempre (no depende de que el cliente vea la silla). */
+	@Override
+	public net.minecraft.world.entity.@org.jspecify.annotations.Nullable LivingEntity getControllingPassenger() {
+		return getFirstPassenger() instanceof Player player ? player : super.getControllingPassenger();
+	}
+
+	/** Siempre va ensillado (la silla viene con él): así salta y responde al jinete aunque el cliente no la haya visto. */
+	@Override
+	public boolean isSaddled() {
+		return true;
+	}
 }

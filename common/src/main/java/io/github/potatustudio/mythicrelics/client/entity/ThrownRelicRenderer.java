@@ -58,7 +58,8 @@ public class ThrownRelicRenderer extends EntityRenderer<ThrownRelic, ThrownRelic
 			poseStack.rotateDegrees(Axis.XP, state.ageInTicks * 30.0f);
 			poseStack.scale(1.1f, 1.1f, 1.1f);
 		} else {
-			poseStack.scale(0.8f, 0.8f, 0.8f);
+			poseStack.translate(0.5f, 0.5f, 0.5f);
+			poseStack.scale(2.0f, 2.0f, 2.0f);
 		}
 		state.item.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		poseStack.popPose();

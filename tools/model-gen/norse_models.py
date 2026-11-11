@@ -68,17 +68,25 @@ def mjolnir():
     return e
 
 
+def tri(lo, hi):
+    """Del espacio del tridente vanilla (y hacia arriba, el asta bajo el origen) al del modelo: mitad de tamaño + 4, para
+    caber en -16..32; el display lo dobla (scale 2), así se sostiene y se lanza exactamente como el tridente."""
+    return [v / 2 + 4 for v in lo], [v / 2 + 4 for v in hi]
+
+
 def gungnir():
-    e = [box([7.5, -8, 7.5], [8.5, 24, 8.5], "ash", "asta"),
-         box([7.3, -9, 7.3], [8.7, -7, 8.7], "gold", "regatón"),
-         box([7.2, 24, 7.2], [8.8, 26, 8.8], "gold", "casquillo"),
-         box([7.35, 10, 7.35], [8.65, 13, 8.65], "leather", "empuñadura")]
-    # Punta de hoja: se ensancha y se afila; plana en z.
-    for y0, y1, x0, x1 in ((26, 27.5, 6.6, 9.4), (27.5, 29.5, 6.0, 10.0), (29.5, 30.8, 6.6, 9.4), (30.8, 31.8, 7.3, 8.7)):
-        e.append(box([x0, y0, 7.7], [x1, y1, 8.3], "steel", "hoja"))
-    e.append(box([7.75, 26.6, 7.55], [8.25, 30.4, 8.45], "gold", "runas"))
-    e.append(box([7.82, 27.4, 7.5], [8.18, 29.4, 8.5], "rune", "brillo de runas"))
-    return e
+    """Gungnir con las medidas del tridente vanilla: asta de fresno de 25 px bajo el casquillo, punta de hoja arriba."""
+    parts = [((-0.5, -27, -0.5), (0.5, -2, 0.5), "ash", "asta"),
+             ((-0.75, -29, -0.75), (0.75, -27, 0.75), "gold", "regatón"),
+             ((-0.7, -15, -0.7), (0.7, -11, 0.7), "leather", "empuñadura"),
+             ((-1.0, -2, -0.75), (1.0, 0, 0.75), "gold", "casquillo"),
+             ((-1.2, 0, -0.35), (1.2, 1.2, 0.35), "steel", "hoja"),
+             ((-1.8, 1.2, -0.35), (1.8, 3.4, 0.35), "steel", "hoja"),
+             ((-1.2, 3.4, -0.35), (1.2, 4.8, 0.35), "steel", "hoja"),
+             ((-0.6, 4.8, -0.35), (0.6, 6.2, 0.35), "steel", "punta"),
+             ((-0.25, 0.4, -0.45), (0.25, 4.4, 0.45), "gold", "runas"),
+             ((-0.15, 1.4, -0.5), (0.15, 3.2, 0.5), "rune", "brillo de runas")]
+    return [box(*tri(lo, hi), color, name) for lo, hi, color, name in parts]
 
 
 # Cómo se sostienen: el martillo como un hacha; la lanza en alto, como el tridente.
@@ -89,12 +97,23 @@ MJOLNIR_DISPLAY = {
     "firstperson_lefthand": {"rotation": [0, -90, -20], "translation": [1.5, 3, 0], "scale": [0.68, 0.68, 0.68]},
     "head": {"translation": [0, 13, 0]},
 }
-GUNGNIR_DISPLAY = {
-    "thirdperson_righthand": {"rotation": [0, 90, 0], "translation": [0, -2, 1], "scale": [0.85, 0.85, 0.85]},
-    "thirdperson_lefthand": {"rotation": [0, -90, 0], "translation": [0, -2, 1], "scale": [0.85, 0.85, 0.85]},
-    "firstperson_righthand": {"rotation": [0, 90, 15], "translation": [1, -2, 0], "scale": [0.68, 0.68, 0.68]},
-    "firstperson_lefthand": {"rotation": [0, -90, -15], "translation": [1, -2, 0], "scale": [0.68, 0.68, 0.68]},
-}
+# Las mismas transformaciones que trident_in_hand y trident_throwing de vanilla, con scale 2 (ver tri()).
+def _x2(d):
+    return {k: {**v, "scale": [s * 2 for s in v.get("scale", [1, 1, 1])]} for k, v in d.items()}
+
+
+GUNGNIR_DISPLAY = _x2({
+    "thirdperson_righthand": {"rotation": [0, 60, 0], "translation": [11, 17, -2]},
+    "thirdperson_lefthand": {"rotation": [0, 60, 0], "translation": [3, 17, 12]},
+    "firstperson_righthand": {"rotation": [0, -90, 25], "translation": [-3, 17, 1]},
+    "firstperson_lefthand": {"rotation": [0, 90, -25], "translation": [13, 17, 1]},
+})
+GUNGNIR_THROWING = _x2({
+    "thirdperson_righthand": {"rotation": [0, 90, 180], "translation": [8, -17, 9]},
+    "thirdperson_lefthand": {"rotation": [0, 90, 180], "translation": [8, -17, -7]},
+    "firstperson_righthand": {"rotation": [0, -90, 25], "translation": [-3, 17, 1]},
+    "firstperson_lefthand": {"rotation": [0, 90, -25], "translation": [13, 17, 1]},
+})
 MODELS = {"mjolnir": (mjolnir, MJOLNIR_DISPLAY), "gungnir": (gungnir, GUNGNIR_DISPLAY)}
 
 
@@ -116,8 +135,15 @@ if __name__ == "__main__":
     for name in MODELS:
         write(os.path.join(ASSETS, "models", "item", name + "_3d.json"), model_json(name))
         icon = {"type": "minecraft:model", "model": f"{NS}:item/{name}"}
+        held = {"type": "minecraft:model", "model": f"{NS}:item/{name}_3d"}
+        if name == "gungnir":
+            # Al cargar el lanzamiento, la pose del tridente al lanzar.
+            write(os.path.join(ASSETS, "models", "item", "gungnir_throwing.json"),
+                  {"parent": f"{NS}:item/gungnir_3d", "display": GUNGNIR_THROWING})
+            held = {"type": "minecraft:condition", "property": "minecraft:using_item", "on_false": held,
+                    "on_true": {"type": "minecraft:model", "model": f"{NS}:item/gungnir_throwing"}}
         write(os.path.join(ASSETS, "items", name + ".json"), {"model": {
             "type": "minecraft:select", "property": "minecraft:display_context",
             "cases": [{"when": ["gui", "ground", "fixed", "on_shelf"], "model": icon}],
-            "fallback": {"type": "minecraft:model", "model": f"{NS}:item/{name}_3d"}}})
+            "fallback": held}})
     print("ok:", ", ".join(MODELS))

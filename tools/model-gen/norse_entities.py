@@ -144,7 +144,8 @@ def skidbladnir():
     # Lo que lo distingue: proa de dragón, mástil y vela.
     m.part("prow", None, [16, -2, 0], [0, 0, 0], [cube(-1, -9, -1.5, 3, 10, 3, dragon_prow),
                                                   cube(1, -11, -1.5, 5, 3, 3, dragon_prow)])
-    m.part("mast", None, [2, 1, 0], [0, 0, 0], [cube(-1, -30, -1, 2, 30, 2, mast)])
+    # Mástil a popa, detrás del jinete (que va al centro mirando a la proa): así no tapa la vista.
+    m.part("mast", None, [-10, 1, 0], [0, 0, 0], [cube(-1, -30, -1, 2, 30, 2, mast)])
     m.part("sail", "mast", [0, -27, 0], [0, 0, 0], [cube(-0.5, 0, -10, 1, 16, 20, sail)])
     return m
 

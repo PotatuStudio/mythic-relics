@@ -716,7 +716,7 @@ public final class MythicModelLayers {
 				PartPose.offset(16.0f, -2.0f, 0.0f));
 		PartDefinition p_mast = root.addOrReplaceChild("mast", CubeListBuilder.create()
 				.texOffs(42, 0).addBox(-1.0f, -30.0f, -1.0f, 2.0f, 30.0f, 2.0f),
-				PartPose.offset(2.0f, 1.0f, 0.0f));
+				PartPose.offset(-10.0f, 1.0f, 0.0f));
 		PartDefinition p_sail = p_mast.addOrReplaceChild("sail", CubeListBuilder.create()
 				.texOffs(0, 0).addBox(-0.5f, 0.0f, -10.0f, 1.0f, 16.0f, 20.0f),
 				PartPose.offset(0.0f, -27.0f, 0.0f));
