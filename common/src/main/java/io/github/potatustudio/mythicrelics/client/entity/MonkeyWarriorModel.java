@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Mono guerrero del Rey Mono (geometría en {@link ChinaModelLayers#monkeyWarrior}, igual que el visor de diseño): cara
+ * Mono guerrero del Rey Mono (geometría en {@link MythicModelLayers#monkeyWarrior}, igual que el visor de diseño): cara
  * peluda con ojos de fuego que brillan, gorro de alas de fénix con dos plumas largas de faisán, diadema de oro, cota de
  * malla dorada, faldellín de tigre, botas de nube, cola y el bastón en la mano derecha. Al andar balancea brazos y
  * piernas; las plumas y la cola se mecen.
@@ -45,7 +45,7 @@ public class MonkeyWarriorModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return ChinaModelLayers.monkeyWarrior();
+		return MythicModelLayers.monkeyWarrior();
 	}
 
 	@Override

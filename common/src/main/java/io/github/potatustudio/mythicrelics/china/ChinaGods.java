@@ -248,7 +248,7 @@ public final class ChinaGods {
 			case "fu_talismans" -> new Object[] {TALISMAN_TICKS / 20, TALISMAN_COOLDOWN / 20};
 			case "xirang_sack" -> new Object[] {XIRANG_WIDTH, XIRANG_HEIGHT, XIRANG_CHARGES, XIRANG_RECHARGE_TICKS / 20};
 			case "immortal_peach_branch" -> new Object[] {PEACH_GROW_TICKS / 24000, PEACH_ABSORPTION_TICKS / 20 / 60, PEACH_REGEN_TICKS / 20};
-			default -> new Object[0];
+			default -> io.github.potatustudio.mythicrelics.japan.JapanRelics.tooltipArgs(id);
 		};
 	}
 }

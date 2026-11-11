@@ -19,6 +19,13 @@ import io.github.potatustudio.mythicrelics.china.MonkeyHairsItem;
 import io.github.potatustudio.mythicrelics.china.PurpleGoldGourdItem;
 import io.github.potatustudio.mythicrelics.china.RuyiJinguBangItem;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
+import io.github.potatustudio.mythicrelics.japan.KibiDangoItem;
+import io.github.potatustudio.mythicrelics.japan.KitsuneStarBallItem;
+import io.github.potatustudio.mythicrelics.japan.KusanagiItem;
+import io.github.potatustudio.mythicrelics.japan.LuckyMalletItem;
+import io.github.potatustudio.mythicrelics.japan.TideJewelsItem;
+import io.github.potatustudio.mythicrelics.japan.UrashimaRodItem;
+import io.github.potatustudio.mythicrelics.japan.YataMirrorItem;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.egypt.OsirisCrookItem;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
@@ -177,6 +184,21 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> XIRANG_SACK = register("xirang_sack", XirangSackItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> IMMORTAL_PEACH_BRANCH = register("immortal_peach_branch", ImmortalPeachBranchItem::new,
 			p -> p.rarity(Rarity.EPIC));
+
+	// Japón, primera tanda.
+	public static final RegistrySupplier<Item> KUSANAGI = register("kusanagi", KusanagiItem::new,
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> YATA_MIRROR = register("yata_mirror", YataMirrorItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> YASAKANI_MAGATAMA = relic("yasakani_magatama", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> RAIJIN_DRUM = relic("raijin_drum", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> ONI_KANABO = relic("oni_kanabo", p -> p.rarity(Rarity.EPIC)
+			.sword(ToolMaterial.IRON, 8.0f, -3.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> KITSUNE_STAR_BALL = register("kitsune_star_ball", KitsuneStarBallItem::new,
+			p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> TIDE_JEWELS = register("tide_jewels", TideJewelsItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> LUCKY_MALLET = register("lucky_mallet", LuckyMalletItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> KIBI_DANGO = register("kibi_dango", KibiDangoItem::new, p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> URASHIMA_ROD = register("urashima_rod", UrashimaRodItem::new, p -> p.rarity(Rarity.EPIC));
 
 	/** Emblema del mod (escudo con una cultura por cuarto): solo es el ícono de la pestaña creativa, no se consigue. */
 	public static final RegistrySupplier<Item> EMBLEM = register("emblem", Item::new, p -> p);

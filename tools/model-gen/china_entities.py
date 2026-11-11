@@ -10,7 +10,7 @@ ModelPart con cubos y UV de caja de Minecraft, y en Minecraft la y crece hacia a
 
 Escribe un JSON con las partes y las texturas (normal y la que brilla) en base64.
 Uso: python china_entities.py <salida.json> [<carpeta_png>]   (visor)
-     python china_entities.py --mod                         (texturas y ChinaModelLayers.java del mod)"""
+     python china_entities.py --mod                         (texturas y MythicModelLayers.java del mod)"""
 import base64
 import io
 import json
@@ -477,12 +477,14 @@ def b64(img):
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 ENTITY_TEX = os.path.join(ROOT, "common", "src", "main", "resources", "assets", "mythicrelics", "textures", "entity")
 JAVA_OUT = os.path.join(ROOT, "common", "src", "main", "java", "io", "github", "potatustudio", "mythicrelics", "client",
-                        "entity", "ChinaModelLayers.java")
+                        "entity", "MythicModelLayers.java")
 # Desplazamiento de las partes raíz en el juego: el long se baja y se corre hacia adelante para que el centro de su caja
 # (donde va el jinete) quede sobre el segundo segmento; el mono ya tiene el suelo en y = 24.
-ROOT_OFFSET = {"monkey": (0, 0, 0), "dragon": (0, 16, -16), "dog": (0, 0, 0), "qilin": (0, 0, 0)}
+ROOT_OFFSET = {"monkey": (0, 0, 0), "dragon": (0, 16, -16), "dog": (0, 0, 0), "qilin": (0, 0, 0), "kitsune": (0, 0, 0),
+               "turtle": (0, 0, 0)}
 NAMES = {"monkey": ("monkeyWarrior", "monkey_warrior"), "dragon": ("longDragon", "long_dragon"),
-         "dog": ("celestialDog", "celestial_dog"), "qilin": ("qilin", "qilin")}
+         "dog": ("celestialDog", "celestial_dog"), "qilin": ("qilin", "qilin"), "kitsune": ("kitsune", "kitsune"),
+         "turtle": ("urashimaTurtle", "urashima_turtle")}
 
 
 def jf(v):
@@ -530,7 +532,7 @@ def write_mod(baked):
            "/**\n * Geometría de las entidades chinas (mono guerrero y long). GENERADO por tools/model-gen/china_entities.py\n"
            " * --mod a partir del mismo diseño que el visor: no editar a mano.\n */\n"
            "@SuppressWarnings(\"unused\")\n"
-           "public final class ChinaModelLayers {\n\tprivate ChinaModelLayers() {\n\t}\n\n"
+           "public final class MythicModelLayers {\n\tprivate MythicModelLayers() {\n\t}\n\n"
            + "\n\n".join(methods) + "\n}\n")
     with open(JAVA_OUT, "w", encoding="utf-8", newline="\n") as f:
         f.write(src)
@@ -542,6 +544,9 @@ if __name__ == "__main__":
         import china2_entities as C2  # noqa: E402  (tanda 2: cada modelo con su propia semilla)
         for key in C2.MODELS:
             baked[key] = C2.bake_one(key)
+        import japan_entities as JE  # noqa: E402
+        for key in JE.MODELS:
+            baked[key] = JE.bake_one(key)
         write_mod(baked)
         print("ok: texturas en", ENTITY_TEX, "y", JAVA_OUT)
         sys.exit(0)

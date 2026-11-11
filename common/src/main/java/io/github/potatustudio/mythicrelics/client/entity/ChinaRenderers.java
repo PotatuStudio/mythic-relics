@@ -3,9 +3,11 @@ package io.github.potatustudio.mythicrelics.client.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.CelestialDog;
+import io.github.potatustudio.mythicrelics.entity.Kitsune;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
 import io.github.potatustudio.mythicrelics.entity.Qilin;
+import io.github.potatustudio.mythicrelics.entity.UrashimaTurtle;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -18,7 +20,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Mob;
 
 /**
- * Renderizadores de las entidades chinas. Todas tienen una segunda textura que brilla en la oscuridad (como los ojos
+ * Renderizadores de las entidades de China y Japón. Todas tienen una segunda textura que brilla en la oscuridad (como los ojos
  * de la araña): los ojos de fuego del mono; los ojos del long y su perla llameante; los ojos del perro; las llamas del
  * qilin.
  */
@@ -91,6 +93,34 @@ public final class ChinaRenderers {
 
 		public QilinRenderer(EntityRendererProvider.Context context) {
 			super(context, new QilinModel(context.bakeLayer(QilinModel.LAYER)), 0.9f, "qilin");
+		}
+
+		@Override
+		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+			poseStack.scale(SCALE, SCALE, SCALE);
+		}
+	}
+
+	/** Kitsune de nueve colas: del tamaño de un lobo grande. */
+	public static class KitsuneRenderer extends Glowing<Kitsune, KitsuneModel> {
+		public static final float SCALE = 1.5f;
+
+		public KitsuneRenderer(EntityRendererProvider.Context context) {
+			super(context, new KitsuneModel(context.bakeLayer(KitsuneModel.LAYER)), 0.6f, "kitsune");
+		}
+
+		@Override
+		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+			poseStack.scale(SCALE, SCALE, SCALE);
+		}
+	}
+
+	/** Tortuga de Urashima: tortuga marina gigante. */
+	public static class TurtleRenderer extends Glowing<UrashimaTurtle, UrashimaTurtleModel> {
+		public static final float SCALE = 1.7f;
+
+		public TurtleRenderer(EntityRendererProvider.Context context) {
+			super(context, new UrashimaTurtleModel(context.bakeLayer(UrashimaTurtleModel.LAYER)), 1.2f, "urashima_turtle");
 		}
 
 		@Override

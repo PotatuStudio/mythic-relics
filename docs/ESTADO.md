@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-10. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2 y China 1 y 2
+Última sesión: 2026-11-10. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1
 programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
@@ -186,6 +186,22 @@ jinete, tamaño, que no pise cultivos, el aura), que el perro aparezca al recibi
 de la lanza, el rebote del aro, el brillo del Ojo, el muro de Xirang con agua, los tesoros que guarda el pixiu al morir
 (también junto al óbolo), el melocotón (dibujo con y sin fruto) y el Ojo y la pulsera puestos en los dos loaders.
 
+## Primera tanda japonesa (programada el 2026-11-10)
+Diseño aprobado en `docs/ideas.md` (páginas en `tools/design-page/japan_*.py`; íconos del borrador, con la magatama
+redibujada). Código en `japan/JapanRelics` (constantes; reflejo del espejo con `RomeRelics#reflectLater`; magatama y set
+de los Tres Tesoros; redoble del tambor de Raijin; golpe de oni del kanabō; pasillo seco de kanju, que se vacía cada 2
+ticks mientras dura; tamaño del mazo con el atributo `scale`) y los ítems `KusanagiItem`, `YataMirrorItem`,
+`KitsuneStarBallItem`, `TideJewelsItem`, `LuckyMalletItem`, `KibiDangoItem` (componentes `kibi_dango` y `kibi_day`;
+el zorro confía con `FoxAccessor`) y `UrashimaRodItem`. Entidades: `entity/Kitsune` (aliado de `Minions` que lanza
+kitsunebi; se dibuja a 1,5) y `entity/UrashimaTurtle` (montura que nada hacia donde mira el jinete y da el poder del
+conducto; se dibuja a 1,7). Geometría: `tools/model-gen/japan_entities.py`; la clase generada pasó a llamarse
+`client/entity/MythicModelLayers` (China y Japón). Íconos: `japan_icons.py`; traducciones: `japan_lang.py`.
+**Sin probar en el juego**: montar la tortuga bajo el agua (control, velocidad, altura del jinete, que no se hunda ni
+flote mal), el kitsune y sus kitsunebi, el pasillo seco de kanju (que el agua no lo inunde y vuelva al terminar), la ola
+de manju, el reflejo del espejo (flechas y bolas de fuego), el rayo del tambor, el golpe del kanabō contra armadura,
+crecer con el mazo (tamaño, alcance, vida y que vuelva a la normalidad al salir y entrar), domar con los kibi dango, el
+tajo de Kusanagi y el set de los Tres Tesoros; la magatama y el tambor puestos en los dos loaders.
+
 ## Pestaña creativa
 El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
 `tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone
@@ -214,17 +230,17 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 - `tools/model-gen/coplanar_check.py`: busca caras coplanares entre reliquias del cuerpo que se pueden llevar juntas
   (parpadeo). Correrlo después de `worn_models.py` y agregar las reliquias nuevas a sus grupos.
 - `tools/model-gen/rome_icons.py`, `norse_icons.py` (incluye el emblema de la pestaña), `rome_models.py` (Ancile y
-  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_lang.py`, `china_entities.py`, `china2_icons.py`, `china2_lang.py`, `china2_entities.py`
+  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_lang.py`, `china_entities.py`, `china2_icons.py`, `china2_lang.py`, `china2_entities.py`, `japan_icons.py`, `japan_lang.py`, `japan_entities.py`
   (visor de aliados y, con `--mod`, la geometría en Java y las texturas del mono y del long).
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
 ## Después
 1. **Probar en el juego** (en el PC del usuario) todo lo programado: Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2
-   y China 1 y 2 (78 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
+   y China 1 y 2 y Japón 1 (88 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
    Gungnir en vuelo (se dibujan como el ícono de cara a la cámara), Sleipnir (patas del medio al galopar, la capa que
    brilla, caminar sobre el agua), el modelo del Paladio, los candados de Jano y la búsqueda de estructuras de la sibila.
-2. **Japón**, tanda 1: diseño aprobado en `docs/ideas.md`; faltan los modelos del kitsune y de la tortuga, los íconos
-   y programarla. Después, Chile/mapuche como tanda especial (los celtas se descartaron el 2026-11-10). Pendiente para China: las Cuatro Bestias Celestiales como set propio.
+2. **Chile/mapuche** como tanda especial (los celtas se descartaron el 2026-11-10). Pendientes posibles: segunda
+   tanda japonesa (Fūjin, el tengu) y las Cuatro Bestias Celestiales chinas como set. Pendiente para China: las Cuatro Bestias Celestiales como set propio.
 3. Pendiente menor: renderizador propio que gire a Mjölnir y Gungnir en el aire; actualizar el ícono del mod
    (`icon.png`, hoy hecho con íconos de Egipto) al estilo del emblema de la pestaña.
 4. Otras culturas de `docs/ideas.md`.

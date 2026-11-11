@@ -222,8 +222,7 @@ Modelos del Perro Celestial y del qilin aprobados; íconos: los del primer borra
 | Rama del melocotonero celestial | comida que no se gasta | Un melocotón cada 3 días: Absorción IV 3 min, Regeneración II 10 s y quita efectos negativos. | Templos de la jungla, 3 % |
 
 ## Japón
-Tanda 1: efectos y números aprobados el 2026-11-10 (faltan los modelos del kitsune y de la tortuga y los íconos
-pulidos). Página: `tools/design-page/japan_*.py`. Fuentes: Kojiki y Nihon Shoki, los dioses del trueno y el folclore.
+Tanda 1: aprobada y programada el 2026-11-10 (kitsune a 1,5 veces, del tamaño de un lobo grande; tortuga a 1,7). Página: `tools/design-page/japan_*.py`. Fuentes: Kojiki y Nihon Shoki, los dioses del trueno y el folclore.
 
 | Reliquia | Tipo | Efecto | Dónde |
 |---|---|---|---|

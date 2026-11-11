@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:japan/tide_jewels",
+  "category": "mythicrelics:japan",
+  "name": "item.mythicrelics.tide_jewels",
+  "icon": "mythicrelics:tide_jewels",
+  "x": 3,
+  "y": 5,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.tide_jewels.effect",
+      "item": "mythicrelics:tide_jewels"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.tide_jewels",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.tide_jewels.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.tide_jewels.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:japan/intro"
+    }
+  ]
+}

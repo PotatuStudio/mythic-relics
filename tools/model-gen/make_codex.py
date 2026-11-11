@@ -83,6 +83,15 @@ CULTURE_INFO = {
             "immortal_peach_branch": (0, 16),
         },
     },
+    "japan": {
+        "wiki": "japon.md", "title": "Japón", "icon": "kusanagi", "intro_icon": "minecraft:cherry_log",
+        "positions": {
+            "intro": (0, 0),
+            "kusanagi": (-2, 2), "yata_mirror": (0, 2), "yasakani_magatama": (2, 2),
+            "raijin_drum": (-3, 5), "oni_kanabo": (-1, 5), "kitsune_star_ball": (1, 5), "tide_jewels": (3, 5),
+            "lucky_mallet": (-2, 8), "kibi_dango": (0, 8), "urashima_rod": (2, 8),
+        },
+    },
 }
 SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm", "thor_set": "mjolnir"}
 SLOT_NAMES = {

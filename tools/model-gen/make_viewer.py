@@ -64,6 +64,14 @@ if __name__ == "__main__":
                               "scale": C2.SCALE[key],
                               "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
                               "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
+    import japan_entities as JE  # noqa: E402
+    for key in JE.MODELS:
+        parts, _img, _glow, tex_w, tex_h = JE.bake_one(key)
+        name = CE.NAMES[key][1]
+        data["china"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "rootOffset": list(CE.ROOT_OFFSET[key]),
+                              "scale": JE.SCALE[key],
+                              "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
+                              "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
     template = read(os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer_template.html"))
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(template.replace("__DATA__", json.dumps(data, ensure_ascii=False)))

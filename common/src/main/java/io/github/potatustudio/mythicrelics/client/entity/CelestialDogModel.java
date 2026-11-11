@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * El Perro Celestial (geometría en {@link ChinaModelLayers#celestialDog}, igual que el visor de diseño): lebrel negro de
+ * El Perro Celestial (geometría en {@link MythicModelLayers#celestialDog}, igual que el visor de diseño): lebrel negro de
  * pecho hondo, collar de oro con campanita y ojos ámbar que brillan. Corre con las patas en diagonal y mueve la cola.
  */
 public class CelestialDogModel extends EntityModel<LivingEntityRenderState> {
@@ -33,7 +33,7 @@ public class CelestialDogModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return ChinaModelLayers.celestialDog();
+		return MythicModelLayers.celestialDog();
 	}
 
 	@Override

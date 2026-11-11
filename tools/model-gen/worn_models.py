@@ -442,6 +442,27 @@ def pixiu_bracelet():
     return e
 
 
+def yasakani_magatama():
+    """Cuello (y 14) y pecho (z 10): cordón de oro y la magatama de jade al frente, con la cola curva."""
+    # Mismo cordón que Brísingamen (los collares no se llevan juntos y ya no choca con el vellocino).
+    e = [box([3.5, 13.2, 5.45], [12.5, 13.9, 6.05], "gold", "cordón atrás"),
+         box([3.5, 13.2, 6.05], [4.05, 13.9, 10.55], "gold", "cordón der."),
+         box([11.95, 13.2, 6.05], [12.5, 13.9, 10.55], "gold", "cordón izq.")]
+    e += [box([7.0, 10.4, 10.55], [9.2, 12.4, 11.25], "turq", "magatama"),
+          box([8.2, 9.6, 10.6], [9.2, 10.4, 11.2], "turq", "cola"),
+          box([7.4, 12.4, 10.6], [8.2, 13.2, 11.05], "gold", "anilla")]
+    return e
+
+
+def raijin_drum():
+    """Espalda (z 6): un taiko rojo laqueado con parche blanco, aros de oro y un palillo, colgado sobre la espalda."""
+    return [box([4.5, 6.55, 3.4], [11.5, 13.45, 5.3], "sun_d", "tambor"),
+            box([5.0, 7.0, 3.2], [11.0, 13.0, 3.4], "white", "parche"),
+            box([4.3, 6.2, 3.6], [11.7, 6.5, 5.3], "gold", "aro abajo"),
+            box([4.3, 13.5, 3.6], [11.7, 13.8, 5.3], "gold", "aro arriba"),
+            box([3.6, 13.8, 4.1], [12.4, 14.3, 4.6], "onyx", "palillo")]
+
+
 def attach(part, name, offset=(0, 0, 0)):
     return {"type": "model", "model_part": part, "model": f"{NS}:item/{name}_worn", "offset": list(offset), "centered": True}
 
@@ -485,6 +506,9 @@ WORN = {
     # China, tanda 2
     "erlang_eye": (lambda: model(erlang_eye()), [attach("head", "erlang_eye")]),
     "pixiu_bracelet": (lambda: model(pixiu_bracelet()), both_hands("ring", "pixiu_bracelet", (0, -1, 0))),
+    # Japón
+    "yasakani_magatama": (lambda: model(yasakani_magatama()), [attach("body", "yasakani_magatama")]),
+    "raijin_drum": (lambda: model(raijin_drum()), [attach("body", "raijin_drum")]),
 }
 
 

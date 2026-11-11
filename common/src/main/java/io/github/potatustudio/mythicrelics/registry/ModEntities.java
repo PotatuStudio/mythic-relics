@@ -7,12 +7,14 @@ import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.CelestialDog;
 import io.github.potatustudio.mythicrelics.entity.Cerberus;
 import io.github.potatustudio.mythicrelics.entity.Jackal;
+import io.github.potatustudio.mythicrelics.entity.Kitsune;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
 import io.github.potatustudio.mythicrelics.entity.Qilin;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
 import io.github.potatustudio.mythicrelics.entity.Sleipnir;
 import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
+import io.github.potatustudio.mythicrelics.entity.UrashimaTurtle;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
@@ -97,6 +99,23 @@ public final class ModEntities {
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("qilin"))));
 
+	/** Kitsune de nueve colas de la esfera estelar (aliado temporal); se dibuja a 1,5 veces. */
+	public static final RegistrySupplier<EntityType<Kitsune>> KITSUNE = ENTITIES.register("kitsune",
+			() -> EntityType.Builder.of(Kitsune::new, MobCategory.MISC)
+					.sized(0.9f, 1.1f)
+					.fireImmune()
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("kitsune"))));
+
+	/** Tortuga gigante de Urashima (montura submarina); se dibuja a 1,7 veces; no se guarda con el mundo. */
+	public static final RegistrySupplier<EntityType<UrashimaTurtle>> URASHIMA_TURTLE = ENTITIES.register("urashima_turtle",
+			() -> EntityType.Builder.of(UrashimaTurtle::new, MobCategory.WATER_CREATURE)
+					.sized(1.9f, 1.2f)
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("urashima_turtle"))));
+
 	private ModEntities() {
 	}
 
@@ -110,5 +129,7 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(LONG_DRAGON, LongDragon::createAttributes);
 		EntityAttributeRegistry.register(CELESTIAL_DOG, CelestialDog::createAttributes);
 		EntityAttributeRegistry.register(QILIN, Qilin::createAttributes);
+		EntityAttributeRegistry.register(KITSUNE, Kitsune::createAttributes);
+		EntityAttributeRegistry.register(URASHIMA_TURTLE, UrashimaTurtle::createAttributes);
 	}
 }

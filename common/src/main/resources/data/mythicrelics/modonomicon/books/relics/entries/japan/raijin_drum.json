@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:japan/raijin_drum",
+  "category": "mythicrelics:japan",
+  "name": "item.mythicrelics.raijin_drum",
+  "icon": "mythicrelics:raijin_drum",
+  "x": -3,
+  "y": 5,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.raijin_drum.effect",
+      "item": "mythicrelics:raijin_drum"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.raijin_drum",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.raijin_drum.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.raijin_drum.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:japan/intro"
+    }
+  ]
+}

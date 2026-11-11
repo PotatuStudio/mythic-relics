@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:japan/kibi_dango",
+  "category": "mythicrelics:japan",
+  "name": "item.mythicrelics.kibi_dango",
+  "icon": "mythicrelics:kibi_dango",
+  "x": 0,
+  "y": 8,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.kibi_dango.effect",
+      "item": "mythicrelics:kibi_dango"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.kibi_dango",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.kibi_dango.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.kibi_dango.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:japan/intro"
+    }
+  ]
+}

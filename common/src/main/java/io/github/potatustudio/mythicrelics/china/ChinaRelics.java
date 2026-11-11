@@ -264,7 +264,7 @@ public final class ChinaRelics {
 	}
 
 	/** Aliados del jugador: sus monos, sus mascotas y otros jugadores de su equipo. */
-	static boolean isFriend(Player player, Entity e) {
+	public static boolean isFriend(Player player, Entity e) {
 		if (player.getUUID().equals(Minions.ownerOf(e))) {
 			return true;
 		}

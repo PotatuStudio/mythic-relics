@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:japan/urashima_rod",
+  "category": "mythicrelics:japan",
+  "name": "item.mythicrelics.urashima_rod",
+  "icon": "mythicrelics:urashima_rod",
+  "x": 2,
+  "y": 8,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.urashima_rod.effect",
+      "item": "mythicrelics:urashima_rod"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.urashima_rod",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.urashima_rod.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.urashima_rod.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:japan/intro"
+    }
+  ]
+}

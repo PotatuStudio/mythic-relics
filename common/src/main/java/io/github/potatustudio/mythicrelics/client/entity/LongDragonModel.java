@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * El long (geometría en {@link ChinaModelLayers#longDragon}, igual que el visor de diseño): diez segmentos encadenados
+ * El long (geometría en {@link MythicModelLayers#longDragon}, igual que el visor de diseño): diez segmentos encadenados
  * que ondulan como una serpiente al volar, cabeza con cuernos de ciervo, bigotes que flotan, melena y barba de llamas,
  * cuatro patas con garras de águila que reman en el aire y la perla llameante que gira delante del hocico.
  */
@@ -49,7 +49,7 @@ public class LongDragonModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return ChinaModelLayers.longDragon();
+		return MythicModelLayers.longDragon();
 	}
 
 	@Override

@@ -1,0 +1,38 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:japan/kusanagi",
+  "category": "mythicrelics:japan",
+  "name": "item.mythicrelics.kusanagi",
+  "icon": "mythicrelics:kusanagi",
+  "x": -2,
+  "y": 2,
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "id": "relic",
+      "title": "",
+      "text": "book.mythicrelics.relics.entry.kusanagi.effect",
+      "item": "mythicrelics:kusanagi"
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.kusanagi",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "where",
+      "title": "book.mythicrelics.relics.where",
+      "text": "book.mythicrelics.relics.entry.kusanagi.where",
+      "show_title_separator": true
+    }
+  ],
+  "description": "book.mythicrelics.relics.entry.kusanagi.description",
+  "parents": [
+    {
+      "entry": "mythicrelics:japan/intro"
+    }
+  ]
+}

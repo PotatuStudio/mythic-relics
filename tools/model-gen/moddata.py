@@ -25,9 +25,12 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
          "ruyi_jingu_bang", "monkey_king_hairs", "purple_gold_gourd", "banana_leaf_fan", "dragon_pearl", "wind_fire_wheels",
          "hou_yi_bow", "change_elixir", "five_color_stone",
          "fire_tipped_spear", "universe_ring", "erlang_eye", "erlang_halberd", "qilin_horn", "pixiu_bracelet", "fu_talismans",
-         "xirang_sack", "immortal_peach_branch"]
+         "xirang_sack", "immortal_peach_branch",
+         "kusanagi", "yata_mirror", "yasakani_magatama", "raijin_drum", "oni_kanabo", "kitsune_star_ball", "tide_jewels",
+         "lucky_mallet", "kibi_dango", "urashima_rod"]
 # Cultura de cada reliquia (categoría del libro y página de la wiki), en el orden en que se muestran.
-CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:48], "china": ORDER[48:]}
+CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:48], "china": ORDER[48:66],
+            "japan": ORDER[66:]}
 # Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
 SETS = {"anubis_set": ["anubis_scepter", "jackal_mask", "jackal_ring"], "osiris_set": ["osiris_crook", "osiris_flail"],
         "perseus_set": ["hermes_sandals", "hades_helm", "athena_aegis"],
@@ -52,7 +55,10 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "five_color_stone": "legs/belt",
          "fire_tipped_spear": "mainhand", "universe_ring": "hand", "erlang_eye": "head/face", "erlang_halberd": "mainhand",
          "qilin_horn": "hand", "pixiu_bracelet": "hand/ring", "fu_talismans": "hand", "xirang_sack": "hand",
-         "immortal_peach_branch": "hand"}
+         "immortal_peach_branch": "hand",
+         "kusanagi": "mainhand", "yata_mirror": "offhand", "yasakani_magatama": "chest/necklace", "raijin_drum": "chest/back",
+         "oni_kanabo": "mainhand", "kitsune_star_ball": "hand", "tide_jewels": "hand", "lucky_mallet": "hand", "kibi_dango": "hand",
+         "urashima_rod": "hand"}
 
 
 def read(path):
@@ -69,7 +75,8 @@ def constants():
     out = {}
     for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java",
                  "rome/RomeRelics.java", "norse/NorseRelics.java",
-                 "norse/NorseGods.java", "china/ChinaRelics.java", "china/ChinaGods.java"):
+                 "norse/NorseGods.java", "china/ChinaRelics.java", "china/ChinaGods.java",
+                 "japan/JapanRelics.java"):
         src = read(os.path.join(JAVA, *name.split("/")))
         out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
     return out
@@ -179,6 +186,19 @@ def tooltip_args(c):
         "xirang_sack": [int(c["XIRANG_WIDTH"]), int(c["XIRANG_HEIGHT"]), int(c["XIRANG_CHARGES"]), int(c["XIRANG_RECHARGE_TICKS"] // 20)],
         "immortal_peach_branch": [int(c["PEACH_GROW_TICKS"] // 24000), int(c["PEACH_ABSORPTION_TICKS"] // 20 // 60),
                                   int(c["PEACH_REGEN_TICKS"] // 20)],
+        # Japón (JapanRelics#tooltipArgs)
+        "kusanagi": [int(c["KUSANAGI_SLASH_RANGE"]), int(c["KUSANAGI_SLASH_DAMAGE"]), int(c["KUSANAGI_COOLDOWN"] // 20)],
+        "yata_mirror": [int(c["MIRROR_FLASH_RADIUS"]), int(c["MIRROR_BLIND_TICKS"] // 20), int(c["MIRROR_COOLDOWN"] // 20)],
+        "yasakani_magatama": [int(c["MAGATAMA_INTERVAL"] // 20), round(c["SET_DAMAGE"] * 100)],
+        "raijin_drum": [int(c["RAIJIN_HITS"]), int(c["RAIJIN_WINDOW"] // 20)],
+        "oni_kanabo": [round(c["KANABO_ARMOR_IGNORED"] * 100)],
+        "kitsune_star_ball": [int(c["KITSUNE_TICKS"] // 20), int(c["KITSUNE_HEALTH"]), int(c["KITSUNE_DAMAGE"]),
+                              int(c["KITSUNEBI_INTERVAL"] // 20), int(c["KITSUNEBI_BURN_SECONDS"]), int(c["KITSUNE_COOLDOWN"] // 20 // 60)],
+        "tide_jewels": [int(c["TIDE_LENGTH"]), int(c["TIDE_TICKS"] // 20), int(c["TIDE_WAVE_RANGE"]), int(c["TIDE_COOLDOWN"] // 20)],
+        "lucky_mallet": [fmt(round(1 + c["MALLET_SCALE"], 1)), int(c["MALLET_TICKS"] // 20), int(c["MALLET_HEALTH"] // 2),
+                         int(c["MALLET_COOLDOWN"] // 20 // 60), int(c["MALLET_GROW_RADIUS"])],
+        "kibi_dango": [int(c["KIBI_STRENGTH_TICKS"] // 20), int(c["KIBI_MAX"])],
+        "urashima_rod": [int(c["TURTLE_LEAVE_TICKS"] // 20), int(c["TURTLE_COOLDOWN"] // 20 // 60)],
     }
 
 

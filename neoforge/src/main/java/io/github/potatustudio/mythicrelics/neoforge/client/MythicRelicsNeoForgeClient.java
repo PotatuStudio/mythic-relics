@@ -45,5 +45,7 @@ public final class MythicRelicsNeoForgeClient {
 		ICurioRenderer.register(ModItems.FIVE_COLOR_STONE.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.ERLANG_EYE.get(), () -> new CuriosRelicRenderer(Part.HEAD, 0f));
 		ICurioRenderer.register(ModItems.PIXIU_BRACELET.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
+		ICurioRenderer.register(ModItems.YASAKANI_MAGATAMA.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.RAIJIN_DRUM.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 	}
 }
