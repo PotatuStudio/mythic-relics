@@ -13,4 +13,4 @@ En el juego, todo esto está en el **Códice de reliquias** (requiere Modonomico
 - [Roma](roma.md): 7 reliquias.
 - [Nórdicos](nordicos.md): 15 reliquias, con Set de Thor.
 - [China](china.md): 18 reliquias.
-- [Japón](japon.md): 10 reliquias.
+- [Japón](japon.md): 19 reliquias.

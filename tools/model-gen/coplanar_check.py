@@ -10,7 +10,7 @@ PARTS = {
     "cuerpo": {"collar": ["ankh", "bastet_amulet", "cerberus_collar", "wolf_bulla", "brisingamen", "yasakani_magatama"],
                "cinturón": ["golden_scarab", "megingjord", "five_color_stone"],
                "espalda": ["athena_aegis", "icarus_wings", "raijin_drum"], "capa": ["golden_fleece"]},
-    "cabeza": {"cara": ["eye_of_horus", "jackal_mask", "erlang_eye"], "sombrero": ["ra_disk", "hades_helm"]},
+    "cabeza": {"cara": ["eye_of_horus", "jackal_mask", "erlang_eye", "tengu_mask"], "sombrero": ["ra_disk", "hades_helm", "kappa_dish"]},
     "brazo": {"anillo": ["jackal_ring", "draupnir", "andvaranaut", "pixiu_bracelet"],
               "guantes": ["mummy_wraps", "sekhmet_claws", "jarngreipr"]},
 }

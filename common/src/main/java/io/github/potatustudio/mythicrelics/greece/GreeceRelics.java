@@ -112,7 +112,8 @@ public final class GreeceRelics {
 
 	/** El cliente ya aplicó el impulso del doble salto; aquí se valida, se reinicia la caída y se muestran las alas. */
 	private static void hermesJumped(ServerPlayer player) {
-		if (!EgyptRelics.isWearing(player, ModItems.HERMES_SANDALS) || player.onGround()) {
+		if (!EgyptRelics.isWearing(player, ModItems.HERMES_SANDALS) && !EgyptRelics.isWearing(player, ModItems.TENGU_MASK)
+				|| player.onGround()) {
 			return;
 		}
 		player.resetFallDistance();

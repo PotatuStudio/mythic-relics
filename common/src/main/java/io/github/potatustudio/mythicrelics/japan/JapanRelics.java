@@ -168,13 +168,28 @@ public final class JapanRelics {
 		drum[1] = now;
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.NOTE_BLOCK_BASEDRUM.value(), SoundSource.PLAYERS,
 				0.8f, 0.5f + drum[0] * 0.15f);
-		if (drum[0] >= RAIJIN_HITS) {
+		if (drum[0] >= (JapanGods.hasWindAndThunder(player) ? JapanGods.SET_RAIJIN_HITS : RAIJIN_HITS)) {
 			drum[0] = 0;
 			LightningBolt bolt = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
 			if (bolt != null) {
 				bolt.snapTo(target.getX(), target.getY(), target.getZ());
 				bolt.setCause(player);
 				level.addFreshEntity(bolt);
+			}
+			if (JapanGods.hasWindAndThunder(player)) {
+				// Set de Fūjin y Raijin: el viento lleva el rayo a los hostiles más cercanos.
+				level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(8),
+								e -> e != target && e != player && e.isAlive() && e instanceof net.minecraft.world.entity.monster.Enemy
+										&& !io.github.potatustudio.mythicrelics.china.ChinaRelics.isFriend(player, e))
+						.stream().sorted(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(target)))
+						.limit(JapanGods.SET_CHAIN_TARGETS).forEach(e -> {
+							LightningBolt chain = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
+							if (chain != null) {
+								chain.snapTo(e.getX(), e.getY(), e.getZ());
+								chain.setCause(player);
+								level.addFreshEntity(chain);
+							}
+						});
 			}
 		}
 		return EventResult.pass();
@@ -286,7 +301,7 @@ public final class JapanRelics {
 					MALLET_GROW_RADIUS};
 			case "kibi_dango" -> new Object[] {KIBI_STRENGTH_TICKS / 20, KIBI_MAX};
 			case "urashima_rod" -> new Object[] {TURTLE_LEAVE_TICKS / 20, TURTLE_COOLDOWN / 20 / 60};
-			default -> new Object[0];
+			default -> JapanGods.tooltipArgs(id);
 		};
 	}
 

@@ -90,6 +90,9 @@ CULTURE_INFO = {
             "kusanagi": (-2, 2), "yata_mirror": (0, 2), "yasakani_magatama": (2, 2),
             "raijin_drum": (-3, 5), "oni_kanabo": (-1, 5), "kitsune_star_ball": (1, 5), "tide_jewels": (3, 5),
             "lucky_mallet": (-2, 8), "kibi_dango": (0, 8), "urashima_rod": (2, 8),
+            "fujin_wind_bag": (-3, 11), "tengu_mask": (-1, 11), "yashiori_sake": (1, 11), "kappa_dish": (3, 11),
+            "tanuki_leaf": (-3, 14), "kintaro_axe": (-1, 14), "zashiki_warashi": (1, 14), "ame_no_nuboko": (3, 14),
+            "orochi_scale": (0, 16),
         },
     },
 }

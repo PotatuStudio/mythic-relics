@@ -17,6 +17,15 @@ A eso se suman los dioses del trueno y del mar y el folclore: los kitsune, los o
 | ![](img/lucky_mallet.png) | [Mazo de la suerte](#lucky-mallet) | mano | épica | Tesoros enterrados: 3 % por cofre |
 | ![](img/kibi_dango.png) | [Kibi dango de Momotarō](#kibi-dango) | mano | rara | Casas de aldeas de llanura: 4 % por cofre |
 | ![](img/urashima_rod.png) | [Caña de Urashima](#urashima-rod) | mano | épica | Tesoros de naufragios: 3 % por cofre |
+| ![](img/fujin_wind_bag.png) | [Bolsa de vientos de Fūjin](#fujin-wind-bag) | mano | épica | Recompensas de cámaras de desafío: 3 % por cofre |
+| ![](img/tengu_mask.png) | [Máscara de tengu](#tengu-mask) | cara | épica | Puestos de saqueadores: 3 % por cofre |
+| ![](img/yashiori_sake.png) | [Sake de Yashiori](#yashiori-sake) | mano | rara | Provisiones de naufragios: 3 % por cofre |
+| ![](img/kappa_dish.png) | [Plato del kappa](#kappa-dish) | sombrero | rara | Ruinas submarinas chicas: 3 % por cofre |
+| ![](img/tanuki_leaf.png) | [Hoja del tanuki](#tanuki-leaf) | mano | rara | Mansiones del bosque: 3 % por cofre |
+| ![](img/kintaro_axe.png) | [Hacha de Kintarō](#kintaro-axe) | mano (arma) | épica | Herrerías de herramientas de aldea: 4 % por cofre |
+| ![](img/zashiki_warashi.png) | [Muñeca de zashiki-warashi](#zashiki-warashi) | bloque (se coloca) | épica | Casas de aldeas nevadas: 3 % por cofre |
+| ![](img/ame_no_nuboko.png) | [Ame-no-nuboko](#ame-no-nuboko) | mano | épica | Mapas de naufragios: 3 % por cofre |
+| ![](img/orochi_scale.png) | [Escama de Yamata no Orochi](#orochi-scale) | mano | épica | Ciudades antiguas: 2 % por cofre |
 
 <a id="kusanagi"></a>
 ## Kusanagi no Tsurugi
@@ -174,3 +183,146 @@ Con ellas se ganó como compañeros a un perro, un mono y un faisán.
 Agradecida, la tortuga lo llevó sobre su caparazón al Ryūgū-jō, el palacio del Rey Dragón bajo el mar.
 
 **Dónde encontrarla.** **Tesoros de naufragios**: 3 % por cofre
+
+<a id="fujin-wind-bag"></a>
+## Bolsa de vientos de Fūjin
+
+<img src="img/fujin_wind_bag.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** épica
+
+- Clic derecho: una corriente te eleva y bajas planeando 6 s
+- Agachado: un ventarrón empuja lejos todo lo que hay a 8 bloques
+- Recarga: 20 s
+- Set de Fūjin y Raijin (la bolsa en el inventario y el tambor puesto): el rayo cae cada 3 golpes y salta a 2 hostiles cercanos
+
+**Mito.** Fūjin, el dios del viento, carga sobre los hombros un saco con todos los vientos del mundo y los suelta al abrirlo.  
+Siempre aparece junto a Raijin, el dios del trueno, como en el famoso biombo de Tawaraya Sōtatsu.
+
+**Dónde encontrarla.** **Recompensas de cámaras de desafío**: 3 % por cofre
+
+<a id="tengu-mask"></a>
+## Máscara de tengu
+
+<img src="img/tengu_mask.png" width="64" alt="">
+
+**Espacio:** cara · **Rareza:** épica
+
+- Salto de tengu: puedes saltar una vez más en el aire
+- Esgrima de Kurama: tus golpes críticos hacen +50% de daño
+
+**Mito.** Los tengu, duendes de las montañas de cara roja y nariz larga, son maestros de la espada y del vuelo.  
+Según la leyenda, el rey tengu Sōjōbō enseñó esgrima al joven Minamoto no Yoshitsune en el monte Kurama.
+
+**Dónde encontrarla.** **Puestos de saqueadores**: 3 % por cofre
+
+<a id="yashiori-sake"></a>
+## Sake de Yashiori
+
+<img src="img/yashiori_sake.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** rara
+
+- Clic derecho: la jarra salpica sake a 4 bloques donde miras (hasta 12 bloques)
+- Los mobs mojados quedan borrachos 10 s: lentos y mareados; los hostiles se atacan entre ellos
+- Recarga: 60 s (la jarra se vuelve a llenar sola)
+
+**Mito.** Para vencer a Yamata no Orochi, Susanoo hizo destilar ocho veces un sake muy fuerte y lo puso en ocho barricas.  
+La serpiente metió una cabeza en cada una, se emborrachó y se durmió.
+
+**Dónde encontrarla.** **Provisiones de naufragios**: 3 % por cofre
+
+<a id="kappa-dish"></a>
+## Plato del kappa
+
+<img src="img/kappa_dish.png" width="64" alt="">
+
+**Espacio:** sombrero · **Rareza:** rara
+
+- Bajo el agua nadas muy rápido y tus golpes hacen +30% de daño
+- Tras 60 s al sol fuera del agua el plato se seca y pierdes el bono
+- Vuelve a mojarse con agua o lluvia
+
+**Mito.** Los kappa son yōkai de los ríos con un plato lleno de agua en la coronilla.  
+Mientras el plato tenga agua son muy fuertes; si se derrama o se seca, se debilitan.
+
+**Dónde encontrarla.** **Ruinas submarinas chicas**: 3 % por cofre
+
+<a id="tanuki-leaf"></a>
+## Hoja del tanuki
+
+<img src="img/tanuki_leaf.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** rara
+
+- Clic derecho: te transformas y los hostiles no te ven durante 30 s
+- Atacar deshace la transformación
+- Recarga: 2 min
+
+**Mito.** Los tanuki del folclore cambian de forma poniéndose una hoja en la cabeza.  
+Se vuelven monjes, teteras o estatuas para engañar a la gente.
+
+**Dónde encontrarla.** **Mansiones del bosque**: 3 % por cofre
+
+<a id="kintaro-axe"></a>
+## Hacha de Kintarō
+
+<img src="img/kintaro_axe.png" width="64" alt="">
+
+**Espacio:** mano (arma) · **Rareza:** épica
+
+- Agachado: al cortar un tronco cae el árbol entero (hasta 64 troncos)
+- +50% de daño a osos polares, hoglins, ravagers y arañas
+- Irrompible
+
+**Mito.** Kintarō, el niño de oro, creció en el monte Ashigara con una fuerza sobrehumana: luchaba con osos y derribaba árboles con su masakari.  
+De mayor fue el guerrero Sakata no Kintoki.
+
+**Dónde encontrarla.** **Herrerías de herramientas de aldea**: 4 % por cofre
+
+<a id="zashiki-warashi"></a>
+## Muñeca de zashiki-warashi
+
+<img src="img/zashiki_warashi.png" width="64" alt="">
+
+**Espacio:** bloque (se coloca) · **Rareza:** épica
+
+- Colócala: los jugadores a 16 bloques tienen Suerte y los aldeanos les hacen mejores precios
+- Si la rompes, la fortuna se va con ella
+
+**Mito.** El zashiki-warashi es el espíritu de un niño que vive en algunas casas del norte de Japón.  
+Mientras se queda, la familia prospera; el día que se va, la fortuna se va con él.
+
+**Dónde encontrarla.** **Casas de aldeas nevadas**: 3 % por cofre
+
+<a id="ame-no-nuboko"></a>
+## Ame-no-nuboko
+
+<img src="img/ame_no_nuboko.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** épica
+
+- Clic derecho mirando al agua (hasta 16 bloques): brota una islita de arena y pasto
+- La isla mide 7 bloques de ancho
+- Recarga: 30 s
+
+**Mito.** La lanza enjoyada que los dioses entregaron a Izanagi e Izanami.  
+Desde el puente flotante del cielo revolvieron con ella el mar, y de las gotas saladas que cayeron de la punta nació Onogoro, la primera isla.
+
+**Dónde encontrarla.** **Mapas de naufragios**: 3 % por cofre
+
+<a id="orochi-scale"></a>
+## Escama de Yamata no Orochi
+
+<img src="img/orochi_scale.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** épica
+
+- Clic derecho: surge una sombra de Orochi que se queda a tu lado 45 s
+- Sus ocho cabezas muerden a los hostiles a 6 bloques (4 de daño cada una)
+- Recarga: 5 min
+
+**Mito.** Yamata no Orochi, la serpiente de ocho cabezas y ocho colas, tan larga que cubría ocho valles, con ojos rojos como cerezas de invierno.  
+Devoraba cada año a una hija de una familia hasta que Susanoo la emborrachó con sake y la venció.
+
+**Dónde encontrarla.** **Ciudades antiguas**: 2 % por cofre

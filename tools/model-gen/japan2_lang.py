@@ -1,0 +1,131 @@
+"""Traducciones de la tanda 2 japonesa (es_es y en_us). Se agregan a los lang del mod y quedan ordenados.
+Uso: python japan2_lang.py"""
+import json
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from moddata import ASSETS  # noqa: E402
+
+ES = {
+    "item.mythicrelics.fujin_wind_bag": "Bolsa de vientos de Fūjin",
+    "item.mythicrelics.fujin_wind_bag.tooltip.1": "Clic derecho: una corriente te eleva y bajas planeando %1$s s",
+    "item.mythicrelics.fujin_wind_bag.tooltip.2": "Agachado: un ventarrón empuja lejos todo lo que hay a %2$s bloques",
+    "item.mythicrelics.fujin_wind_bag.tooltip.3": "Recarga: %3$s s",
+    "item.mythicrelics.fujin_wind_bag.tooltip.4": "Set de Fūjin y Raijin (la bolsa en el inventario y el tambor puesto): el rayo cae cada %4$s golpes y salta a %5$s hostiles cercanos",
+    "lore.mythicrelics.fujin_wind_bag": "Fūjin, el dios del viento, carga sobre los hombros un saco con todos los vientos del mundo y los suelta al abrirlo.\\\nSiempre aparece junto a Raijin, el dios del trueno, como en el famoso biombo de Tawaraya Sōtatsu.",
+    "item.mythicrelics.tengu_mask": "Máscara de tengu",
+    "item.mythicrelics.tengu_mask.tooltip.1": "Salto de tengu: puedes saltar una vez más en el aire",
+    "item.mythicrelics.tengu_mask.tooltip.2": "Esgrima de Kurama: tus golpes críticos hacen +%1$s%% de daño",
+    "lore.mythicrelics.tengu_mask": "Los tengu, duendes de las montañas de cara roja y nariz larga, son maestros de la espada y del vuelo.\\\nSegún la leyenda, el rey tengu Sōjōbō enseñó esgrima al joven Minamoto no Yoshitsune en el monte Kurama.",
+    "item.mythicrelics.yashiori_sake": "Sake de Yashiori",
+    "item.mythicrelics.yashiori_sake.tooltip.1": "Clic derecho: la jarra salpica sake a %1$s bloques donde miras (hasta %2$s bloques)",
+    "item.mythicrelics.yashiori_sake.tooltip.2": "Los mobs mojados quedan borrachos %3$s s: lentos y mareados; los hostiles se atacan entre ellos",
+    "item.mythicrelics.yashiori_sake.tooltip.3": "Recarga: %4$s s (la jarra se vuelve a llenar sola)",
+    "lore.mythicrelics.yashiori_sake": "Para vencer a Yamata no Orochi, Susanoo hizo destilar ocho veces un sake muy fuerte y lo puso en ocho barricas.\\\nLa serpiente metió una cabeza en cada una, se emborrachó y se durmió.",
+    "item.mythicrelics.kappa_dish": "Plato del kappa",
+    "item.mythicrelics.kappa_dish.tooltip.1": "Bajo el agua nadas muy rápido y tus golpes hacen +%1$s%% de daño",
+    "item.mythicrelics.kappa_dish.tooltip.2": "Tras %2$s s al sol fuera del agua el plato se seca y pierdes el bono",
+    "item.mythicrelics.kappa_dish.tooltip.3": "Vuelve a mojarse con agua o lluvia",
+    "lore.mythicrelics.kappa_dish": "Los kappa son yōkai de los ríos con un plato lleno de agua en la coronilla.\\\nMientras el plato tenga agua son muy fuertes; si se derrama o se seca, se debilitan.",
+    "message.mythicrelics.kappa_dry": "El plato del kappa se secó: busca agua",
+    "message.mythicrelics.kappa_wet": "El plato del kappa vuelve a tener agua",
+    "item.mythicrelics.tanuki_leaf": "Hoja del tanuki",
+    "item.mythicrelics.tanuki_leaf.tooltip.1": "Clic derecho: te transformas y los hostiles no te ven durante %1$s s",
+    "item.mythicrelics.tanuki_leaf.tooltip.2": "Atacar deshace la transformación",
+    "item.mythicrelics.tanuki_leaf.tooltip.3": "Recarga: %2$s min",
+    "lore.mythicrelics.tanuki_leaf": "Los tanuki del folclore cambian de forma poniéndose una hoja en la cabeza.\\\nSe vuelven monjes, teteras o estatuas para engañar a la gente.",
+    "message.mythicrelics.tanuki_leaf": "Te pones la hoja en la cabeza: los hostiles ya no te ven",
+    "message.mythicrelics.tanuki_revealed": "Atacaste: la transformación se deshace",
+    "item.mythicrelics.kintaro_axe": "Hacha de Kintarō",
+    "item.mythicrelics.kintaro_axe.tooltip.1": "Agachado: al cortar un tronco cae el árbol entero (hasta %1$s troncos)",
+    "item.mythicrelics.kintaro_axe.tooltip.2": "+%2$s%% de daño a osos polares, hoglins, ravagers y arañas",
+    "item.mythicrelics.kintaro_axe.tooltip.3": "Irrompible",
+    "lore.mythicrelics.kintaro_axe": "Kintarō, el niño de oro, creció en el monte Ashigara con una fuerza sobrehumana: luchaba con osos y derribaba árboles con su masakari.\\\nDe mayor fue el guerrero Sakata no Kintoki.",
+    "block.mythicrelics.zashiki_warashi": "Muñeca de zashiki-warashi",
+    "item.mythicrelics.zashiki_warashi": "Muñeca de zashiki-warashi",
+    "item.mythicrelics.zashiki_warashi.tooltip.1": "Colócala: los jugadores a %1$s bloques tienen Suerte",
+    "item.mythicrelics.zashiki_warashi.tooltip.2": "y los aldeanos les hacen mejores precios",
+    "item.mythicrelics.zashiki_warashi.tooltip.3": "Si la rompes, la fortuna se va con ella",
+    "lore.mythicrelics.zashiki_warashi": "El zashiki-warashi es el espíritu de un niño que vive en algunas casas del norte de Japón.\\\nMientras se queda, la familia prospera; el día que se va, la fortuna se va con él.",
+    "item.mythicrelics.ame_no_nuboko": "Ame-no-nuboko",
+    "item.mythicrelics.ame_no_nuboko.tooltip.1": "Clic derecho mirando al agua (hasta %1$s bloques): brota una islita de arena y pasto",
+    "item.mythicrelics.ame_no_nuboko.tooltip.2": "La isla mide %2$s bloques de ancho",
+    "item.mythicrelics.ame_no_nuboko.tooltip.3": "Recarga: %3$s s",
+    "lore.mythicrelics.ame_no_nuboko": "La lanza enjoyada que los dioses entregaron a Izanagi e Izanami.\\\nDesde el puente flotante del cielo revolvieron con ella el mar, y de las gotas saladas que cayeron de la punta nació Onogoro, la primera isla.",
+    "item.mythicrelics.orochi_scale": "Escama de Yamata no Orochi",
+    "item.mythicrelics.orochi_scale.tooltip.1": "Clic derecho: surge una sombra de Orochi que se queda a tu lado %1$s s",
+    "item.mythicrelics.orochi_scale.tooltip.2": "Sus ocho cabezas muerden a los hostiles a %2$s bloques (%3$s de daño cada una)",
+    "item.mythicrelics.orochi_scale.tooltip.3": "Recarga: %4$s min",
+    "lore.mythicrelics.orochi_scale": "Yamata no Orochi, la serpiente de ocho cabezas y ocho colas, tan larga que cubría ocho valles, con ojos rojos como cerezas de invierno.\\\nDevoraba cada año a una hija de una familia hasta que Susanoo la emborrachó con sake y la venció.",
+    "entity.mythicrelics.orochi_shadow": "Sombra de Orochi",
+    "loot.mythicrelics.chests.village.village_toolsmith": "herrerías de herramientas de aldea",
+    "loot.mythicrelics.chests.shipwreck_map": "mapas de naufragios",
+}
+
+EN = {
+    "item.mythicrelics.fujin_wind_bag": "Fūjin's Wind Bag",
+    "item.mythicrelics.fujin_wind_bag.tooltip.1": "Right click: an updraft lifts you and you glide down for %1$s s",
+    "item.mythicrelics.fujin_wind_bag.tooltip.2": "Sneaking: a gale blows away everything within %2$s blocks",
+    "item.mythicrelics.fujin_wind_bag.tooltip.3": "Cooldown: %3$s s",
+    "item.mythicrelics.fujin_wind_bag.tooltip.4": "Fūjin and Raijin set (bag in inventory and drum worn): lightning strikes every %4$s hits and jumps to %5$s nearby hostiles",
+    "lore.mythicrelics.fujin_wind_bag": "Fūjin, the wind god, carries on his shoulders a bag holding all the winds of the world and lets them loose when he opens it.\\\nHe always appears beside Raijin, the thunder god, as in Tawaraya Sōtatsu's famous folding screen.",
+    "item.mythicrelics.tengu_mask": "Tengu Mask",
+    "item.mythicrelics.tengu_mask.tooltip.1": "Tengu leap: you can jump once more in mid-air",
+    "item.mythicrelics.tengu_mask.tooltip.2": "Kurama swordsmanship: your critical hits deal +%1$s%% damage",
+    "lore.mythicrelics.tengu_mask": "Tengu, red-faced long-nosed goblins of the mountains, are masters of the sword and of flight.\\\nLegend says the tengu king Sōjōbō taught swordsmanship to young Minamoto no Yoshitsune on Mount Kurama.",
+    "item.mythicrelics.yashiori_sake": "Yashiori Sake",
+    "item.mythicrelics.yashiori_sake.tooltip.1": "Right click: the jug splashes sake %1$s blocks around where you look (up to %2$s blocks)",
+    "item.mythicrelics.yashiori_sake.tooltip.2": "Splashed mobs get drunk for %3$s s: slow and dizzy; hostiles attack each other",
+    "item.mythicrelics.yashiori_sake.tooltip.3": "Cooldown: %4$s s (the jug refills itself)",
+    "lore.mythicrelics.yashiori_sake": "To defeat Yamata no Orochi, Susanoo had a very strong sake distilled eight times and poured it into eight vats.\\\nThe serpent dipped a head into each one, got drunk and fell asleep.",
+    "item.mythicrelics.kappa_dish": "Kappa's Dish",
+    "item.mythicrelics.kappa_dish.tooltip.1": "Underwater you swim very fast and your hits deal +%1$s%% damage",
+    "item.mythicrelics.kappa_dish.tooltip.2": "After %2$s s in the sun out of water the dish dries up and you lose the bonus",
+    "item.mythicrelics.kappa_dish.tooltip.3": "It fills again with water or rain",
+    "lore.mythicrelics.kappa_dish": "Kappa are river yōkai with a water-filled dish on top of their heads.\\\nWhile the dish holds water they are very strong; if it spills or dries up, they grow weak.",
+    "message.mythicrelics.kappa_dry": "The kappa's dish dried up: find water",
+    "message.mythicrelics.kappa_wet": "The kappa's dish is full of water again",
+    "item.mythicrelics.tanuki_leaf": "Tanuki Leaf",
+    "item.mythicrelics.tanuki_leaf.tooltip.1": "Right click: you transform and hostiles can't see you for %1$s s",
+    "item.mythicrelics.tanuki_leaf.tooltip.2": "Attacking breaks the disguise",
+    "item.mythicrelics.tanuki_leaf.tooltip.3": "Cooldown: %2$s min",
+    "lore.mythicrelics.tanuki_leaf": "The tanuki of folklore change shape by placing a leaf on their heads.\\\nThey become monks, teakettles or statues to trick people.",
+    "message.mythicrelics.tanuki_leaf": "You put the leaf on your head: hostiles can't see you",
+    "message.mythicrelics.tanuki_revealed": "You attacked: the disguise breaks",
+    "item.mythicrelics.kintaro_axe": "Kintarō's Axe",
+    "item.mythicrelics.kintaro_axe.tooltip.1": "Sneaking: chopping a log fells the whole tree (up to %1$s logs)",
+    "item.mythicrelics.kintaro_axe.tooltip.2": "+%2$s%% damage to polar bears, hoglins, ravagers and spiders",
+    "item.mythicrelics.kintaro_axe.tooltip.3": "Unbreakable",
+    "lore.mythicrelics.kintaro_axe": "Kintarō, the golden boy, grew up on Mount Ashigara with superhuman strength: he wrestled bears and felled trees with his masakari.\\\nAs a man he became the warrior Sakata no Kintoki.",
+    "block.mythicrelics.zashiki_warashi": "Zashiki-warashi Doll",
+    "item.mythicrelics.zashiki_warashi": "Zashiki-warashi Doll",
+    "item.mythicrelics.zashiki_warashi.tooltip.1": "Place it: players within %1$s blocks get Luck",
+    "item.mythicrelics.zashiki_warashi.tooltip.2": "and villagers give them better prices",
+    "item.mythicrelics.zashiki_warashi.tooltip.3": "If you break it, the fortune leaves with it",
+    "lore.mythicrelics.zashiki_warashi": "The zashiki-warashi is the spirit of a child that lives in some houses of northern Japan.\\\nWhile it stays, the family prospers; the day it leaves, the fortune leaves with it.",
+    "item.mythicrelics.ame_no_nuboko": "Ame-no-nuboko",
+    "item.mythicrelics.ame_no_nuboko.tooltip.1": "Right click looking at water (up to %1$s blocks): a little island of sand and grass rises",
+    "item.mythicrelics.ame_no_nuboko.tooltip.2": "The island is %2$s blocks wide",
+    "item.mythicrelics.ame_no_nuboko.tooltip.3": "Cooldown: %3$s s",
+    "lore.mythicrelics.ame_no_nuboko": "The jeweled spear the gods gave to Izanagi and Izanami.\\\nFrom the floating bridge of heaven they stirred the sea with it, and from the salty drops that fell from its tip Onogoro, the first island, was born.",
+    "item.mythicrelics.orochi_scale": "Yamata no Orochi Scale",
+    "item.mythicrelics.orochi_scale.tooltip.1": "Right click: a shadow of Orochi rises and stays by your side for %1$s s",
+    "item.mythicrelics.orochi_scale.tooltip.2": "Its eight heads bite hostiles within %2$s blocks (%3$s damage each)",
+    "item.mythicrelics.orochi_scale.tooltip.3": "Cooldown: %4$s min",
+    "lore.mythicrelics.orochi_scale": "Yamata no Orochi, the serpent with eight heads and eight tails, so long it covered eight valleys, with eyes red as winter cherries.\\\nEvery year it devoured a family's daughter until Susanoo got it drunk on sake and slew it.",
+    "entity.mythicrelics.orochi_shadow": "Orochi's Shadow",
+    "loot.mythicrelics.chests.village.village_toolsmith": "village toolsmiths",
+    "loot.mythicrelics.chests.shipwreck_map": "shipwreck maps",
+}
+
+if __name__ == "__main__":
+    assert set(ES) == set(EN), set(ES) ^ set(EN)
+    for code, entries in (("es_es", ES), ("en_us", EN)):
+        path = os.path.join(ASSETS, "lang", code + ".json")
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        data.update(entries)
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps(data, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
+        print(code, len(data))

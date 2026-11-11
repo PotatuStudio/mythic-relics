@@ -144,6 +144,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button data-subject="qilin" aria-pressed="false" data-i18n="subjQilin">Qilin</button>
       <button data-subject="kitsune" aria-pressed="false" data-i18n="subjKitsune">Kitsune</button>
       <button data-subject="turtle" aria-pressed="false" data-i18n="subjTurtle">Tortuga de Urashima</button>
+      <button data-subject="orochi" aria-pressed="false" data-i18n="subjOrochi">Sombra de Orochi</button>
       <button data-subject="player" aria-pressed="false" data-i18n="subjPlayer">Reliquias puestas</button>
     </div>
     <div class="stage" id="stage"></div>
@@ -168,8 +169,9 @@ const UI = {
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
     stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
-    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjPlayer: "Reliquias puestas",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
     footKitsune: "El kitsune de nueve colas de la Esfera estelar: zorro blanco de Inari con marcas rojas y babero rojo, ojos dorados, nueve colas alzadas con la punta de llama celeste y dos kitsunebi que giran a su alrededor (brillan).",
+    footOrochi: "La sombra de Yamata no Orochi que llama su escama: no se mueve; ocho cabezas de ojos rojos sobre cuellos largos que muerden a los hostiles cercanos, cuerpo de escamas con musgo y cipreses en el lomo, ocho colas por el suelo y el brillo de Kusanagi en una de ellas. Se dibuja al doble.",
     footTurtle: "La tortuga gigante de Urashima, que llama su caña: caparazón de escudos con borde ámbar, aletas que reman y las algas de la minogame, la tortuga de mil años. El jinete va sobre el caparazón.",
     footDog: "El Perro Celestial (Xiaotian Quan) de Erlang Shen: lebrel negro de pecho hondo, collar de oro con campanita y ojos ámbar que brillan. Aparece con el set de Erlang Shen (Ojo + alabarda) cuando un mob te hiere; su mordida deja al objetivo clavado un instante.",
     footQilin: "El qilin del Cuerno del qilin: cabeza de dragón con barba y un solo cuerno, cuerpo de ciervo con escamas verde jade y oro, cascos, cola de buey y llamas que no queman (brillan). Del tamaño de un caballo, con silla para el jinete.",
@@ -189,8 +191,9 @@ const UI = {
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
     stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
-    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjPlayer: "Worn relics",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
     footKitsune: "The nine-tailed kitsune of the Star Ball: a white Inari fox with red markings and a red bib, golden eyes, nine raised tails tipped with pale blue flame and two kitsunebi circling it (they glow).",
+    footOrochi: "The shadow of Yamata no Orochi called by its scale: it does not move; eight red-eyed heads on long necks bite nearby hostiles, a scaly body with moss and cypresses on its back, eight tails across the ground and the gleam of Kusanagi in one of them. Drawn at double size.",
     footTurtle: "Urashima's giant turtle, called by his rod: a shell of amber-rimmed scutes, rowing flippers and the trailing seaweed of the minogame, the thousand-year turtle. The rider sits on the shell.",
     footDog: "Erlang Shen's Celestial Hound (Xiaotian Quan): a deep-chested black sighthound with a golden collar and bell and glowing amber eyes. It appears with the Erlang Shen set (Eye + halberd) when a mob hurts you; its bite pins the target for a moment.",
     footQilin: "The qilin of the Qilin Horn: a dragon's head with a beard and a single horn, a deer's body with jade-green and gold scales, hooves, an ox's tail and flames that do not burn (they glow). Horse-sized, with a saddle for its rider.",
@@ -213,8 +216,8 @@ const CULTURE_HASH = { egypt: "egipto", greece: "grecia", rome: "roma", norse: "
 const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma", norse: "Nórdicos", china: "China", japan: "Japón" }, en_us: { egypt: "Egypt", greece: "Greece", rome: "Rome", norse: "Norse", china: "China", japan: "Japan" } };
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
   greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"],
-  china: ["wind_fire_wheels", "five_color_stone", "erlang_eye", "pixiu_bracelet"], japan: ["yasakani_magatama", "raijin_drum"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player", "sleipnir"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle"] };
+  china: ["wind_fire_wheels", "five_color_stone", "erlang_eye", "pixiu_bracelet"], japan: ["yasakani_magatama", "raijin_drum", "tengu_mask", "kappa_dish"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player", "sleipnir"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -609,6 +612,8 @@ const kitsune = chinaEntity("kitsune");
 kitsune.entity.scale.setScalar(DATA.china.kitsune.scale);
 const turtle = chinaEntity("turtle");
 turtle.entity.scale.setScalar(DATA.china.turtle.scale);
+const orochi = chinaEntity("orochi");
+orochi.entity.scale.setScalar(DATA.china.orochi.scale);
 qilin.entity.scale.setScalar(DATA.china.qilin.scale);
 function addRot(p, dx = 0, dy = 0, dz = 0) { const b = p.userData.base; p.rotation.set(b[0] + dx, b[1] + dy, b[2] + dz); }
 
@@ -834,6 +839,15 @@ function setupAnim() {
   addRot(U.flipper_hl, 0, -Math.sin(ta + 1.6) * 0.3 * tk);
   addRot(U.neck, Math.sin(kt * 0.9) * 0.08);
   for (let k2 = 0; k2 < 3; k2++) addRot(U["seaweed" + k2], Math.sin(kt * 1.3 + k2) * 0.15, Math.sin(kt * 0.9 + k2) * 0.2);
+  // Sombra de Orochi (OrochiModel).
+  const O = orochi.parts;
+  for (let i = 0; i < 8; i++) {
+    addRot(O["neck" + i], Math.sin(kt * 1.1 + i * 0.8) * 0.12);
+    addRot(O["neck" + i + "b"], Math.sin(kt * 1.3 + i * 0.8 - 0.5) * 0.18, Math.sin(kt * 0.9 + i) * 0.15);
+    addRot(O["head" + i], Math.sin(kt * 1.3 + i * 0.8 - 1.0) * 0.1);
+    addRot(O["jaw" + i], Math.max(0, Math.sin(kt * 2.4 + i * 1.7)) * 0.6);
+    addRot(O["tail" + i], 0, Math.sin(kt * 0.8 + i * 0.9) * 0.2);
+  }
 }
 
 /* Partículas al aparecer: el escarabajo suelta las del bloque que pisa (Minions#dig); el chacal, almas. */
@@ -862,6 +876,7 @@ document.getElementById("btnDig").addEventListener("click", () => {
   if (subject === "dog") burst(dog.entity.position, cloudParticles, 16, true);
   if (subject === "kitsune") burst(kitsune.entity.position, soulParticles, 20, true);
   if (subject === "turtle") burst(turtle.entity.position, soulParticles, 24, true);
+  if (subject === "orochi") burst(orochi.entity.position, soulParticles, 40, true);
   if (subject === "qilin") burst(qilin.entity.position, sandParticles.concat(soulParticles), 24, true);
 });
 document.getElementById("btnWalk").addEventListener("click", () => {
@@ -881,6 +896,7 @@ const VIEWS = {
   qilin: { cam: [3.4, 2.2, 3.8], target: [0, 1.2, 0] },
   kitsune: { cam: [2.4, 1.6, 3.0], target: [0, 0.9, 0] },
   turtle: { cam: [3.6, 2.2, 4.0], target: [0, 0.6, 0] },
+  orochi: { cam: [5.0, 3.6, 5.6], target: [0, 1.5, 0] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
 function setSubject(s) {
@@ -895,6 +911,8 @@ function setSubject(s) {
   qilin.entity.visible = s === "qilin";
   kitsune.entity.visible = s === "kitsune";
   turtle.entity.visible = s === "turtle";
+  orochi.entity.visible = s === "orochi";
+  orochi.entity.position.set(0, 0, 0); orochi.entity.rotation.y = Math.PI;
   kitsune.entity.position.set(0, 0, 0); turtle.entity.position.set(0, 0, 0);
   kitsune.entity.rotation.y = Math.PI; turtle.entity.rotation.y = Math.PI;
   dog.entity.position.set(0, 0, 0); qilin.entity.position.set(0, 0, 0);
@@ -913,7 +931,7 @@ function setSubject(s) {
   renderStageText();
 }
 function renderStageText() {
-  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", player: "footPlayer" }[subject];
+  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", player: "footPlayer" }[subject];
   document.getElementById("stageFoot").textContent = UI[lang][foot];
   document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
   buildWornControls();

@@ -1,0 +1,21 @@
+{
+ "type": "minecraft:block",
+ "random_sequence": "mythicrelics:blocks/zashiki_warashi",
+ "pools": [
+  {
+   "rolls": 1,
+   "bonus_rolls": 0,
+   "entries": [
+    {
+     "type": "minecraft:item",
+     "name": "mythicrelics:zashiki_warashi"
+    }
+   ],
+   "conditions": [
+    {
+     "condition": "minecraft:survives_explosion"
+    }
+   ]
+  }
+ ]
+}

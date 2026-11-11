@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-10. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1
+Última sesión: 2026-11-10. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
 programadas; falta probarlas en el juego).
 
 ## Decisiones tomadas
@@ -202,6 +202,24 @@ de manju, el reflejo del espejo (flechas y bolas de fuego), el rayo del tambor, 
 crecer con el mazo (tamaño, alcance, vida y que vuelva a la normalidad al salir y entrar), domar con los kibi dango, el
 tajo de Kusanagi y el set de los Tres Tesoros; la magatama y el tambor puestos en los dos loaders.
 
+## Segunda tanda japonesa (programada el 2026-11-10)
+Diseño aprobado en `docs/ideas.md` (páginas en `tools/design-page/japan2_*.py`). Código en `japan/JapanGods`
+(constantes; críticos de la máscara de tengu; plato del kappa y su sequía al sol; borrachera del sake; disfraz del
+tanuki; tala del hacha de Kintarō al romper un tronco agachado; prosperidad de la muñeca) y los ítems
+`FujinWindBagItem`, `YashioriSakeItem`, `TanukiLeafItem`, `AmeNoNubokoItem` y `OrochiScaleItem`. La muñeca de
+zashiki-warashi es un bloque (`ZashikiWarashiBlock`, con `ZashikiWarashis` guardando dónde hay, como el Paladio; el ítem
+reutiliza `PalladiumItem`). El set de Fūjin y Raijin cambia el redoble en `JapanRelics#onHurt` (3 golpes y el rayo
+salta a 2 hostiles). El doble salto del tengu reutiliza el de las sandalias de Hermes (`GreeceClient` y
+`GreeceRelics#hermesJumped`). Entidad: `entity/OrochiShadow` (aliado quieto de `Minions`: cada 1,5 s muerde a hasta 8
+hostiles a 6 bloques; se dibuja al doble con `OrochiModel`). Geometría en `japan_entities.py`; íconos, bloque de la
+muñeca y su paleta en `japan2_icons.py`; máscara y plato puestos en `worn_models.py`; traducciones en `japan2_lang.py`.
+Tablas nuevas de botín: herrerías de herramientas de aldea y mapas de naufragios.
+**Sin probar en el juego**: la altura y el planeo de la bolsa de vientos y el ventarrón; el set con el tambor; el doble
+salto y los críticos del tengu; la borrachera (que los hostiles se peleen entre ellos); el plato del kappa (nado, daño,
+mensajes al secarse y mojarse); el disfraz del tanuki (que los hostiles dejen de perseguir y que se rompa al atacar);
+talar con el hacha agachado; la muñeca colocada (modelo, orientación, Suerte y precios de los aldeanos); la isla de la
+lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y el plato puestos en los dos loaders.
+
 ## Pestaña creativa
 El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
 `tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone
@@ -236,11 +254,11 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 
 ## Después
 1. **Probar en el juego** (en el PC del usuario) todo lo programado: Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2
-   y China 1 y 2 y Japón 1 (88 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
+   y China 1 y 2 y Japón 1 y 2 (97 reliquias). Lo más dudoso, porque no se pudo ver sin el juego: el Ancile en la mano y al bloquear, Mjölnir y
    Gungnir en vuelo (se dibujan como el ícono de cara a la cámara), Sleipnir (patas del medio al galopar, la capa que
    brilla, caminar sobre el agua), el modelo del Paladio, los candados de Jano y la búsqueda de estructuras de la sibila.
-2. **Chile/mapuche** como tanda especial (los celtas se descartaron el 2026-11-10). Pendientes posibles: segunda
-   tanda japonesa (Fūjin, el tengu) y las Cuatro Bestias Celestiales chinas como set. Pendiente para China: las Cuatro Bestias Celestiales como set propio.
+2. **Chile/mapuche** como tanda especial (los celtas se descartaron el 2026-11-10). Pendientes posibles: las Cuatro
+   Bestias Celestiales chinas como set. Pendiente para China: las Cuatro Bestias Celestiales como set propio.
 3. Pendiente menor: renderizador propio que gire a Mjölnir y Gungnir en el aire; actualizar el ícono del mod
    (`icon.png`, hoy hecho con íconos de Egipto) al estilo del emblema de la pestaña.
 4. Otras culturas de `docs/ideas.md`.

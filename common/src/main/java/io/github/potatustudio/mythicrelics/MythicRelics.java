@@ -5,6 +5,7 @@ import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
+import io.github.potatustudio.mythicrelics.japan.JapanGods;
 import io.github.potatustudio.mythicrelics.japan.JapanRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
@@ -49,6 +50,7 @@ public final class MythicRelics {
 		ChinaRelics.init();
 		ChinaGods.init();
 		JapanRelics.init();
+		JapanGods.init();
 		LOGGER.info("Mythic Relics cargado");
 	}
 

@@ -10,6 +10,7 @@ import io.github.potatustudio.mythicrelics.entity.Jackal;
 import io.github.potatustudio.mythicrelics.entity.Kitsune;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
+import io.github.potatustudio.mythicrelics.entity.OrochiShadow;
 import io.github.potatustudio.mythicrelics.entity.Qilin;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
 import io.github.potatustudio.mythicrelics.entity.Sleipnir;
@@ -116,6 +117,15 @@ public final class ModEntities {
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("urashima_turtle"))));
 
+	/** Sombra de Yamata no Orochi de la escama (aliado temporal, quieto); se dibuja al doble; no se guarda con el mundo. */
+	public static final RegistrySupplier<EntityType<OrochiShadow>> OROCHI_SHADOW = ENTITIES.register("orochi_shadow",
+			() -> EntityType.Builder.of(OrochiShadow::new, MobCategory.MISC)
+					.sized(3.0f, 3.0f)
+					.fireImmune()
+					.clientTrackingRange(10)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("orochi_shadow"))));
+
 	private ModEntities() {
 	}
 
@@ -131,5 +141,6 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(QILIN, Qilin::createAttributes);
 		EntityAttributeRegistry.register(KITSUNE, Kitsune::createAttributes);
 		EntityAttributeRegistry.register(URASHIMA_TURTLE, UrashimaTurtle::createAttributes);
+		EntityAttributeRegistry.register(OROCHI_SHADOW, OrochiShadow::createAttributes);
 	}
 }

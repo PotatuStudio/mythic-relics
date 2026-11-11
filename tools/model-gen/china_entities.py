@@ -481,10 +481,10 @@ JAVA_OUT = os.path.join(ROOT, "common", "src", "main", "java", "io", "github", "
 # Desplazamiento de las partes raíz en el juego: el long se baja y se corre hacia adelante para que el centro de su caja
 # (donde va el jinete) quede sobre el segundo segmento; el mono ya tiene el suelo en y = 24.
 ROOT_OFFSET = {"monkey": (0, 0, 0), "dragon": (0, 16, -16), "dog": (0, 0, 0), "qilin": (0, 0, 0), "kitsune": (0, 0, 0),
-               "turtle": (0, 0, 0)}
+               "turtle": (0, 0, 0), "orochi": (0, 0, 0)}
 NAMES = {"monkey": ("monkeyWarrior", "monkey_warrior"), "dragon": ("longDragon", "long_dragon"),
          "dog": ("celestialDog", "celestial_dog"), "qilin": ("qilin", "qilin"), "kitsune": ("kitsune", "kitsune"),
-         "turtle": ("urashimaTurtle", "urashima_turtle")}
+         "turtle": ("urashimaTurtle", "urashima_turtle"), "orochi": ("orochiShadow", "orochi_shadow")}
 
 
 def jf(v):

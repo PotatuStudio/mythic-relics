@@ -6,6 +6,7 @@ import io.github.potatustudio.mythicrelics.entity.CelestialDog;
 import io.github.potatustudio.mythicrelics.entity.Kitsune;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
+import io.github.potatustudio.mythicrelics.entity.OrochiShadow;
 import io.github.potatustudio.mythicrelics.entity.Qilin;
 import io.github.potatustudio.mythicrelics.entity.UrashimaTurtle;
 import net.minecraft.client.model.EntityModel;
@@ -126,6 +127,25 @@ public final class ChinaRenderers {
 		@Override
 		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
 			poseStack.scale(SCALE, SCALE, SCALE);
+		}
+	}
+
+	/** Sombra de Orochi: serpiente de ocho cabezas, al doble de su geometría; no se oculta si su caja sale de la vista. */
+	public static class OrochiRenderer extends Glowing<OrochiShadow, OrochiModel> {
+		public static final float SCALE = 2.0f;
+
+		public OrochiRenderer(EntityRendererProvider.Context context) {
+			super(context, new OrochiModel(context.bakeLayer(OrochiModel.LAYER)), 2.0f, "orochi_shadow");
+		}
+
+		@Override
+		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+			poseStack.scale(SCALE, SCALE, SCALE);
+		}
+
+		@Override
+		protected boolean affectedByCulling(OrochiShadow entity) {
+			return false;
 		}
 	}
 }

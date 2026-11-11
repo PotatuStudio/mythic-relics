@@ -19,7 +19,12 @@ import io.github.potatustudio.mythicrelics.china.MonkeyHairsItem;
 import io.github.potatustudio.mythicrelics.china.PurpleGoldGourdItem;
 import io.github.potatustudio.mythicrelics.china.RuyiJinguBangItem;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
+import io.github.potatustudio.mythicrelics.japan.AmeNoNubokoItem;
+import io.github.potatustudio.mythicrelics.japan.FujinWindBagItem;
 import io.github.potatustudio.mythicrelics.japan.KibiDangoItem;
+import io.github.potatustudio.mythicrelics.japan.OrochiScaleItem;
+import io.github.potatustudio.mythicrelics.japan.TanukiLeafItem;
+import io.github.potatustudio.mythicrelics.japan.YashioriSakeItem;
 import io.github.potatustudio.mythicrelics.japan.KitsuneStarBallItem;
 import io.github.potatustudio.mythicrelics.japan.KusanagiItem;
 import io.github.potatustudio.mythicrelics.japan.LuckyMalletItem;
@@ -199,6 +204,19 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> LUCKY_MALLET = register("lucky_mallet", LuckyMalletItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> KIBI_DANGO = register("kibi_dango", KibiDangoItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> URASHIMA_ROD = register("urashima_rod", UrashimaRodItem::new, p -> p.rarity(Rarity.EPIC));
+
+	// Japón, segunda tanda.
+	public static final RegistrySupplier<Item> FUJIN_WIND_BAG = register("fujin_wind_bag", FujinWindBagItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> TENGU_MASK = relic("tengu_mask", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> YASHIORI_SAKE = register("yashiori_sake", YashioriSakeItem::new, p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> KAPPA_DISH = relic("kappa_dish", p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> TANUKI_LEAF = register("tanuki_leaf", TanukiLeafItem::new, p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> KINTARO_AXE = relic("kintaro_axe", p -> p.rarity(Rarity.EPIC)
+			.axe(ToolMaterial.IRON, 7.0f, -3.1f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> ZASHIKI_WARASHI = register("zashiki_warashi",
+			p -> new PalladiumItem(ModBlocks.ZASHIKI_WARASHI.get(), p), p -> p.rarity(Rarity.EPIC).useItemDescriptionPrefix());
+	public static final RegistrySupplier<Item> AME_NO_NUBOKO = register("ame_no_nuboko", AmeNoNubokoItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> OROCHI_SCALE = register("orochi_scale", OrochiScaleItem::new, p -> p.rarity(Rarity.EPIC));
 
 	/** Emblema del mod (escudo con una cultura por cuarto): solo es el ícono de la pestaña creativa, no se consigue. */
 	public static final RegistrySupplier<Item> EMBLEM = register("emblem", Item::new, p -> p);

@@ -463,6 +463,21 @@ def raijin_drum():
             box([3.6, 13.8, 4.1], [12.4, 14.3, 4.6], "onyx", "palillo")]
 
 
+def tengu_mask():
+    """Cara (frente en z 12): máscara roja con la nariz larga hacia adelante, cejas y bigote blancos."""
+    return [box([4.2, 5.0, 12.85], [11.8, 12.0, 13.35], "ruby", "máscara"),
+            box([7.2, 7.4, 13.35], [8.8, 9.0, 16.3], "crest", "nariz"),
+            box([4.8, 10.4, 13.35], [7.2, 11.0, 13.55], "white", "ceja der."),
+            box([8.8, 10.4, 13.35], [11.2, 11.0, 13.55], "white", "ceja izq."),
+            box([5.6, 5.6, 13.35], [10.4, 6.4, 13.55], "white", "bigote")]
+
+
+def kappa_dish():
+    """Cabeza (arriba en y 12): el plato hondo verde lleno de agua sobre la coronilla."""
+    return [box([5.0, 12.95, 5.0], [11.0, 13.55, 11.0], "turq", "plato"),
+            box([5.6, 13.55, 5.6], [10.4, 13.75, 10.4], "wing", "agua")]
+
+
 def attach(part, name, offset=(0, 0, 0)):
     return {"type": "model", "model_part": part, "model": f"{NS}:item/{name}_worn", "offset": list(offset), "centered": True}
 
@@ -509,6 +524,9 @@ WORN = {
     # Japón
     "yasakani_magatama": (lambda: model(yasakani_magatama()), [attach("body", "yasakani_magatama")]),
     "raijin_drum": (lambda: model(raijin_drum()), [attach("body", "raijin_drum")]),
+    # Japón, tanda 2
+    "tengu_mask": (lambda: model(tengu_mask()), [attach("head", "tengu_mask")]),
+    "kappa_dish": (lambda: model(kappa_dish()), [attach("head", "kappa_dish")]),
 }
 
 

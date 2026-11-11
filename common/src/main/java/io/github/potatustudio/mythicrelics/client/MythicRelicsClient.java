@@ -11,6 +11,7 @@ import io.github.potatustudio.mythicrelics.client.entity.QilinModel;
 import io.github.potatustudio.mythicrelics.client.entity.CerberusRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.JackalModel;
 import io.github.potatustudio.mythicrelics.client.entity.KitsuneModel;
+import io.github.potatustudio.mythicrelics.client.entity.OrochiModel;
 import io.github.potatustudio.mythicrelics.client.entity.SleipnirModel;
 import io.github.potatustudio.mythicrelics.client.entity.UrashimaTurtleModel;
 import io.github.potatustudio.mythicrelics.client.entity.SleipnirRenderer;
@@ -46,6 +47,8 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.KITSUNE, ChinaRenderers.KitsuneRenderer::new);
 		EntityModelLayerRegistry.register(UrashimaTurtleModel.LAYER, UrashimaTurtleModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.URASHIMA_TURTLE, ChinaRenderers.TurtleRenderer::new);
+		EntityModelLayerRegistry.register(OrochiModel.LAYER, OrochiModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.OROCHI_SHADOW, ChinaRenderers.OrochiRenderer::new);
 		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
 		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, context -> new ThrownItemRenderer<>(context, 1.5f, false));
 		GreeceClient.init();

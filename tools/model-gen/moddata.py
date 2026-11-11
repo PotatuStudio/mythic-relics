@@ -27,7 +27,9 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
          "fire_tipped_spear", "universe_ring", "erlang_eye", "erlang_halberd", "qilin_horn", "pixiu_bracelet", "fu_talismans",
          "xirang_sack", "immortal_peach_branch",
          "kusanagi", "yata_mirror", "yasakani_magatama", "raijin_drum", "oni_kanabo", "kitsune_star_ball", "tide_jewels",
-         "lucky_mallet", "kibi_dango", "urashima_rod"]
+         "lucky_mallet", "kibi_dango", "urashima_rod",
+         "fujin_wind_bag", "tengu_mask", "yashiori_sake", "kappa_dish", "tanuki_leaf", "kintaro_axe", "zashiki_warashi",
+         "ame_no_nuboko", "orochi_scale"]
 # Cultura de cada reliquia (categoría del libro y página de la wiki), en el orden en que se muestran.
 CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:48], "china": ORDER[48:66],
             "japan": ORDER[66:]}
@@ -58,7 +60,10 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "immortal_peach_branch": "hand",
          "kusanagi": "mainhand", "yata_mirror": "offhand", "yasakani_magatama": "chest/necklace", "raijin_drum": "chest/back",
          "oni_kanabo": "mainhand", "kitsune_star_ball": "hand", "tide_jewels": "hand", "lucky_mallet": "hand", "kibi_dango": "hand",
-         "urashima_rod": "hand"}
+         "urashima_rod": "hand",
+         "fujin_wind_bag": "hand", "tengu_mask": "head/face", "yashiori_sake": "hand", "kappa_dish": "head/hat",
+         "tanuki_leaf": "hand", "kintaro_axe": "mainhand", "zashiki_warashi": "block", "ame_no_nuboko": "hand",
+         "orochi_scale": "hand"}
 
 
 def read(path):
@@ -76,7 +81,7 @@ def constants():
     for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java",
                  "rome/RomeRelics.java", "norse/NorseRelics.java",
                  "norse/NorseGods.java", "china/ChinaRelics.java", "china/ChinaGods.java",
-                 "japan/JapanRelics.java"):
+                 "japan/JapanRelics.java", "japan/JapanGods.java"):
         src = read(os.path.join(JAVA, *name.split("/")))
         out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
     return out
@@ -199,6 +204,18 @@ def tooltip_args(c):
                          int(c["MALLET_COOLDOWN"] // 20 // 60), int(c["MALLET_GROW_RADIUS"])],
         "kibi_dango": [int(c["KIBI_STRENGTH_TICKS"] // 20), int(c["KIBI_MAX"])],
         "urashima_rod": [int(c["TURTLE_LEAVE_TICKS"] // 20), int(c["TURTLE_COOLDOWN"] // 20 // 60)],
+        # Japón, tanda 2 (JapanGods#tooltipArgs)
+        "fujin_wind_bag": [int(c["WIND_GLIDE_TICKS"] // 20), int(c["WIND_GALE_RADIUS"]), int(c["WIND_COOLDOWN"] // 20),
+                           int(c["SET_RAIJIN_HITS"]), int(c["SET_CHAIN_TARGETS"])],
+        "tengu_mask": [round(c["TENGU_CRIT"] * 100)],
+        "yashiori_sake": [int(c["SAKE_RADIUS"]), int(c["SAKE_RANGE"]), int(c["SAKE_TICKS"] // 20), int(c["SAKE_COOLDOWN"] // 20)],
+        "kappa_dish": [round(c["KAPPA_DAMAGE"] * 100), int(c["KAPPA_DRY_TICKS"] // 20)],
+        "tanuki_leaf": [int(c["TANUKI_TICKS"] // 20), int(c["TANUKI_COOLDOWN"] // 20 // 60)],
+        "kintaro_axe": [int(c["KINTARO_MAX_LOGS"]), round(c["KINTARO_BEAST_DAMAGE"] * 100)],
+        "zashiki_warashi": [int(c["ZASHIKI_RADIUS"])],
+        "ame_no_nuboko": [int(c["NUBOKO_RANGE"]), int(c["NUBOKO_RADIUS"]) * 2 + 1, int(c["NUBOKO_COOLDOWN"] // 20)],
+        "orochi_scale": [int(c["OROCHI_TICKS"] // 20), int(c["OROCHI_REACH"]), int(c["OROCHI_BITE"]),
+                         int(c["OROCHI_COOLDOWN"] // 20 // 60)],
     }
 
 
@@ -276,7 +293,9 @@ LOOT_TABLE_KEYS = {"desert_pyramid": "loot.mythicrelics.chests.desert_pyramid",
                    "underwater_ruin_big": "loot.mythicrelics.chests.underwater_ruin_big",
                    "underwater_ruin_small": "loot.mythicrelics.chests.underwater_ruin_small",
                    "simple_dungeon": "loot.mythicrelics.chests.simple_dungeon",
-                   "trail_ruins_archaeology_common": "loot.mythicrelics.archaeology.trail_ruins_common"}
+                   "trail_ruins_archaeology_common": "loot.mythicrelics.archaeology.trail_ruins_common",
+                   "village_toolsmith": "loot.mythicrelics.chests.village.village_toolsmith",
+                   "shipwreck_map": "loot.mythicrelics.chests.shipwreck_map"}
 # Tablas de arqueología: la probabilidad es por bloque cepillado, no por cofre.
 ARCHAEOLOGY = {"desert_pyramid_archaeology", "desert_well_archaeology", "trail_ruins_archaeology_rare",
                "ocean_ruin_warm_archaeology", "ocean_ruin_cold_archaeology", "trail_ruins_archaeology_common"}

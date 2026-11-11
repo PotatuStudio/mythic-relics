@@ -53,7 +53,8 @@ public final class GreeceClient {
 		if (grounded) {
 			doubleJumpUsed = false;
 			icarusFlaps = GreeceHeroes.ICARUS_FLAPS;
-		} else if (pressed && !doubleJumpUsed && WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())) {
+		} else if (pressed && !doubleJumpUsed && (WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())
+				|| WornRelics.isWearing(player, ModItems.TENGU_MASK.get()))) {
 			Vec3 motion = player.getDeltaMovement();
 			player.setDeltaMovement(motion.x, GreeceRelics.HERMES_JUMP, motion.z);
 			doubleJumpUsed = true;

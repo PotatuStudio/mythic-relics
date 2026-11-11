@@ -75,14 +75,16 @@ public final class ModLoot {
 			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, List.of(
 					new Drop(0.030f, ModItems.ATHENA_AEGIS),
 					new Drop(0.030f, ModItems.UNIVERSE_RING),
-					new Drop(0.030f, ModItems.RAIJIN_DRUM))),
+					new Drop(0.030f, ModItems.RAIJIN_DRUM),
+					new Drop(0.030f, ModItems.FUJIN_WIND_BAG))),
 			// Ciudad antigua: el descenso de Orfeo.
 			// Ciudad antigua: el descenso de Orfeo y el río del inframundo.
 			Map.entry(BuiltInLootTables.ANCIENT_CITY, List.of(
 					new Drop(0.030f, ModItems.ORPHEUS_LYRE),
 					new Drop(0.020f, ModItems.STYX_WATER),
 					new Drop(0.030f, ModItems.GLEIPNIR),
-					new Drop(0.030f, ModItems.YATA_MIRROR))),
+					new Drop(0.030f, ModItems.YATA_MIRROR),
+					new Drop(0.020f, ModItems.OROCHI_SCALE))),
 			// Ruinas oceánicas frías: el mar donde cayó Ícaro (grava sospechosa).
 			Map.entry(BuiltInLootTables.OCEAN_RUIN_COLD_ARCHAEOLOGY, List.of(
 					new Drop(0.015f, ModItems.ICARUS_WINGS))),
@@ -108,7 +110,8 @@ public final class ModLoot {
 			// Mansiones del bosque: muy rara.
 			Map.entry(BuiltInLootTables.WOODLAND_MANSION, List.of(
 					new Drop(0.050f, ModItems.PANDORA_JAR),
-					new Drop(0.040f, ModItems.ERLANG_HALBERD))),
+					new Drop(0.040f, ModItems.ERLANG_HALBERD),
+					new Drop(0.030f, ModItems.TANUKI_LEAF))),
 			// Portales en ruinas: el fuego robado.
 			// Portales en ruinas: el fuego robado y las puertas de Jano.
 			Map.entry(BuiltInLootTables.RUINED_PORTAL, List.of(
@@ -124,7 +127,8 @@ public final class ModLoot {
 			// Puestos de saqueadores: la guerra de Marte.
 			Map.entry(BuiltInLootTables.PILLAGER_OUTPOST, List.of(
 					new Drop(0.040f, ModItems.ANCILE),
-					new Drop(0.040f, ModItems.GJALLARHORN))),
+					new Drop(0.040f, ModItems.GJALLARHORN),
+					new Drop(0.030f, ModItems.TENGU_MASK))),
 			// Templo de aldea (clérigo): la ciudad que no cae.
 			Map.entry(BuiltInLootTables.VILLAGE_TEMPLE, List.of(
 					new Drop(0.030f, ModItems.PALLADIUM),
@@ -163,13 +167,15 @@ public final class ModLoot {
 					new Drop(0.030f, ModItems.LUCKY_MALLET))),
 			// Casas de aldeas nevadas: la cesta de Iðunn.
 			Map.entry(BuiltInLootTables.VILLAGE_SNOWY_HOUSE, List.of(
-					new Drop(0.040f, ModItems.IDUNN_APPLES))),
+					new Drop(0.040f, ModItems.IDUNN_APPLES),
+					new Drop(0.030f, ModItems.ZASHIKI_WARASHI))),
 			// Casas de aldeas de sabana: los caballos.
 			Map.entry(BuiltInLootTables.VILLAGE_SAVANNA_HOUSE, List.of(
 					new Drop(0.040f, ModItems.SLEIPNIR_HORSESHOE))),
 			// Provisiones de naufragios: el barco de Freyr.
 			Map.entry(BuiltInLootTables.SHIPWRECK_SUPPLY, List.of(
-					new Drop(0.040f, ModItems.SKIDBLADNIR))),
+					new Drop(0.040f, ModItems.SKIDBLADNIR),
+					new Drop(0.030f, ModItems.YASHIORI_SAKE))),
 			// Cruces de la fortaleza: la cabeza que guarda lo oculto.
 			Map.entry(BuiltInLootTables.STRONGHOLD_CROSSING, List.of(
 					new Drop(0.040f, ModItems.MIMIR_HEAD))),
@@ -179,14 +185,22 @@ public final class ModLoot {
 					new Drop(0.040f, ModItems.RUYI_JINGU_BANG),
 					new Drop(0.030f, ModItems.TIDE_JEWELS))),
 			Map.entry(BuiltInLootTables.UNDERWATER_RUIN_SMALL, List.of(
-					new Drop(0.030f, ModItems.DRAGON_PEARL))),
+					new Drop(0.030f, ModItems.DRAGON_PEARL),
+					new Drop(0.030f, ModItems.KAPPA_DISH))),
 			// Mazmorras: las cuevas de los demonios Cuerno de Oro y Cuerno de Plata.
 			Map.entry(BuiltInLootTables.SIMPLE_DUNGEON, List.of(
 					new Drop(0.030f, ModItems.PURPLE_GOLD_GOURD),
 					new Drop(0.040f, ModItems.FU_TALISMANS))),
 			// Ruinas de los senderos (arqueología común): las piedras que sobraron del cielo remendado.
 			Map.entry(BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_COMMON, List.of(
-					new Drop(0.010f, ModItems.FIVE_COLOR_STONE))));
+					new Drop(0.010f, ModItems.FIVE_COLOR_STONE))),
+			// ---- Japón ----
+			// Herrerías de aldea: el hacha del niño de oro.
+			Map.entry(BuiltInLootTables.VILLAGE_TOOLSMITH, List.of(
+					new Drop(0.040f, ModItems.KINTARO_AXE))),
+			// Mapas de naufragio: la lanza que hizo las islas.
+			Map.entry(BuiltInLootTables.SHIPWRECK_MAP, List.of(
+					new Drop(0.030f, ModItems.AME_NO_NUBOKO))));
 
 	/** Dónde aparece una reliquia: tabla de botín y probabilidad por cofre (o por bloque cepillado, en arqueología). */
 	public record Source(ResourceKey<LootTable> table, float chance) {

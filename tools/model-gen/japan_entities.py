@@ -181,8 +181,86 @@ def turtle():
     return m
 
 
-MODELS = {"kitsune": (kitsune, 64, 21), "turtle": (turtle, 128, 22)}
-SCALE = {"kitsune": 1.5, "turtle": 1.7}
+# ---------------------------------------------------------------- Sombra de Yamata no Orochi
+MOSS = [C("#2e3a24"), C("#35432a"), C("#28331f"), C("#3d4c2e")]
+MOSS_HI = C("#5a6e3a")
+DARK = C("#141a10")
+BELLY = [C("#8c2a24"), C("#a8302a"), C("#7a221c")]
+EYE_RED = C("#ff2a1a")
+
+
+def moss_scales(face, x, y, w, h):
+    """Escamas oscuras cubiertas de musgo; el vientre (abajo y las filas bajas de los costados) rojo e inflamado."""
+    if face == "bottom" or (face in ("west", "east", "front", "back") and y >= h - 2 and h > 4):
+        return pick(BELLY), None
+    if face == "top" and random.random() < 0.25:
+        return MOSS_HI, None
+    if (x + (y // 2) * 2) % 4 == 0 and y % 2 == 1:
+        return DARK, None
+    return pick(MOSS), None
+
+
+def orochi_head(face, x, y, w, h):
+    """Cabeza: los ojos rojos como la akakagachi (cereza de invierno), que brillan."""
+    if face in ("west", "east"):
+        fx = front_x(face, x, w)
+        if y == 1 and fx in (1, 2):
+            return EYE_RED, EYE_RED
+    return moss_scales(face, x, y, w, h)
+
+
+def snake_snout(face, x, y, w, h):
+    if face == "front" and y == h - 1:
+        return (C("#e8e0c8") if x % 2 == 0 else DARK), None
+    return moss_scales(face, x, y, w, h)
+
+
+def jaw(face, x, y, w, h):
+    if face == "top":
+        return C("#6a1414"), None
+    return moss_scales(face, x, y, w, h)
+
+
+def trunk(face, x, y, w, h):
+    return pick([C("#4a3018"), C("#3a2412")]), None
+
+
+def cypress(face, x, y, w, h):
+    return pick([C("#1f3a1a"), C("#264620"), C("#183014")]), None
+
+
+def kusanagi_glint(face, x, y, w, h):
+    c = pick([C("#e8f0ff"), C("#ffffff")])
+    return c, c
+
+
+def orochi():
+    m = Model()
+    body = m.part("body", None, [0, 24, 0], [0, 0, 0], [cube(-12, -8, -12, 24, 8, 24, moss_scales)])
+    for k, (tx, tz) in enumerate(((-6, -3), (5, 4), (0, 7))):
+        m.part(f"tree{k}", body, [tx, -8, tz], [0, 0, 0], [cube(-0.5, -3, -0.5, 1, 3, 1, trunk),
+                                                           cube(-1.5, -8, -1.5, 3, 5, 3, cypress)])
+    for i in range(8):
+        a = 2 * math.pi * i / 8
+        bx, bz = -math.sin(a) * 8.5, -math.cos(a) * 8.5
+        n1 = m.part(f"neck{i}", body, [round(bx, 2), -7, round(bz, 2)], [0.45, round(a, 4), 0],
+                    [cube(-1.5, -9, -1.5, 3, 9, 3, moss_scales)])
+        n2 = m.part(f"neck{i}b", n1, [0, -9, 0], [0.3, 0, 0], [cube(-1.5, -8, -1.5, 3, 8, 3, moss_scales)])
+        hd = m.part(f"head{i}", n2, [0, -8, 0], [-0.75, 0, 0], [cube(-2, -2.5, -5, 4, 3, 5, orochi_head),
+                                                              cube(-1.5, -1.5, -8, 3, 2, 3, snake_snout)])
+        m.part(f"jaw{i}", hd, [0, 0.5, -4.5], [0.15, 0, 0], [cube(-1.5, 0, -3.5, 3, 1, 4, jaw)])
+        ta = a + math.pi / 8
+        tx, tz = -math.sin(ta) * 11, -math.cos(ta) * 11
+        tail = m.part(f"tail{i}", body, [round(tx, 2), -1.5, round(tz, 2)], [0, round(ta, 4), 0],
+                      [cube(-1, -1, -8, 2, 2, 8, moss_scales)])
+        if i == 3:
+            # En una de las colas, el brillo de la espada Kusanagi que encontró Susanoo.
+            m.part("kusanagi_glint", tail, [0, -1, -6], [0, 0, 0], [cube(-0.5, -1, -0.5, 1, 1, 1, kusanagi_glint)])
+    return m
+
+
+MODELS = {"kitsune": (kitsune, 64, 21), "turtle": (turtle, 128, 22), "orochi": (orochi, 128, 23)}
+SCALE = {"kitsune": 1.5, "turtle": 1.7, "orochi": 2.0}
 
 
 def bake_one(key):

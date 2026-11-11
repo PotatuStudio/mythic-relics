@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:kappa_dish"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "head",
+   "model": "mythicrelics:item/kappa_dish_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

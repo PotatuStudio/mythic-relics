@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:tengu_mask"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "head",
+   "model": "mythicrelics:item/tengu_mask_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}
