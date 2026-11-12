@@ -66,6 +66,24 @@ Fidelidad: ninguna depende de cultura pop. Correcciones: el vellocino no cura (P
 de hinojo, Cerbero no tenía collar (Heracles lo sacó encadenado). Licencias: planeo y aleteos, Héroe de la aldea, la
 ruleta de Pandora con vexes como las keres, el talón «por la espalda», cocinar al instante.
 
+### Grecia, tanda 3 (propuesta del 2026-11-12, sin aprobar)
+Elegidas por el usuario entre lo «mainstream que sí es mito». Efectos y números son un primer borrador para revisar.
+Fuentes: Hesíodo (*Teogonía*), Homero (*Ilíada* XVIII), Apolodoro, Píndaro (*Olímpica* 13) y Apolonio de Rodas.
+
+| Reliquia | Tipo | Efecto propuesto | Mito (fiel) | Licencia | Dónde (propuesta) |
+|---|---|---|---|---|---|
+| Rayo de Zeus (*keraunos*) | mano | Mantener clic derecho 1 s y soltar: rayo donde miras (32 bloques), 14 de daño que salta a 3 hostiles cercanos. Recarga 20 s; con tormenta, 10 s. | Lo forjaron los cíclopes para que Zeus venciera a los titanes. | Que un mortal lo use; el salto entre enemigos. | Ciudades del End, 2 % |
+| Piel del león de Nemea | capa (compite con el vellocino) | Recibes la mitad del daño de armas y proyectiles (espadas, hachas, flechas, tridentes); no protege de garras, fuego ni explosiones. Sin arma, +3 de daño. | Ningún arma la atravesaba: Heracles estranguló al león, lo desolló con sus propias garras y la llevó de armadura. | Lo que «cuenta como arma»; el golpe sin arma. | Recompensa de cámaras de desafío, 3 % |
+| Escudo de Aquiles | mano secundaria (escudo propio) | Bloquea como escudo y no se rompe. Cada golpe que bloqueas suma «cólera» (máx. 5); tu siguiente golpe hace +20 % por nivel. | Lo forjó Hefesto a pedido de Tetis, con el mundo entero grabado; la cólera de Aquiles es el tema de la *Ilíada*. | Juntar la cólera con el escudo. | Tesoros de naufragios, 3 % |
+| Harpe | arma | Hoz curva de adamante, 7 de daño, rápida. 15 % de que el mob suelte su cabeza (zombi, esqueleto, creeper, piglin; esqueleto del Wither 5 %). | Con ella Cronos castró a Urano y Perseo decapitó a Medusa. | Cabezas de Minecraft como «decapitar». | Ruinas de los senderos (arqueología), 1,5 % |
+| Brida de oro de Atenea | invoca montura | Llama a Pegaso (caballo blanco alado, propio): vuela. Si subes sobre la altura 200, un tábano lo pica y te tira (sin daño de caída por 5 s). Si muere, vuelve en 5 min. | Atenea se la dio en sueños a Belerofonte para domar a Pegaso; cuando quiso subir al Olimpo, Zeus mandó un tábano y cayó. | Pegaso propio que vuelve; la altura del Olimpo. | Templos del desierto o de la jungla, 3 % |
+| Manzana de la Discordia | uso | Clic derecho a un mob: «para la más bella»; los hostiles a 12 bloques lo atacan a él 15 s. Recarga 60 s. | Eris la lanzó en la boda de Peleo y Tetis; Hera, Atenea y Afrodita se la disputaron y empezó la guerra de Troya. | Usarla sobre un mob; distinta del sake de Yashiori (ahí se atacan todos con todos). | Mansiones del bosque, 3 % |
+| Talos (el clavo de bronce) | invoca aliado | Gigante de bronce 90 s: lanza rocas a los hostiles (10 de daño) y se pone al rojo para abrazar al que se le acerca (fuego). Su punto débil es el tobillo: por la espalda recibe el doble. Recarga 5 min. | Hefesto lo hizo para que guardara Creta; daba tres vueltas a la isla al día tirando rocas, se calentaba al rojo y su única vena se cerraba con un clavo en el tobillo (Medea se lo quitó). | Que se pueda invocar; la duración. | Ciudades antiguas, 2 % |
+
+Pop que se señala y no se usa: las Espadas del Caos, el Hacha Leviatán y el Cesto de Nemea (*God of War*), el Kraken
+griego (*Furia de titanes*), Anaklusmos y el bronce celestial (*Percy Jackson*). La raíz real de las armas encadenadas
+son las cadenas de Hefesto con las que se ató a Prometeo (Kratos y Bía lo llevaron a la roca): idea guardada.
+
 Ideas originales de Grecia (punto de partida):
 
 | Reliquia | Espacio | Efecto | Dónde |
@@ -146,6 +164,22 @@ Skíðblaðnir y Sleipnir sobre el agua los dos, las 7 reliquias. La cabeza de M
 | Cabeza de Mímir | mano secundaria | Cada 10 s, partículas sobre minerales valiosos a 8 bloques; avisa cuando un creeper empieza a explotar cerca. | Cruces de la fortaleza, 4 % |
 | Andvaranaut | anillo | Mineral de oro doble y trueques de piglins dobles; maldición: 2 corazones menos y los hostiles te prefieren. | Bastiones, 3 % |
 | Óðrerir | mano (se bebe) | +5 niveles y Prisa I 5 min; una vez por día de Minecraft. | Casas de aldeas de taiga, 3 % |
+
+### Nórdicos, tanda 3 (propuesta del 2026-11-12, sin aprobar)
+Fuentes: *Edda prosaica*, *Edda poética* (*Skírnismál*, *Þrymskviða*), *Saga de los Volsungos*, *Saga de Hervör* y
+*Skáldskaparmál* (Hjaðningavíg).
+
+| Reliquia | Tipo | Efecto propuesto | Mito (fiel) | Licencia | Dónde (propuesta) |
+|---|---|---|---|---|---|
+| Gram | arma | 9 de daño. Clic derecho cargado: estocada desde abajo (como contra Fáfnir) de 20 de daño; doble contra mobs de más de 100 de vida (dragón del End, Wither, devastador, gólem). Recarga 12 s. | Odín la clavó en el árbol Barnstokkr; Regin la reforjó para Sigurd, que partió el yunque con ella y mató a Fáfnir desde un foso. | El «doble contra grandes». | Cámaras de los portales del End (fortaleza), 3 % |
+| Tyrfing | arma maldita | 10 de daño, nunca falla (todo golpe es crítico) y brilla como fuego (da luz). Maldición: si está 60 s en tu mano sin matar, te hiere 4 corazones. | Los enanos Dvalinn y Durinn la forjaron a la fuerza y la maldijeron: brillaba, no fallaba y debía matar cada vez que se desenvainaba. | Lo de los 60 s y los críticos. | Tesoro de bastiones, 2 % |
+| Dáinsleif | arma | 8 de daño; sus heridas no sanan: el golpeado no se cura ni regenera por 10 s y pierde medio corazón por segundo durante 4 s. | La espada de Högni en la batalla eterna de los Hjaðningar: hecha por enanos, sus heridas nunca sanaban. | El sangrado. La maldición de «debe matar» queda solo en Tyrfing para que no se repitan. | Ciudades antiguas, 3 % |
+| Fragmento de Bifröst | uso | Clic derecho: puente arcoíris de hasta 32 bloques hacia donde miras (también hacia arriba); dura 30 s y su franja roja quema a los hostiles que lo pisan. Recarga 60 s. | El puente entre Midgard y Asgard que guarda Heimdall; su rojo es fuego ardiente; se rompe en el Ragnarök. | Que se pueda «llevar» un fragmento. | Ciudades del End, 3 % |
+| Espada de Freyr | invoca aliado | La espada vuela sola 45 s y pelea con los hostiles (8 de daño, +50 % contra mobs grandes, «gigantes»). Recarga 3 min. | Peleaba sola contra los gigantes; Freyr se la dio a Skírnir para cortejar a Gerðr y en el Ragnarök pelea contra Surtr con un asta. | Duración y recarga; «gigantes» como mobs grandes. | Mansiones del bosque, 3 % |
+| Manto de plumas de halcón de Freyja | espalda (compite con la égida y las alas de Ícaro) | Doble toque de salto: te vuelves halcón 20 s y vuelas libre (no atacas ni usas objetos). Recarga 90 s. | Loki lo pidió prestado para buscar el martillo de Thor y para rescatar a Iðunn convertida en nuez. | Duración y recarga. | Casas de aldeas de taiga, 3 % |
+
+Pop que se señala y no se usa: Stormbreaker y «solo el digno» (Marvel), el Hacha Leviatán y Draupnir como lanza
+(*God of War*), los cascos con cuernos (ópera del siglo XIX).
 
 Ideas originales nórdicas (punto de partida):
 
