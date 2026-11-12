@@ -152,6 +152,27 @@ public final class ChinaRenderers {
 			super(context, new OrochiModel(context.bakeLayer(OrochiModel.LAYER)), 2.0f, "orochi_shadow");
 		}
 
+		/** Estado con la mordida: el modelo abre las mandíbulas solo cuando el servidor avisa que mordió. */
+		public static class State extends LivingEntityRenderState {
+			/** Ticks (con fracción) desde la última mordida. */
+			public float sinceBite = 100.0f;
+			public int bitingHeads;
+		}
+
+		@Override
+		public LivingEntityRenderState createRenderState() {
+			return new State();
+		}
+
+		@Override
+		public void extractRenderState(OrochiShadow orochi, LivingEntityRenderState state, float partialTick) {
+			super.extractRenderState(orochi, state, partialTick);
+			if (state instanceof State s) {
+				s.sinceBite = orochi.ticksSinceBite() + partialTick;
+				s.bitingHeads = orochi.bitingHeads();
+			}
+		}
+
 		@Override
 		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
 			poseStack.scale(SCALE, SCALE, SCALE);

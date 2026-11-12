@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-11. Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
+Última sesión: 2026-11-12 (pendientes menores: visor, ícono del mod, Orochi). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
 programadas). El usuario ya empezó a probar en NeoForge (con `runClient` en su PC) y se hicieron cuatro rondas de
 arreglos con lo que reportó; ver «Arreglos tras…» y «Después». Para retomar: leer «Después», punto 1.
 
@@ -276,7 +276,9 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 ## Herramientas y pruebas
 - **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC
   después de subir a `main`.
-- `tools/model-gen/egypt_icons.py`: genera los íconos 16x16 (con brillo animado) y el ícono del mod.
+- `tools/model-gen/egypt_icons.py`: genera los íconos 16x16 de Egipto (con brillo animado).
+- `tools/model-gen/mod_icon.py`: ícono del mod (`icon.png` y `mythicrelics_icon.png` de los dos loaders): el escudo
+  del emblema con las seis culturas, cada una con el ícono de su pestaña. Agregar la cultura nueva al cerrar cada tanda.
 - `tools/model-gen/scarab_texture.py`: textura del escarabajo aliado (requiere Pillow).
 - `tools/model-gen/make_codex.py`: genera el libro de Modonomicon (`data/mythicrelics/modonomicon/books/relics/`),
   sus textos con los números ya puestos (claves `book.mythicrelics.relics.entry.*` en los lang) y la wiki
@@ -299,7 +301,10 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 1. **Seguir probando en el juego** (NeoForge en el PC del usuario, con Jade para ver la vida). Lo pendiente de confirmar
    tras la cuarta ronda:
    - Montar y controlar Sleipnir, qilin, long y tortuga (correr, saltar, nadar); Skíðblaðnir (vista, vela, plegado).
-   - Cuervos de Odín: que se posen y se queden quietos mirando; graznido ocasional; hostiles brillando.
+   - Cuervos de Odín: que se posen y se queden quietos mirando; graznido ocasional; hostiles brillando. Las alas
+     plegadas se rehicieron el 2026-11-12 (antes colgaban hasta el suelo y parecían patas): confirmar que se ven bien.
+   - Sombra de Orochi: ahora abre las mandíbulas solo al morder (se echa atrás, se lanza y cierra; una cabeza por
+     hostil, con el evento de entidad 100 + cabezas).
    - Gungnir en la mano, al cargar y en vuelo; Mjölnir en la mano y en vuelo (sus `display` son estimados); Ruyi estirado.
    - Estatuas de Medusa: colocar, romper, que no crasheen; textura de piedra sobre los mobs petrificados.
    - Paladio (modelo y parpadeo), candado de Jano en puertas, trampillas, vallas y cofres, yelmo de Hades puesto.
@@ -313,9 +318,7 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 3. Pendientes posibles: las Cuatro Bestias Celestiales chinas como set; luego India, aztecas, eslavos, Mesopotamia
    (`docs/ideas.md`).
 4. Pendientes menores:
-   - visor global sin los cuervos ni el barco en 3D (están en `tools/design-page/revision2_build.py`);
-   - ícono del mod (`icon.png`) todavía hecho con íconos de Egipto: rehacer al estilo del emblema;
-   - la sombra de Orochi abre las mandíbulas en bucle, no al morder;
+   - el emblema de la pestaña creativa (16x16) sigue con cuatro culturas (sin China ni Japón);
    - el rescate del xirang al vacío usa el último suelo firme (o el punto de aparición).
 5. Portar Misfit Relics a Architectury (mismo esquema de módulos).
 

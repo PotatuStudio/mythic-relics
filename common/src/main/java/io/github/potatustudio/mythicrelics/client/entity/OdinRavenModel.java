@@ -13,6 +13,9 @@ import net.minecraft.util.Mth;
  * abiertas que se baten, la cola que se abre y la cabeza hacia su dueño.
  */
 public class OdinRavenModel extends EntityModel<LivingEntityRenderState> {
+	/** Ala plegada: apunta hacia la cola y cae por el costado, como un tejado sobre el lomo. */
+	private static final float FOLD_YAW = Mth.HALF_PI;
+	private static final float FOLD_ROLL = 1.1f;
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(MythicRelics.id("odin_raven"), "main");
 
 	private final ModelPart head;
@@ -43,9 +46,12 @@ public class OdinRavenModel extends EntityModel<LivingEntityRenderState> {
 			wingR.zRot += flap;
 			wingL.zRot -= flap;
 		} else {
-			// Posado: alas plegadas a los costados.
-			wingR.zRot -= 1.45f;
-			wingL.zRot += 1.45f;
+			// Posado: alas plegadas hacia atrás, pegadas a los costados (girarlas solo en z las dejaba colgando hasta el
+			// suelo como patas).
+			wingR.yRot += FOLD_YAW;
+			wingR.zRot += FOLD_ROLL;
+			wingL.yRot -= FOLD_YAW;
+			wingL.zRot -= FOLD_ROLL;
 		}
 		tail.xRot += Mth.sin(t * 0.1f) * 0.1f;
 		head.xRot += state.xRot * Mth.DEG_TO_RAD * 0.5f;

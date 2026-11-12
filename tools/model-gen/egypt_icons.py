@@ -1,4 +1,4 @@
-"""Íconos 16x16 de Egipto y el ícono del mod (estilo vanilla: contorno del color oscuro de cada material, luz desde
+"""Íconos 16x16 de Egipto (estilo vanilla: contorno del color oscuro de cada material, luz desde
 arriba a la izquierda, brillo animado solo en el oro y las gemas). Renovados el 2026-11-09.
 
 Uso: python egypt_icons.py <carpeta_texturas_item> <ícono_del_mod.png> [<carpeta_vista_previa>]
@@ -643,17 +643,14 @@ ICONS = {
 }
 
 if __name__ == "__main__":
-    out, mod_icon = sys.argv[1], sys.argv[2]
-    preview = sys.argv[3] if len(sys.argv) > 3 else None
+    out = sys.argv[1]
+    preview = sys.argv[2] if len(sys.argv) > 2 else None
     os.makedirs(out, exist_ok=True)
     made = {}
     for name, make in ICONS.items():
         img, chars = make()
         made[name] = save(out, name, img, chars)
-    icon = panel([made["ankh"], made["eye_of_horus"], made["golden_scarab"], made["anubis_scepter"]])
-    png(mod_icon, upscale(icon, 2))
     if preview:
         os.makedirs(preview, exist_ok=True)
         sheet(list(made.values()), os.path.join(preview, "egypt_icons.png"))
-        png(os.path.join(preview, "mod_icon.png"), upscale(icon, 2))
     print("ok:", ", ".join(made))

@@ -138,6 +138,8 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button data-subject="jackal" aria-pressed="false" data-i18n="subjJackal">Chacal</button>
       <button data-subject="cerberus" aria-pressed="false" data-i18n="subjCerberus">Cerbero</button>
       <button data-subject="sleipnir" aria-pressed="false" data-i18n="subjSleipnir">Sleipnir</button>
+      <button data-subject="ravens" aria-pressed="false" data-i18n="subjRavens">Huginn y Muninn</button>
+      <button data-subject="ship" aria-pressed="false" data-i18n="subjShip">Skíðblaðnir</button>
       <button data-subject="monkey" aria-pressed="false" data-i18n="subjMonkey">Mono guerrero</button>
       <button data-subject="dragon" aria-pressed="false" data-i18n="subjDragon">Long</button>
       <button data-subject="dog" aria-pressed="false" data-i18n="subjDog">Perro Celestial</button>
@@ -169,7 +171,7 @@ const UI = {
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
     stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
-    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
     footKitsune: "El kitsune de nueve colas de la Esfera estelar: zorro blanco de Inari con marcas rojas y babero rojo, ojos dorados, nueve colas alzadas con la punta de llama celeste y dos kitsunebi que giran a su alrededor (brillan).",
     footOrochi: "La sombra de Yamata no Orochi que llama su escama: no se mueve; ocho cabezas de ojos rojos sobre cuellos largos que muerden a los hostiles cercanos, cuerpo de escamas con musgo y cipreses en el lomo, ocho colas por el suelo y el brillo de Kusanagi en una de ellas. Se dibuja al doble.",
     footTurtle: "La tortuga gigante de Urashima, que llama su caña: caparazón de escudos con borde ámbar, aletas que reman y las algas de la minogame, la tortuga de mil años. El jinete va sobre el caparazón.",
@@ -179,6 +181,8 @@ const UI = {
     footDragon: "El long de la Perla del dragón: dragón chino sin alas, de diez segmentos que ondulan al volar, con cuernos de ciervo, bigotes, melena y barba de llamas, garras de águila y la perla llameante delante del hocico (los ojos y la perla brillan). Se monta: el jinete va sobre el segundo segmento.",
     walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
+    footRavens: "Huginn y Muninn, los cuervos de Odín: salen con clic derecho, se posan cerca de ti con las alas plegadas y te miran; de vez en cuando uno levanta el vuelo y vuelve a posarse. Sus ojos dorados brillan y, mientras están afuera, los hostiles cercanos brillan.",
+    footShip: "Skíðblaðnir, el barco de Freyr que se pliega como un pañuelo: clic derecho mirando al agua y se despliega un bote con proa de dragón, escudos en la borda y vela a rayas detrás del jinete. Al bajarte se pliega solo; con viento a favor va más rápido.",
     footSleipnir: "Sleipnir, el caballo de ocho patas de Odín, que llama la herradura: corcel de guerra de Asgard con bardas de hierro rúnico, crin trenzada y cola larga. Las runas y los ojos brillan en la oscuridad y al galopar deja escarcha y chispas (en el agua, salpicaduras). Vuelve a Asgard cuando te bajas.",
     footCerberus: "Cerbero como lo describe Apolodoro: tres cabezas de perro y cola de serpiente. Aparece con llamas de alma y muerde tres veces por ataque, una por cabeza; las fauces gruñen a destiempo.",
     footJackal: "El chacal aparece con partículas de alma, ataca saltando y mueve la cola al caminar. Suena como un zorro más grave.",
@@ -191,7 +195,7 @@ const UI = {
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
     stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
-    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
     footKitsune: "The nine-tailed kitsune of the Star Ball: a white Inari fox with red markings and a red bib, golden eyes, nine raised tails tipped with pale blue flame and two kitsunebi circling it (they glow).",
     footOrochi: "The shadow of Yamata no Orochi called by its scale: it does not move; eight red-eyed heads on long necks bite nearby hostiles, a scaly body with moss and cypresses on its back, eight tails across the ground and the gleam of Kusanagi in one of them. Drawn at double size.",
     footTurtle: "Urashima's giant turtle, called by his rod: a shell of amber-rimmed scutes, rowing flippers and the trailing seaweed of the minogame, the thousand-year turtle. The rider sits on the shell.",
@@ -201,6 +205,8 @@ const UI = {
     footDragon: "The long of the Dragon Pearl: a wingless Chinese dragon of ten segments that undulate as it flies, with stag antlers, whiskers, a mane and beard of flames, eagle claws and the flaming pearl before its snout (eyes and pearl glow). It can be ridden: the rider sits on the second segment.",
     walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
+    footRavens: "Huginn and Muninn, Odin's ravens: right-click to send them out; they perch near you with folded wings and watch you, and now and then one takes off and lands again. Their golden eyes glow and, while they are out, nearby hostiles glow.",
+    footShip: "Skíðblaðnir, Freyr's ship that folds like a cloth: right-click looking at water to unfold a boat with a dragon prow, shields along the gunwale and a striped sail behind the rider. It folds itself when you get off; with a fair wind it goes faster.",
     footSleipnir: "Sleipnir, Odin's eight-legged horse, called by the horseshoe: an Asgard warhorse with runic iron barding, braided mane and a long tail. Runes and eyes glow in the dark and his gallop leaves frost and sparks (splashes on water). He returns to Asgard when you dismount.",
     footCerberus: "Cerberus as Apollodorus describes him: three dog heads and a serpent for a tail. He appears in soul flames and bites three times per attack, once per head; the jaws snarl out of step.",
     footJackal: "The jackal appears with soul particles, leaps at its target and wags its tail while walking. It sounds like a deeper fox.",
@@ -217,7 +223,7 @@ const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma",
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
   greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"],
   china: ["wind_fire_wheels", "five_color_stone", "erlang_eye", "pixiu_bracelet"], japan: ["yasakani_magatama", "raijin_drum", "tengu_mask", "kappa_dish"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player", "sleipnir"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player", "sleipnir", "ravens", "ship"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -616,6 +622,17 @@ turtle.entity.scale.setScalar(DATA.china.turtle.scale);
 const orochi = chinaEntity("orochi");
 orochi.entity.scale.setScalar(DATA.china.orochi.scale);
 qilin.entity.scale.setScalar(DATA.china.qilin.scale);
+/* Huginn y Muninn (OdinRavenModel): dos cuervos; posados, alas plegadas hacia atrás sobre los costados, y a ratos uno vuela en círculo. */
+const ravens = [chinaEntity("raven"), chinaEntity("raven")];
+/* Skíðblaðnir: BoatRenderer vanilla (sube 0,375, escala -1,-1,1 y gira 90° el modelo) sobre agua. */
+const ship = chinaEntity("skidbladnir");
+{
+  const inner = new THREE.Group(); inner.rotation.y = Math.PI / 2;
+  while (ship.root.children.length) inner.add(ship.root.children[0]);
+  ship.root.add(inner); ship.root.position.y = 0.375;
+}
+const water = new THREE.Mesh(new THREE.BoxGeometry(7, 0.5, 7), new THREE.MeshLambertMaterial({ color: 0x2f5f9a, transparent: true, opacity: 0.8 }));
+water.position.y = -0.25; scene.add(water);
 function addRot(p, dx = 0, dy = 0, dz = 0) { const b = p.userData.base; p.rotation.set(b[0] + dx, b[1] + dy, b[2] + dz); }
 
 /* Sleipnir (SleipnirModel.java): caballo vanilla con ocho patas, bardas rúnicas, crin trenzada y cola en dos tramos. */
@@ -841,14 +858,41 @@ function setupAnim() {
   addRot(U.neck, Math.sin(kt * 0.9) * 0.08);
   for (let k2 = 0; k2 < 3; k2++) addRot(U["seaweed" + k2], Math.sin(kt * 1.3 + k2) * 0.15, Math.sin(kt * 0.9 + k2) * 0.2);
   // Sombra de Orochi (OrochiModel).
-  const O = orochi.parts;
+  // Muerde cada 1,5 s (OROCHI_BITE_INTERVAL): se echa atrás abriendo la boca, se lanza y cierra de golpe.
+  const O = orochi.parts, BITE_ORDER = [0, 4, 2, 6, 1, 5, 3, 7], sinceBite = (kt * 20) % 30;
   for (let i = 0; i < 8; i++) {
+    const p = (sinceBite - BITE_ORDER.indexOf(i) * 0.7) / 12;
+    let back = 0, open = 0;
+    if (p > 0 && p < 1) {
+      back = p < 0.35 ? p / 0.35 : p < 0.6 ? 1 - (p - 0.35) / 0.25 * 2 : -1 + (p - 0.6) / 0.4;
+      open = p < 0.45 ? p / 0.45 : p < 0.6 ? 1 : Math.max(0, 1 - (p - 0.6) / 0.08);
+    }
     addRot(O["neck" + i], Math.sin(kt * 1.1 + i * 0.8) * 0.12);
-    addRot(O["neck" + i + "b"], Math.sin(kt * 1.3 + i * 0.8 - 0.5) * 0.18, Math.sin(kt * 0.9 + i) * 0.15);
-    addRot(O["head" + i], Math.sin(kt * 1.3 + i * 0.8 - 1.0) * 0.1);
-    addRot(O["jaw" + i], Math.max(0, Math.sin(kt * 2.4 + i * 1.7)) * 0.6);
+    addRot(O["neck" + i + "b"], Math.sin(kt * 1.3 + i * 0.8 - 0.5) * 0.18 - back * 0.35, Math.sin(kt * 0.9 + i) * 0.15);
+    addRot(O["head" + i], Math.sin(kt * 1.3 + i * 0.8 - 1.0) * 0.1 - back * 0.2);
+    addRot(O["jaw" + i], open * 0.9);
     addRot(O["tail" + i], 0, Math.sin(kt * 0.8 + i * 0.9) * 0.2);
   }
+  // Cuervos: posados mirando a la cámara; cada 8 s uno de los dos da una vuelta volando y se vuelve a posar.
+  ravens.forEach((r, i) => {
+    const R = r.parts, home = [i ? 0.45 : -0.45, 0, 0], cycle = (kt + i * 4) % 8, flying = cycle < 3;
+    if (flying) {
+      const a = cycle / 3 * Math.PI * 2, lift = Math.sin(cycle / 3 * Math.PI);
+      r.entity.position.set(home[0] + Math.sin(a) * 1.4 * (i ? 1 : -1), lift * 1.6, Math.cos(a) * 1.4 - 1.4);
+      r.entity.rotation.y = Math.PI - a * (i ? 1 : -1) + (i ? -Math.PI / 2 : Math.PI / 2);
+      const f = Math.sin(kt * 20 * 0.45) * 0.55;
+      addRot(R.wing_r, 0, 0, f); addRot(R.wing_l, 0, 0, -f);
+    } else {
+      r.entity.position.set(...home); r.entity.rotation.y = Math.PI + (i ? -0.25 : 0.25);
+      addRot(R.wing_r, 0, Math.PI / 2, 1.1); addRot(R.wing_l, 0, -Math.PI / 2, -1.1);
+    }
+    addRot(R.tail, Math.sin(kt * 2) * 0.1);
+    addRot(R.head, flying ? 0 : Math.max(0, Math.sin(kt * 1.7 + i * 2)) * 0.25);
+  });
+  // Barco: se mece en el agua y la vela flamea.
+  ship.entity.position.y = Math.sin(kt * 1.2) * 0.03;
+  ship.entity.rotation.z = Math.sin(kt * 0.9) * 0.02;
+  addRot(ship.parts.sail, 0, Math.sin(kt * 0.8) * 0.05);
 }
 
 /* Partículas al aparecer: el escarabajo suelta las del bloque que pisa (Minions#dig); el chacal, almas. */
@@ -898,6 +942,8 @@ const VIEWS = {
   kitsune: { cam: [2.4, 1.6, 3.0], target: [0, 0.9, 0] },
   turtle: { cam: [3.6, 2.2, 4.0], target: [0, 0.6, 0] },
   orochi: { cam: [5.0, 3.6, 5.6], target: [0, 1.5, 0] },
+  ravens: { cam: [1.4, 1.1, 2.2], target: [0, 0.4, -0.3] },
+  ship: { cam: [3.6, 2.6, 3.8], target: [0, 0.6, 0] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
 function setSubject(s) {
@@ -913,6 +959,9 @@ function setSubject(s) {
   kitsune.entity.visible = s === "kitsune";
   turtle.entity.visible = s === "turtle";
   orochi.entity.visible = s === "orochi";
+  ravens.forEach(r => { r.entity.visible = s === "ravens"; });
+  ship.entity.visible = water.visible = s === "ship";
+  ship.entity.position.set(0, 0, 0); ship.entity.rotation.y = Math.PI * 0.75;
   orochi.entity.position.set(0, 0, 0); orochi.entity.rotation.y = Math.PI;
   kitsune.entity.position.set(0, 0, 0); turtle.entity.position.set(0, 0, 0);
   kitsune.entity.rotation.y = Math.PI; turtle.entity.rotation.y = Math.PI;
@@ -932,7 +981,7 @@ function setSubject(s) {
   renderStageText();
 }
 function renderStageText() {
-  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", player: "footPlayer" }[subject];
+  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", ravens: "footRavens", ship: "footShip", player: "footPlayer" }[subject];
   document.getElementById("stageFoot").textContent = UI[lang][foot];
   document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
   buildWornControls();

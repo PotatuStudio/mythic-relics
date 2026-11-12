@@ -26,7 +26,12 @@ import net.minecraft.world.level.Level;
  */
 public class OrochiShadow extends PathfinderMob {
 	private static final int HEADS = 8;
+	/** Evento que avisa a los clientes de una mordida (100 + cuántas cabezas muerden; vanilla no usa ese rango). */
+	private static final byte BITE_EVENT_BASE = 100;
 	private int bite;
+	/** Solo en el cliente: tick de la última mordida y cuántas cabezas mordieron. */
+	private int lastBiteTick = -100;
+	private int bitingHeads;
 
 	public OrochiShadow(EntityType<? extends OrochiShadow> type, Level level) {
 		super(type, level);
@@ -59,6 +64,7 @@ public class OrochiShadow extends PathfinderMob {
 		}
 		bite = 0;
 		getLookControl().setLookAt(prey.get(0));
+		level.broadcastEntityEvent(this, (byte) (BITE_EVENT_BASE + prey.size()));
 		DamageSource source = damageSources().mobAttack(this);
 		for (LivingEntity e : prey) {
 			e.hurtServer(level, source, JapanGods.OROCHI_BITE);
@@ -74,6 +80,26 @@ public class OrochiShadow extends PathfinderMob {
 		if (level() instanceof ServerLevel level && tickCount % 4 == 0) {
 			level.sendParticles(ParticleTypes.LARGE_SMOKE, getRandomX(1.0), getY() + 0.3, getRandomZ(1.0), 1, 0.0, 0.05, 0.0, 0.0);
 		}
+	}
+
+	@Override
+	public void handleEntityEvent(byte id) {
+		if (id > BITE_EVENT_BASE && id <= BITE_EVENT_BASE + HEADS) {
+			lastBiteTick = tickCount;
+			bitingHeads = id - BITE_EVENT_BASE;
+		} else {
+			super.handleEntityEvent(id);
+		}
+	}
+
+	/** Ticks desde la última mordida (para la animación). */
+	public int ticksSinceBite() {
+		return tickCount - lastBiteTick;
+	}
+
+	/** Cuántas cabezas mordieron la última vez (una por hostil, hasta ocho). */
+	public int bitingHeads() {
+		return bitingHeads;
 	}
 
 	@Override
