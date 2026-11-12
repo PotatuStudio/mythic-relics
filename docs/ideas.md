@@ -66,7 +66,7 @@ Fidelidad: ninguna depende de cultura pop. Correcciones: el vellocino no cura (P
 de hinojo, Cerbero no tenía collar (Heracles lo sacó encadenado). Licencias: planeo y aleteos, Héroe de la aldea, la
 ruleta de Pandora con vexes como las keres, el talón «por la espalda», cocinar al instante.
 
-### Grecia, tanda 3 (propuesta del 2026-11-12, sin aprobar)
+### Grecia, tanda 3 (propuesta del 2026-11-12; lista aprobada, efectos y números sin aprobar)
 Elegidas por el usuario entre lo «mainstream que sí es mito». Efectos y números son un primer borrador para revisar.
 Fuentes: Hesíodo (*Teogonía*), Homero (*Ilíada* XVIII), Apolodoro, Píndaro (*Olímpica* 13) y Apolonio de Rodas.
 
@@ -165,7 +165,7 @@ Skíðblaðnir y Sleipnir sobre el agua los dos, las 7 reliquias. La cabeza de M
 | Andvaranaut | anillo | Mineral de oro doble y trueques de piglins dobles; maldición: 2 corazones menos y los hostiles te prefieren. | Bastiones, 3 % |
 | Óðrerir | mano (se bebe) | +5 niveles y Prisa I 5 min; una vez por día de Minecraft. | Casas de aldeas de taiga, 3 % |
 
-### Nórdicos, tanda 3 (propuesta del 2026-11-12, sin aprobar)
+### Nórdicos, tanda 3 (propuesta del 2026-11-12; lista aprobada, efectos y números sin aprobar)
 Fuentes: *Edda prosaica*, *Edda poética* (*Skírnismál*, *Þrymskviða*), *Saga de los Volsungos*, *Saga de Hervör* y
 *Skáldskaparmál* (Hjaðningavíg).
 
@@ -174,9 +174,11 @@ Fuentes: *Edda prosaica*, *Edda poética* (*Skírnismál*, *Þrymskviða*), *Sag
 | Gram | arma | 9 de daño. Clic derecho cargado: estocada desde abajo (como contra Fáfnir) de 20 de daño; doble contra mobs de más de 100 de vida (dragón del End, Wither, devastador, gólem). Recarga 12 s. | Odín la clavó en el árbol Barnstokkr; Regin la reforjó para Sigurd, que partió el yunque con ella y mató a Fáfnir desde un foso. | El «doble contra grandes». | Cámaras de los portales del End (fortaleza), 3 % |
 | Tyrfing | arma maldita | 10 de daño, nunca falla (todo golpe es crítico) y brilla como fuego (da luz). Maldición: si está 60 s en tu mano sin matar, te hiere 4 corazones. | Los enanos Dvalinn y Durinn la forjaron a la fuerza y la maldijeron: brillaba, no fallaba y debía matar cada vez que se desenvainaba. | Lo de los 60 s y los críticos. | Tesoro de bastiones, 2 % |
 | Dáinsleif | arma | 8 de daño; sus heridas no sanan: el golpeado no se cura ni regenera por 10 s y pierde medio corazón por segundo durante 4 s. | La espada de Högni en la batalla eterna de los Hjaðningar: hecha por enanos, sus heridas nunca sanaban. | El sangrado. La maldición de «debe matar» queda solo en Tyrfing para que no se repitan. | Ciudades antiguas, 3 % |
-| Fragmento de Bifröst | uso | Clic derecho: puente arcoíris de hasta 32 bloques hacia donde miras (también hacia arriba); dura 30 s y su franja roja quema a los hostiles que lo pisan. Recarga 60 s. | El puente entre Midgard y Asgard que guarda Heimdall; su rojo es fuego ardiente; se rompe en el Ragnarök. | Que se pueda «llevar» un fragmento. | Ciudades del End, 3 % |
 | Espada de Freyr | invoca aliado | La espada vuela sola 45 s y pelea con los hostiles (8 de daño, +50 % contra mobs grandes, «gigantes»). Recarga 3 min. | Peleaba sola contra los gigantes; Freyr se la dio a Skírnir para cortejar a Gerðr y en el Ragnarök pelea contra Surtr con un asta. | Duración y recarga; «gigantes» como mobs grandes. | Mansiones del bosque, 3 % |
 | Manto de plumas de halcón de Freyja | espalda (compite con la égida y las alas de Ícaro) | Doble toque de salto: te vuelves halcón 20 s y vuelas libre (no atacas ni usas objetos). Recarga 90 s. | Loki lo pidió prestado para buscar el martillo de Thor y para rescatar a Iðunn convertida en nuez. | Duración y recarga. | Casas de aldeas de taiga, 3 % |
+
+El usuario aprobó la lista (2026-11-12) salvo el **Bifröst**, descartado: no quiere reliquias que construyan
+(puentes, muros, islas). Falta elegir su reemplazo.
 
 Pop que se señala y no se usa: Stormbreaker y «solo el digno» (Marvel), el Hacha Leviatán y Draupnir como lanza
 (*God of War*), los cascos con cuernos (ópera del siglo XIX).
