@@ -178,9 +178,9 @@ Fuentes: *Edda prosaica*, *Edda poética* (*Skírnismál*, *Þrymskviða*), *Sag
 | Espada de Freyr | invoca aliado | La espada vuela sola 45 s y pelea con los hostiles (8 de daño, +50 % contra mobs grandes, «gigantes»). Recarga 3 min. | Peleaba sola contra los gigantes; Freyr se la dio a Skírnir para cortejar a Gerðr y en el Ragnarök pelea contra Surtr con un asta. | Duración y recarga; «gigantes» como mobs grandes. | Mansiones del bosque, 3 % |
 | Manto de plumas de halcón de Freyja | espalda (compite con la égida y las alas de Ícaro) | Doble toque de salto: te vuelves halcón 20 s y vuelas libre (no atacas ni usas objetos). Recarga 90 s. | Loki lo pidió prestado para buscar el martillo de Thor y para rescatar a Iðunn convertida en nuez. | Duración y recarga. | Casas de aldeas de taiga, 3 % |
 
-El usuario aprobó la lista (2026-11-12) y sumó el **dardo de muérdago** (2026-11-13). El **Bifröst** no va como puente
-(no quiere reliquias que construyan); quiere conservarlo como **acceso a una dimensión** (propia del jugador o nueva):
-idea en revisión, probablemente como proyecto aparte de esta tanda por su tamaño.
+El usuario aprobó la lista (2026-11-12) y sumó el **dardo de muérdago** (2026-11-13). El **Bifröst** queda fuera: como puente
+no (no quiere reliquias que construyan) y como entrada a Asgard (una dimensión, con un salón por jugador) se escapa del
+alcance de este mod; idea guardada para **otro mod**.
 
 Pop que se señala y no se usa: Stormbreaker y «solo el digno» (Marvel), el Hacha Leviatán y Draupnir como lanza
 (*God of War*), los cascos con cuernos (ópera del siglo XIX).
