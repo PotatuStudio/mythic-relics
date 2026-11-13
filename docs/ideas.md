@@ -174,11 +174,13 @@ Fuentes: *Edda prosaica*, *Edda poética* (*Skírnismál*, *Þrymskviða*), *Sag
 | Gram | arma | 9 de daño. Clic derecho cargado: estocada desde abajo (como contra Fáfnir) de 20 de daño; doble contra mobs de más de 100 de vida (dragón del End, Wither, devastador, gólem). Recarga 12 s. | Odín la clavó en el árbol Barnstokkr; Regin la reforjó para Sigurd, que partió el yunque con ella y mató a Fáfnir desde un foso. | El «doble contra grandes». | Cámaras de los portales del End (fortaleza), 3 % |
 | Tyrfing | arma maldita | 10 de daño, nunca falla (todo golpe es crítico) y brilla como fuego (da luz). Maldición: si está 60 s en tu mano sin matar, te hiere 4 corazones. | Los enanos Dvalinn y Durinn la forjaron a la fuerza y la maldijeron: brillaba, no fallaba y debía matar cada vez que se desenvainaba. | Lo de los 60 s y los críticos. | Tesoro de bastiones, 2 % |
 | Dáinsleif | arma | 8 de daño; sus heridas no sanan: el golpeado no se cura ni regenera por 10 s y pierde medio corazón por segundo durante 4 s. | La espada de Högni en la batalla eterna de los Hjaðningar: hecha por enanos, sus heridas nunca sanaban. | El sangrado. La maldición de «debe matar» queda solo en Tyrfing para que no se repitan. | Ciudades antiguas, 3 % |
+| Dardo de muérdago | se lanza | Dardo de 12 de daño que ignora armadura, Resistencia y encantamientos de protección; doble contra jefes. Se recoge como un tridente. Recarga 20 s. | Frigg hizo jurar a todas las cosas que no dañarían a Baldr, salvo al muérdago; Loki, disfrazado de anciana, lo supo y se lo puso en la mano al ciego Höðr. | El doble contra jefes; ignorar defensas como «nada había jurado protegerlo». | Mansiones del bosque, 3 % |
 | Espada de Freyr | invoca aliado | La espada vuela sola 45 s y pelea con los hostiles (8 de daño, +50 % contra mobs grandes, «gigantes»). Recarga 3 min. | Peleaba sola contra los gigantes; Freyr se la dio a Skírnir para cortejar a Gerðr y en el Ragnarök pelea contra Surtr con un asta. | Duración y recarga; «gigantes» como mobs grandes. | Mansiones del bosque, 3 % |
 | Manto de plumas de halcón de Freyja | espalda (compite con la égida y las alas de Ícaro) | Doble toque de salto: te vuelves halcón 20 s y vuelas libre (no atacas ni usas objetos). Recarga 90 s. | Loki lo pidió prestado para buscar el martillo de Thor y para rescatar a Iðunn convertida en nuez. | Duración y recarga. | Casas de aldeas de taiga, 3 % |
 
-El usuario aprobó la lista (2026-11-12) salvo el **Bifröst**, descartado: no quiere reliquias que construyan
-(puentes, muros, islas). Falta elegir su reemplazo.
+El usuario aprobó la lista (2026-11-12) y sumó el **dardo de muérdago** (2026-11-13). El **Bifröst** no va como puente
+(no quiere reliquias que construyan); quiere conservarlo como **acceso a una dimensión** (propia del jugador o nueva):
+idea en revisión, probablemente como proyecto aparte de esta tanda por su tamaño.
 
 Pop que se señala y no se usa: Stormbreaker y «solo el digno» (Marvel), el Hacha Leviatán y Draupnir como lanza
 (*God of War*), los cascos con cuernos (ópera del siglo XIX).
