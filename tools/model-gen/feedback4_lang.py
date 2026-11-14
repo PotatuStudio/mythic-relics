@@ -1,4 +1,4 @@
-"""Traducciones de la cuarta ronda de arreglos (2026-11-14): saco de xirang solo con la pasiva (5 min), harpe pasiva, Mímir como guía, aviso del cetro de Anubis, halcón con tecla y forma real, Mímir se pregunta (clic derecho).
+"""Traducciones de la cuarta ronda de arreglos (2026-11-14): saco de xirang solo con la pasiva (5 min), harpe pasiva, Mímir como guía, aviso del cetro de Anubis, halcón con tecla y forma real, Mímir se pregunta (clic derecho), mirada de Medusa sostenida.
 También ajusta los números de moddata (tooltip_args) que cambiaron. Uso: python feedback4_lang.py"""
 import io
 import json
@@ -18,6 +18,10 @@ ES = {
     "item.mythicrelics.mimir_head.tooltip.2": "Te responde una vez y te guía con una estela de luz %2$s s; los minerales valiosos a %1$s bloques brillan",
     "item.mythicrelics.mimir_head.tooltip.3": "Recarga: %4$s s",
     "message.mythicrelics.mimir_arrived": "Mímir: aquí está",
+    "item.mythicrelics.medusa_head.tooltip.1": "Mantén clic derecho para alzarla como un escudo: sus ojos abren un cono de mirada de %2$s bloques",
+    "item.mythicrelics.medusa_head.tooltip.2": "Todo mob que quede %3$s ms en la mirada se petrifica %1$s s (hostiles, neutros y pasivos; no jefes)",
+    "item.mythicrelics.medusa_head.tooltip.3": "La piedra se agrieta hasta romperse. Si muere así se derrumba: doble botín y a veces su estatua",
+    "set.mythicrelics.perseus_set.bonus.1": "La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño",
     "item.mythicrelics.mimir_head.tooltip.4": "Mientras lo sostienes, te avisa cuando un creeper empieza a explotar",
     "message.mythicrelics.mimir_guide": "Mímir: %s a %s bloques, %s",
     "message.mythicrelics.mimir_nothing": "Mímir: no siento ningún tesoro cerca",
@@ -38,6 +42,10 @@ EN = {
     "item.mythicrelics.mimir_head.tooltip.2": "He answers once and guides you with a trail of light for %2$s s; valuable ores within %1$s blocks glow",
     "item.mythicrelics.mimir_head.tooltip.3": "Cooldown: %4$s s",
     "message.mythicrelics.mimir_arrived": "Mímir: here it is",
+    "item.mythicrelics.medusa_head.tooltip.1": "Hold right-click to raise it like a shield: its eyes open a gaze cone of %2$s blocks",
+    "item.mythicrelics.medusa_head.tooltip.2": "Any mob that stays %3$s ms in the gaze turns to stone for %1$s s (hostile, neutral and passive; not bosses)",
+    "item.mythicrelics.medusa_head.tooltip.3": "The stone cracks until it breaks. If it dies like that it crumbles: double loot and sometimes its statue",
+    "set.mythicrelics.perseus_set.bonus.1": "Medusa's gaze petrifies twice as fast and petrified mobs take +50% damage",
     "item.mythicrelics.mimir_head.tooltip.4": "While you hold him, he warns you when a creeper starts to explode",
     "message.mythicrelics.mimir_guide": "Mímir: %s, %s blocks, %s",
     "message.mythicrelics.mimir_nothing": "Mímir: I sense no treasure nearby",
@@ -60,6 +68,8 @@ MODDATA = [
      '"xirang_sack": [int(c["XIRANG_RESCUE_COOLDOWN"] // 20 // 60)],'),
     ('"mimir_head": [int(c["MIMIR_RADIUS"]), int(c["MIMIR_INTERVAL"] // 20), int(c["GUIDE_RADIUS"])],',
      '"mimir_head": [int(c["MIMIR_RADIUS"]), int(c["GUIDE_TICKS"] // 20), int(c["GUIDE_RADIUS"]), int(c["ASK_COOLDOWN"] // 20)],'),
+    ('"medusa_head": [int(c["MEDUSA_TICKS"] // 20), int(c["MEDUSA_RADIUS"]), int(c["MEDUSA_COOLDOWN"] // 20)],',
+     '"medusa_head": [int(c["MEDUSA_TICKS"] // 20), int(c["MEDUSA_RADIUS"]), int(c["MEDUSA_GAZE_TICKS"] * 50)],'),
 ]
 
 if __name__ == "__main__":

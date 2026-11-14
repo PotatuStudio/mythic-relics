@@ -13,6 +13,18 @@ public abstract class LivingEntityRenderStateMixin implements StoneLook {
 
 	@Unique
 	private boolean mythicrelics$falcon;
+	@Unique
+	private int mythicrelics$stoneStage;
+
+	@Override
+	public int mythicrelics$stoneStage() {
+		return mythicrelics$stoneStage;
+	}
+
+	@Override
+	public void mythicrelics$setStoneStage(int stage) {
+		mythicrelics$stoneStage = stage;
+	}
 
 	@Override
 	public boolean mythicrelics$isFalcon() {

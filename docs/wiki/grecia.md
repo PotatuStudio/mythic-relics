@@ -85,8 +85,9 @@ Atenea le dio a Perseo el escudo pulido para no mirar a Medusa.
 
 **Espacio:** mano secundaria · **Rareza:** épica
 
-- Clic derecho: petrifica 5 s a los hostiles que tienes delante hasta 16 bloques (no a los jefes). Si mueren así se derrumban: doble botín y a veces su estatua
-- Recarga: 60 s
+- Mantén clic derecho para alzarla como un escudo: sus ojos abren un cono de mirada de 16 bloques
+- Todo mob que quede 500 ms en la mirada se petrifica 10 s (hostiles, neutros y pasivos; no jefes)
+- La piedra se agrieta hasta romperse. Si muere así se derrumba: doble botín y a veces su estatua
 
 **Mito.** Medusa, la gorgona, convertía en piedra a quien la miraba.  
 Perseo la decapitó mirándola en el reflejo del escudo de Atenea, y usó su cabeza como arma.

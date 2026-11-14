@@ -48,7 +48,7 @@ import net.minecraft.world.phys.Vec3;
  *       {@link HermesJumpPayload}) y la arena y la tierra de almas no frenan.</li>
  *   <li><b>Yelmo de Hades</b> (sombrero): agachado y quieto te vuelves invisible; moverse rápido o atacar lo rompe.</li>
  *   <li><b>Égida de Atenea</b> (espalda): al bloquear con escudo un golpe cuerpo a cuerpo, el atacante queda aturdido.</li>
- *   <li><b>Set de Perseo</b> (las tres): la cabeza de Medusa recarga a la mitad y lo petrificado recibe más daño.</li>
+ *   <li><b>Set de Perseo</b>: la mirada de Medusa petrifica el doble de rápido y lo petrificado recibe más daño.</li>
  *   <li><b>Cabeza de Medusa</b>, <b>Hilo de Ariadna</b> y <b>Lira de Orfeo</b>: ítems que se usan
  *       ({@link MedusaHeadItem}, {@link AriadneThreadItem}, {@link OrpheusLyreItem}).</li>
  *   <li><b>Óbolo de Caronte</b>: al morir conservas inventario y experiencia ({@link CharonStash}).</li>
@@ -65,9 +65,11 @@ public final class GreeceRelics {
 
 	public static final int AEGIS_STUN_TICKS = 40;
 
-	public static final int MEDUSA_TICKS = 100;
+	/** Lo que dura petrificado (se va agrietando hasta romperse). */
+	public static final int MEDUSA_TICKS = 200;
 	public static final double MEDUSA_RADIUS = 16.0;
-	public static final int MEDUSA_COOLDOWN = 1200;
+	/** Ticks dentro de la mirada que hacen falta para petrificar (la mitad con el set de Perseo). */
+	public static final int MEDUSA_GAZE_TICKS = 10;
 	public static final float PERSEUS_PETRIFIED_BONUS = 0.5f;
 	/** Coseno del medio ángulo del cono de la mirada de Medusa (50°). */
 	public static final double MEDUSA_CONE = 0.64;
@@ -86,6 +88,8 @@ public final class GreeceRelics {
 	private static final Map<UUID, Boolean> HADES_INVISIBLE = new HashMap<>();
 	/** Mob petrificado -> tick del juego en que se libera. */
 	private static final Map<UUID, Long> PETRIFIED = new HashMap<>();
+	/** Mirada de Medusa: mob -> {ticks acumulados en la mirada, último tick en que la recibió}. */
+	private static final Map<UUID, long[]> GAZE = new HashMap<>();
 
 	private GreeceRelics() {
 	}
@@ -224,32 +228,59 @@ public final class GreeceRelics {
 	}
 
 	/**
-	 * Petrifica a los hostiles que tienes delante (en un cono de 100° hasta {@link #MEDUSA_RADIUS} bloques, con línea de
-	 * vista); devuelve cuántos. Se quedan quietos y se ven de piedra; si mueren así, se derrumban ({@link #crumble}).
+	 * Mirada de Medusa, cada tick mientras se sostiene la cabeza (clic derecho mantenido, como un escudo): los mobs de
+	 * cualquier tipo (hostiles, neutros y pasivos; no jefes ni aliados) que están en el cono de 100° hasta
+	 * {@link #MEDUSA_RADIUS} bloques, con línea de vista, se van cubriendo de polvo de piedra y, tras
+	 * {@link #MEDUSA_GAZE_TICKS} ticks en la mirada (la mitad con el set de Perseo), quedan petrificados.
 	 */
-	public static int petrify(ServerPlayer player) {
+	public static void gaze(ServerPlayer player) {
 		ServerLevel level = player.level();
+		long now = level.getGameTime();
 		Vec3 eyes = player.getEyePosition();
 		Vec3 look = player.getLookAngle();
-		int count = 0;
+		int speed = hasPerseusSet(player) ? 2 : 1;
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(MEDUSA_RADIUS),
-				m -> m.isAlive() && m instanceof net.minecraft.world.entity.monster.Enemy && !isBoss(m)
+				m -> m.isAlive() && !isBoss(m) && !m.entityTags().contains(PETRIFIED_TAG)
+						&& !io.github.potatustudio.mythicrelics.china.ChinaRelics.isFriend(player, m)
 						&& m.distanceToSqr(player) <= MEDUSA_RADIUS * MEDUSA_RADIUS)) {
 			Vec3 toMob = mob.getBoundingBox().getCenter().subtract(eyes).normalize();
 			if (look.dot(toMob) < MEDUSA_CONE || !player.hasLineOfSight(mob)) {
 				continue;
 			}
-			mob.setNoAi(true);
-			mob.setDeltaMovement(Vec3.ZERO);
-			mob.addTag(PETRIFIED_TAG);
-			PETRIFIED.put(mob.getUUID(), level.getGameTime() + MEDUSA_TICKS);
-			sync(level, mob, true);
+			long[] g = GAZE.computeIfAbsent(mob.getUUID(), k -> new long[2]);
+			g[0] += speed;
+			g[1] = now;
+			// La piedra le va subiendo desde los pies mientras la mirada lo sostiene.
+			double up = mob.getBbHeight() * Math.min(1.0, g[0] / (double) MEDUSA_GAZE_TICKS);
 			level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
-					mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 30, 0.3, 0.5, 0.3, 0.1);
-			level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_PLACE, SoundSource.HOSTILE, 1.0f, 0.6f);
-			count++;
+					mob.getX(), mob.getY() + up, mob.getZ(), 3, mob.getBbWidth() * 0.4, 0.05, mob.getBbWidth() * 0.4, 0.0);
+			if (g[0] >= MEDUSA_GAZE_TICKS) {
+				GAZE.remove(mob.getUUID());
+				petrify(level, mob);
+			}
 		}
-		return count;
+		// El cono de la mirada: chispas verdosas que salen de los ojos hacia adelante.
+		var rng = level.getRandom();
+		for (int i = 0; i < 3; i++) {
+			Vec3 dir = look.add((rng.nextDouble() - 0.5) * 1.2, (rng.nextDouble() - 0.5) * 0.8, (rng.nextDouble() - 0.5) * 1.2).normalize();
+			Vec3 p = eyes.add(dir.scale(1.5 + rng.nextDouble() * 5.0));
+			level.sendParticles(GAZE_DUST, p.x, p.y, p.z, 1, 0.0, 0.0, 0.0, 0.0);
+		}
+	}
+
+	private static final net.minecraft.core.particles.DustParticleOptions GAZE_DUST =
+			new net.minecraft.core.particles.DustParticleOptions(0x9CFF6A, 1.0f);
+
+	/** Petrifica a un mob {@link #MEDUSA_TICKS} ticks: queda quieto y se ve de piedra, que se va agrietando. */
+	private static void petrify(ServerLevel level, Mob mob) {
+		mob.setNoAi(true);
+		mob.setDeltaMovement(Vec3.ZERO);
+		mob.addTag(PETRIFIED_TAG);
+		PETRIFIED.put(mob.getUUID(), level.getGameTime() + MEDUSA_TICKS);
+		sync(level, mob, true);
+		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
+				mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 30, 0.3, 0.5, 0.3, 0.1);
+		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_PLACE, SoundSource.HOSTILE, 1.0f, 0.6f);
 	}
 
 	private static void release(Mob mob) {
@@ -257,15 +288,20 @@ public final class GreeceRelics {
 		mob.removeTag(PETRIFIED_TAG);
 		if (mob.level() instanceof ServerLevel level) {
 			sync(level, mob, false);
+			// Se libera: la piedra estalla en esquirlas.
+			double cy = mob.getY() + mob.getBbHeight() / 2;
+			level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
+					mob.getX(), cy, mob.getZ(), 40, mob.getBbWidth() * 0.4, mob.getBbHeight() * 0.4, mob.getBbWidth() * 0.4, 0.2);
 			level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GRAVEL.defaultBlockState()),
-					mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 15, 0.3, 0.5, 0.3, 0.1);
+					mob.getX(), cy, mob.getZ(), 15, 0.3, 0.5, 0.3, 0.1);
+			level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1.0f, 0.8f);
 		}
 	}
 
 	/** Avisa a los jugadores cercanos para que el mob se dibuje de piedra (o vuelva a su color). */
 	private static void sync(ServerLevel level, Mob mob, boolean on) {
 		java.util.List<ServerPlayer> near = level.players().stream().filter(p -> p.distanceToSqr(mob) < 128 * 128).toList();
-		NetworkManager.sendToPlayers(near, new PetrifyPayload(mob.getId(), on));
+		NetworkManager.sendToPlayers(near, new PetrifyPayload(mob.getId(), on, MEDUSA_TICKS));
 	}
 
 	/** Lo que muere petrificado se derrumba: polvo de piedra, el doble de botín y a veces su estatua. */
@@ -313,15 +349,23 @@ public final class GreeceRelics {
 
 	private static void tick(MinecraftServer server) {
 		long now = server.overworld().getGameTime();
+		// La mirada se olvida si el mob sale del cono.
+		GAZE.values().removeIf(g -> now - g[1] > 5);
 		Iterator<Map.Entry<UUID, Long>> it = PETRIFIED.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<UUID, Long> e = it.next();
 			if (e.getValue() > now) {
-				if (now % 10 == 0) {
+				// Se va agrietando: cada vez caen más esquirlas y suena a piedra que cruje.
+				double progress = 1.0 - (e.getValue() - now) / (double) MEDUSA_TICKS;
+				int every = progress < 0.5 ? 10 : progress < 0.8 ? 5 : 2;
+				if (now % every == 0) {
 					for (ServerLevel level : server.getAllLevels()) {
 						if (level.getEntity(e.getKey()) instanceof Mob mob) {
 							level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
-									mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), 3, 0.25, 0.4, 0.25, 0.0);
+									mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), 2 + (int) (progress * 6), 0.25, 0.4, 0.25, 0.0);
+							if (progress > 0.6 && now % 20 == 0) {
+								level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_HIT, SoundSource.HOSTILE, 0.8f, 0.5f);
+							}
 							break;
 						}
 					}
@@ -354,7 +398,7 @@ public final class GreeceRelics {
 			case "hermes_sandals" -> new Object[] {Math.round(HERMES_SPEED * 100)};
 			case "hades_helm" -> new Object[] {HADES_STILL_TICKS / 20};
 			case "athena_aegis" -> new Object[] {AEGIS_STUN_TICKS / 20};
-			case "medusa_head" -> new Object[] {MEDUSA_TICKS / 20, (int) MEDUSA_RADIUS, MEDUSA_COOLDOWN / 20};
+			case "medusa_head" -> new Object[] {MEDUSA_TICKS / 20, (int) MEDUSA_RADIUS, MEDUSA_GAZE_TICKS * 50};
 			case "ariadne_thread" -> new Object[] {ARIADNE_MAX_DISTANCE, ARIADNE_COOLDOWN / 20 / 60};
 			case "orpheus_lyre" -> new Object[] {(int) ORPHEUS_ANIMALS, (int) ORPHEUS_HOSTILES};
 			default -> GreeceHeroes.tooltipArgs(id);

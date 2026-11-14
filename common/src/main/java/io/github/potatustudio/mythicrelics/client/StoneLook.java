@@ -6,6 +6,10 @@ public interface StoneLook {
 
 	void mythicrelics$setStone(boolean stone);
 
+	int mythicrelics$stoneStage();
+
+	void mythicrelics$setStoneStage(int stage);
+
 	boolean mythicrelics$isFalcon();
 
 	void mythicrelics$setFalcon(boolean falcon);

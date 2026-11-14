@@ -128,7 +128,7 @@ def tooltip_args(c):
         "hermes_sandals": [round(c["HERMES_SPEED"] * 100)],
         "hades_helm": [int(c["HADES_STILL_TICKS"] // 20)],
         "athena_aegis": [int(c["AEGIS_STUN_TICKS"] // 20)],
-        "medusa_head": [int(c["MEDUSA_TICKS"] // 20), int(c["MEDUSA_RADIUS"]), int(c["MEDUSA_COOLDOWN"] // 20)],
+        "medusa_head": [int(c["MEDUSA_TICKS"] // 20), int(c["MEDUSA_RADIUS"]), int(c["MEDUSA_GAZE_TICKS"] * 50)],
         "ariadne_thread": [int(c["ARIADNE_MAX_DISTANCE"]), int(c["ARIADNE_COOLDOWN"] // 20 // 60)],
         "charon_obol": [],
         "orpheus_lyre": [int(c["ORPHEUS_ANIMALS"]), int(c["ORPHEUS_HOSTILES"])],

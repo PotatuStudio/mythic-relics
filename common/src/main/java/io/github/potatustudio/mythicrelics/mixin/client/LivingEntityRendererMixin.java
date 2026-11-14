@@ -23,6 +23,7 @@ public abstract class LivingEntityRendererMixin {
 			at = @At("TAIL"))
 	private void mythicrelics$extractStone(LivingEntity entity, LivingEntityRenderState state, float partialTick, CallbackInfo ci) {
 		((StoneLook) state).mythicrelics$setStone(PetrifiedClient.isStone(entity));
+		((StoneLook) state).mythicrelics$setStoneStage(PetrifiedClient.stage(entity));
 		((StoneLook) state).mythicrelics$setFalcon(entity instanceof net.minecraft.world.entity.player.Player player
 				&& io.github.potatustudio.mythicrelics.norse.NorseSagas.isFalconForm(player));
 	}
@@ -42,7 +43,7 @@ public abstract class LivingEntityRendererMixin {
 	private void mythicrelics$stoneTexture(LivingEntityRenderState state, boolean bodyVisible, boolean translucent, boolean glowing,
 			CallbackInfoReturnable<RenderType> cir) {
 		if (cir.getReturnValue() != null && ((StoneLook) state).mythicrelics$isStone()) {
-			cir.setReturnValue(RenderTypes.entityCutout(PetrifiedClient.STONE));
+			cir.setReturnValue(RenderTypes.entityCutout(PetrifiedClient.texture(((StoneLook) state).mythicrelics$stoneStage())));
 		}
 	}
 }
