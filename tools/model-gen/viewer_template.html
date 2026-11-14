@@ -608,11 +608,11 @@ for (const [offset, turn] of [[[0, 7, -8], 0], [[5, 9, -6.5], -C_TURN], [[-5, 9,
   cHeads.push(h);
   cJaws.push(cPart(h, [0, 1, -5], [0, 0, 0], [[36, 18, -2, 0, -5, 4, 1, 5, false]]));
 }
-const C_TAIL = [0.9, 1.1, 0.9];
+const C_TAIL = [0.7, -0.35, -0.45];
 cerberus.entity.scale.setScalar(1.7);   // CerberusRenderer.SCALE
-const cTail = cPart(cerberus.root, [0, 9, 8], [C_TAIL[0], 0, 0], [[32, 24, -1, -1, 0, 2, 2, 6, false]]);
-const cTailMid = cPart(cTail, [0, 0, 6], [C_TAIL[1], 0, 0], [[48, 24, -1, -1, 0, 2, 2, 5, false]]);
-const cTailHead = cPart(cTailMid, [0, 0, 5], [C_TAIL[2], 0, 0], [[28, 32, -1.5, -1, 0, 3, 2, 4, false], [42, 32, -0.5, 0.5, 4, 1, 0, 2, false]]);
+const cTail = cPart(cerberus.root, [0, 9, 8], [C_TAIL[0], 0, 0], [[0, 46, -1.5, -1.5, 0, 3, 3, 6, false]]);
+const cTailMid = cPart(cTail, [0, 0, 5.5], [C_TAIL[1], 0, 0], [[32, 24, -1, -1, 0, 2, 2, 5, false]]);
+const cTailHead = cPart(cTailMid, [0, 0, 4.5], [C_TAIL[2], 0, 0], [[28, 32, -0.5, -0.5, 0, 1, 1, 5, false]]);
 const cLeg = (x, y, z, mirror) => cPart(cerberus.root, [x, y, z], [0, 0, 0],
   [[0, 32, -1.5, 0, -1.5, 3, 10, 3, mirror], [12, 32, -2, 8, -2.5, 4, 2, 4, mirror]]);
 const cLF = cLeg(3.5, 14, -4, false), cRF = cLeg(-3.5, 14, -4, true), cLH = cLeg(3, 14, 5, false), cRH = cLeg(-3, 14, 5, true);

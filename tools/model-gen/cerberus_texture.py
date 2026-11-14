@@ -1,5 +1,5 @@
 """Textura 64x64 de Cerbero (layout de CerberusModel): pelaje de sombra con cresta más oscura, ojos de brasa, fauces
-rojas con colmillos de marfil, garras, y la cola de serpiente verde oscuro de ojos amarillos.
+rojas con colmillos de marfil, garras, y la cola de serpiente de escamas verde oscuro que se afina en punta.
 Uso: python cerberus_texture.py <salida.png>  (requiere Pillow)"""
 import random
 import sys
@@ -110,18 +110,10 @@ def scales(x, y, w, h):
 
 
 snake = dict(side=scales, top=scales, bottom=lambda *a: SCALE_BELLY)
-box(32, 24, 2, 2, 6, **snake)
-box(48, 24, 2, 2, 5, **snake)
-# Cabeza de la cola (28,32) 3x2x4: la punta es la cara de atrás del cubo (la boca, oscura); los ojos van a los
-# costados, cerca de la punta, con una ceja de escamas oscuras encima. Lengua (42,32) 1x0x2 roja.
-f = faces(28, 32, 3, 2, 4)
-fill(f["top"], lambda x, y, w, h: (22, 32, 18) if y == h - 1 and x in (0, w - 1) else scales(x, y, w, h))
-fill(f["bottom"], lambda *a: SCALE_BELLY)
-fill(f["front"], scales)
-fill(f["back"], lambda x, y, w, h: (20, 6, 8) if y == 1 else scales(x, y, w, h))
-fill(f["west"], lambda x, y, w, h: SNAKE_EYE if y == 0 and x == 0 else scales(x, y, w, h))
-fill(f["east"], lambda x, y, w, h: SNAKE_EYE if y == 0 and x == w - 1 else scales(x, y, w, h))
-box(42, 32, 1, 0, 2, side=lambda *a: TONGUE, top=lambda *a: TONGUE, bottom=lambda *a: TONGUE)
+# Cola de serpiente en tres tramos que se afinan (cadera 3x3x6, medio 2x2x5, punta 1x1x5): solo escamas, sin cabeza.
+box(0, 46, 3, 3, 6, **snake)
+box(32, 24, 2, 2, 5, **snake)
+box(28, 32, 1, 1, 5, **snake)
 
 img.save(sys.argv[1])
 print("ok", sys.argv[1])

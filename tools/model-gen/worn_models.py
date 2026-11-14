@@ -349,18 +349,32 @@ def aegis_worn():
     for side, x0, x1 in (("der.", 2.9, 3.5), ("izq.", 12.5, 13.1)):
         for k, y in enumerate((6.4, 9.0, 11.6)):
             e.append(box([x0, y, 4.7], [x1, y + 1.6, 5.2], "cobra", f"serpiente del costado {side} {k}"))
-    # Gorgoneion.
-    e += [box([6.2, 7.6, 4.3], [9.8, 11.4, 4.75], "stone", "cara de la gorgona"),
-          box([6.6, 10.0, 4.15], [7.6, 10.6, 4.3], "white", "ojo der."),
-          box([8.4, 10.0, 4.15], [9.4, 10.6, 4.3], "white", "ojo izq."),
-          box([6.9, 10.05, 4.05], [7.3, 10.55, 4.15], "black", "pupila der."),
-          box([8.7, 10.05, 4.05], [9.1, 10.55, 4.15], "black", "pupila izq."),
-          box([7.2, 8.4, 4.15], [8.8, 9.0, 4.3], "black", "boca"),
-          box([7.6, 7.8, 4.05], [8.4, 8.6, 4.2], "crest", "lengua")]
-    for k, (x0, y0, x1, y1) in enumerate([(5.6, 11.4, 6.4, 12.4), (6.8, 11.4, 7.6, 12.6), (8.4, 11.4, 9.2, 12.6),
-                                          (9.6, 11.4, 10.4, 12.4), (5.5, 9.0, 6.2, 10.6), (9.8, 9.0, 10.5, 10.6),
-                                          (5.7, 7.4, 6.4, 8.4), (9.6, 7.4, 10.3, 8.4)]):
+    # Gorgoneion, como en las vasijas: rostro ancho de piedra, ceño fruncido en V, ojos ámbar fijos con la pupila en
+    # ranura, la boca ancha en mueca con colmillos de jabalí arriba y abajo y la lengua apenas afuera, y una cabellera de
+    # serpientes que se retuercen alrededor (con cabeza oscura en la punta).
+    e += [box([5.8, 7.2, 4.3], [10.2, 11.6, 4.75], "stone", "cara de la gorgona"),
+          box([5.5, 8.0, 4.4], [5.8, 10.8, 4.75], "stone_d", "mejilla der."),
+          box([10.2, 8.0, 4.4], [10.5, 10.8, 4.75], "stone_d", "mejilla izq."),
+          box([6.1, 10.7, 4.18], [7.8, 11.05, 4.3], "black", "ceja der."),
+          box([8.2, 10.7, 4.18], [9.9, 11.05, 4.3], "black", "ceja izq."),
+          box([7.6, 10.4, 4.18], [8.4, 10.8, 4.3], "black", "entrecejo"),
+          box([6.3, 9.7, 4.2], [7.6, 10.5, 4.3], "amber", "ojo der."),
+          box([8.4, 9.7, 4.2], [9.7, 10.5, 4.3], "amber", "ojo izq."),
+          box([6.85, 9.75, 4.12], [7.05, 10.45, 4.2], "black", "pupila der."),
+          box([8.95, 9.75, 4.12], [9.15, 10.45, 4.2], "black", "pupila izq."),
+          box([7.65, 8.9, 4.18], [8.35, 9.7, 4.3], "stone_d", "nariz"),
+          box([6.4, 7.7, 4.2], [9.6, 8.7, 4.3], "black", "boca"),
+          box([6.5, 7.5, 4.14], [7.0, 8.9, 4.22], "ivory", "colmillo der."),
+          box([9.0, 7.5, 4.14], [9.5, 8.9, 4.22], "ivory", "colmillo izq."),
+          box([7.2, 8.35, 4.15], [7.5, 8.7, 4.2], "white", "diente 1"),
+          box([8.5, 8.35, 4.15], [8.8, 8.7, 4.2], "white", "diente 2"),
+          box([7.7, 7.3, 4.12], [8.3, 7.9, 4.2], "crest_d", "lengua")]
+    for k, (x0, y0, x1, y1, hx, hy) in enumerate([(5.0, 11.6, 5.6, 13.0, 4.6, 12.8), (6.4, 11.6, 7.0, 13.2, 6.0, 13.0),
+                                                   (9.0, 11.6, 9.6, 13.2, 9.6, 13.0), (10.4, 11.6, 11.0, 13.0, 11.0, 12.8),
+                                                   (4.8, 9.0, 5.5, 11.6, 4.3, 9.0), (10.5, 9.0, 11.2, 11.6, 11.2, 9.0),
+                                                   (4.9, 7.0, 5.5, 8.6, 4.4, 6.8), (10.5, 7.0, 11.1, 8.6, 11.1, 6.8)]):
         e.append(box([x0, y0, 4.4], [x1, y1, 4.7], "cobra" if k % 2 else "cobra_l", f"serpiente del pelo {k}"))
+        e.append(box([hx, hy, 4.35], [hx + 0.7, hy + 0.5, 4.68], "cobra_d", f"cabeza de serpiente del pelo {k}"))
     return e
 
 
