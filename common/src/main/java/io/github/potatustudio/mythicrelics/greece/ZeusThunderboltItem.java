@@ -46,7 +46,7 @@ public class ZeusThunderboltItem extends RelicItem {
 
 	@Override
 	public ItemUseAnimation getUseAnimation(ItemStack stack) {
-		return ItemUseAnimation.SPEAR;
+		return ItemUseAnimation.TRIDENT;
 	}
 
 	@Override

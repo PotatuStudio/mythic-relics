@@ -22,7 +22,7 @@ import org.jspecify.annotations.Nullable;
  * {@code homing}, al soltar se elige el mob más cercano a donde apuntas y la lanza lo persigue.
  */
 public class ThrownRelicItem extends RelicItem {
-	private static final int MIN_CHARGE = 10;
+	public static final int MIN_CHARGE = 10;
 	private static final float THROW_SPEED = 2.5f;
 
 	private final boolean homing;

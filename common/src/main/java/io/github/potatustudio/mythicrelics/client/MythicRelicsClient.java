@@ -80,6 +80,7 @@ public final class MythicRelicsClient {
 				io.github.potatustudio.mythicrelics.client.entity.MythicModelLayers::mistletoeDart);
 		EntityRendererRegistry.register(ModEntities.FREYR_SWORD, io.github.potatustudio.mythicrelics.client.entity.FreyrSwordRenderer::new);
 		GreeceClient.init();
+		ChargeFeedback.init();
 		RelicTooltips.init();
 		PetrifiedClient.init();
 		EntityRendererRegistry.register(ModEntities.STONE_STATUE, io.github.potatustudio.mythicrelics.client.entity.StoneStatueRenderer::new);
