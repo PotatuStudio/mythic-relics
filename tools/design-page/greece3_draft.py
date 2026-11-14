@@ -12,46 +12,67 @@ from china_draft import PAL, SHINY, blank, box, glint, grid, outline, png_b64  #
 from china2_draft import line  # noqa: E402
 
 
-# Rayo de Zeus: el rayo en zigzag de las monedas griegas, con empuñadura de oro al centro y un rayo en cada punta.
-KERAUNOS = grid([
-    ".............G..",
-    "............GW..",
-    "...........GWG..",
-    "..........GWG...",
-    ".........GWWGGG.",
-    "..........GGWG..",
-    ".........GWG....",
-    "........gGd.....",
-    ".......gGd......",
-    "......gGd.......",
-    "....GGWG........",
-    "...GWWGGG.......",
-    "....GWG.........",
-    "...GWG..........",
-    "..GW............",
-    "..G.............",
-])
+def inside_poly(px, py, pts):
+    n, hit = len(pts), False
+    for i in range(n):
+        (x0, y0), (x1, y1) = pts[i], pts[(i + 1) % n]
+        if (y0 > py) != (y1 > py) and px < x0 + (py - y0) * (x1 - x0) / (y1 - y0):
+            hit = not hit
+    return hit
 
 
-# Piel del león de Nemea: la piel extendida, con la cabeza del león arriba (melena oscura, ojos) y las patas a los lados.
-NEMEA = grid([
-    "................",
-    ".....nnnnnn.....",
-    "....nnBBBBnn....",
-    "...nnBkBBkBnn...",
-    "...nnBBbbBBnn...",
-    "....nBbkkbBn....",
-    "..b..nBBBBn..b..",
-    ".bBb.bBBBBBb.bBb",
-    ".bBBbBBBBBBBbBBb",
-    "..bBBBBbbBBBBBb.",
-    "...bBBBBBBBBBb..",
-    "...bBBBbbBBBBb..",
-    "..bBBBBBBBBBBBb.",
-    ".bBbbBBBBBBbbBb.",
-    ".bb..bBBBBb..bb.",
-    "......bbbb......",
-])
+def keraunos():
+    """Rayo de Zeus: el rayo en zigzag que todos reconocen, grueso, en diagonal como un arma en la mano; centro blanco
+    incandescente, bordes de oro y chispas celestes."""
+    pts = [(11.0, 0.0), (15.0, 0.0), (10.5, 6.2), (13.5, 6.2), (2.0, 16.0), (6.2, 8.8), (3.0, 8.8)]
+    core = [(12.6, 0.8), (13.8, 0.8), (9.0, 7.0), (11.6, 7.0), (4.2, 14.0), (7.6, 8.0), (5.0, 8.0)]
+    c = blank()
+    for y in range(16):
+        for x in range(16):
+            if inside_poly(x + 0.5, y + 0.5, pts):
+                c[y][x] = 'W' if inside_poly(x + 0.5, y + 0.5, core) else 'G' if (x + y) % 3 else 'g'
+    c = outline(c)
+    for x, y in [(1, 9), (0, 10), (15, 8), (14, 9), (8, 14)]:
+        if c[y][x] == '.':
+            c[y][x] = '7'
+    return c
+
+
+def nemea():
+    """Piel del león de Nemea: la cabeza del león de frente, como la llevaba Heracles de capucha. Melena desgreñada de
+    terracota oscura con luz arriba a la izquierda, cara dorada, ojos, hocico claro, nariz y colmillos."""
+    import random
+    rnd = random.Random(7)
+    c = blank()
+    cx, cy = 7.5, 7.2
+    for y in range(16):
+        for x in range(16):
+            dx, dy = x + 0.5 - 8, y + 0.5 - cy - 0.5
+            ang = math.atan2(dy, dx)
+            r = 7.6 + 0.7 * math.sin(ang * 9) + rnd.uniform(-0.2, 0.2)
+            d = math.hypot(dx, dy * 1.05)
+            if d <= r:
+                light = -(dx + dy) / 10
+                c[y][x] = 'c' if light > 0.3 else 'h' if light > -0.35 else 'n'
+    for y in range(16):
+        for x in range(16):
+            dx, dy = (x + 0.5 - 8) / 4.0, (y + 0.5 - 8.6) / 4.5
+            if dx * dx + dy * dy <= 1:
+                c[y][x] = 'G' if dx + dy < -0.5 else 'g' if dx + dy < 0.5 else 'd'
+    for x, y in [(4, 4), (11, 4)]:          # orejas
+        c[y][x] = 'g'
+    for x, y in [(5, 7), (10, 7)]:          # ojos con ceja
+        c[y][x] = 'k'
+        c[y - 1][x] = 'd'
+    for x in (6, 7, 8, 9):                  # hocico claro
+        c[10][x] = '8'
+        c[11][x] = '8'
+    c[9][7] = c[9][8] = 'u'                 # nariz
+    c[10][7] = c[10][8] = 'u'
+    c[12][7] = c[12][8] = 'h'               # boca
+    c[12][6] = c[12][9] = 'W'               # colmillos
+    return outline(c)
+
 
 # Escudo de Aquiles: redondo, de bronce, con anillos concéntricos (el mundo grabado) y el océano en el borde.
 def shield():
@@ -159,7 +180,7 @@ def nail():
     return c
 
 
-ICONS = {"zeus_thunderbolt": lambda: outline(KERAUNOS), "nemean_lion_skin": lambda: outline(NEMEA), "achilles_shield": shield,
+ICONS = {"zeus_thunderbolt": keraunos, "nemean_lion_skin": nemea, "achilles_shield": shield,
          "harpe": lambda: outline(HARPE), "golden_bridle": lambda: outline(BRIDLE), "apple_of_discord": lambda: outline(APPLE),
          "talos_nail": nail}
 

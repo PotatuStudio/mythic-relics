@@ -40,7 +40,7 @@ rep('''    <h1>Egipto · Tanda 2</h1>
       <li><b>Espacios:</b> la piel de Nemea compite con el vellocino (capa); el escudo, con la Ancile y los otros de la mano secundaria.</li>
     </ul>''')
 rep('''    <p class="note">Mismo muñeco y misma regla de ubicación que el visor de la tanda 1. El cayado y el mayal se llevan en las manos.</p>''',
-    '''    <p class="note">Mismo muñeco que los otros visores. La piel de Nemea cae por la espalda con las patas anudadas en el pecho; el rayo (o la harpe) en la mano derecha y el escudo en la izquierda.</p>''')
+    '''    <p class="note">Mismo muñeco que los otros visores. La piel de Nemea cae por la espalda con las patas anudadas en el pecho; el rayo (o la harpe) en la mano derecha y el escudo embrazado en el brazo izquierdo, de pie y mirando al frente.</p>''')
 start = s.index('  <section class="decisions">')
 end = s.index('  </section>', start) + len('  </section>\n')
 s = s[:start] + '''  <section class="decisions">
@@ -60,7 +60,38 @@ const ORDER = ["ra_disk", "bastet_amulet", "sekhmet_claws", "osiris_flail", "osi
 const on = new Set(ORDER);''',
     '''groups.zeus_thunderbolt = heldIcon("zeus_thunderbolt", "right_arm", "handheld");
 groups.harpe = heldIcon("harpe", "right_arm", "handheld");
-groups.achilles_shield = heldIcon("achilles_shield", "left_arm");
+/* El escudo no se lleva como un ítem plano: se embraza delante del antebrazo izquierdo, de pie y mirando al frente
+   (un poco hacia afuera), como el escudo de vanilla al bloquear. Es el ícono extruido, de 14 px de diámetro y 2 px de
+   grosor. */
+function shieldHeld(id) {
+  const holder = new THREE.Group(); holder.matrixAutoUpdate = false;
+  holder.matrix.copy(new THREE.Matrix4().makeTranslation(7.5 / 16, 15 / 16, 3.6 / 16)
+    .multiply(new THREE.Matrix4().makeRotationY(0.35))
+    .multiply(new THREE.Matrix4().makeScale(14 / 16, 14 / 16, 2))
+    .multiply(new THREE.Matrix4().makeTranslation(-0.5, -0.5, -0.5)));
+  player.add(holder);
+  const img = sprites[id].img;
+  const build = () => {
+    const c = document.createElement("canvas"); c.width = 16; c.height = 16;
+    const g = c.getContext("2d"); g.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16);
+    const data = g.getImageData(0, 0, 16, 16).data;
+    const cells = [];
+    for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (data[(y * 16 + x) * 4 + 3] > 25) cells.push([x, y]);
+    const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1 / 16, 1 / 16, 1 / 16), new THREE.MeshLambertMaterial(), cells.length);
+    const m = new THREE.Matrix4(), col = new THREE.Color();
+    cells.forEach(([x, y], i) => {
+      m.makeTranslation((x + 0.5) / 16, (15 - y + 0.5) / 16, 0.5);
+      mesh.setMatrixAt(i, m);
+      const k = (y * 16 + x) * 4;
+      col.setRGB(data[k] / 255, data[k + 1] / 255, data[k + 2] / 255).convertSRGBToLinear();
+      mesh.setColorAt(i, col);
+    });
+    holder.add(mesh);
+  };
+  if (img.complete && img.naturalWidth) build(); else img.addEventListener("load", build);
+  return [holder];
+}
+groups.achilles_shield = shieldHeld("achilles_shield");
 const ORDER = ["nemean_lion_skin", "zeus_thunderbolt", "harpe", "achilles_shield"];
 const on = new Set(ORDER.filter(id => id !== "harpe"));''')
 rep("camera.position.set(1.5, 2.1, 3.3);", "camera.position.set(1.6, 1.8, 2.8);")
