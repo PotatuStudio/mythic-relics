@@ -163,7 +163,7 @@ function animateTalos(t) {
   if (guard && animate) {
     const a = t * 0.35, r = 3.4;
     talos.entity.position.set(1.6 + Math.cos(a) * r, 0, 1.2 + Math.sin(a) * r);
-    talos.entity.rotation.y = -a;
+    talos.entity.rotation.y = Math.PI - a;   // mira hacia donde camina (el frente del modelo es -z)
   }
   const walk = guard ? Math.sin(t * 3) * 0.45 * k : 0;
   setRot(P.leg_r, walk); setRot(P.leg_l, -walk);
