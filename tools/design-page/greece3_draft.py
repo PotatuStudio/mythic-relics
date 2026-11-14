@@ -22,23 +22,10 @@ def inside_poly(px, py, pts):
 
 
 def keraunos():
-    """Rayo de Zeus como en las monedas griegas: empuñadura de oro al centro y un rayo en zigzag (un ⚡, con su quiebre
-    hacia afuera bien marcado) en cada punta; en diagonal como un arma en la mano. La mitad de abajo es la de arriba
-    girada 180°. Deja un píxel libre en cada borde para que el contorno no se corte."""
-    upper = {1: {11: 'G', 12: 'W'}, 2: {10: 'G', 11: 'W'}, 3: {9: 'G', 10: 'W'},
-             4: {8: 'G', 9: 'W', 10: 'W', 11: 'W', 12: 'G'},          # quiebre hacia afuera
-             5: {10: 'G', 11: 'W'}, 6: {9: 'G', 10: 'W'}, 7: {7: 'd', 8: 'g'}}
-    c = blank()
-    for y, row in upper.items():
-        for x, ch in row.items():
-            c[y][x] = ch
-            c[15 - y][15 - x] = ch
-    c[8][7], c[8][8] = 'g', 'G'                              # empuñadura de oro (2x2)
-    c = outline(c)
-    for x, y in [(13, 1), (13, 5), (2, 14), (2, 10)]:       # chispas celestes
-        if c[y][x] == '.':
-            c[y][x] = '7'
-    return c
+    """Rayo de Zeus elegido el 2026-11-14: el zigzag clásico dorado, empuñado con una banda de cuero y oro, y los
+    rayitos eléctricos alrededor (ver greece3_bolts.py, opción C con las chispas de la B)."""
+    from greece3_bolts import gripped
+    return gripped()
 
 
 def nemea():
