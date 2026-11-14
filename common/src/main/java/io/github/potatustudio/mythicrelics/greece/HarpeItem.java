@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.greece;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.Collections;
 import java.util.Set;
@@ -47,7 +48,7 @@ public class HarpeItem extends RelicItem {
 			return amount;
 		}
 		BEHEADING.add(target);
-		attacker.getCooldowns().addCooldown(stack, GreeceLegends.HARPE_COOLDOWN);
+		RelicCooldowns.start(attacker, stack, GreeceLegends.HARPE_COOLDOWN);
 		level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY(0.8), target.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.8), target.getZ(), 20, 0.3, 0.3, 0.3, 0.4);
 		RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_SWEEP, 1.2f, 0.6f);

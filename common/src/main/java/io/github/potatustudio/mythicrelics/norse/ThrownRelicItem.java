@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -66,7 +67,7 @@ public class ThrownRelicItem extends RelicItem {
 			server.addFreshEntity(thrown);
 			server.playSound(null, thrown, SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0f, homing ? 1.2f : 0.7f);
 			if (stack.is(io.github.potatustudio.mythicrelics.registry.ModItems.MISTLETOE_DART.get())) {
-				player.getCooldowns().addCooldown(stack, NorseSagas.DART_COOLDOWN);
+				RelicCooldowns.start(player, stack, NorseSagas.DART_COOLDOWN);
 			}
 			if (!player.hasInfiniteMaterials()) {
 				player.getInventory().removeItem(stack);

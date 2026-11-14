@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -39,7 +40,7 @@ public class FuTalismansItem extends RelicItem {
 			return InteractionResult.SUCCESS;
 		}
 		ChinaGods.seal(level, mob);
-		player.getCooldowns().addCooldown(stack, ChinaGods.TALISMAN_COOLDOWN);
+		RelicCooldowns.start(player, stack, ChinaGods.TALISMAN_COOLDOWN);
 		level.sendParticles(ParticleTypes.WAX_ON, mob.getX(), mob.getEyeY(), mob.getZ(), 12, 0.2, 0.2, 0.2, 0.05);
 		RelicFx.sound(level, mob, SoundEvents.BOOK_PAGE_TURN, 1.2f, 0.8f);
 		return InteractionResult.SUCCESS;

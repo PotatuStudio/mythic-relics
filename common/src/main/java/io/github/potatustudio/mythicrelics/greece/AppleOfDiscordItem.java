@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.greece;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -43,7 +44,7 @@ public class AppleOfDiscordItem extends RelicItem {
 		server.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, target.getX(), target.getY(0.7), target.getZ(), 30, 0.4, 0.5, 0.4, 0.2);
 		RelicFx.sound(server, target, SoundEvents.AMETHYST_BLOCK_CHIME, 1.5f, 0.8f);
 		RelicFx.sound(server, player, SoundEvents.SNOWBALL_THROW, 0.8f, 0.7f);
-		player.getCooldowns().addCooldown(stack, GreeceLegends.APPLE_COOLDOWN);
+		RelicCooldowns.start(player, stack, GreeceLegends.APPLE_COOLDOWN);
 		return InteractionResult.SUCCESS;
 	}
 

@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +22,7 @@ public class MimirHeadItem extends RelicItem {
 			return InteractionResult.PASS;
 		}
 		if (level instanceof ServerLevel server && player instanceof ServerPlayer serverPlayer && MimirHead.ask(server, serverPlayer)) {
-			player.getCooldowns().addCooldown(stack, MimirHead.ASK_COOLDOWN);
+			RelicCooldowns.start(player, stack, MimirHead.ASK_COOLDOWN);
 		}
 		return InteractionResult.SUCCESS;
 	}

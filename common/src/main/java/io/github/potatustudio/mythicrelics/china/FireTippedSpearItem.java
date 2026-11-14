@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -40,7 +41,7 @@ public class FireTippedSpearItem extends RelicItem {
 		if (!(level instanceof ServerLevel server)) {
 			return InteractionResult.SUCCESS;
 		}
-		player.getCooldowns().addCooldown(stack, ChinaGods.spearCooldown(player));
+		RelicCooldowns.start(player, stack, ChinaGods.spearCooldown(player));
 		Vec3 eye = player.getEyePosition();
 		Vec3 look = player.getLookAngle();
 		int range = ChinaGods.SPEAR_FLAME_RANGE;

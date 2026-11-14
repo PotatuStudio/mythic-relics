@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.japan;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -38,7 +39,7 @@ public class KusanagiItem extends RelicItem {
 		if (!(level instanceof ServerLevel server)) {
 			return InteractionResult.SUCCESS;
 		}
-		player.getCooldowns().addCooldown(stack, JapanRelics.KUSANAGI_COOLDOWN);
+		RelicCooldowns.start(player, stack, JapanRelics.KUSANAGI_COOLDOWN);
 		Vec3 look = JapanRelics.flat(player.getLookAngle());
 		Vec3 origin = player.position();
 		int r = JapanRelics.KUSANAGI_SLASH_RANGE;

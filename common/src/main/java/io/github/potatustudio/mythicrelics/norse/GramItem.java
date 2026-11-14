@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -66,7 +67,7 @@ public class GramItem extends RelicItem {
 			server.sendParticles(ParticleTypes.ENCHANTED_HIT, target.getX(), target.getY(0.5), target.getZ(), 15, 0.3, 0.4, 0.3, 0.3);
 			RelicFx.sound(server, target, SoundEvents.ANVIL_LAND, 0.7f, 1.4f);
 		}
-		player.getCooldowns().addCooldown(stack, NorseSagas.GRAM_COOLDOWN);
+		RelicCooldowns.start(player, stack, NorseSagas.GRAM_COOLDOWN);
 		return true;
 	}
 

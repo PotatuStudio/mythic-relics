@@ -14,6 +14,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import org.jspecify.annotations.Nullable;
@@ -102,6 +104,22 @@ public final class RelicCooldowns extends SavedData {
 		data.setDirty();
 		if (display != null) {
 			player.getCooldowns().addCooldown(display, ticks);
+		}
+	}
+
+	/** Desde cuántos ticks una recarga de ítem se guarda con el mundo (las más cortas no vale la pena). */
+	public static final int PERSIST_FROM = 200;
+
+	/**
+	 * Recarga de un ítem, mostrada en su ícono como la de vanilla. Si dura {@link #PERSIST_FROM} ticks o más, además se
+	 * guarda con el mundo: al volver a entrar, el ícono (y con él {@code isOnCooldown}) sigue donde quedó.
+	 */
+	public static void start(Player player, ItemStack stack, int ticks) {
+		if (player instanceof ServerPlayer server && ticks >= PERSIST_FROM) {
+			Identifier group = player.getCooldowns().getCooldownGroup(stack);
+			start(server, "item/" + group, ticks, group);
+		} else {
+			player.getCooldowns().addCooldown(stack, ticks);
 		}
 	}
 

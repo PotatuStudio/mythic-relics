@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.greece;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -70,7 +71,7 @@ public class ZeusThunderboltItem extends RelicItem {
 			} else {
 				strike(server, player);
 			}
-			player.getCooldowns().addCooldown(stack, strong ? GreeceLegends.ZEUS_STRONG_COOLDOWN : GreeceLegends.ZEUS_COOLDOWN);
+			RelicCooldowns.start(player, stack, strong ? GreeceLegends.ZEUS_STRONG_COOLDOWN : GreeceLegends.ZEUS_COOLDOWN);
 		}
 		return true;
 	}

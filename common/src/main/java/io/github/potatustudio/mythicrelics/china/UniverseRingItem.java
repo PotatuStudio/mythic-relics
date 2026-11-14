@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,7 +45,7 @@ public class UniverseRingItem extends RelicItem {
 			return InteractionResult.SUCCESS;
 		}
 		LivingEntity first = aim(server, player);
-		player.getCooldowns().addCooldown(stack, ChinaGods.RING_COOLDOWN);
+		RelicCooldowns.start(player, stack, ChinaGods.RING_COOLDOWN);
 		RelicFx.sound(server, player, SoundEvents.TRIDENT_THROW.value(), 1.0f, 1.4f);
 		Vec3 from = player.getEyePosition().add(0, -0.3, 0);
 		if (first == null) {

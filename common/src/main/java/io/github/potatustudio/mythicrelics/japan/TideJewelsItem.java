@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.japan;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -34,7 +35,7 @@ public class TideJewelsItem extends RelicItem {
 		if (!(level instanceof ServerLevel server)) {
 			return InteractionResult.SUCCESS;
 		}
-		player.getCooldowns().addCooldown(stack, JapanRelics.TIDE_COOLDOWN);
+		RelicCooldowns.start(player, stack, JapanRelics.TIDE_COOLDOWN);
 		if (player.isShiftKeyDown()) {
 			wave(server, player);
 		} else {

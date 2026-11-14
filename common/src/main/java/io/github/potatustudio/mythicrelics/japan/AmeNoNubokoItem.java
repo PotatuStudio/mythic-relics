@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.japan;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -69,7 +70,7 @@ public class AmeNoNubokoItem extends RelicItem {
 				}
 			}
 		}
-		player.getCooldowns().addCooldown(stack, JapanGods.NUBOKO_COOLDOWN);
+		RelicCooldowns.start(player, stack, JapanGods.NUBOKO_COOLDOWN);
 		double cx = surface.getX() + 0.5, cy = surface.getY() + 1.2, cz = surface.getZ() + 0.5;
 		server.sendParticles(ParticleTypes.SPLASH, cx, cy, cz, 80, r, 0.4, r, 0.2);
 		server.sendParticles(ParticleTypes.WAX_ON, cx, cy + 1, cz, 20, r * 0.5, 0.6, r * 0.5, 0.05);

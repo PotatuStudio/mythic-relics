@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.List;
 import net.minecraft.core.component.DataComponents;
@@ -64,7 +65,7 @@ public class RuyiJinguBangItem extends RelicItem {
 		if (!(level instanceof ServerLevel server)) {
 			return InteractionResult.SUCCESS;
 		}
-		player.getCooldowns().addCooldown(stack, ChinaRelics.RUYI_COOLDOWN);
+		RelicCooldowns.start(player, stack, ChinaRelics.RUYI_COOLDOWN);
 		setExtended(stack, server.getGameTime() + ChinaRelics.RUYI_EXTENDED_TICKS);
 		// Al estirarse, golpea todo lo que hay en línea recta.
 		Vec3 from = player.getEyePosition();

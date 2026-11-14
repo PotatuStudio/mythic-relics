@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.china;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -38,7 +39,7 @@ public class DragonPearlItem extends RelicItem {
 		}
 		if (player.getVehicle() instanceof LongDragon dragon && dragon.isOwnedBy(player)) {
 			toggleRain(server, player);
-			player.getCooldowns().addCooldown(player.getItemInHand(hand), RAIN_TOGGLE_COOLDOWN);
+			RelicCooldowns.start(player, player.getItemInHand(hand), RAIN_TOGGLE_COOLDOWN);
 			return InteractionResult.SUCCESS;
 		}
 		if (player.isPassenger()) {

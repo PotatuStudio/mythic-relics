@@ -38,7 +38,7 @@ public class LuckyMalletItem extends RelicItem {
 		}
 		if (player.isShiftKeyDown()) {
 			prosper(server, player);
-			player.getCooldowns().addCooldown(stack, JapanRelics.MALLET_GROW_COOLDOWN);
+			RelicCooldowns.start(player, stack, JapanRelics.MALLET_GROW_COOLDOWN);
 			return InteractionResult.SUCCESS;
 		}
 		if (!RelicCooldowns.tryStart(serverPlayer, "lucky_mallet", JapanRelics.MALLET_COOLDOWN, BuiltInRegistries.ITEM.getKey(this))) {

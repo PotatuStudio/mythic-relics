@@ -4,6 +4,7 @@ import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.entity.OdinRaven;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.relic.Compass;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
@@ -49,7 +50,7 @@ public class OdinRavensItem extends RelicItem {
 		if (!(player instanceof ServerPlayer serverPlayer) || !(level instanceof ServerLevel server)) {
 			return InteractionResult.SUCCESS;
 		}
-		player.getCooldowns().addCooldown(player.getItemInHand(hand), 20);
+		RelicCooldowns.start(player, player.getItemInHand(hand), 20);
 		if (player.isShiftKeyDown()) {
 			memory(serverPlayer);
 			RelicFx.sound(server, player, SoundEvents.PARROT_AMBIENT, 1.0f, 0.5f);

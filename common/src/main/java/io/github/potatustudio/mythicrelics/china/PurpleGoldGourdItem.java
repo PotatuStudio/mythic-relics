@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.china;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -103,7 +104,7 @@ public class PurpleGoldGourdItem extends RelicItem {
 				target.getBbWidth() * 0.5, target.getBbHeight() * 0.4, target.getBbWidth() * 0.5, 0.05);
 		RelicFx.sound(level, target, SoundEvents.BOTTLE_FILL_DRAGONBREATH, 1.0f, 0.7f);
 		target.discard();
-		player.getCooldowns().addCooldown(stack, ChinaRelics.GOURD_COOLDOWN);
+		RelicCooldowns.start(player, stack, ChinaRelics.GOURD_COOLDOWN);
 		player.sendOverlayMessage(Component.translatable("message.mythicrelics.gourd_captured", Component.translatable(typeName))
 				.withStyle(ChatFormatting.GOLD));
 		return InteractionResult.SUCCESS;
@@ -127,7 +128,7 @@ public class PurpleGoldGourdItem extends RelicItem {
 		if (released == null) {
 			return InteractionResult.FAIL;
 		}
-		player.getCooldowns().addCooldown(stack, ChinaRelics.GOURD_COOLDOWN);
+		RelicCooldowns.start(player, stack, ChinaRelics.GOURD_COOLDOWN);
 		return InteractionResult.SUCCESS;
 	}
 

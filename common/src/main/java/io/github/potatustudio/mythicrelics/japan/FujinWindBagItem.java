@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.japan;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -34,7 +35,7 @@ public class FujinWindBagItem extends RelicItem {
 		if (!(level instanceof ServerLevel server)) {
 			return InteractionResult.SUCCESS;
 		}
-		player.getCooldowns().addCooldown(stack, JapanGods.WIND_COOLDOWN);
+		RelicCooldowns.start(player, stack, JapanGods.WIND_COOLDOWN);
 		if (player.isShiftKeyDown()) {
 			int r = JapanGods.WIND_GALE_RADIUS;
 			for (LivingEntity e : Allies.enemiesAround(player, player.getBoundingBox().inflate(r), e -> e.distanceToSqr(player) <= r * r)) {
