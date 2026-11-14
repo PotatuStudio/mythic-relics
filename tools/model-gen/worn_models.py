@@ -254,21 +254,35 @@ def sekhmet_claws_worn():
 
 
 def sandal():
-    """En cada pierna (centro en y 8; el pie llega a y 2): suela, tiras y un ala blanca en el talón, hacia atrás."""
-    e = [box([5.5, 1.5, 5.5], [10.5, 2.25, 11.0], "leather", "suela")]
-    e += ring(5.6, 10.4, 2.25, 3.0, 5.6, 10.4, 0.5, "leather", "tira del pie")
-    e += ring(5.6, 10.4, 4.5, 5.25, 5.6, 10.4, 0.5, "leather", "tira del tobillo")
-    for side, x0, x1 in (("ext.", 4.6, 5.5), ("int.", 10.5, 11.4)):
-        e += [box([x0, 3.4, 4.6], [x1, 5.0, 7.2], "wing", f"ala {side}"),
-              box([x0, 4.6, 3.0], [x1, 6.4, 4.6], "wing", f"ala {side}"),
-              box([x0, 6.0, 1.6], [x1, 7.6, 3.0], "wing_d", f"punta ala {side}")]
+    """En cada pierna (x 6..10, z 6..10, frente z 10; el pie llega a y 2): suela con puntera, tiras de cuero cruzadas que
+    suben por la canilla (en X por delante, rectas por detrás), aro de oro en el tobillo y, a cada lado del tobillo, un
+    ala de tres plumas escalonadas (blanca, celeste y punta azul) que se abre hacia atrás y arriba desde una base de oro."""
+    e = [box([5.5, 1.45, 5.5], [10.5, 2.2, 11.05], "leather_d", "suela"),
+         box([5.8, 1.6, 11.05], [10.2, 2.1, 11.35], "leather", "puntera")]
+    e += ring(5.6, 10.4, 2.2, 2.8, 5.6, 10.4, 0.45, "leather", "tira del pie")
+    e += ring(5.55, 10.45, 4.3, 4.95, 5.55, 10.45, 0.5, "gold", "aro del tobillo")
+    # Tiras cruzadas: por delante en X (escalones alternos), por detrás rectas.
+    for k, y in enumerate((3.0, 5.4, 6.6, 7.8)):
+        left = k % 2 == 0
+        e.append(box([5.65 if left else 7.9, y, 10.42], [8.1 if left else 10.35, y + 0.55, 10.62], "leather", f"tira cruzada {k}"))
+        e.append(box([7.9 if left else 5.65, y + 0.55, 10.42], [10.35 if left else 8.1, y + 1.1, 10.62], "leather_d", f"tira cruzada {k}b"))
+    e += ring(5.62, 10.38, 8.9, 9.4, 5.62, 10.38, 0.4, "leather", "lazo de la canilla")
+    e.append(box([7.4, 8.6, 10.38], [8.6, 9.6, 10.72], "gold", "nudo de la canilla"))
+    # Alas en los dos lados del tobillo (la misma pieza va en las dos piernas).
+    for side, x0, x1 in (("ext.", 4.5, 5.15), ("int.", 10.85, 11.5)):
+        e.append(box([x0 - 0.1, 4.2, 6.6], [x1 + 0.1, 5.2, 7.6], "gold", f"base del ala {side}"))
+        e += [box([x0, 4.5, 4.4], [x1, 5.4, 6.6], "white", f"pluma corta {side}"),
+              box([x0 + 0.05, 5.4, 3.4], [x1 - 0.05, 6.3, 6.4], "wing_l", f"pluma media {side}"),
+              box([x0 + 0.1, 6.3, 2.4], [x1 - 0.1, 7.1, 6.1], "wing", f"pluma larga {side}"),
+              box([x0 + 0.12, 7.1, 1.8], [x1 - 0.12, 7.6, 3.4], "wing_d", f"punta del ala {side}")]
     return e
 
 
 def helm():
     """Yelmo corintio de Hades (el kunée que vuelve invisible): hierro oscuro con bordes de plata, abertura en T al
-    frente (ojos y boca) con la nasal al medio, guardanuca abierta atrás y una cimera alta de crin roja sobre un soporte de
-    oro, de la frente a la nuca.
+    frente (ojos y boca) con la nasal al medio y el interior negro (da profundidad), mejillas largas con una espiral de
+    plata, remaches, guardanuca abierta y una cimera de crin roja oscura sobre un soporte de oro que sube desde la frente,
+    se curva en lo alto y cae larga por la nuca.
 
     Va un poco más afuera (2,95..13,05) que las piezas de cara y la corona de Ra, para no compartir planos con ellas."""
     e = []
@@ -278,36 +292,75 @@ def helm():
           box([3.65, 4.6, 2.95], [12.35, 12.85, 3.65], "iron", "nuca"),
           box([2.95, 12.85, 2.95], [13.05, 13.55, 13.05], "iron", "cúpula"),
           box([3.6, 13.55, 3.6], [12.45, 14.05, 12.45], "iron_d", "cúpula alta")]
-    # Guardanuca que se abre hacia afuera.
     e.append(box([3.3, 3.1, 2.45], [12.7, 4.6, 2.95], "iron_d", "guardanuca"))
-    # Frente con abertura en T: frente, cejas de plata, nasal y mejillas.
+    e.append(box([3.1, 2.6, 2.2], [12.9, 3.1, 2.75], "silver", "borde de la guardanuca"))
+    # Frente con abertura en T: frente, cejas de plata, nasal, mejillas y el interior negro.
     e += [box([3.65, 9.7, 12.35], [12.35, 12.85, 13.05], "iron", "frente"),
           box([3.4, 9.55, 13.05], [12.6, 10.15, 13.27], "silver", "ceja"),
+          box([4.4, 10.15, 13.05], [11.6, 10.6, 13.18], "iron_d", "arco de las cejas"),
           box([7.35, 5.6, 12.35], [8.65, 9.7, 13.2], "iron", "nasal"),
+          box([7.5, 5.3, 12.4], [8.5, 5.6, 13.22], "silver", "punta de la nasal"),
           box([3.65, 3.1, 12.35], [6.9, 7.6, 13.05], "iron", "mejilla der."),
           box([9.1, 3.1, 12.35], [12.35, 7.6, 13.05], "iron", "mejilla izq."),
           box([3.65, 7.6, 12.35], [4.5, 9.7, 13.05], "iron", "sien der."),
-          box([11.5, 7.6, 12.35], [12.35, 9.7, 13.05], "iron", "sien izq.")]
-    # Bordes de plata de las mejillas.
+          box([11.5, 7.6, 12.35], [12.35, 9.7, 13.05], "iron", "sien izq."),
+          box([4.5, 7.6, 12.18], [7.35, 9.7, 12.3], "black", "hueco del ojo der."),
+          box([8.65, 7.6, 12.18], [11.5, 9.7, 12.3], "black", "hueco del ojo izq."),
+          box([6.9, 3.1, 12.18], [9.1, 5.6, 12.3], "black", "hueco de la boca")]
     e += [box([3.4, 2.8, 12.25], [7.1, 3.1, 13.25], "silver", "borde mejilla der."),
           box([8.9, 2.8, 12.25], [12.6, 3.1, 13.25], "silver", "borde mejilla izq.")]
-    # Cimera: soporte de oro y crin roja alta, de la frente a la nuca.
-    e += [box([7.3, 14.05, 3.0], [8.7, 14.75, 13.0], "gold", "soporte"),
-          box([7.05, 14.75, 2.0], [8.95, 17.6, 13.6], "crest", "crin"),
-          box([7.25, 17.6, 3.0], [8.75, 18.4, 12.6], "crest_l", "crin alta"),
-          box([7.05, 12.0, 1.4], [8.95, 14.75, 2.95], "crest_d", "cola de crin")]
+    # Espiral de plata en cada mejilla y remaches.
+    for side, x0 in (("der.", 4.3), ("izq.", 9.7)):
+        e += [box([x0, 4.05, 13.05], [x0 + 2.0, 4.4, 13.2], "silver", f"espiral {side} 1"),
+              box([x0 + 1.6, 4.4, 13.05], [x0 + 2.0, 6.0, 13.2], "silver", f"espiral {side} 2"),
+              box([x0 + 0.4, 5.6, 13.05], [x0 + 1.6, 6.0, 13.2], "silver", f"espiral {side} 3"),
+              box([x0 + 0.4, 4.8, 13.05], [x0 + 0.8, 5.6, 13.2], "silver", f"espiral {side} 4")]
+    for k, z in enumerate((4.2, 6.6, 9.0, 11.2)):
+        e.append(box([2.8, 11.6, z], [2.95, 12.0, z + 0.4], "silver", f"remache der. {k}"))
+        e.append(box([13.05, 11.6, z], [13.2, 12.0, z + 0.4], "silver", f"remache izq. {k}"))
+    # Cimera: soporte de oro y crin en perfil curvo (sube desde la frente, se arquea y cae por la nuca).
+    e.append(box([7.3, 14.05, 3.0], [8.7, 14.75, 13.0], "gold", "soporte"))
+    profile = [(12.4, 13.6, 16.2), (10.4, 12.4, 17.4), (8.0, 10.4, 18.0), (5.6, 8.0, 17.8), (3.4, 5.6, 17.0), (2.0, 3.4, 16.0)]
+    for k, (z0, z1, top) in enumerate(profile):
+        e.append(box([7.05, 14.75, z0], [8.95, top, z1], "crest" if k % 2 == 0 else "crest_d", f"crin {k}"))
+    e.append(box([7.25, 15.6, 6.0], [8.75, 18.5, 10.0], "crest_l", "crin alta"))
+    e += [box([7.05, 10.8, 1.2], [8.95, 16.0, 2.0], "crest_d", "cola de crin"),
+          box([7.15, 7.6, 0.7], [8.85, 10.8, 1.5], "crest", "punta de la cola")]
     return e
 
 
 def aegis_worn():
-    """Égida: piel dorada a la espalda (sobre los hombros) con el gorgoneion al centro. Apartada de la cadena de los
-    collares (Anj, Bastet) para no compartir planos con ella."""
-    e = [box([3.5, 5.0, 4.6], [12.5, 14.0, 5.35], "gold", "piel"),
-         box([3.2, 14.0, 4.6], [12.8, 14.7, 10.35], "gold", "hombros"),
-         box([6.5, 8.0, 4.1], [9.5, 11.0, 4.6], "stone", "gorgoneion"),
-         box([6.2, 10.8, 3.95], [9.8, 11.5, 4.6], "snake", "serpientes")]
-    for i, x in enumerate((4.0, 6.0, 8.0, 10.0)):
-        e.append(box([x, 4.2, 4.75], [x + 1.2, 5.0, 5.25], "gold_d", f"fleco {i}"))
+    """Égida de Atenea: la piel de cabra dorada de escamas (damero de oro claro y oscuro) que cubre la espalda y los
+    hombros, con un fleco de serpientes verdes con cabeza al borde de abajo y a los costados, y el gorgoneion al centro:
+    cara de piedra con ojos abiertos, la lengua afuera y la cabellera de serpientes alrededor. Va por detrás de la capa
+    (z < 5,35) y apartada de la cadena de los collares."""
+    e = [box([3.5, 5.0, 4.95], [12.5, 14.0, 5.35], "gold", "piel"),
+         box([3.2, 14.0, 4.6], [12.8, 14.7, 10.35], "gold", "hombros")]
+    # Escamas en damero sobre la piel.
+    for row, y in enumerate([5.6, 6.8, 8.0, 9.2, 10.4, 11.6, 12.8]):
+        for col, x in enumerate([3.8, 5.0, 6.2, 7.4, 8.6, 9.8, 11.0]):
+            if (row + col) % 2 == 0 and not (6.0 <= x <= 9.6 and 7.4 <= y <= 12.2):
+                e.append(box([x, y, 4.8], [x + 1.1, y + 1.1, 4.95], "gold_l" if row % 2 else "gold_d", f"escama {row} {col}"))
+    # Fleco de serpientes: cuerpo verde y cabeza más oscura, abajo y en los costados.
+    for k, x in enumerate((3.7, 5.0, 6.3, 7.6, 8.9, 10.2, 11.5)):
+        low = 3.2 if k % 2 == 0 else 3.8
+        e.append(box([x, low, 4.85], [x + 0.6, 5.0, 5.25], "cobra", f"serpiente {k}"))
+        e.append(box([x - 0.1, low - 0.6, 4.75], [x + 0.7, low, 5.3], "cobra_d", f"cabeza de serpiente {k}"))
+    for side, x0, x1 in (("der.", 2.9, 3.5), ("izq.", 12.5, 13.1)):
+        for k, y in enumerate((6.4, 9.0, 11.6)):
+            e.append(box([x0, y, 4.7], [x1, y + 1.6, 5.2], "cobra", f"serpiente del costado {side} {k}"))
+    # Gorgoneion.
+    e += [box([6.2, 7.6, 4.3], [9.8, 11.4, 4.75], "stone", "cara de la gorgona"),
+          box([6.6, 10.0, 4.15], [7.6, 10.6, 4.3], "white", "ojo der."),
+          box([8.4, 10.0, 4.15], [9.4, 10.6, 4.3], "white", "ojo izq."),
+          box([6.9, 10.05, 4.05], [7.3, 10.55, 4.15], "black", "pupila der."),
+          box([8.7, 10.05, 4.05], [9.1, 10.55, 4.15], "black", "pupila izq."),
+          box([7.2, 8.4, 4.15], [8.8, 9.0, 4.3], "black", "boca"),
+          box([7.6, 7.8, 4.05], [8.4, 8.6, 4.2], "crest", "lengua")]
+    for k, (x0, y0, x1, y1) in enumerate([(5.6, 11.4, 6.4, 12.4), (6.8, 11.4, 7.6, 12.6), (8.4, 11.4, 9.2, 12.6),
+                                          (9.6, 11.4, 10.4, 12.4), (5.5, 9.0, 6.2, 10.6), (9.8, 9.0, 10.5, 10.6),
+                                          (5.7, 7.4, 6.4, 8.4), (9.6, 7.4, 10.3, 8.4)]):
+        e.append(box([x0, y0, 4.4], [x1, y1, 4.7], "cobra" if k % 2 else "cobra_l", f"serpiente del pelo {k}"))
     return e
 
 
@@ -319,27 +372,68 @@ def mirror(e):
 
 
 def icarus_wings():
-    """Arnés de cera en la espalda y dos alas abiertas en escalera: hueso, cobertoras y plumas largas. Van por detrás
-    del vellocino (z < 5,4) para poder llevarlos juntos."""
-    e = [box([6.0, 8.5, 4.75], [10.0, 13.0, 5.35], "wax", "cera")]
-    side = [box([10.0, 12.6, 4.6], [19.0, 14.0, 5.3], "wing", "hueso"),
-            box([10.0, 10.0, 4.7], [20.0, 12.6, 5.2], "wing", "cobertoras")]
-    for i, (x, low) in enumerate(((10.5, 6.0), (13.0, 5.0), (15.5, 4.0), (18.0, 3.2))):
-        side.append(box([x, low, 4.8], [x + 2.4, 10.0, 5.1], "wing_d", f"pluma {i}"))
-    side.append(box([11.0, 13.0, 4.4], [12.0, 13.6, 4.6], "wax", "gota de cera"))
+    """Alas de Ícaro: arnés de cuero cruzado en la espalda con la placa de cera, y dos alas abiertas que suben un poco:
+    hueso de madera, cobertoras cortas, plumas medias y primarias largas (cada hilera más larga que la anterior y
+    escalonada, sin caras coplanares), con goterones de cera en las uniones. Van por detrás del vellocino (z < 5,35)."""
+    e = [box([6.0, 8.5, 4.75], [10.0, 13.0, 5.3], "wax", "cera"),
+         box([6.6, 9.2, 4.6], [9.4, 12.2, 4.75], "wax_l", "cera clara")]
+    for k, (x0, y0, x1, y1) in enumerate([(4.0, 12.6, 6.0, 13.6), (10.0, 12.6, 12.0, 13.6), (4.4, 6.2, 6.4, 7.2), (9.6, 6.2, 11.6, 7.2)]):
+        e.append(box([x0, y0, 4.85], [x1, y1, 5.32], "leather", f"correa {k}"))
+    side = [box([10.0, 12.4, 4.55], [21.0, 13.6, 5.2], "leather_d", "hueso"),
+            box([20.8, 12.0, 4.6], [22.0, 13.4, 5.15], "leather_d", "punta del hueso")]
+    # Cobertoras (cortas, blancas), plumas medias y primarias (largas, de punta azul), escalonadas en z.
+    for i, x in enumerate([10.4, 12.2, 14.0, 15.8, 17.6, 19.4]):
+        side.append(box([x, 10.6, 4.62], [x + 1.6, 12.4, 5.1], "white", f"cobertora {i}"))
+    for i, (x, low) in enumerate([(10.6, 7.6), (12.4, 7.0), (14.2, 6.4), (16.0, 5.8), (17.8, 5.4), (19.6, 5.2)]):
+        side.append(box([x, low, 4.68], [x + 1.6, 10.6, 5.02], "wing_l", f"pluma media {i}"))
+    for i, (x, low) in enumerate([(11.0, 5.4), (12.8, 4.4), (14.6, 3.4), (16.4, 2.6), (18.2, 2.0), (20.0, 1.8)]):
+        side.append(box([x, low, 4.74], [x + 1.4, 7.6 - i * 0.3, 4.96], "wing", f"primaria {i}"))
+        side.append(box([x + 0.2, low - 0.6, 4.76], [x + 1.2, low, 4.94], "wing_d", f"punta de primaria {i}"))
+    for k, x in enumerate([11.6, 15.0, 18.4]):
+        side.append(box([x, 12.0, 4.4], [x + 0.8, 12.6, 4.55], "wax", f"gota de cera {k}"))
+        side.append(box([x + 0.2, 11.4, 4.42], [x + 0.6, 12.0, 4.54], "wax_l", f"chorrito de cera {k}"))
     return e + side + [mirror(p) for p in side]
 
 
 def golden_fleece():
-    """Piel dorada sobre la espalda y los hombros, con dos patas al frente que se anudan en el pecho. Los hombros quedan
-    dentro de los de la égida (y la cadena de los collares, entre la piel y el cuerpo) para no compartir planos."""
-    e = [box([3.6, 6.5, 5.4], [12.4, 13.95, 5.95], "gold", "lomo"),
-         box([3.6, 13.92, 5.4], [12.4, 14.55, 10.45], "gold", "hombros"),
-         box([3.6, 11.0, 10.05], [6.2, 14.05, 10.45], "gold", "pata der."),
-         box([9.8, 11.0, 10.05], [12.4, 14.05, 10.45], "gold", "pata izq."),
-         box([6.2, 11.6, 10.1], [9.8, 12.3, 10.35], "gold_d", "nudo")]
-    for i, x in enumerate((4.2, 6.4, 8.6, 10.8)):
-        e.append(box([x, 5.6, 5.5], [x + 1.4, 6.5, 5.9], "gold_d", f"rizo {i}"))
+    """El vellocino de oro: la piel del carnero alado, de lana dorada en rizos (relieve en damero de oro claro y oscuro)
+    sobre la espalda y los hombros; las patas traseras cuelgan en las esquinas y las delanteras se anudan en el pecho; la
+    cabeza del carnero, con los cuernos en espiral, cuelga detrás de la nuca como la del león (no atraviesa la cabeza al
+    girar). Comparte la franja de la capa con la piel de Nemea (no se llevan juntas)."""
+    e = [box([3.6, 6.5, 5.52], [12.4, 13.95, 5.95], "gold", "lomo"),
+         box([3.6, 13.92, 5.4], [12.4, 14.55, 10.45], "gold", "hombros")]
+    # Rizos de lana en damero.
+    for row, y in enumerate([6.8, 8.0, 9.2, 10.4, 11.6, 12.55]):
+        for col, x in enumerate([3.7, 4.9, 6.1, 7.3, 8.5, 9.7, 10.9]):
+            if (row + col) % 2 == 0:
+                e.append(box([x, y, 5.41], [x + 1.4, y + 1.2, 5.52], "gold_l" if row % 3 else "gold_d", f"rizo {row} {col}"))
+    # Borde de abajo en mechones y patas traseras con pezuña.
+    for k, x in enumerate((4.2, 6.4, 8.6, 10.8)):
+        e.append(box([x, 5.7, 5.55], [x + 1.4, 6.5, 5.9], "gold_d", f"mechón {k}"))
+    for side, x0 in (("der.", 3.7), ("izq.", 10.9)):
+        e.append(box([x0, 6.0, 5.42], [x0 + 1.4, 7.5, 5.92], "gold", f"pata trasera {side}"))
+        e.append(box([x0 + 0.2, 5.4, 5.48], [x0 + 1.2, 6.0, 5.86], "black", f"pezuña trasera {side}"))
+    # Patas delanteras anudadas en el pecho.
+    for side, sign in (("der.", 1), ("izq.", -1)):
+        for k, (a, b, y0, y1) in enumerate([(3.7, 5.5, 12.9, 14.05), (4.6, 6.4, 12.0, 12.9), (5.5, 7.3, 11.1, 12.0)]):
+            x0, x1 = (a, b) if sign == 1 else (16 - b, 16 - a)
+            e.append(box([x0, y0, 10.05], [x1, y1, 10.45], "gold" if k != 1 else "gold_l", f"pata delantera {side} {k}"))
+        px0, px1 = (6.1, 7.3) if sign == 1 else (8.7, 9.9)
+        e.append(box([px0, 10.4, 10.1], [px1, 11.1, 10.48], "black", f"pezuña delantera {side}"))
+    e.append(box([7.2, 11.2, 10.12], [8.8, 12.1, 10.48], "gold_d", "nudo"))
+    # Cabeza del carnero detrás de la nuca, mirando hacia atrás, con los cuernos en espiral.
+    e += [box([4.6, 13.4, 1.6], [11.4, 19.2, 3.55], "gold", "cabeza del carnero"),
+          box([5.6, 13.0, 0.6], [10.4, 16.4, 1.6], "gold_l", "hocico del carnero"),
+          box([7.0, 13.4, 0.35], [9.0, 14.4, 0.6], "black", "nariz del carnero"),
+          box([5.2, 17.0, 1.4], [6.6, 17.8, 1.6], "black", "ojo der. del carnero"),
+          box([9.4, 17.0, 1.4], [10.8, 17.8, 1.6], "black", "ojo izq. del carnero"),
+          box([5.4, 19.2, 2.0], [10.6, 20.0, 3.4], "gold_l", "testuz")]
+    for side, sign in (("der.", 1), ("izq.", -1)):
+        horn = [(2.6, 4.6, 17.6, 20.0, 1.8, 3.8), (1.4, 2.6, 15.6, 19.0, 1.9, 3.7), (1.6, 3.4, 14.2, 15.6, 2.0, 3.6),
+                (3.4, 4.6, 14.6, 16.2, 2.1, 3.5)]
+        for k, (a, b, y0, y1, z0, z1) in enumerate(horn):
+            x0, x1 = (a, b) if sign == 1 else (16 - b, 16 - a)
+            e.append(box([x0, y0, z0], [x1, y1, z1], "ivory" if k % 2 == 0 else "ivory_d", f"cuerno {side} {k}"))
     return e
 
 
@@ -403,20 +497,34 @@ def wolf_bulla():
 
 
 def cerberus_collar():
-    """Collar de cuero negro con púas de plata y un medallón de bronce con tres pares de ojos de brasa."""
+    """Collar de Cerbero: cuero negro tachonado con púas de plata al frente y a los costados (atrás no: ahí van la égida
+    y el tambor, y la capa lo tapa), y al frente una placa de bronce
+    con las tres cabezas de perro (negras, con ojos de brasa y orejas en punta) y un trozo de la cadena rota de hierro
+    que cuelga, la que Heracles usó para sacarlo del Hades."""
     e = ring(3.55, 12.45, 13.2, 14.2, 5.6, 10.4, 0.6, "black", "cuero")
-    for x in (4.6, 7.6, 10.6):
+    for x in (4.2, 5.8, 9.4, 11.0):
         e.append(box([x, 13.45, 10.4], [x + 0.8, 13.95, 11.2], "silver", "púa frente"))
-    for z in (6.8, 8.8):
+    for z in (6.4, 7.8, 9.2):
         e.append(box([2.75, 13.45, z], [3.55, 13.95, z + 0.8], "silver", "púa der."))
         e.append(box([12.45, 13.45, z], [13.25, 13.95, z + 0.8], "silver", "púa izq."))
-    e.append(box([6.6, 11.0, 10.4], [9.4, 13.2, 10.9], "bronze", "medallón"))
-    for x in (6.9, 7.8, 8.7):
-        e.append(box([x, 12.2, 10.9], [x + 0.4, 12.5, 11.0], "ember", "ojos"))
+    # Placa de bronce con las tres cabezas.
+    e.append(box([5.9, 10.8, 10.4], [10.1, 13.2, 10.85], "bronze", "placa"))
+    e.append(box([5.7, 10.6, 10.45], [10.3, 10.8, 10.8], "bronze_d", "borde de la placa"))
+    for k, x in enumerate((6.2, 7.5, 8.8)):
+        e.append(box([x, 11.2, 10.85], [x + 1.0, 12.4, 11.15], "black", f"cabeza de perro {k}"))
+        e.append(box([x + 0.25, 10.95, 11.15], [x + 0.75, 11.45, 11.4], "black", f"hocico {k}"))
+        e.append(box([x, 12.4, 10.9], [x + 0.3, 12.9, 11.1], "black", f"oreja der. {k}"))
+        e.append(box([x + 0.7, 12.4, 10.9], [x + 1.0, 12.9, 11.1], "black", f"oreja izq. {k}"))
+        e.append(box([x + 0.15, 11.85, 11.15], [x + 0.35, 12.05, 11.22], "ember", f"ojo der. {k}"))
+        e.append(box([x + 0.65, 11.85, 11.15], [x + 0.85, 12.05, 11.22], "ember", f"ojo izq. {k}"))
+    # Cadena rota que cuelga de la placa.
+    for k, y in enumerate((9.9, 9.0, 8.1)):
+        wide = k % 2 == 0
+        e.append(box([7.5 if wide else 7.75, y, 10.55 if wide else 10.45], [8.5 if wide else 8.25, y + 0.8, 10.75 if wide else 10.85],
+                     "iron", f"eslabón {k}"))
     return e
 
 
-# --- China (2026-11-10) ---
 def wind_fire_wheels():
     """En cada pierna, a la altura del tobillo (el pie llega a y 2): un aro de oro con cuatro rayos hacia afuera y
     lenguas de fuego detrás (hacia atrás es z bajo)."""
