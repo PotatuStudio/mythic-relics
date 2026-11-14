@@ -1,7 +1,9 @@
 package io.github.potatustudio.mythicrelics.relic;
 
+import dev.architectury.registry.registries.RegistrySupplier;
 import java.util.Objects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 
 /**
@@ -62,6 +64,15 @@ public final class WornRelics {
 			tick.answers.put(item, known);
 		}
 		return known;
+	}
+
+	public static boolean isWearing(LivingEntity entity, RegistrySupplier<Item> item) {
+		return isWearing(entity, item.get());
+	}
+
+	/** Si el jugador tiene el ítem en la mano principal o en la otra. */
+	public static boolean holding(Player player, Item item) {
+		return WornRelics.holding(player, item);
 	}
 
 	static {

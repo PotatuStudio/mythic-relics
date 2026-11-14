@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -72,8 +72,8 @@ public class ChangeElixirItem extends RelicItem {
 		player.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST, ticks, 2));
 		player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, ticks, 0));
 		ChinaRelics.startLunar(player, ticks);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.5f, 1.4f);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_DRINK.value(), SoundSource.PLAYERS, 0.8f, 1.2f);
+		RelicFx.sound(server, player, SoundEvents.AMETHYST_BLOCK_CHIME, 1.5f, 1.4f);
+		RelicFx.sound(server, player, SoundEvents.GENERIC_DRINK.value(), 0.8f, 1.2f);
 		server.sendParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + 1.0, player.getZ(), 30, 0.4, 0.6, 0.4, 0.05);
 		player.sendOverlayMessage(Component.translatable("message.mythicrelics.change_elixir",
 				Component.translatable("moon_phase.mythicrelics." + phase.getSerializedName()), ticks / 20).withStyle(ChatFormatting.AQUA));

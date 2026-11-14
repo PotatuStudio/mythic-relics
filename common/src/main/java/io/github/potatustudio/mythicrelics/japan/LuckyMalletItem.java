@@ -2,13 +2,13 @@ package io.github.potatustudio.mythicrelics.japan;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
@@ -46,8 +46,8 @@ public class LuckyMalletItem extends RelicItem {
 		}
 		JapanRelics.grow(serverPlayer);
 		server.sendParticles(ParticleTypes.WAX_ON, player.getX(), player.getY() + 1.5, player.getZ(), 30, 0.6, 0.8, 0.6, 0.1);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.4f, 1.6f);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0f, 0.6f);
+		RelicFx.sound(server, player, SoundEvents.ANVIL_LAND, 0.4f, 1.6f);
+		RelicFx.sound(server, player, SoundEvents.AMETHYST_BLOCK_CHIME, 1.0f, 0.6f);
 		return InteractionResult.SUCCESS;
 	}
 
@@ -66,6 +66,6 @@ public class LuckyMalletItem extends RelicItem {
 			baby.setAge(0);
 			level.sendParticles(ParticleTypes.HAPPY_VILLAGER, baby.getX(), baby.getY() + 0.6, baby.getZ(), 5, 0.3, 0.3, 0.3, 0.0);
 		}
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BONE_MEAL_USE, SoundSource.PLAYERS, 1.0f, 1.0f);
+		RelicFx.sound(level, player, SoundEvents.BONE_MEAL_USE, 1.0f, 1.0f);
 	}
 }

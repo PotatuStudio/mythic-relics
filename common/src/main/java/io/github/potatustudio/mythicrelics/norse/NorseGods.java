@@ -5,8 +5,9 @@ import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +17,6 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -107,7 +107,7 @@ public final class NorseGods {
 
 	private static EventResult onDeath(LivingEntity entity, DamageSource source) {
 		// Brísingamen: Freyja se queda con la mitad de los caídos; matar a un hostil te devuelve vida.
-		if (entity instanceof Enemy && source.getEntity() instanceof ServerPlayer player && EgyptRelics.isWearing(player, ModItems.BRISINGAMEN)) {
+		if (entity instanceof Enemy && source.getEntity() instanceof ServerPlayer player && WornRelics.isWearing(player, ModItems.BRISINGAMEN)) {
 			player.heal(BRISINGAMEN_HEAL);
 		}
 		return EventResult.pass();
@@ -116,7 +116,7 @@ public final class NorseGods {
 	private static EventResult onBreak(Level level, BlockPos pos, BlockState state, ServerPlayer player) {
 		// Andvaranaut: el mineral de oro suelta oro de más.
 		if (level instanceof ServerLevel server && state.is(BlockTags.GOLD_ORES) && !player.isCreative()
-				&& EgyptRelics.isWearing(player, ModItems.ANDVARANAUT)) {
+				&& WornRelics.isWearing(player, ModItems.ANDVARANAUT)) {
 			ItemEntity gold = new ItemEntity(server, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.RAW_GOLD));
 			gold.setDefaultPickUpDelay();
 			server.addFreshEntity(gold);
@@ -127,14 +127,14 @@ public final class NorseGods {
 	/** Andvaranaut en los trueques: si un jugador con el anillo está cerca del piglin, el trueque se duplica. */
 	public static boolean doubleBarter(Mob piglin) {
 		Player near = piglin.level().getNearestPlayer(piglin, 16.0);
-		return near != null && EgyptRelics.isWearing(near, ModItems.ANDVARANAUT);
+		return near != null && WornRelics.isWearing(near, ModItems.ANDVARANAUT);
 	}
 
 	private static void tick(MinecraftServer server) {
 		foldShips(server);
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
-			boolean ring = EgyptRelics.isWearing(player, ModItems.ANDVARANAUT);
+			boolean ring = WornRelics.isWearing(player, ModItems.ANDVARANAUT);
 			AttributeInstance health = player.getAttribute(Attributes.MAX_HEALTH);
 			if (health != null) {
 				if (ring && !health.hasModifier(CURSE_ID)) {
@@ -149,11 +149,11 @@ public final class NorseGods {
 			if (ring && player.tickCount % 20 == 0) {
 				lure(level, player);
 			}
-			if (player.tickCount % 20 == 0 && EgyptRelics.isWearing(player, ModItems.BRISINGAMEN)) {
+			if (player.tickCount % 20 == 0 && WornRelics.isWearing(player, ModItems.BRISINGAMEN)) {
 				fertility(level, player);
 			}
 			MimirHead.tickGuide(level, player);
-			if (player.getOffhandItem().is(ModItems.MIMIR_HEAD.get()) || player.getMainHandItem().is(ModItems.MIMIR_HEAD.get())) {
+			if (WornRelics.holding(player, ModItems.MIMIR_HEAD.get())) {
 				if (player.tickCount % 5 == 0) {
 					creeperWarning(level, player);
 				}
@@ -218,7 +218,7 @@ public final class NorseGods {
 		}
 		for (Creeper creeper : level.getEntitiesOfClass(Creeper.class, player.getBoundingBox().inflate(16), c -> c.getSwellDir() > 0)) {
 			creeper.addEffect(new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false));
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_creeper").withStyle(ChatFormatting.RED));
+			RelicFx.notify(player, "mimir_creeper", ChatFormatting.RED);
 			CREEPER_WARNED.put(player.getUUID(), now);
 			return;
 		}

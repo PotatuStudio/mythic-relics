@@ -1,7 +1,8 @@
 package io.github.potatustudio.mythicrelics.greece;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -85,7 +86,7 @@ public class ZeusThunderboltItem extends RelicItem {
 			return;
 		}
 		if (held == GreeceLegends.ZEUS_STRONG_TICKS) {
-			server.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 0.6f, 1.8f);
+			RelicFx.sound(server, entity, SoundEvents.LIGHTNING_BOLT_THUNDER, 0.6f, 1.8f);
 			server.sendParticles(ParticleTypes.ELECTRIC_SPARK, entity.getX(), entity.getY() + 1.2, entity.getZ(), 40, 1.0, 0.8, 1.0, 0.4);
 		}
 		// Los mini rayos crecen con la carga y siguen cayendo una vez listo el ataque fuerte.
@@ -106,7 +107,7 @@ public class ZeusThunderboltItem extends RelicItem {
 		Vec3 point = aim(level, player);
 		List<LivingEntity> targets = new ArrayList<>(level.getEntitiesOfClass(LivingEntity.class,
 				new net.minecraft.world.phys.AABB(point, point).inflate(GreeceLegends.ZEUS_CHAIN_RADIUS),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e)));
+				e -> e != player && e.isAlive() && !Allies.isFriend(player, e)));
 		targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(point)));
 		for (int i = 0; i < GreeceLegends.ZEUS_STRONG_BOLTS; i++) {
 			if (targets.isEmpty()) {
@@ -146,8 +147,7 @@ public class ZeusThunderboltItem extends RelicItem {
 		// El primer ser vivo en la línea de la mirada; si no hay, el más cercano al punto donde cae.
 		LivingEntity first = null;
 		double best = Double.MAX_VALUE;
-		for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().expandTowards(end.subtract(eyes)).inflate(1.0),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e))) {
+		for (LivingEntity e : Allies.enemiesAround(player, player.getBoundingBox().expandTowards(end.subtract(eyes)).inflate(1.0))) {
 			var hit = e.getBoundingBox().inflate(0.4).clip(eyes, end);
 			if (hit.isPresent() && hit.get().distanceToSqr(eyes) < best) {
 				best = hit.get().distanceToSqr(eyes);
@@ -157,8 +157,7 @@ public class ZeusThunderboltItem extends RelicItem {
 		Vec3 point = first != null ? first.position() : end;
 		if (first == null) {
 			Vec3 at = point;
-			first = level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(at, at).inflate(1.5),
-					e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e)).stream()
+			first = Allies.enemiesAround(player, new net.minecraft.world.phys.AABB(at, at).inflate(1.5)).stream()
 					.min(Comparator.comparingDouble(e -> e.distanceToSqr(at))).orElse(null);
 		}
 		bolt(level, point, player);
@@ -175,7 +174,7 @@ public class ZeusThunderboltItem extends RelicItem {
 		int count = level.isThundering() ? GreeceLegends.ZEUS_STORM_CHAIN_TARGETS : GreeceLegends.ZEUS_CHAIN_TARGETS;
 		List<LivingEntity> near = new ArrayList<>(level.getEntitiesOfClass(LivingEntity.class,
 				from.getBoundingBox().inflate(GreeceLegends.ZEUS_CHAIN_RADIUS),
-				e -> e != from && e != player && e.isAlive() && e instanceof Enemy && !ChinaRelics.isFriend(player, e)));
+				e -> e != from && e != player && e.isAlive() && e instanceof Enemy && !Allies.isFriend(player, e)));
 		near.sort(Comparator.comparingDouble(e -> e.distanceToSqr(from)));
 		Vec3 last = from.position().add(0, from.getBbHeight() * 0.6, 0);
 		for (LivingEntity e : near.subList(0, Math.min(count, near.size()))) {

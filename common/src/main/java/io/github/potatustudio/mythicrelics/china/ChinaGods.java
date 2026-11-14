@@ -4,12 +4,13 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.CharonStash;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -113,12 +114,12 @@ public final class ChinaGods {
 
 	/** Set de Erlang Shen: el Ojo puesto y la alabarda en la mano. */
 	public static boolean hasErlangSet(Player player) {
-		return EgyptRelics.isWearing(player, ModItems.ERLANG_EYE) && player.getMainHandItem().is(ModItems.ERLANG_HALBERD.get());
+		return WornRelics.isWearing(player, ModItems.ERLANG_EYE) && player.getMainHandItem().is(ModItems.ERLANG_HALBERD.get());
 	}
 
 	/** Nezha completo: la llamarada de la lanza recarga a la mitad con las ruedas puestas. */
 	static int spearCooldown(Player player) {
-		return EgyptRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS) ? SPEAR_WHEELS_COOLDOWN : SPEAR_COOLDOWN;
+		return WornRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS) ? SPEAR_WHEELS_COOLDOWN : SPEAR_COOLDOWN;
 	}
 
 	// ---- Eventos ----------------------------------------------------------------------------------------------------
@@ -133,8 +134,8 @@ public final class ChinaGods {
 			if (dog != null) {
 				dog.setTarget(attacker);
 				level.sendParticles(ParticleTypes.CLOUD, dog.getX(), dog.getY() + 0.5, dog.getZ(), 16, 0.4, 0.3, 0.4, 0.03);
-				level.playSound(null, dog.getX(), dog.getY(), dog.getZ(), SoundEvents.FOX_AGGRO, SoundSource.PLAYERS, 1.0f, 0.5f);
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.celestial_dog").withStyle(ChatFormatting.GOLD));
+				RelicFx.sound(level, dog, SoundEvents.FOX_AGGRO, 1.0f, 0.5f);
+				RelicFx.notify(player, "celestial_dog", ChatFormatting.GOLD);
 			}
 		}
 		return EventResult.pass();
@@ -145,7 +146,7 @@ public final class ChinaGods {
 			return EventResult.pass();
 		}
 		// Pixiu: come oro; lo que matas suelta pepitas.
-		if (victim instanceof Enemy && source.getEntity() instanceof ServerPlayer player && EgyptRelics.isWearing(player, ModItems.PIXIU_BRACELET)
+		if (victim instanceof Enemy && source.getEntity() instanceof ServerPlayer player && WornRelics.isWearing(player, ModItems.PIXIU_BRACELET)
 				&& level.getRandom().nextFloat() < PIXIU_CHANCE) {
 			ItemEntity gold = new ItemEntity(level, victim.getX(), victim.getY() + 0.5, victim.getZ(),
 					new ItemStack(Items.GOLD_NUGGET, 1 + level.getRandom().nextInt(PIXIU_MAX_NUGGETS)));
@@ -153,7 +154,7 @@ public final class ChinaGods {
 			level.addFreshEntity(gold);
 		}
 		// Pixiu: lo que entra no sale; al morir conservas tus tesoros.
-		if (victim instanceof ServerPlayer player && EgyptRelics.isWearing(player, ModItems.PIXIU_BRACELET)) {
+		if (victim instanceof ServerPlayer player && WornRelics.isWearing(player, ModItems.PIXIU_BRACELET)) {
 			CharonStash.keepTreasure(player, stack -> TREASURE.contains(stack.getItem()));
 		}
 		return EventResult.pass();
@@ -223,7 +224,7 @@ public final class ChinaGods {
 				net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState()), player.getX(), player.getY(), player.getZ(), 40, 1.0, 0.3, 1.0, 0.1);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), net.minecraft.sounds.SoundEvents.ROOTED_DIRT_PLACE,
 				net.minecraft.sounds.SoundSource.PLAYERS, 1.2f, 0.7f);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.xirang_rescue").withStyle(ChatFormatting.GOLD));
+		RelicFx.notify(player, "xirang_rescue", ChatFormatting.GOLD);
 	}
 
 	private static void tick(MinecraftServer server) {
@@ -257,7 +258,7 @@ public final class ChinaGods {
 			}
 			setModifier(player, Attributes.ENTITY_INTERACTION_RANGE, HALBERD_REACH_ID,
 					player.getMainHandItem().is(ModItems.ERLANG_HALBERD.get()) ? HALBERD_REACH : 0);
-			if (player.tickCount % 10 == 0 && EgyptRelics.isWearing(player, ModItems.ERLANG_EYE)) {
+			if (player.tickCount % 10 == 0 && WornRelics.isWearing(player, ModItems.ERLANG_EYE)) {
 				erlangSight(player);
 			}
 		}

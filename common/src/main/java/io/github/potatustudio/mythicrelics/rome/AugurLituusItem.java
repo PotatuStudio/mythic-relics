@@ -2,15 +2,14 @@ package io.github.potatustudio.mythicrelics.rome;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -48,13 +47,13 @@ public class AugurLituusItem extends RelicItem {
 			player.addEffect(new MobEffectInstance(MobEffects.LUCK, RomeRelics.LITUUS_FAVOR_TICKS, 1));
 			player.addEffect(new MobEffectInstance(MobEffects.HASTE, RomeRelics.LITUUS_FAVOR_TICKS, 0));
 			server.sendParticles(ParticleTypes.HAPPY_VILLAGER, player.getX(), player.getY() + 2.2, player.getZ(), 16, 0.8, 0.3, 0.8, 0.0);
-			server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_AMBIENT, SoundSource.PLAYERS, 1.0f, 1.0f);
-			serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.augury_good").withStyle(ChatFormatting.GOLD));
+			RelicFx.sound(server, player, SoundEvents.PARROT_AMBIENT, 1.0f, 1.0f);
+			RelicFx.notify(serverPlayer, "augury_good", ChatFormatting.GOLD);
 		} else {
 			player.addEffect(new MobEffectInstance(MobEffects.UNLUCK, RomeRelics.LITUUS_BAD_TICKS, 0));
 			server.sendParticles(ParticleTypes.SMOKE, player.getX(), player.getY() + 2.2, player.getZ(), 16, 0.8, 0.3, 0.8, 0.0);
-			server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PHANTOM_AMBIENT, SoundSource.PLAYERS, 0.6f, 1.2f);
-			serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.augury_bad").withStyle(ChatFormatting.DARK_GRAY));
+			RelicFx.sound(server, player, SoundEvents.PHANTOM_AMBIENT, 0.6f, 1.2f);
+			RelicFx.notify(serverPlayer, "augury_bad", ChatFormatting.DARK_GRAY);
 		}
 		return InteractionResult.SUCCESS;
 	}

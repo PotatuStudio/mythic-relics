@@ -7,6 +7,7 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -176,13 +176,13 @@ public final class CharonStash extends SavedData {
 			}
 		}
 		if (entry.level() < 0) {
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.pixiu_kept").withStyle(ChatFormatting.GOLD));
+			RelicFx.notify(player, "pixiu_kept", ChatFormatting.GOLD);
 			return;
 		}
 		player.experienceLevel = entry.level();
 		player.experienceProgress = entry.progress();
 		player.totalExperience = entry.total();
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.charon_paid").withStyle(ChatFormatting.AQUA));
+		RelicFx.notify(player, "charon_paid", ChatFormatting.AQUA);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

@@ -4,8 +4,9 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,13 +14,11 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -90,17 +89,17 @@ public final class NorseRelics {
 
 	/** Set de Thor: guantes y cinturón puestos (el martillo es el que se lanza). */
 	public static boolean hasThorSet(Entity entity) {
-		return entity instanceof LivingEntity living && EgyptRelics.isWearing(living, ModItems.JARNGREIPR)
-				&& EgyptRelics.isWearing(living, ModItems.MEGINGJORD);
+		return entity instanceof LivingEntity living && WornRelics.isWearing(living, ModItems.JARNGREIPR)
+				&& WornRelics.isWearing(living, ModItems.MEGINGJORD);
 	}
 
 	/** Daño recibido: Járngreipr anula los rayos; Megingjörð da más daño cuerpo a cuerpo a quien lo lleva. */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
-		if (source.is(DamageTypeTags.IS_LIGHTNING) && EgyptRelics.isWearing(self, ModItems.JARNGREIPR)) {
+		if (source.is(DamageTypeTags.IS_LIGHTNING) && WornRelics.isWearing(self, ModItems.JARNGREIPR)) {
 			return 0;
 		}
 		if (source.getEntity() instanceof LivingEntity attacker && source.getDirectEntity() == attacker
-				&& EgyptRelics.isWearing(attacker, ModItems.MEGINGJORD)) {
+				&& WornRelics.isWearing(attacker, ModItems.MEGINGJORD)) {
 			return amount * (1.0f + MEGINGJORD_DAMAGE);
 		}
 		return amount;
@@ -152,11 +151,11 @@ public final class NorseRelics {
 		}
 		long day = server.overworld().getOverworldClockTime() / 24000L;
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-			boolean gloves = EgyptRelics.isWearing(player, ModItems.JARNGREIPR);
+			boolean gloves = WornRelics.isWearing(player, ModItems.JARNGREIPR);
 			setModifier(player, Attributes.ATTACK_DAMAGE, FIST_ID, gloves && player.getMainHandItem().isEmpty() ? JARNGREIPR_FIST : 0);
 			setModifier(player, Attributes.KNOCKBACK_RESISTANCE, BELT_KNOCKBACK_ID,
-					EgyptRelics.isWearing(player, ModItems.MEGINGJORD) ? MEGINGJORD_KNOCKBACK : 0);
-			if (player.tickCount % 100 == 0 && DraupnirNights.dawn(player, day, EgyptRelics.isWearing(player, ModItems.DRAUPNIR))) {
+					WornRelics.isWearing(player, ModItems.MEGINGJORD) ? MEGINGJORD_KNOCKBACK : 0);
+			if (player.tickCount % 100 == 0 && DraupnirNights.dawn(player, day, WornRelics.isWearing(player, ModItems.DRAUPNIR))) {
 				drip(player);
 			}
 		}
@@ -168,9 +167,9 @@ public final class NorseRelics {
 		ItemEntity gold = new ItemEntity(level, player.getX(), player.getY() + 0.5, player.getZ(), new ItemStack(Items.GOLD_INGOT, DRAUPNIR_INGOTS));
 		gold.setNoPickUpDelay();
 		level.addFreshEntity(gold);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 1.0f, 1.2f);
+		RelicFx.sound(level, player, SoundEvents.AMETHYST_BLOCK_RESONATE, 1.0f, 1.2f);
 		level.sendParticles(ParticleTypes.WAX_ON, player.getX(), player.getY() + 1.0, player.getZ(), 20, 0.4, 0.5, 0.4, 0.0);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.draupnir_drip").withStyle(ChatFormatting.GOLD));
+		RelicFx.notify(player, "draupnir_drip", ChatFormatting.GOLD);
 	}
 
 	private static void setModifier(Player player, Holder<Attribute> attribute, Identifier id, double amount) {

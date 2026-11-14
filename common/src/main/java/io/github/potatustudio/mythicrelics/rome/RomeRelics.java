@@ -5,9 +5,10 @@ import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.TickEvent;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -94,10 +95,6 @@ public final class RomeRelics {
 		TickEvent.SERVER_POST.register(RomeRelics::tick);
 	}
 
-	static boolean holding(Player player, net.minecraft.world.item.Item item) {
-		return player.getMainHandItem().is(item) || player.getOffhandItem().is(item);
-	}
-
 	// ---- Ancile (lo llama el mixin de LivingEntity) ------------------------------------------------------------------
 
 	/** Después de bloquear: si fue un proyectil y el escudo es el Ancile, se lo devuelve a quien lo lanzó. */
@@ -127,7 +124,7 @@ public final class RomeRelics {
 			return amount;
 		}
 		for (ServerPlayer player : level.players()) {
-			if (player.distanceToSqr(self) <= ANCILE_RAID_RADIUS * ANCILE_RAID_RADIUS && holding(player, ModItems.ANCILE.get())) {
+			if (player.distanceToSqr(self) <= ANCILE_RAID_RADIUS * ANCILE_RAID_RADIUS && WornRelics.holding(player, ModItems.ANCILE.get())) {
 				return amount * ANCILE_RAID_FACTOR;
 			}
 		}
@@ -185,13 +182,13 @@ public final class RomeRelics {
 		VestaLampItem.tick(server);
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
-			if (player.tickCount % 20 == 0 && EgyptRelics.isWearing(player, ModItems.WOLF_BULLA)) {
+			if (player.tickCount % 20 == 0 && WornRelics.isWearing(player, ModItems.WOLF_BULLA)) {
 				wolves(level, player);
 			}
 			if (player.tickCount % 20 == 0 && player.getOffhandItem().is(ModItems.VESTA_LAMP.get()) && nearCampfire(level, player)) {
 				player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 50, 1, true, true, true));
 			}
-			if (player.tickCount % 10 == 0 && holding(player, ModItems.JANUS_KEY.get())) {
+			if (player.tickCount % 10 == 0 && WornRelics.holding(player, ModItems.JANUS_KEY.get())) {
 				janusFaces(level, player);
 			}
 		}
@@ -240,7 +237,7 @@ public final class RomeRelics {
 		}
 		if (player.getHealth() <= WOLF_HOWL_HEALTH
 				&& RelicCooldowns.tryStart(player, "wolf_bulla", WOLF_HOWL_COOLDOWN, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(ModItems.WOLF_BULLA.get()))) {
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FOX_SCREECH, SoundSource.PLAYERS, 1.0f, 0.5f);
+			RelicFx.sound(level, player, SoundEvents.FOX_SCREECH, 1.0f, 0.5f);
 			for (int i = 0; i < WOLF_HOWL_WOLVES; i++) {
 				double a = Math.toRadians(player.getYRot() + (i == 0 ? 120 : -120));
 				double x = player.getX() - Math.sin(a) * 2, z = player.getZ() + Math.cos(a) * 2;
@@ -254,7 +251,7 @@ public final class RomeRelics {
 					level.sendParticles(ParticleTypes.CLOUD, x, player.getY() + 0.5, z, 12, 0.3, 0.3, 0.3, 0.02);
 				}
 			}
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.wolf_howl").withStyle(ChatFormatting.GOLD));
+			RelicFx.notify(player, "wolf_howl", ChatFormatting.GOLD);
 		}
 	}
 

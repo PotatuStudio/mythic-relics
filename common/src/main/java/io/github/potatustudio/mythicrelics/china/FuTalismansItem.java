@@ -1,12 +1,11 @@
 package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,7 +31,7 @@ public class FuTalismansItem extends RelicItem {
 		}
 		if (!(target instanceof Mob mob) || !target.typeHolder().is(EntityTypeTags.UNDEAD)) {
 			if (!player.level().isClientSide()) {
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.talisman_not_undead").withStyle(ChatFormatting.GRAY));
+				RelicFx.notify(player, "talisman_not_undead", ChatFormatting.GRAY);
 			}
 			return InteractionResult.FAIL;
 		}
@@ -42,7 +41,7 @@ public class FuTalismansItem extends RelicItem {
 		ChinaGods.seal(level, mob);
 		player.getCooldowns().addCooldown(stack, ChinaGods.TALISMAN_COOLDOWN);
 		level.sendParticles(ParticleTypes.WAX_ON, mob.getX(), mob.getEyeY(), mob.getZ(), 12, 0.2, 0.2, 0.2, 0.05);
-		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.BOOK_PAGE_TURN, SoundSource.PLAYERS, 1.2f, 0.8f);
+		RelicFx.sound(level, mob, SoundEvents.BOOK_PAGE_TURN, 1.2f, 0.8f);
 		return InteractionResult.SUCCESS;
 	}
 }

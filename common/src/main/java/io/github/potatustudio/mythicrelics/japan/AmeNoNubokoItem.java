@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.japan;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -73,7 +74,7 @@ public class AmeNoNubokoItem extends RelicItem {
 		server.sendParticles(ParticleTypes.SPLASH, cx, cy, cz, 80, r, 0.4, r, 0.2);
 		server.sendParticles(ParticleTypes.WAX_ON, cx, cy + 1, cz, 20, r * 0.5, 0.6, r * 0.5, 0.05);
 		server.playSound(null, cx, cy, cz, SoundEvents.GRAVEL_PLACE, SoundSource.PLAYERS, 1.5f, 0.6f);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0f, 0.8f);
+		RelicFx.sound(server, player, SoundEvents.AMETHYST_BLOCK_CHIME, 1.0f, 0.8f);
 		return InteractionResult.SUCCESS;
 	}
 }

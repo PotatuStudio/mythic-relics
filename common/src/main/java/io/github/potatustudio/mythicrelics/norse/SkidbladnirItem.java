@@ -1,10 +1,10 @@
 package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -43,7 +43,7 @@ public class SkidbladnirItem extends RelicItem {
 			server.addFreshEntity(boat);
 			NorseGods.launched(boat);
 			server.sendParticles(ParticleTypes.CLOUD, boat.getX(), boat.getY() + 0.5, boat.getZ(), 12, 0.5, 0.2, 0.5, 0.02);
-			server.playSound(null, boat.getX(), boat.getY(), boat.getZ(), SoundEvents.BOAT_PADDLE_WATER, SoundSource.PLAYERS, 1.0f, 1.0f);
+			RelicFx.sound(server, boat, SoundEvents.BOAT_PADDLE_WATER, 1.0f, 1.0f);
 			player.startRiding(boat);
 		}
 		return InteractionResult.SUCCESS;

@@ -7,13 +7,14 @@ import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.entity.FreyrSword;
 import io.github.potatustudio.mythicrelics.network.FalconPayload;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -217,7 +218,7 @@ public final class NorseSagas {
 		LivingEntity best = null;
 		double bestDist = FREYR_RADIUS * FREYR_RADIUS;
 		for (LivingEntity e : player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(FREYR_RADIUS),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e)
+				e -> e != player && e.isAlive() && !Allies.isFriend(player, e)
 						&& (e instanceof Enemy || e == player.getLastHurtMob() || e == player.getLastHurtByMob()))) {
 			double d = e.distanceToSqr(player);
 			if (d < bestDist) {
@@ -242,7 +243,7 @@ public final class NorseSagas {
 
 	private static void freyr(ServerPlayer player) {
 		FreyrSword sword = SWORDS.get(player.getUUID());
-		boolean wearing = EgyptRelics.isWearing(player, ModItems.FREYR_SWORD);
+		boolean wearing = WornRelics.isWearing(player, ModItems.FREYR_SWORD);
 		if (sword != null && (sword.isRemoved() || !wearing)) {
 			if (!sword.isRemoved()) {
 				sword.discard();
@@ -270,7 +271,7 @@ public final class NorseSagas {
 	}
 
 	private static void startFalcon(ServerPlayer player) {
-		if (isFalcon(player) || !EgyptRelics.isWearing(player, ModItems.FALCON_CLOAK) || player.isPassenger()
+		if (isFalcon(player) || !WornRelics.isWearing(player, ModItems.FALCON_CLOAK) || player.isPassenger()
 				|| player.isSpectator() || !RelicCooldowns.tryStart(player, "falcon_cloak", FALCON_COOLDOWN,
 				BuiltInRegistries.ITEM.getKey(ModItems.FALCON_CLOAK.get()))) {
 			return;
@@ -283,9 +284,9 @@ public final class NorseSagas {
 		player.onUpdateAbilities();
 		setFalconScale(player, true);
 		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 1, player.getZ(), 30, 0.5, 0.6, 0.5, 0.05);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_FLY, SoundSource.PLAYERS, 1.5f, 0.7f);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 0.6f, 1.6f);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.falcon_start", FALCON_TICKS / 20).withStyle(ChatFormatting.GOLD));
+		RelicFx.sound(level, player, SoundEvents.PARROT_FLY, 1.5f, 0.7f);
+		RelicFx.sound(level, player, SoundEvents.ENDER_DRAGON_FLAP, 0.6f, 1.6f);
+		RelicFx.notify(player, "falcon_start", ChatFormatting.GOLD, FALCON_TICKS / 20);
 	}
 
 	private static void endFalcon(ServerPlayer player, boolean struck) {
@@ -302,7 +303,7 @@ public final class NorseSagas {
 		player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, FALCON_SLOW_FALL_TICKS, 0, false, true));
 		ServerLevel level = player.level();
 		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 1, player.getZ(), 30, 0.5, 0.6, 0.5, 0.05);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_HURT, SoundSource.PLAYERS, 1.0f, 0.6f);
+		RelicFx.sound(level, player, SoundEvents.PARROT_HURT, 1.0f, 0.6f);
 		player.sendOverlayMessage(Component.translatable(struck ? "message.mythicrelics.falcon_struck" : "message.mythicrelics.falcon_end")
 				.withStyle(ChatFormatting.GRAY));
 	}
@@ -312,7 +313,7 @@ public final class NorseSagas {
 		if (until == null) {
 			return;
 		}
-		if (player.level().getGameTime() >= until || !EgyptRelics.isWearing(player, ModItems.FALCON_CLOAK) || player.isDeadOrDying()) {
+		if (player.level().getGameTime() >= until || !WornRelics.isWearing(player, ModItems.FALCON_CLOAK) || player.isDeadOrDying()) {
 			endFalcon(player, false);
 			return;
 		}
@@ -374,15 +375,15 @@ public final class NorseSagas {
 		}
 		int held = TYRFING_HELD.merge(player.getUUID(), 1, Integer::sum);
 		if (held == TYRFING_CURSE_TICKS - 200) {
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.tyrfing_hungers").withStyle(ChatFormatting.RED));
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.WARDEN_HEARTBEAT, SoundSource.PLAYERS, 1.0f, 1.0f);
+			RelicFx.notify(player, "tyrfing_hungers", ChatFormatting.RED);
+			RelicFx.sound(level, player, SoundEvents.WARDEN_HEARTBEAT, 1.0f, 1.0f);
 		}
 		if (held >= TYRFING_CURSE_TICKS) {
 			TYRFING_HELD.put(player.getUUID(), 0);
 			player.hurtServer(level, level.damageSources().magic(), TYRFING_CURSE_DAMAGE);
 			level.sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(0.6), player.getZ(), 30, 0.3, 0.5, 0.3, 0.05);
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 1.0f, 0.5f);
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.tyrfing_curse").withStyle(ChatFormatting.DARK_RED));
+			RelicFx.sound(level, player, SoundEvents.FIRECHARGE_USE, 1.0f, 0.5f);
+			RelicFx.notify(player, "tyrfing_curse", ChatFormatting.DARK_RED);
 		}
 	}
 
@@ -400,7 +401,7 @@ public final class NorseSagas {
 		aimed.addEffect(new MobEffectInstance(MobEffects.GLOWING, 10, 0, false, false));
 		if (!aimed.getUUID().equals(GRAM_WARNED.put(player.getUUID(), aimed.getUUID()))) {
 			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.6f, 0.5f);
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.gram_ready").withStyle(ChatFormatting.GOLD));
+			RelicFx.notify(player, "gram_ready", ChatFormatting.GOLD);
 		}
 	}
 

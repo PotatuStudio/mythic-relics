@@ -6,13 +6,14 @@ import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.network.IcarusPayload;
 import io.github.potatustudio.mythicrelics.registry.ModEffects;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -107,14 +108,14 @@ public final class GreeceHeroes {
 
 	/** El cliente planea o aletea: el servidor lo valida, reinicia la caída y hace sonar las alas. */
 	private static void icarus(ServerPlayer player, boolean flap) {
-		if (!EgyptRelics.isWearing(player, ModItems.ICARUS_WINGS) || waxMelted(player) || player.onGround()) {
+		if (!WornRelics.isWearing(player, ModItems.ICARUS_WINGS) || waxMelted(player) || player.onGround()) {
 			return;
 		}
 		player.resetFallDistance();
 		if (flap) {
 			ServerLevel level = player.level();
 			level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 1.0, player.getZ(), 6, 0.5, 0.1, 0.5, 0.02);
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PHANTOM_FLAP, SoundSource.PLAYERS, 0.6f, 1.3f);
+			RelicFx.sound(level, player, SoundEvents.PHANTOM_FLAP, 0.6f, 1.3f);
 		}
 	}
 
@@ -125,8 +126,8 @@ public final class GreeceHeroes {
 		RelicCooldowns.start(player, "icarus_wings", ICARUS_MELT_TICKS, BuiltInRegistries.ITEM.getKey(ModItems.ICARUS_WINGS.get()));
 		ServerLevel level = player.level();
 		level.sendParticles(ParticleTypes.FALLING_HONEY, player.getX(), player.getY() + 1.2, player.getZ(), 16, 0.6, 0.3, 0.6, 0.0);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.5f, 1.6f);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.icarus_melted").withStyle(ChatFormatting.GOLD));
+		RelicFx.sound(level, player, SoundEvents.FIRECHARGE_USE, 0.5f, 1.6f);
+		RelicFx.notify(player, "icarus_melted", ChatFormatting.GOLD);
 	}
 
 	// ---- Vellocino ---------------------------------------------------------------------------------------------------
@@ -134,7 +135,7 @@ public final class GreeceHeroes {
 	private static EventResult onInteract(Player player, Entity entity, InteractionHand hand) {
 		// Antes de esquilar: si la oveja está lista y se usan tijeras, a veces suelta además una pepita de oro.
 		if (player.level() instanceof ServerLevel level && entity instanceof Sheep sheep && sheep.readyForShearing()
-				&& player.getItemInHand(hand).is(Items.SHEARS) && EgyptRelics.isWearing(player, ModItems.GOLDEN_FLEECE)
+				&& player.getItemInHand(hand).is(Items.SHEARS) && WornRelics.isWearing(player, ModItems.GOLDEN_FLEECE)
 				&& level.getRandom().nextFloat() < FLEECE_NUGGET_CHANCE) {
 			ItemEntity nugget = new ItemEntity(level, sheep.getX(), sheep.getY() + 1.0, sheep.getZ(), new ItemStack(Items.GOLD_NUGGET));
 			nugget.setDefaultPickUpDelay();
@@ -148,7 +149,7 @@ public final class GreeceHeroes {
 
 	private static EventResult onHurt(LivingEntity target, DamageSource source, float amount) {
 		if (target instanceof ServerPlayer player && source.getEntity() instanceof Mob attacker && attacker.isAlive()
-				&& Minions.ownerOf(attacker) == null && EgyptRelics.isWearing(player, ModItems.CERBERUS_COLLAR)
+				&& Minions.ownerOf(attacker) == null && WornRelics.isWearing(player, ModItems.CERBERUS_COLLAR)
 				&& RelicCooldowns.tryStart(player, "cerberus_collar", CERBERUS_COOLDOWN,
 						BuiltInRegistries.ITEM.getKey(ModItems.CERBERUS_COLLAR.get()))) {
 			ServerLevel level = player.level();
@@ -193,11 +194,11 @@ public final class GreeceHeroes {
 
 	private static void tick(MinecraftServer server) {
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-			if (EgyptRelics.isWearing(player, ModItems.ICARUS_WINGS) && !player.onGround()) {
+			if (WornRelics.isWearing(player, ModItems.ICARUS_WINGS) && !player.onGround()) {
 				meltWax(player);
 			}
 			// Rey legítimo: Héroe de la aldea mientras lleves el vellocino.
-			if (player.tickCount % 40 == 0 && EgyptRelics.isWearing(player, ModItems.GOLDEN_FLEECE)) {
+			if (player.tickCount % 40 == 0 && WornRelics.isWearing(player, ModItems.GOLDEN_FLEECE)) {
 				MobEffectInstance hero = player.getEffect(MobEffects.HERO_OF_THE_VILLAGE);
 				if (hero == null || hero.getDuration() < 100) {
 					player.addEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, 220, 0, true, false, true));

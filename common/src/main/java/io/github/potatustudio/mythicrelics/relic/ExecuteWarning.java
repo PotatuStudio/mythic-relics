@@ -1,6 +1,5 @@
 package io.github.potatustudio.mythicrelics.relic;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Mob;
@@ -44,12 +42,12 @@ public final class ExecuteWarning {
 		ServerLevel level = player.level();
 		Set<UUID> now = new HashSet<>();
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(radius),
-				m -> m.isAlive() && canKill.test(m) && !ChinaRelics.isFriend(player, m))) {
+				m -> m.isAlive() && canKill.test(m) && !Allies.isFriend(player, m))) {
 			now.add(mob.getUUID());
 			mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, 15, 0, false, false));
 			level.sendParticles(ParticleTypes.CRIT, mob.getX(), mob.getY() + mob.getBbHeight() + 0.3, mob.getZ(), 3, 0.2, 0.1, 0.2, 0.0);
 			if (!warned.contains(mob.getUUID())) {
-				level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.6f, 0.6f);
+				RelicFx.sound(level, player, SoundEvents.EXPERIENCE_ORB_PICKUP, 0.6f, 0.6f);
 				player.sendOverlayMessage(Component.translatable(message).withStyle(ChatFormatting.GOLD));
 			}
 		}

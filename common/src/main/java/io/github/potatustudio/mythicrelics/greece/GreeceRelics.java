@@ -5,10 +5,13 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.network.HermesJumpPayload;
 import io.github.potatustudio.mythicrelics.network.PetrifyPayload;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.Bosses;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,10 +35,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.monster.ElderGuardian;
-import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -123,8 +122,8 @@ public final class GreeceRelics {
 
 	/** Set de Perseo: tres de sus cuatro piezas (sandalias, yelmo y égida puestas; la harpe en la mano o en el inventario). */
 	public static boolean hasPerseusSet(LivingEntity entity) {
-		int pieces = (EgyptRelics.isWearing(entity, ModItems.HERMES_SANDALS) ? 1 : 0) + (EgyptRelics.isWearing(entity, ModItems.HADES_HELM) ? 1 : 0)
-				+ (EgyptRelics.isWearing(entity, ModItems.ATHENA_AEGIS) ? 1 : 0);
+		int pieces = (WornRelics.isWearing(entity, ModItems.HERMES_SANDALS) ? 1 : 0) + (WornRelics.isWearing(entity, ModItems.HADES_HELM) ? 1 : 0)
+				+ (WornRelics.isWearing(entity, ModItems.ATHENA_AEGIS) ? 1 : 0);
 		boolean harpe = entity instanceof net.minecraft.world.entity.player.Player player
 				? player.getInventory().contains(s -> s.is(ModItems.HARPE.get()))
 				: entity.getMainHandItem().is(ModItems.HARPE.get());
@@ -137,14 +136,14 @@ public final class GreeceRelics {
 
 	/** El cliente ya aplicó el impulso del doble salto; aquí se valida, se reinicia la caída y se muestran las alas. */
 	private static void hermesJumped(ServerPlayer player) {
-		if (!EgyptRelics.isWearing(player, ModItems.HERMES_SANDALS) && !EgyptRelics.isWearing(player, ModItems.TENGU_MASK)
+		if (!WornRelics.isWearing(player, ModItems.HERMES_SANDALS) && !WornRelics.isWearing(player, ModItems.TENGU_MASK)
 				|| player.onGround()) {
 			return;
 		}
 		player.resetFallDistance();
 		ServerLevel level = player.level();
 		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY(), player.getZ(), 8, 0.3, 0.05, 0.3, 0.02);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 0.3f, 1.8f);
+		RelicFx.sound(level, player, SoundEvents.ENDER_DRAGON_FLAP, 0.3f, 1.8f);
 	}
 
 	private static void setModifier(Player player, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute,
@@ -164,7 +163,7 @@ public final class GreeceRelics {
 	// ---- Hades -------------------------------------------------------------------------------------------------------
 
 	private static void hades(ServerPlayer player) {
-		if (!EgyptRelics.isWearing(player, ModItems.HADES_HELM)) {
+		if (!WornRelics.isWearing(player, ModItems.HADES_HELM)) {
 			breakInvisibility(player);
 			HADES_STILL.remove(player.getUUID());
 			return;
@@ -209,7 +208,7 @@ public final class GreeceRelics {
 	// ---- Égida (lo llama el mixin de LivingEntity al bloquear) -----------------------------------------------------
 
 	public static void aegisBlocked(LivingEntity defender, LivingEntity attacker) {
-		if (!(defender.level() instanceof ServerLevel level) || !EgyptRelics.isWearing(defender, ModItems.ATHENA_AEGIS) || isBoss(attacker)) {
+		if (!(defender.level() instanceof ServerLevel level) || !WornRelics.isWearing(defender, ModItems.ATHENA_AEGIS) || Bosses.is(attacker)) {
 			return;
 		}
 		attacker.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, AEGIS_STUN_TICKS, 5), defender);
@@ -218,14 +217,10 @@ public final class GreeceRelics {
 		attacker.push(away.x, 0.25, away.z);
 		attacker.needsSync = true;
 		level.sendParticles(ParticleTypes.CRIT, attacker.getX(), attacker.getY() + attacker.getBbHeight(), attacker.getZ(), 10, 0.3, 0.2, 0.3, 0.1);
-		level.playSound(null, defender.getX(), defender.getY(), defender.getZ(), SoundEvents.EVOKER_CAST_SPELL, SoundSource.PLAYERS, 0.6f, 1.4f);
+		RelicFx.sound(level, defender, SoundEvents.EVOKER_CAST_SPELL, 0.6f, 1.4f);
 	}
 
 	// ---- Medusa ------------------------------------------------------------------------------------------------------
-
-	public static boolean isBoss(Entity entity) {
-		return entity instanceof WitherBoss || entity instanceof EnderDragon || entity instanceof Warden || entity instanceof ElderGuardian;
-	}
 
 	/**
 	 * Mirada de Medusa, cada tick mientras se sostiene la cabeza (clic derecho mantenido, como un escudo): los mobs de
@@ -242,8 +237,8 @@ public final class GreeceRelics {
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(MEDUSA_RADIUS),
 				m -> m.isAlive() && m.distanceToSqr(player) <= MEDUSA_RADIUS * MEDUSA_RADIUS
 						&& look.dot(m.getBoundingBox().getCenter().subtract(eyes).normalize()) >= MEDUSA_CONE
-						&& !isBoss(m) && !m.entityTags().contains(PETRIFIED_TAG)
-						&& !io.github.potatustudio.mythicrelics.china.ChinaRelics.isFriend(player, m))) {
+						&& !Bosses.is(m) && !m.entityTags().contains(PETRIFIED_TAG)
+						&& !Allies.isFriend(player, m))) {
 			if (!player.hasLineOfSight(mob)) {
 				continue;
 			}
@@ -381,7 +376,7 @@ public final class GreeceRelics {
 			it.remove();
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-			boolean sandals = EgyptRelics.isWearing(player, ModItems.HERMES_SANDALS);
+			boolean sandals = WornRelics.isWearing(player, ModItems.HERMES_SANDALS);
 			setModifier(player, Attributes.MOVEMENT_SPEED, HERMES_SPEED_ID, sandals ? HERMES_SPEED : 0,
 					AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 			boolean onSoul = sandals && player.level().getBlockState(BlockPos.containing(player.getX(), player.getY() - 0.2, player.getZ()))

@@ -3,6 +3,8 @@ package io.github.potatustudio.mythicrelics.norse;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.relic.Compass;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -21,7 +23,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
@@ -129,7 +130,7 @@ public final class MimirHead {
 			}
 		}
 		if (!found.isEmpty() || chests > 0) {
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 0.6f, 0.7f);
+			RelicFx.sound(level, player, SoundEvents.AMETHYST_BLOCK_RESONATE, 0.6f, 0.7f);
 		}
 	}
 
@@ -228,7 +229,7 @@ public final class MimirHead {
 	static boolean ask(ServerLevel level, ServerPlayer player) {
 		Guide g = new Guide();
 		scan(level, player, g);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 0.7f, 0.6f);
+		RelicFx.sound(level, player, SoundEvents.SOUL_ESCAPE.value(), 0.7f, 0.6f);
 		if (g.target == null) {
 			GUIDES.remove(player.getUUID());
 			player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_nothing").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
@@ -258,7 +259,7 @@ public final class MimirHead {
 		if (gone || player.getEyePosition().distanceTo(Vec3.atCenterOf(g.target)) < ARRIVED) {
 			GUIDES.remove(player.getUUID());
 			player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_arrived").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8f, 0.8f);
+			RelicFx.sound(level, player, SoundEvents.AMETHYST_BLOCK_CHIME, 0.8f, 0.8f);
 			return;
 		}
 		if (player.tickCount % TRAIL_INTERVAL == 0) {
@@ -331,9 +332,7 @@ public final class MimirHead {
 		int dx = to.getX() - from.getX();
 		int dz = to.getZ() - from.getZ();
 		int dy = to.getY() - from.getY();
-		double angle = Math.toDegrees(Math.atan2(-dx, dz));
-		String[] dirs = {"south", "southwest", "west", "northwest", "north", "northeast", "east", "southeast"};
-		Component dir = Component.translatable("direction.mythicrelics." + dirs[(int) Math.floorMod(Math.round(angle / 45.0), 8)]);
+		Component dir = Compass.direction(dx, dz);
 		String level = dy > 3 ? "up" : dy < -3 ? "down" : "level";
 		return Component.translatable("message.mythicrelics.mimir_where." + level, dir);
 	}

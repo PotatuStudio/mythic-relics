@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -11,7 +12,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
@@ -49,7 +49,7 @@ public class ImmortalPeachBranchItem extends RelicItem {
 		if (eaten != null && level.getGameTime() - eaten >= ChinaGods.PEACH_GROW_TICKS) {
 			stack.remove(ModComponents.PEACH_GROWING.get());
 			if (entity instanceof Player player) {
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.peach_ripe").withStyle(ChatFormatting.LIGHT_PURPLE));
+				RelicFx.notify(player, "peach_ripe", ChatFormatting.LIGHT_PURPLE);
 			}
 		}
 	}
@@ -95,8 +95,8 @@ public class ImmortalPeachBranchItem extends RelicItem {
 		entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, ChinaGods.PEACH_ABSORPTION_TICKS, 3));
 		entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, ChinaGods.PEACH_REGEN_TICKS, 1));
 		server.sendParticles(ParticleTypes.HEART, entity.getX(), entity.getY() + 1.8, entity.getZ(), 6, 0.4, 0.3, 0.4, 0.0);
-		server.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5f, 1.3f);
-		server.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0f, 1.2f);
+		RelicFx.sound(server, entity, SoundEvents.PLAYER_BURP, 0.5f, 1.3f);
+		RelicFx.sound(server, entity, SoundEvents.AMETHYST_BLOCK_CHIME, 1.0f, 1.2f);
 		return stack;
 	}
 

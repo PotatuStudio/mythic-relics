@@ -6,9 +6,11 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
-import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,7 +18,6 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +32,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -103,19 +103,19 @@ public final class EgyptGods {
 		EntityEvent.ADD.register(EgyptGods::onEntityAdded);
 		EntityEvent.LIVING_HURT.register((target, source, amount) ->
 				// Bastet: caes de pie, las caídas no hacen daño (ni el golpe ni el sonido).
-				source.is(DamageTypeTags.IS_FALL) && EgyptRelics.isWearing(target, ModItems.BASTET_AMULET)
+				source.is(DamageTypeTags.IS_FALL) && WornRelics.isWearing(target, ModItems.BASTET_AMULET)
 						? EventResult.interruptFalse() : EventResult.pass());
 		EntityEvent.LIVING_DAMAGE_POST.register((entity, source, baseDamage, damageTaken, blocked) -> {
 			if (blocked || damageTaken <= 0 || !(entity.level() instanceof ServerLevel level)) {
 				return;
 			}
 			if (entity instanceof ServerPlayer player && source.getEntity() instanceof LivingEntity attacker
-					&& source.getDirectEntity() == attacker && attacker != player && EgyptRelics.isWearing(player, ModItems.RA_DISK)) {
+					&& source.getDirectEntity() == attacker && attacker != player && WornRelics.isWearing(player, ModItems.RA_DISK)) {
 				uraeus(level, player, attacker);
 			}
 			if (source.getEntity() instanceof ServerPlayer attacker && source.getDirectEntity() == attacker && attacker != entity
 					&& entity.isAlive()) {
-				if (entity.typeHolder().is(EntityTypeTags.UNDEAD) && EgyptRelics.isWearing(attacker, ModItems.RA_DISK) && underTheSun(attacker)) {
+				if (entity.typeHolder().is(EntityTypeTags.UNDEAD) && WornRelics.isWearing(attacker, ModItems.RA_DISK) && underTheSun(attacker)) {
 					entity.igniteForSeconds(RA_BURN_SECONDS);
 				}
 				Frenzy frenzy = FRENZY.get(attacker.getUUID());
@@ -125,7 +125,7 @@ public final class EgyptGods {
 			}
 		});
 		EntityEvent.LIVING_DEATH.register((victim, source) -> {
-			if (source.getEntity() instanceof ServerPlayer player && player != victim && EgyptRelics.isWearing(player, ModItems.SEKHMET_CLAWS)) {
+			if (source.getEntity() instanceof ServerPlayer player && player != victim && WornRelics.isWearing(player, ModItems.SEKHMET_CLAWS)) {
 				frenzyKill(player);
 			}
 			return EventResult.pass();
@@ -150,21 +150,21 @@ public final class EgyptGods {
 		attacker.igniteForSeconds(URAEUS_BURN_SECONDS);
 		level.sendParticles(ParticleTypes.FLAME, attacker.getX(), attacker.getY() + attacker.getBbHeight() / 2, attacker.getZ(),
 				14, 0.3, 0.4, 0.3, 0.02);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.7f, 1.3f);
+		RelicFx.sound(level, player, SoundEvents.FIRECHARGE_USE, 0.7f, 1.3f);
 	}
 
 	// ---- Daño (lo llama el mixin de LivingEntity) ------------------------------------------------------------------
 
 	/** Daño recibido por {@code self} después de aplicar Anj, Ra, Sekhmet y Bastet (que anula las caídas). */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
-		if (source.is(DamageTypeTags.IS_FALL) && EgyptRelics.isWearing(self, ModItems.BASTET_AMULET)) {
+		if (source.is(DamageTypeTags.IS_FALL) && WornRelics.isWearing(self, ModItems.BASTET_AMULET)) {
 			return 0.0f;
 		}
 		if (!(source.getEntity() instanceof LivingEntity attacker)) {
 			return amount;
 		}
 		boolean undead = self.typeHolder().is(EntityTypeTags.UNDEAD);
-		if (undead && source.getDirectEntity() == attacker && EgyptRelics.isWearing(attacker, ModItems.RA_DISK) && underTheSun(attacker)) {
+		if (undead && source.getDirectEntity() == attacker && WornRelics.isWearing(attacker, ModItems.RA_DISK) && underTheSun(attacker)) {
 			amount *= 1.0f + RA_UNDEAD_BONUS;
 		}
 		Frenzy frenzy = FRENZY.get(attacker.getUUID());
@@ -183,7 +183,7 @@ public final class EgyptGods {
 		if (entity instanceof Creeper creeper) {
 			// Como con los gatos en vanilla: el creeper se aleja de quien lleva el amuleto.
 			creeper.getGoalSelector().addGoal(3, new AvoidEntityGoal<>(creeper, Player.class,
-					p -> EgyptRelics.isWearing(p, ModItems.BASTET_AMULET), 6.0f, 1.0, 1.2, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test));
+					p -> WornRelics.isWearing(p, ModItems.BASTET_AMULET), 6.0f, 1.0, 1.2, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test));
 		}
 		if (entity instanceof Animal animal) {
 			// Osiris pastor: los animales de granja siguen el cayado como si fuera su comida.
@@ -247,19 +247,11 @@ public final class EgyptGods {
 		float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) * FLAIL_SWEEP_DAMAGE;
 		double r2 = FLAIL_SWEEP_RADIUS * FLAIL_SWEEP_RADIUS;
 		for (LivingEntity other : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(FLAIL_SWEEP_RADIUS),
-				e -> e != player && e != target && e.isAlive() && e.distanceToSqr(player) <= r2 && !isFriend(player, e))) {
+				e -> e != player && e != target && e.isAlive() && e.distanceToSqr(player) <= r2 && !Allies.isFriend(player, e))) {
 			other.hurtServer(level, player.damageSources().playerAttack(player), damage);
 		}
 		level.sendParticles(ParticleTypes.SWEEP_ATTACK, player.getX(), player.getY() + 1.0, player.getZ(), 3, 1.0, 0.2, 1.0, 0);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0f, 0.8f);
-	}
-
-	private static boolean isFriend(Player player, LivingEntity entity) {
-		if (entity.isAlliedTo(player) || player.getUUID().equals(Minions.ownerOf(entity))) {
-			return true;
-		}
-		return entity instanceof OwnableEntity ownable && ownable.getOwnerReference() != null
-				&& player.getUUID().equals(ownable.getOwnerReference().getUUID());
+		RelicFx.sound(level, player, SoundEvents.PLAYER_ATTACK_SWEEP, 1.0f, 0.8f);
 	}
 
 	/** Trilla: romper un cultivo maduro con el mayal cosecha y vuelve a plantar los maduros de un 3×3. */
@@ -291,8 +283,8 @@ public final class EgyptGods {
 		RelicCooldowns.start(player, "osiris_rebirth", OSIRIS_REBIRTH_COOLDOWN, OSIRIS_REBIRTH_GROUP);
 		ServerLevel level = player.level();
 		level.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY() + 1.0, player.getZ(), 40, 0.5, 0.8, 0.5, 0.3);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 0.8f, 0.8f);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.osiris_rebirth").withStyle(ChatFormatting.GOLD));
+		RelicFx.sound(level, player, SoundEvents.TOTEM_USE, 0.8f, 0.8f);
+		RelicFx.notify(player, "osiris_rebirth", ChatFormatting.GOLD);
 		return true;
 	}
 
@@ -306,7 +298,7 @@ public final class EgyptGods {
 		setFrenzySpeed(player, level);
 		if (level == SEKHMET_MAX && (old == null || old.level() < SEKHMET_MAX)) {
 			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 0.5f, 1.4f);
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.sekhmet_frenzy").withStyle(ChatFormatting.RED));
+			RelicFx.notify(player, "sekhmet_frenzy", ChatFormatting.RED);
 		}
 	}
 
@@ -333,7 +325,7 @@ public final class EgyptGods {
 				it.remove();
 				continue;
 			}
-			boolean wearing = EgyptRelics.isWearing(player, ModItems.SEKHMET_CLAWS);
+			boolean wearing = WornRelics.isWearing(player, ModItems.SEKHMET_CLAWS);
 			if (!wearing || player.level().getGameTime() - e.getValue().lastKill() >= SEKHMET_WINDOW) {
 				// Calma: un frenesí que llegó al máximo termina curando.
 				if (wearing && e.getValue().level() >= SEKHMET_MAX && player.isAlive()) {
@@ -345,7 +337,7 @@ public final class EgyptGods {
 			}
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-			if (player.tickCount % 10 != 0 || !EgyptRelics.isWearing(player, ModItems.BASTET_AMULET)) {
+			if (player.tickCount % 10 != 0 || !WornRelics.isWearing(player, ModItems.BASTET_AMULET)) {
 				continue;
 			}
 			// Bastet: creepers y phantoms dejan de perseguirte (como a un gato).

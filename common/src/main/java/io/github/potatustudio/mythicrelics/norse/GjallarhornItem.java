@@ -2,12 +2,12 @@ package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -54,7 +54,7 @@ public class GjallarhornItem extends RelicItem {
 				|| !RelicCooldowns.tryStart(player, "gjallarhorn", NorseRelics.HORN_COOLDOWN, BuiltInRegistries.ITEM.getKey(this))) {
 			return stack;
 		}
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.RAID_HORN.value(), SoundSource.PLAYERS, 2.0f, 1.2f);
+		RelicFx.sound(server, player, SoundEvents.RAID_HORN.value(), 2.0f, 1.2f);
 		server.sendParticles(ParticleTypes.NOTE, player.getX(), player.getY() + 2.2, player.getZ(), 12, 0.6, 0.3, 0.6, 1.0);
 		double allies = NorseRelics.HORN_ALLY_RADIUS;
 		for (LivingEntity ally : server.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(allies),

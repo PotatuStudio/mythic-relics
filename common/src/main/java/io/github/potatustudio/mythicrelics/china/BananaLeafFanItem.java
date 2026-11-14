@@ -1,6 +1,8 @@
 package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
@@ -112,7 +114,7 @@ public class BananaLeafFanItem extends RelicItem {
 		Vec3 dir = player.getLookAngle();
 		Vec3 to = from.add(dir.scale(ChinaRelics.FAN_BLADE_RANGE));
 		for (LivingEntity hit : server.getEntitiesOfClass(LivingEntity.class, new AABB(from, to).inflate(1.0),
-				e -> e != player && e != target && e.isAlive() && !ChinaRelics.isFriend(player, e))) {
+				e -> e != player && e != target && e.isAlive() && !Allies.isFriend(player, e))) {
 			if (hit.getBoundingBox().inflate(0.5).clip(from, to).isPresent()) {
 				hit.hurtServer(server, server.damageSources().playerAttack(player), ChinaRelics.FAN_BLADE_DAMAGE);
 			}
@@ -122,7 +124,7 @@ public class BananaLeafFanItem extends RelicItem {
 			server.sendParticles(ParticleTypes.SWEEP_ATTACK, p.x, p.y - 0.3, p.z, 1, 0.0, 0.0, 0.0, 0.0);
 			server.sendParticles(ParticleTypes.CLOUD, p.x, p.y - 0.3, p.z, 2, 0.1, 0.1, 0.1, 0.02);
 		}
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BREEZE_SHOOT, SoundSource.PLAYERS, 0.6f, 1.4f);
+		RelicFx.sound(server, player, SoundEvents.BREEZE_SHOOT, 0.6f, 1.4f);
 	}
 
 	/** Actualiza las cargas en los datos del ítem para que la barra (en el cliente) muestre las que se recuperaron. */

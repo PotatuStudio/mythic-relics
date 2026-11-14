@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.greece;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -60,7 +61,7 @@ public class PandoraJarItem extends RelicItem {
 		ServerLevel level = player.level();
 		RandomSource random = level.getRandom();
 		level.sendParticles(ParticleTypes.WITCH, player.getX(), player.getY() + 1.4, player.getZ(), 30, 0.4, 0.6, 0.4, 0.05);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DECORATED_POT_INSERT, SoundSource.PLAYERS, 0.8f, 0.6f);
+		RelicFx.sound(level, player, SoundEvents.DECORATED_POT_INSERT, 0.8f, 0.6f);
 		int roll = random.nextInt(100);
 		int vexes = GreeceHeroes.PANDORA_EVIL_CHANCE + GreeceHeroes.PANDORA_VEX_CHANCE;
 		int treasure = vexes + GreeceHeroes.PANDORA_TREASURE_CHANCE;
@@ -80,7 +81,7 @@ public class PandoraJarItem extends RelicItem {
 			ItemEntity drop = new ItemEntity(level, player.getX(), player.getY() + 1.0, player.getZ(), loot);
 			drop.setNoPickUpDelay();
 			level.addFreshEntity(drop);
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0f, 1.2f);
+			RelicFx.sound(level, player, SoundEvents.AMETHYST_BLOCK_CHIME, 1.0f, 1.2f);
 			tell(player, "pandora_treasure", ChatFormatting.GOLD);
 		} else {
 			hope(level, player);
@@ -116,7 +117,7 @@ public class PandoraJarItem extends RelicItem {
 		harmful.forEach(player::removeEffect);
 		player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, GreeceHeroes.PANDORA_HOPE_ABSORPTION_TICKS, 1));
 		level.sendParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + 1.2, player.getZ(), 24, 0.4, 0.6, 0.4, 0.05);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.8f, 1.6f);
+		RelicFx.sound(level, player, SoundEvents.BEACON_ACTIVATE, 0.8f, 1.6f);
 	}
 
 	private static void tell(ServerPlayer player, String key, ChatFormatting color) {

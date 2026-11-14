@@ -1,13 +1,13 @@
 package io.github.potatustudio.mythicrelics.greece;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.Bosses;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
@@ -36,13 +36,13 @@ public class AppleOfDiscordItem extends RelicItem {
 		}
 		Mob target = aimed(server, player);
 		if (target == null) {
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.apple_no_target").withStyle(ChatFormatting.GRAY));
+			RelicFx.notify(player, "apple_no_target", ChatFormatting.GRAY);
 			return InteractionResult.PASS;
 		}
 		GreeceLegends.markFairest(target, server.getGameTime() + GreeceLegends.APPLE_TICKS);
 		server.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, target.getX(), target.getY(0.7), target.getZ(), 30, 0.4, 0.5, 0.4, 0.2);
-		server.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.5f, 0.8f);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.PLAYERS, 0.8f, 0.7f);
+		RelicFx.sound(server, target, SoundEvents.AMETHYST_BLOCK_CHIME, 1.5f, 0.8f);
+		RelicFx.sound(server, player, SoundEvents.SNOWBALL_THROW, 0.8f, 0.7f);
 		player.getCooldowns().addCooldown(stack, GreeceLegends.APPLE_COOLDOWN);
 		return InteractionResult.SUCCESS;
 	}
@@ -53,7 +53,7 @@ public class AppleOfDiscordItem extends RelicItem {
 		Mob best = null;
 		double bestDist = Double.MAX_VALUE;
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().expandTowards(end.subtract(eyes)).inflate(1.0),
-				m -> m.isAlive() && !GreeceLegends.isBoss(m) && !ChinaRelics.isFriend(player, m) && player.hasLineOfSight(m))) {
+				m -> m.isAlive() && !Bosses.is(m) && !Allies.isFriend(player, m) && player.hasLineOfSight(m))) {
 			var hit = mob.getBoundingBox().inflate(0.5).clip(eyes, end);
 			if (hit.isPresent() && hit.get().distanceToSqr(eyes) < bestDist) {
 				bestDist = hit.get().distanceToSqr(eyes);

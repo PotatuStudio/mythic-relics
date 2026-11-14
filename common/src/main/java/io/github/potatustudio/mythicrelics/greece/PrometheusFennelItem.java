@@ -2,15 +2,14 @@ package io.github.potatustudio.mythicrelics.greece;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,7 +50,7 @@ public class PrometheusFennelItem extends RelicItem {
 		SingleRecipeInput input = new SingleRecipeInput(other);
 		Optional<RecipeHolder<SmeltingRecipe>> recipe = server.recipeAccess().getRecipeFor(RecipeType.SMELTING, input, server);
 		if (recipe.isEmpty()) {
-			serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.prometheus_nothing").withStyle(ChatFormatting.GRAY));
+			RelicFx.notify(serverPlayer, "prometheus_nothing", ChatFormatting.GRAY);
 			return InteractionResult.PASS;
 		}
 		int count = other.getCount();
@@ -74,7 +73,7 @@ public class PrometheusFennelItem extends RelicItem {
 			}
 		}
 		server.sendParticles(ParticleTypes.FLAME, player.getX(), player.getY() + 1.2, player.getZ(), 16, 0.3, 0.3, 0.3, 0.02);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.6f, 1.2f);
+		RelicFx.sound(server, player, SoundEvents.FIRECHARGE_USE, 0.6f, 1.2f);
 		return InteractionResult.SUCCESS;
 	}
 }

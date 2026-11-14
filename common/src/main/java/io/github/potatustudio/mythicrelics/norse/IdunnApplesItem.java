@@ -2,6 +2,7 @@ package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -10,7 +11,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
@@ -94,7 +94,7 @@ public class IdunnApplesItem extends RelicItem {
 		remove.forEach(entity::removeEffect);
 		entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, NorseRelics.IDUNN_REGEN_TICKS, 1));
 		entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, NorseRelics.IDUNN_ABSORPTION_TICKS, 0));
-		server.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5f, 1.2f);
+		RelicFx.sound(server, entity, SoundEvents.PLAYER_BURP, 0.5f, 1.2f);
 		return stack;
 	}
 

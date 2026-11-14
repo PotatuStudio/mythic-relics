@@ -1,11 +1,11 @@
 package io.github.potatustudio.mythicrelics.norse;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,14 +57,14 @@ public class GramItem extends RelicItem {
 		Vec3 look = player.getLookAngle();
 		Vec3 tip = player.getEyePosition().add(look.scale(2.0));
 		server.sendParticles(ParticleTypes.SWEEP_ATTACK, tip.x, tip.y, tip.z, 1, 0.0, 0.0, 0.0, 0.0);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0f, 0.6f);
+		RelicFx.sound(server, player, SoundEvents.TRIDENT_THROW.value(), 1.0f, 0.6f);
 		if (target != null) {
 			float damage = NorseSagas.GRAM_THRUST_DAMAGE * (target.getMaxHealth() >= NorseSagas.GRAM_BIG_HEALTH ? 2.0f : 1.0f);
 			target.hurtServer(server, server.damageSources().playerAttack(player), damage);
 			target.push(look.x * 0.6, 0.25, look.z * 0.6);
 			server.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.5), target.getZ(), 25, 0.3, 0.4, 0.3, 0.4);
 			server.sendParticles(ParticleTypes.ENCHANTED_HIT, target.getX(), target.getY(0.5), target.getZ(), 15, 0.3, 0.4, 0.3, 0.3);
-			server.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.7f, 1.4f);
+			RelicFx.sound(server, target, SoundEvents.ANVIL_LAND, 0.7f, 1.4f);
 		}
 		player.getCooldowns().addCooldown(stack, NorseSagas.GRAM_COOLDOWN);
 		return true;
@@ -78,7 +78,7 @@ public class GramItem extends RelicItem {
 		double bestDist = Double.MAX_VALUE;
 		for (LivingEntity e : player.level().getEntitiesOfClass(LivingEntity.class,
 				player.getBoundingBox().expandTowards(end.subtract(eyes)).inflate(1.0),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e))) {
+				e -> e != player && e.isAlive() && !Allies.isFriend(player, e))) {
 			var hit = e.getBoundingBox().inflate(0.3).clip(eyes, end);
 			if (hit.isPresent() && hit.get().distanceToSqr(eyes) < bestDist) {
 				bestDist = hit.get().distanceToSqr(eyes);

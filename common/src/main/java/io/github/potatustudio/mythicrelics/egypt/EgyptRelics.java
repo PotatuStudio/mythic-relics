@@ -3,12 +3,13 @@ package io.github.potatustudio.mythicrelics.egypt;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
-import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.zombie.Husk;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -117,18 +117,18 @@ public final class EgyptRelics {
 				return;
 			}
 			if (entity instanceof ServerPlayer player) {
-				if (isWearing(player, ModItems.GOLDEN_SCARAB) && player.getHealth() <= SCARAB_THRESHOLD) {
+				if (WornRelics.isWearing(player, ModItems.GOLDEN_SCARAB) && player.getHealth() <= SCARAB_THRESHOLD) {
 					scarab(level, player);
 				}
-				if (damageTaken >= EYE_BIG_HIT && isWearing(player, ModItems.EYE_OF_HORUS)) {
+				if (damageTaken >= EYE_BIG_HIT && WornRelics.isWearing(player, ModItems.EYE_OF_HORUS)) {
 					eyeOfHorus(level, player, damageTaken);
 				}
-				if (source.getEntity() instanceof LivingEntity && isWearing(player, ModItems.JACKAL_RING)) {
+				if (source.getEntity() instanceof LivingEntity && WornRelics.isWearing(player, ModItems.JACKAL_RING)) {
 					jackals(level, player);
 				}
 			}
 			if (source.getEntity() instanceof ServerPlayer attacker && source.getDirectEntity() == attacker && attacker != entity) {
-				if (isWearing(attacker, ModItems.MUMMY_WRAPS)) {
+				if (WornRelics.isWearing(attacker, ModItems.MUMMY_WRAPS)) {
 					entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, WRAPS_HUNGER_TICKS, 1), attacker);
 					entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, WRAPS_SLOW_TICKS, 0), attacker);
 				}
@@ -147,7 +147,7 @@ public final class EgyptRelics {
 					ExperienceOrb.award(level, victim.position(),
 							victim.getExperienceReward(level, player) * (SCEPTER_XP_MULTIPLIER - 1));
 				}
-				if (isWearing(player, ModItems.JACKAL_MASK) && Minions.ownerOf(victim) == null) {
+				if (WornRelics.isWearing(player, ModItems.JACKAL_MASK) && Minions.ownerOf(victim) == null) {
 					SOULS.add(new Soul(level, victim.position().add(0, 0.8, 0), player.getUUID(), new int[] {MASK_SOUL_TICKS}));
 				}
 			}
@@ -156,47 +156,26 @@ public final class EgyptRelics {
 		TickEvent.SERVER_POST.register(EgyptRelics::tick);
 	}
 
-	public static boolean isWearing(LivingEntity entity, RegistrySupplier<Item> item) {
-		return WornRelics.isWearing(entity, item.get());
-	}
-
 	/** Set de Anubis completo: máscara y anillo puestos y el cetro en cualquier parte del inventario. */
 	public static boolean hasAnubisSet(Player player) {
-		return isWearing(player, ModItems.JACKAL_MASK) && isWearing(player, ModItems.JACKAL_RING)
+		return WornRelics.isWearing(player, ModItems.JACKAL_MASK) && WornRelics.isWearing(player, ModItems.JACKAL_RING)
 				&& player.getInventory().contains(stack -> stack.is(ModItems.ANUBIS_SCEPTER.get()));
 	}
 
 	/** Números que muestra el tooltip de cada reliquia (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
-			case "golden_scarab" -> new Object[] {fmt(SCARAB_THRESHOLD / 2), roman(SCARAB_ABSORPTION + 1), SCARAB_MINION_TICKS / 20,
+			case "golden_scarab" -> new Object[] {TooltipNumbers.fmt(SCARAB_THRESHOLD / 2), TooltipNumbers.roman(SCARAB_ABSORPTION + 1), SCARAB_MINION_TICKS / 20,
 					SCARAB_COOLDOWN / 20};
-			case "eye_of_horus" -> new Object[] {fmt(EYE_BIG_HIT / 2), Math.round(EYE_HEAL_FRACTION * 100), EYE_HEAL_TICKS / 20,
+			case "eye_of_horus" -> new Object[] {TooltipNumbers.fmt(EYE_BIG_HIT / 2), Math.round(EYE_HEAL_FRACTION * 100), EYE_HEAL_TICKS / 20,
 					EYE_COOLDOWN / 20};
-			case "ankh" -> new Object[] {fmt(ANKH_HEAL_EVERY / 20.0), Math.round(ANKH_UNDEAD_REDUCTION * 100)};
+			case "ankh" -> new Object[] {TooltipNumbers.fmt(ANKH_HEAL_EVERY / 20.0), Math.round(ANKH_UNDEAD_REDUCTION * 100)};
 			case "mummy_wraps" -> new Object[] {WRAPS_HUNGER_TICKS / 20, WRAPS_SLOW_TICKS / 20};
 			case "anubis_scepter" -> new Object[] {Math.round(SCEPTER_JUDGMENT_HEALTH * 100), SCEPTER_XP_MULTIPLIER};
-			case "jackal_mask" -> new Object[] {fmt(MASK_SOUL_HEAL / 2), MASK_SOUL_TICKS / 20};
+			case "jackal_mask" -> new Object[] {TooltipNumbers.fmt(MASK_SOUL_HEAL / 2), MASK_SOUL_TICKS / 20};
 			case "jackal_ring" -> new Object[] {RING_JACKALS, RING_JACKAL_TICKS / 20, RING_COOLDOWN / 20};
 			default -> EgyptGods.tooltipArgs(id);
 		};
-	}
-
-	/** Nivel de efecto como en vanilla (Absorción II). */
-	private static String roman(int level) {
-		return switch (level) {
-			case 1 -> "I";
-			case 2 -> "II";
-			case 3 -> "III";
-			case 4 -> "IV";
-			case 5 -> "V";
-			default -> Integer.toString(level);
-		};
-	}
-
-	/** Número sin ".0" cuando es entero (3 en vez de 3.0); con decimales usa punto en todos los idiomas. */
-	private static String fmt(double value) {
-		return value == Math.floor(value) ? Integer.toString((int) value) : Double.toString(value);
 	}
 
 	/**
@@ -205,7 +184,7 @@ public final class EgyptRelics {
 	 */
 	public static boolean scarabSave(LivingEntity self, net.minecraft.world.damagesource.DamageSource source) {
 		if (!(self instanceof ServerPlayer player) || source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)
-				|| !isWearing(player, ModItems.GOLDEN_SCARAB) || !RelicCooldowns.ready(player, "golden_scarab")) {
+				|| !WornRelics.isWearing(player, ModItems.GOLDEN_SCARAB) || !RelicCooldowns.ready(player, "golden_scarab")) {
 			return false;
 		}
 		player.setHealth(SCARAB_THRESHOLD);
@@ -223,9 +202,9 @@ public final class EgyptRelics {
 			Minions.summon(level, player, ModEntities.SCARAB.get(), player.getX() + (i == 0 ? 1 : -1), player.getY(), player.getZ(),
 					SCARAB_MINION_TICKS, Component.translatable("entity.mythicrelics.scarab"), true);
 		}
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 0.5f, 1.6f);
+		RelicFx.sound(level, player, SoundEvents.TOTEM_USE, 0.5f, 1.6f);
 		level.sendParticles(GOLD, player.getX(), player.getY() + 1, player.getZ(), 30, 0.5, 0.7, 0.5, 0);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.scarab").withStyle(ChatFormatting.GOLD));
+		RelicFx.notify(player, "scarab", ChatFormatting.GOLD);
 	}
 
 	/** Tras un golpe fuerte, el Ojo de Horus devuelve parte del daño como curación gradual. */
@@ -236,8 +215,8 @@ public final class EgyptRelics {
 		}
 		RelicCooldowns.start(player, "eye_of_horus", EYE_COOLDOWN, EYE_COOLDOWN_GROUP);
 		EYE_HEALING.put(player.getUUID(), new Healing(damageTaken * EYE_HEAL_FRACTION / EYE_HEAL_TICKS, new int[] {EYE_HEAL_TICKS}));
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_POWER_SELECT, SoundSource.PLAYERS, 0.6f, 1.4f);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.eye").withStyle(ChatFormatting.GOLD));
+		RelicFx.sound(level, player, SoundEvents.BEACON_POWER_SELECT, 0.6f, 1.4f);
+		RelicFx.notify(player, "eye", ChatFormatting.GOLD);
 	}
 
 	/** Juicio del cetro: el no-muerto con poca vida se destruye; al morir suelta experiencia extra. */
@@ -245,7 +224,7 @@ public final class EgyptRelics {
 		undead.addTag(JUDGED_TAG);
 		undead.hurtServer(level, player.damageSources().playerAttack(player), Float.MAX_VALUE);
 		level.sendParticles(GOLD, undead.getX(), undead.getY() + undead.getBbHeight() / 2, undead.getZ(), 20, 0.3, 0.5, 0.3, 0);
-		level.playSound(null, undead.getX(), undead.getY(), undead.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 1.0f, 0.8f);
+		RelicFx.sound(level, undead, SoundEvents.SOUL_ESCAPE.value(), 1.0f, 0.8f);
 	}
 
 	/** Anillo de los chacales: de noche o bajo tierra, los guardianes de la tumba acuden al golpe. */
@@ -259,8 +238,8 @@ public final class EgyptRelics {
 			Minions.summon(level, player, ModEntities.JACKAL.get(), player.getX() + Math.cos(angle) * 1.5, player.getY(),
 					player.getZ() + Math.sin(angle) * 1.5, RING_JACKAL_TICKS, Component.translatable("entity.mythicrelics.jackal"));
 		}
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 1.0f, 0.5f);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.jackals").withStyle(ChatFormatting.GOLD));
+		RelicFx.sound(level, player, SoundEvents.SOUL_ESCAPE.value(), 1.0f, 0.5f);
+		RelicFx.notify(player, "jackals", ChatFormatting.GOLD);
 	}
 
 	private static void tick(MinecraftServer server) {
@@ -309,11 +288,11 @@ public final class EgyptRelics {
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
 			if (player.tickCount % ANKH_HEAL_EVERY == 0 && player.getHealth() < player.getMaxHealth()
-					&& isWearing(player, ModItems.ANKH)) {
+					&& WornRelics.isWearing(player, ModItems.ANKH)) {
 				player.heal(1.0f);
 				level.sendParticles(ParticleTypes.HAPPY_VILLAGER, player.getX(), player.getY() + 1.8, player.getZ(), 2, 0.2, 0.1, 0.2, 0);
 			}
-			if (player.tickCount % 10 == 0 && isWearing(player, ModItems.MUMMY_WRAPS)) {
+			if (player.tickCount % 10 == 0 && WornRelics.isWearing(player, ModItems.MUMMY_WRAPS)) {
 				for (Husk husk : level.getEntitiesOfClass(Husk.class, player.getBoundingBox().inflate(24),
 						h -> h.getTarget() == player)) {
 					husk.setTarget(null);

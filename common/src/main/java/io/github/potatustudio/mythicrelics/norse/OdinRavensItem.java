@@ -3,6 +3,8 @@ package io.github.potatustudio.mythicrelics.norse;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.entity.OdinRaven;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
+import io.github.potatustudio.mythicrelics.relic.Compass;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.Optional;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -12,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,7 +28,6 @@ import net.minecraft.world.level.Level;
  * última vez y dónde está tu cama).
  */
 public class OdinRavensItem extends RelicItem {
-	private static final String[] DIRECTIONS = {"south", "southwest", "west", "northwest", "north", "northeast", "east", "southeast"};
 
 	public OdinRavensItem(Properties properties) {
 		super(properties);
@@ -52,7 +52,7 @@ public class OdinRavensItem extends RelicItem {
 		player.getCooldowns().addCooldown(player.getItemInHand(hand), 20);
 		if (player.isShiftKeyDown()) {
 			memory(serverPlayer);
-			server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_AMBIENT, SoundSource.PLAYERS, 1.0f, 0.5f);
+			RelicFx.sound(server, player, SoundEvents.PARROT_AMBIENT, 1.0f, 0.5f);
 			return InteractionResult.SUCCESS;
 		}
 		java.util.List<OdinRaven> out = OUT.remove(player.getUUID());
@@ -62,8 +62,8 @@ public class OdinRavensItem extends RelicItem {
 				server.sendParticles(ParticleTypes.SMOKE, r.getX(), r.getY() + 0.3, r.getZ(), 10, 0.3, 0.3, 0.3, 0.03);
 				r.discard();
 			}
-			serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.ravens_away").withStyle(ChatFormatting.DARK_GRAY));
-			server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_FLY, SoundSource.PLAYERS, 1.0f, 0.6f);
+			RelicFx.notify(serverPlayer, "ravens_away", ChatFormatting.DARK_GRAY);
+			RelicFx.sound(server, player, SoundEvents.PARROT_FLY, 1.0f, 0.6f);
 			return InteractionResult.SUCCESS;
 		}
 		java.util.List<OdinRaven> ravens = new java.util.ArrayList<>();
@@ -82,8 +82,8 @@ public class OdinRavensItem extends RelicItem {
 		OUT.put(player.getUUID(), ravens);
 		ACTIVE.add(player.getUUID());
 		server.sendParticles(ParticleTypes.SMOKE, player.getX(), player.getY() + 2.0, player.getZ(), 16, 0.6, 0.3, 0.6, 0.05);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_FLY, SoundSource.PLAYERS, 1.0f, 0.6f);
-		serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.huginn").withStyle(ChatFormatting.DARK_GRAY));
+		RelicFx.sound(server, player, SoundEvents.PARROT_FLY, 1.0f, 0.6f);
+		RelicFx.notify(serverPlayer, "huginn", ChatFormatting.DARK_GRAY);
 		return InteractionResult.SUCCESS;
 	}
 
@@ -124,9 +124,7 @@ public class OdinRavensItem extends RelicItem {
 		double dx = where.pos().getX() - here.getX();
 		double dz = where.pos().getZ() - here.getZ();
 		int distance = (int) Math.round(Math.sqrt(dx * dx + dz * dz));
-		int sector = (int) Math.floorMod(Math.round(Math.toDegrees(Math.atan2(-dx, dz)) / 45.0), 8);
-		return Component.translatable("message.mythicrelics." + key, Component.translatable("direction.mythicrelics." + DIRECTIONS[sector]),
-				distance).withStyle(ChatFormatting.GRAY);
+		return Component.translatable("message.mythicrelics." + key, Compass.direction(dx, dz), distance).withStyle(ChatFormatting.GRAY);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

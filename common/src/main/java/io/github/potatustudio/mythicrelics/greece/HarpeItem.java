@@ -1,14 +1,14 @@
 package io.github.potatustudio.mythicrelics.greece;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +42,7 @@ public class HarpeItem extends RelicItem {
 	static float behead(Player attacker, LivingEntity target, float amount) {
 		ItemStack stack = attacker.getMainHandItem();
 		if (!stack.is(io.github.potatustudio.mythicrelics.registry.ModItems.HARPE.get()) || attacker.getCooldowns().isOnCooldown(stack)
-				|| !GreeceLegends.canBehead(target) || ChinaRelics.isFriend(attacker, target)
+				|| !GreeceLegends.canBehead(target) || Allies.isFriend(attacker, target)
 				|| !(attacker.level() instanceof ServerLevel level)) {
 			return amount;
 		}
@@ -50,8 +50,8 @@ public class HarpeItem extends RelicItem {
 		attacker.getCooldowns().addCooldown(stack, GreeceLegends.HARPE_COOLDOWN);
 		level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY(0.8), target.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.8), target.getZ(), 20, 0.3, 0.3, 0.3, 0.4);
-		level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.2f, 0.6f);
-		level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 1.0f, 0.5f);
+		RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_SWEEP, 1.2f, 0.6f);
+		RelicFx.sound(level, target, SoundEvents.SHEEP_SHEAR, 1.0f, 0.5f);
 		return Math.max(amount, target.getHealth() + 100.0f);
 	}
 }

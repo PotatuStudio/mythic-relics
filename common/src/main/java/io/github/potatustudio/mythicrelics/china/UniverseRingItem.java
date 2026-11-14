@@ -1,6 +1,8 @@
 package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +45,7 @@ public class UniverseRingItem extends RelicItem {
 		}
 		LivingEntity first = aim(server, player);
 		player.getCooldowns().addCooldown(stack, ChinaGods.RING_COOLDOWN);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0f, 1.4f);
+		RelicFx.sound(server, player, SoundEvents.TRIDENT_THROW.value(), 1.0f, 1.4f);
 		Vec3 from = player.getEyePosition().add(0, -0.3, 0);
 		if (first == null) {
 			trail(server, from, from.add(player.getLookAngle().scale(ChinaGods.RING_RANGE)));
@@ -61,7 +63,7 @@ public class UniverseRingItem extends RelicItem {
 			from = at;
 			LivingEntity last = current;
 			current = server.getEntitiesOfClass(LivingEntity.class, last.getBoundingBox().inflate(BOUNCE_RANGE),
-							e -> e != player && e.isAlive() && !hit.contains(e) && !ChinaRelics.isFriend(player, e)
+							e -> e != player && e.isAlive() && !hit.contains(e) && !Allies.isFriend(player, e)
 									&& e.getType().getCategory() == net.minecraft.world.entity.MobCategory.MONSTER)
 					.stream().min(Comparator.comparingDouble(e -> e.distanceToSqr(last))).orElse(null);
 		}
@@ -74,8 +76,7 @@ public class UniverseRingItem extends RelicItem {
 	private static @Nullable LivingEntity aim(ServerLevel level, Player player) {
 		Vec3 eye = player.getEyePosition();
 		Vec3 look = player.getLookAngle();
-		return level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(ChinaGods.RING_RANGE),
-						e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e) && player.hasLineOfSight(e))
+		return Allies.enemiesAround(player, player.getBoundingBox().inflate(ChinaGods.RING_RANGE), e -> player.hasLineOfSight(e))
 				.stream()
 				.filter(e -> {
 					Vec3 to = e.getBoundingBox().getCenter().subtract(eye);

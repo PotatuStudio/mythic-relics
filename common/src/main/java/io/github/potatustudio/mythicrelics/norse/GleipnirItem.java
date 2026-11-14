@@ -1,14 +1,14 @@
 package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
-import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
+import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +24,7 @@ public class GleipnirItem extends RelicItem {
 
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
-		if (!(target instanceof Mob mob) || GreeceRelics.isBoss(mob) || player.getCooldowns().isOnCooldown(stack)) {
+		if (!(target instanceof Mob mob) || Bosses.is(mob) || player.getCooldowns().isOnCooldown(stack)) {
 			return InteractionResult.PASS;
 		}
 		if (player instanceof ServerPlayer serverPlayer && player.level() instanceof ServerLevel level) {
@@ -34,7 +34,7 @@ public class GleipnirItem extends RelicItem {
 			NorseRelics.bind(level, mob);
 			level.sendParticles(ParticleTypes.END_ROD, mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), 20,
 					mob.getBbWidth() * 0.6, mob.getBbHeight() * 0.4, mob.getBbWidth() * 0.6, 0.02);
-			level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.LEAD_TIED, SoundSource.PLAYERS, 1.0f, 0.8f);
+			RelicFx.sound(level, mob, SoundEvents.LEAD_TIED, 1.0f, 0.8f);
 		}
 		return InteractionResult.SUCCESS;
 	}

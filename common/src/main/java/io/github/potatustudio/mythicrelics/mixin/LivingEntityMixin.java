@@ -9,6 +9,7 @@ import io.github.potatustudio.mythicrelics.japan.JapanGods;
 import io.github.potatustudio.mythicrelics.japan.JapanRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
@@ -45,7 +46,7 @@ public abstract class LivingEntityMixin {
 	private float mythicrelics$relicDamage(float amount, ServerLevel level, DamageSource source) {
 		LivingEntity self = (LivingEntity) (Object) this;
 		if (source.getEntity() instanceof LivingEntity attacker && attacker.typeHolder().is(EntityTypeTags.UNDEAD)
-				&& EgyptRelics.isWearing(self, ModItems.ANKH)) {
+				&& WornRelics.isWearing(self, ModItems.ANKH)) {
 			amount *= 1.0f - EgyptRelics.ANKH_UNDEAD_REDUCTION;
 		}
 		amount = EgyptGods.modifyIncomingDamage(self, source, amount);
@@ -68,7 +69,7 @@ public abstract class LivingEntityMixin {
 	@Inject(method = "canBeAffected", at = @At("HEAD"), cancellable = true)
 	private void mythicrelics$eyeOfHorusSight(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
 		if ((effect.is(MobEffects.BLINDNESS) || effect.is(MobEffects.DARKNESS))
-				&& EgyptRelics.isWearing((LivingEntity) (Object) this, ModItems.EYE_OF_HORUS)) {
+				&& WornRelics.isWearing((LivingEntity) (Object) this, ModItems.EYE_OF_HORUS)) {
 			cir.setReturnValue(false);
 		}
 	}

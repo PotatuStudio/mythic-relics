@@ -1,7 +1,8 @@
 package io.github.potatustudio.mythicrelics.japan;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -45,8 +46,7 @@ public class YashioriSakeItem extends RelicItem {
 				: hit.getLocation();
 		int r = JapanGods.SAKE_RADIUS;
 		long until = server.getGameTime() + JapanGods.SAKE_TICKS;
-		for (LivingEntity e : server.getEntitiesOfClass(LivingEntity.class, new AABB(at, at).inflate(r),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e) && e.position().distanceToSqr(at) <= r * r)) {
+		for (LivingEntity e : Allies.enemiesAround(player, new AABB(at, at).inflate(r), e -> e.position().distanceToSqr(at) <= r * r)) {
 			e.addEffect(new MobEffectInstance(MobEffects.NAUSEA, JapanGods.SAKE_TICKS, 0));
 			e.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, JapanGods.SAKE_TICKS, 1));
 			if (e instanceof Mob mob && e instanceof Enemy) {
@@ -56,7 +56,7 @@ public class YashioriSakeItem extends RelicItem {
 		server.sendParticles(ParticleTypes.SPLASH, at.x, at.y + 0.5, at.z, 60, r * 0.4, 0.4, r * 0.4, 0.2);
 		server.sendParticles(ParticleTypes.FALLING_WATER, at.x, at.y + 1.5, at.z, 30, r * 0.4, 0.3, r * 0.4, 0.0);
 		server.playSound(null, at.x, at.y, at.z, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0f, 0.8f);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_EMPTY, SoundSource.PLAYERS, 1.0f, 0.7f);
+		RelicFx.sound(server, player, SoundEvents.BOTTLE_EMPTY, 1.0f, 0.7f);
 		return InteractionResult.SUCCESS;
 	}
 }

@@ -1,7 +1,9 @@
 package io.github.potatustudio.mythicrelics.rome;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Compass;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -12,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.StructureTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -49,7 +50,6 @@ public class SibyllineBooksItem extends RelicItem {
 			new Sight(StructureTags.EYE_OF_ENDER_LOCATED, "stronghold", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.TARGET_X));
 	/** Radio de búsqueda de estructuras (en chunks): 32 congelaba el servidor con seis búsquedas seguidas. */
 	private static final int SEARCH_CHUNKS = 16;
-	private static final String[] DIRECTIONS = {"south", "southwest", "west", "northwest", "north", "northeast", "east", "southeast"};
 
 	public SibyllineBooksItem(Properties properties) {
 		super(properties);
@@ -79,7 +79,7 @@ public class SibyllineBooksItem extends RelicItem {
 			mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, RomeRelics.SIBYL_GLOW_TICKS, 0, false, false));
 		}
 		server.sendParticles(ParticleTypes.ENCHANT, player.getX(), player.getY() + 1.5, player.getZ(), 40, 0.5, 0.5, 0.5, 0.5);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BOOK_PAGE_TURN, SoundSource.PLAYERS, 1.0f, 0.8f);
+		RelicFx.sound(server, player, SoundEvents.BOOK_PAGE_TURN, 1.0f, 0.8f);
 		prophecy(server, serverPlayer);
 		return InteractionResult.SUCCESS;
 	}
@@ -107,12 +107,9 @@ public class SibyllineBooksItem extends RelicItem {
 		double dx = best.getX() - here.getX();
 		double dz = best.getZ() - here.getZ();
 		int distance = (int) Math.round(Math.sqrt(dx * dx + dz * dz));
-		// Ángulo desde el sur (+Z) girando hacia el oeste, como el yaw de Minecraft.
-		double angle = Math.toDegrees(Math.atan2(-dx, dz));
-		int sector = (int) Math.floorMod(Math.round(angle / 45.0), 8);
 		player.sendSystemMessage(Component.translatable("message.mythicrelics.sibyl_sees",
 				Component.translatable("structure.mythicrelics." + bestSight.name()),
-				Component.translatable("direction.mythicrelics." + DIRECTIONS[sector]), distance).withStyle(ChatFormatting.DARK_PURPLE));
+				Compass.direction(dx, dz), distance).withStyle(ChatFormatting.DARK_PURPLE));
 		// El mapa de la profecía, ya dibujado, con la estructura marcada.
 		ItemStack map = net.minecraft.world.item.MapItem.create(level, best.getX(), best.getZ(), (byte) 2, true, true);
 		net.minecraft.world.item.MapItem.renderBiomePreviewMap(level, map);

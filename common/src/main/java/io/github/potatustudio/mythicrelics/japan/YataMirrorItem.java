@@ -1,10 +1,10 @@
 package io.github.potatustudio.mythicrelics.japan;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -42,7 +42,7 @@ public class YataMirrorItem extends RelicItem {
 			foe.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, JapanRelics.MIRROR_BLIND_TICKS, 1));
 		}
 		server.sendParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + 1.4, player.getZ(), 40, 0.5, 0.5, 0.5, 0.25);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 1.5f, 1.6f);
+		RelicFx.sound(server, player, SoundEvents.AMETHYST_BLOCK_RESONATE, 1.5f, 1.6f);
 		return InteractionResult.SUCCESS;
 	}
 }

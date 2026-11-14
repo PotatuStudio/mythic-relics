@@ -1,11 +1,11 @@
 package io.github.potatustudio.mythicrelics.japan;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -37,8 +37,7 @@ public class FujinWindBagItem extends RelicItem {
 		player.getCooldowns().addCooldown(stack, JapanGods.WIND_COOLDOWN);
 		if (player.isShiftKeyDown()) {
 			int r = JapanGods.WIND_GALE_RADIUS;
-			for (LivingEntity e : server.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(r),
-					e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e) && e.distanceToSqr(player) <= r * r)) {
+			for (LivingEntity e : Allies.enemiesAround(player, player.getBoundingBox().inflate(r), e -> e.distanceToSqr(player) <= r * r)) {
 				Vec3 d = e.position().subtract(player.position());
 				Vec3 away = new Vec3(d.x, 0, d.z).lengthSqr() < 1.0E-4 ? new Vec3(1, 0, 0) : new Vec3(d.x, 0, d.z).normalize();
 				e.push(away.x * 2.0, 0.5, away.z * 2.0);
@@ -55,7 +54,7 @@ public class FujinWindBagItem extends RelicItem {
 			server.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY(), player.getZ(), 30, 0.6, 0.2, 0.6, 0.08);
 			server.sendParticles(ParticleTypes.GUST, player.getX(), player.getY() + 0.5, player.getZ(), 2, 0.3, 0.3, 0.3, 0);
 		}
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BREEZE_WIND_CHARGE_BURST.value(), SoundSource.PLAYERS, 1.2f, 0.7f);
+		RelicFx.sound(server, player, SoundEvents.BREEZE_WIND_CHARGE_BURST.value(), 1.2f, 0.7f);
 		return InteractionResult.SUCCESS;
 	}
 }

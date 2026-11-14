@@ -4,6 +4,7 @@ import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -53,7 +54,7 @@ public class MonkeyHairsItem extends RelicItem {
 				server.sendParticles(ParticleTypes.WAX_ON, x, player.getY() + 1.0, z, 6, 0.3, 0.4, 0.3, 0.05);
 			}
 		}
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.monkey_king_hairs").withStyle(ChatFormatting.GOLD));
+		RelicFx.notify(player, "monkey_king_hairs", ChatFormatting.GOLD);
 		return InteractionResult.SUCCESS;
 	}
 }

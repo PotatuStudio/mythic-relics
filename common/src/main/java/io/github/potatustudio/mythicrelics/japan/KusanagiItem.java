@@ -1,7 +1,8 @@
 package io.github.potatustudio.mythicrelics.japan;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -41,8 +42,7 @@ public class KusanagiItem extends RelicItem {
 		Vec3 look = JapanRelics.flat(player.getLookAngle());
 		Vec3 origin = player.position();
 		int r = JapanRelics.KUSANAGI_SLASH_RANGE;
-		for (LivingEntity target : server.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(r, 2, r),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e))) {
+		for (LivingEntity target : Allies.enemiesAround(player, player.getBoundingBox().inflate(r, 2, r))) {
 			Vec3 to = target.position().subtract(origin);
 			if (to.horizontalDistance() > r || JapanRelics.flat(to).dot(look) < ARC_COS) {
 				continue;
@@ -72,7 +72,7 @@ public class KusanagiItem extends RelicItem {
 					0.0, 0.0, 0.0, 0.0);
 		}
 		server.sendParticles(ParticleTypes.GUST, origin.x + look.x * 3, origin.y + 1, origin.z + look.z * 3, 2, 0.6, 0.2, 0.6, 0.0);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.2f, 0.8f);
+		RelicFx.sound(server, player, SoundEvents.PLAYER_ATTACK_SWEEP, 1.2f, 0.8f);
 		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BREEZE_WIND_CHARGE_BURST.value(), SoundSource.PLAYERS,
 				0.6f, 1.2f);
 		return InteractionResult.SUCCESS;

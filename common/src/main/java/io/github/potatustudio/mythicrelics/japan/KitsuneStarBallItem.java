@@ -4,13 +4,13 @@ import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
@@ -42,8 +42,8 @@ public class KitsuneStarBallItem extends RelicItem {
 			server.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, x, player.getY() + 0.8, z, 30, 0.5, 0.5, 0.5, 0.03);
 			server.sendParticles(ParticleTypes.END_ROD, x, player.getY() + 1.0, z, 12, 0.4, 0.4, 0.4, 0.05);
 		}
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FOX_SCREECH, SoundSource.PLAYERS, 0.8f, 1.2f);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0f, 0.7f);
+		RelicFx.sound(server, player, SoundEvents.FOX_SCREECH, 0.8f, 1.2f);
+		RelicFx.sound(server, player, SoundEvents.AMETHYST_BLOCK_CHIME, 1.0f, 0.7f);
 		return InteractionResult.SUCCESS;
 	}
 }

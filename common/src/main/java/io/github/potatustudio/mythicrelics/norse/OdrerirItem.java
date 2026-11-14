@@ -2,12 +2,12 @@ package io.github.potatustudio.mythicrelics.norse;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -57,7 +57,7 @@ public class OdrerirItem extends RelicItem {
 				&& RelicCooldowns.tryStart(player, "odrerir", NorseGods.ODRERIR_COOLDOWN, BuiltInRegistries.ITEM.getKey(this))) {
 			player.giveExperienceLevels(NorseGods.ODRERIR_LEVELS);
 			player.addEffect(new MobEffectInstance(MobEffects.HASTE, NorseGods.ODRERIR_HASTE_TICKS, 0));
-			server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_DRINK.value(), SoundSource.PLAYERS, 0.8f, 0.9f);
+			RelicFx.sound(server, player, SoundEvents.GENERIC_DRINK.value(), 0.8f, 0.9f);
 			server.sendParticles(ParticleTypes.ENCHANT, player.getX(), player.getY() + 1.5, player.getZ(), 30, 0.4, 0.5, 0.4, 0.5);
 		}
 		return stack;

@@ -4,9 +4,11 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
-import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -18,13 +20,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -141,10 +141,10 @@ public final class ChinaRelics {
 	 * triplica contra los soles; el ascenso lunar da más daño a los golpes en el aire.
 	 */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
-		if (source.is(DamageTypeTags.IS_FIRE) && self.isSprinting() && EgyptRelics.isWearing(self, ModItems.WIND_FIRE_WHEELS)) {
+		if (source.is(DamageTypeTags.IS_FIRE) && self.isSprinting() && WornRelics.isWearing(self, ModItems.WIND_FIRE_WHEELS)) {
 			return 0;
 		}
-		if (source.is(DamageTypeTags.IS_LIGHTNING) && EgyptRelics.isWearing(self, ModItems.FIVE_COLOR_STONE)) {
+		if (source.is(DamageTypeTags.IS_LIGHTNING) && WornRelics.isWearing(self, ModItems.FIVE_COLOR_STONE)) {
 			return 0;
 		}
 		if (source.getEntity() instanceof Player attacker && source.getDirectEntity() == attacker && !RUYI_SWEEPING.get()
@@ -155,7 +155,7 @@ public final class ChinaRelics {
 				RUYI_SWEEPING.set(true);
 				try {
 					for (LivingEntity near : level.getEntitiesOfClass(LivingEntity.class, self.getBoundingBox().inflate(RUYI_SWEEP_RADIUS),
-							e -> e != self && e != attacker && e.isAlive() && !isFriend(attacker, e))) {
+							e -> e != self && e != attacker && e.isAlive() && !Allies.isFriend(attacker, e))) {
 						near.hurtServer(level, level.damageSources().playerAttack(attacker), amount * 0.5f);
 					}
 				} finally {
@@ -176,7 +176,7 @@ public final class ChinaRelics {
 
 	/** Las ruedas, corriendo: la lava se pisa como suelo. */
 	public static boolean wheelsOnLava(LivingEntity entity) {
-		return entity.isSprinting() && EgyptRelics.isWearing(entity, ModItems.WIND_FIRE_WHEELS);
+		return entity.isSprinting() && WornRelics.isWearing(entity, ModItems.WIND_FIRE_WHEELS);
 	}
 
 	/** Lo que mata el arco de Hou Yi a un sol cae como el cuervo dorado de tres patas y suelta el doble de botín. */
@@ -190,7 +190,7 @@ public final class ChinaRelics {
 					0.4, 0.5, 0.4, 0.05);
 			level.sendParticles(ParticleTypes.WAX_ON, victim.getX(), victim.getY() + victim.getBbHeight() * 0.5, victim.getZ(), 20,
 					0.5, 0.5, 0.5, 0.1);
-			level.playSound(null, victim.getX(), victim.getY(), victim.getZ(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.8f, 0.6f);
+			RelicFx.sound(level, victim, SoundEvents.FIRECHARGE_USE, 0.8f, 0.6f);
 		}
 		return EventResult.pass();
 	}
@@ -230,8 +230,7 @@ public final class ChinaRelics {
 		ServerLevel level = player.level();
 		Vec3 push = player.getDeltaMovement().multiply(1, 0, 1).normalize().scale(2.2).add(0, 0.7, 0);
 		java.util.Set<UUID> hit = DASH_HIT.computeIfAbsent(player.getUUID(), k -> new java.util.HashSet<>());
-		for (LivingEntity mob : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(2.0),
-				e -> e != player && e.isAlive() && !isFriend(player, e))) {
+		for (LivingEntity mob : Allies.enemiesAround(player, player.getBoundingBox().inflate(2.0))) {
 			if (hit.add(mob.getUUID())) {
 				mob.hurtServer(level, level.damageSources().playerAttack(player), FAN_DASH_DAMAGE);
 				level.sendParticles(ParticleTypes.SWEEP_ATTACK, mob.getX(), mob.getY(0.5), mob.getZ(), 1, 0, 0, 0, 0);
@@ -241,17 +240,6 @@ public final class ChinaRelics {
 		}
 		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.5, player.getZ(), 4, 0.3, 0.2, 0.3, 0.02);
 		level.sendParticles(ParticleTypes.GUST, player.getX(), player.getY() + 0.8, player.getZ(), 1, 0.2, 0.2, 0.2, 0.0);
-	}
-
-	/** Aliados del jugador: sus monos, sus mascotas y otros jugadores de su equipo. */
-	public static boolean isFriend(Player player, Entity e) {
-		if (player.getUUID().equals(Minions.ownerOf(e))) {
-			return true;
-		}
-		if (e instanceof OwnableEntity ownable && ownable.getOwnerReference() != null && ownable.getOwnerReference().matches(player)) {
-			return true;
-		}
-		return e instanceof Player && e.isAlliedTo(player);
 	}
 
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------
@@ -266,7 +254,7 @@ public final class ChinaRelics {
 					!main.is(ModItems.RUYI_JINGU_BANG.get()) ? 0
 							: RuyiJinguBangItem.isExtended(main, now) ? RUYI_REACH + RUYI_EXTENDED_REACH : RUYI_REACH,
 					AttributeModifier.Operation.ADD_VALUE);
-			boolean wheels = EgyptRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS);
+			boolean wheels = WornRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS);
 			setModifier(player, Attributes.MOVEMENT_SPEED, WHEELS_SPEED_ID, wheels ? WHEELS_SPEED : 0,
 					AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 			setModifier(player, Attributes.STEP_HEIGHT, WHEELS_STEP_ID, wheels ? 0.4 : 0, AttributeModifier.Operation.ADD_VALUE);
@@ -285,7 +273,7 @@ public final class ChinaRelics {
 			if (isLunar(player) && player.tickCount % 4 == 0) {
 				level.sendParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + 0.3, player.getZ(), 1, 0.3, 0.1, 0.3, 0.01);
 			}
-			if (player.tickCount % STONE_INTERVAL == 0 && EgyptRelics.isWearing(player, ModItems.FIVE_COLOR_STONE)) {
+			if (player.tickCount % STONE_INTERVAL == 0 && WornRelics.isWearing(player, ModItems.FIVE_COLOR_STONE)) {
 				mend(player);
 			}
 		}
@@ -300,7 +288,7 @@ public final class ChinaRelics {
 		}
 		if (player.tickCount % 5 == 0) {
 			for (LivingEntity mob : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1.2, 0.2, 1.2),
-					e -> e instanceof Enemy && e.isAlive() && !isFriend(player, e))) {
+					e -> e instanceof Enemy && e.isAlive() && !Allies.isFriend(player, e))) {
 				mob.igniteForSeconds(WHEELS_BURN_SECONDS);
 			}
 		}
@@ -335,7 +323,7 @@ public final class ChinaRelics {
 	/** Números de los tooltips chinos (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
-			case "ruyi_jingu_bang" -> new Object[] {fmt(RUYI_REACH), RUYI_LENGTH, (int) RUYI_STRETCH_DAMAGE, RUYI_COOLDOWN / 20,
+			case "ruyi_jingu_bang" -> new Object[] {TooltipNumbers.fmt(RUYI_REACH), RUYI_LENGTH, (int) RUYI_STRETCH_DAMAGE, RUYI_COOLDOWN / 20,
 					RUYI_EXTENDED_TICKS / 20, (int) RUYI_EXTENDED_REACH};
 			case "monkey_king_hairs" -> new Object[] {HAIRS_MONKEYS, HAIRS_TICKS / 20, MONKEY_HEALTH, MONKEY_DAMAGE, HAIRS_COOLDOWN / 20 / 60};
 			case "purple_gold_gourd" -> new Object[] {GOURD_MAX_HEALTH, GOURD_DISSOLVE_TICKS / 20 / 60, GOURD_COOLDOWN / 20};
@@ -349,10 +337,6 @@ public final class ChinaRelics {
 			case "five_color_stone" -> new Object[] {STONE_INTERVAL / 20};
 			default -> ChinaGods.tooltipArgs(id);
 		};
-	}
-
-	private static String fmt(double value) {
-		return value == Math.floor(value) ? Integer.toString((int) value) : Double.toString(value);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

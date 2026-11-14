@@ -4,8 +4,10 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -149,9 +151,9 @@ public final class JapanRelics {
 
 	/** Set de los Tres Tesoros: Kusanagi en una mano, el espejo en la otra y la magatama puesta. */
 	public static boolean hasRegalia(Player player) {
-		boolean sword = player.getMainHandItem().is(ModItems.KUSANAGI.get()) || player.getOffhandItem().is(ModItems.KUSANAGI.get());
-		boolean mirror = player.getMainHandItem().is(ModItems.YATA_MIRROR.get()) || player.getOffhandItem().is(ModItems.YATA_MIRROR.get());
-		return sword && mirror && EgyptRelics.isWearing(player, ModItems.YASAKANI_MAGATAMA);
+		boolean sword = WornRelics.holding(player, ModItems.KUSANAGI.get());
+		boolean mirror = WornRelics.holding(player, ModItems.YATA_MIRROR.get());
+		return sword && mirror && WornRelics.isWearing(player, ModItems.YASAKANI_MAGATAMA);
 	}
 
 	// ---- Daño -------------------------------------------------------------------------------------------------------
@@ -167,7 +169,7 @@ public final class JapanRelics {
 			RomeRelics.reflectLater(projectile, shooter, self);
 			return 0;
 		}
-		if (source.is(DamageTypeTags.IS_LIGHTNING) && EgyptRelics.isWearing(self, ModItems.RAIJIN_DRUM)) {
+		if (source.is(DamageTypeTags.IS_LIGHTNING) && WornRelics.isWearing(self, ModItems.RAIJIN_DRUM)) {
 			return 0;
 		}
 		if (source.getEntity() instanceof Player attacker && source.getDirectEntity() == attacker) {
@@ -186,7 +188,7 @@ public final class JapanRelics {
 	/** Tambor de Raijin: cada cuatro golpes seguidos, un rayo sobre el objetivo. */
 	private static EventResult onHurt(LivingEntity target, DamageSource source, float amount) {
 		if (!(source.getEntity() instanceof ServerPlayer player) || source.getDirectEntity() != player || target == player
-				|| !EgyptRelics.isWearing(player, ModItems.RAIJIN_DRUM) || !(target.level() instanceof ServerLevel level)) {
+				|| !WornRelics.isWearing(player, ModItems.RAIJIN_DRUM) || !(target.level() instanceof ServerLevel level)) {
 			return EventResult.pass();
 		}
 		long now = level.getGameTime();
@@ -202,7 +204,7 @@ public final class JapanRelics {
 				// Set de Fūjin y Raijin: el viento lleva el rayo a los hostiles más cercanos.
 				level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(8),
 								e -> e != target && e != player && e.isAlive() && e instanceof net.minecraft.world.entity.monster.Enemy
-										&& !io.github.potatustudio.mythicrelics.china.ChinaRelics.isFriend(player, e))
+										&& !Allies.isFriend(player, e))
 						.stream().sorted(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(target)))
 						.limit(JapanGods.SET_CHAIN_TARGETS).forEach(e -> {
 							io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, e.getX(), e.getY(), e.getZ(), player);
@@ -288,7 +290,7 @@ public final class JapanRelics {
 			}
 			ServerLevel level = player.level();
 			boolean day = isDay(level) && level.canSeeSky(player.blockPosition().above());
-			if (player.tickCount % MAGATAMA_INTERVAL == 0 && day && EgyptRelics.isWearing(player, ModItems.YASAKANI_MAGATAMA)) {
+			if (player.tickCount % MAGATAMA_INTERVAL == 0 && day && WornRelics.isWearing(player, ModItems.YASAKANI_MAGATAMA)) {
 				player.heal(1.0f);
 			}
 			if (player.tickCount % 40 == 0 && isDay(level) && hasRegalia(player)) {
@@ -328,16 +330,12 @@ public final class JapanRelics {
 			case "kitsune_star_ball" -> new Object[] {KITSUNE_TICKS / 20, KITSUNE_HEALTH, KITSUNE_DAMAGE, KITSUNEBI_INTERVAL / 20,
 					KITSUNEBI_BURN_SECONDS, KITSUNE_COOLDOWN / 20 / 60};
 			case "tide_jewels" -> new Object[] {TIDE_BUBBLE_RADIUS, TIDE_TICKS / 20, TIDE_WAVE_RANGE, TIDE_COOLDOWN / 20};
-			case "lucky_mallet" -> new Object[] {fmt(1 + MALLET_SCALE), MALLET_TICKS / 20, MALLET_HEALTH / 2, MALLET_COOLDOWN / 20 / 60,
+			case "lucky_mallet" -> new Object[] {TooltipNumbers.fmtTenths(1 + MALLET_SCALE), MALLET_TICKS / 20, MALLET_HEALTH / 2, MALLET_COOLDOWN / 20 / 60,
 					MALLET_GROW_RADIUS};
 			case "kibi_dango" -> new Object[] {KIBI_STRENGTH_TICKS / 20, KIBI_MAX};
 			case "urashima_rod" -> new Object[] {TURTLE_LEAVE_TICKS / 20, TURTLE_COOLDOWN / 20 / 60};
 			default -> JapanGods.tooltipArgs(id);
 		};
-	}
-
-	private static String fmt(double v) {
-		return v == Math.floor(v) ? Integer.toString((int) v) : Double.toString(Math.round(v * 10) / 10.0);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

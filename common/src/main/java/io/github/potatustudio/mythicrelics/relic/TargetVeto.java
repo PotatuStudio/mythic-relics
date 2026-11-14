@@ -69,7 +69,7 @@ public final class TargetVeto {
 		if (mob instanceof Enemy && JapanGods.isDisguised(player)) {
 			return true;
 		}
-		if (mob instanceof Husk && EgyptRelics.isWearing(player, ModItems.MUMMY_WRAPS)) {
+		if (mob instanceof Husk && WornRelics.isWearing(player, ModItems.MUMMY_WRAPS)) {
 			return true;
 		}
 		return mob.typeHolder().is(EntityTypeTags.UNDEAD) && EgyptRelics.hasAnubisSet(player)

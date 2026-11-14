@@ -2,14 +2,13 @@ package io.github.potatustudio.mythicrelics.japan;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -35,8 +34,8 @@ public class TanukiLeafItem extends RelicItem {
 		JapanGods.disguise(serverPlayer);
 		server.sendParticles(ParticleTypes.POOF, player.getX(), player.getY() + 1, player.getZ(), 30, 0.5, 0.8, 0.5, 0.05);
 		server.sendParticles(ParticleTypes.COMPOSTER, player.getX(), player.getY() + 2, player.getZ(), 10, 0.3, 0.2, 0.3, 0.0);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FOX_SNIFF, SoundSource.PLAYERS, 1.0f, 1.5f);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.tanuki_leaf").withStyle(ChatFormatting.GREEN));
+		RelicFx.sound(server, player, SoundEvents.FOX_SNIFF, 1.0f, 1.5f);
+		RelicFx.notify(player, "tanuki_leaf", ChatFormatting.GREEN);
 		return InteractionResult.SUCCESS;
 	}
 }

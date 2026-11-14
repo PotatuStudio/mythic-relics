@@ -1,10 +1,11 @@
 package io.github.potatustudio.mythicrelics.greece;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Bosses;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -54,7 +55,7 @@ public class OrpheusLyreItem extends RelicItem {
 		int played = USE_TICKS - remaining;
 		if (played % 5 == 0) {
 			float pitch = NOTES[server.getRandom().nextInt(NOTES.length)];
-			server.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.NOTE_BLOCK_HARP.value(), SoundSource.PLAYERS, 0.7f, pitch);
+			RelicFx.sound(server, user, SoundEvents.NOTE_BLOCK_HARP.value(), 0.7f, pitch);
 			server.sendParticles(ParticleTypes.NOTE, user.getX(), user.getY() + 2.2, user.getZ(), 1, 0.4, 0.1, 0.4, 1.0);
 		}
 		if (played % 10 != 0) {
@@ -66,7 +67,7 @@ public class OrpheusLyreItem extends RelicItem {
 			}
 		}
 		for (Mob mob : server.getEntitiesOfClass(Mob.class, user.getBoundingBox().inflate(GreeceRelics.ORPHEUS_HOSTILES),
-				m -> m instanceof Enemy && !GreeceRelics.isBoss(m))) {
+				m -> m instanceof Enemy && !Bosses.is(m))) {
 			// Dormido: no se mueve ni ataca mientras suena la lira.
 			// Dormido mientras siga sonando (TargetVeto le niega cualquier objetivo).
 			io.github.potatustudio.mythicrelics.relic.TargetVeto.lull(mob, server.getGameTime() + 25);

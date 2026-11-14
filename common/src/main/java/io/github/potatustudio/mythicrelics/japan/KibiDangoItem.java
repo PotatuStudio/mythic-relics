@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.japan;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.mixin.FoxAccessor;
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -115,7 +116,7 @@ public class KibiDangoItem extends RelicItem {
 		}
 		stack.set(ModComponents.KIBI_DANGO.get(), left - 1);
 		entity.addEffect(new MobEffectInstance(MobEffects.STRENGTH, JapanRelics.KIBI_STRENGTH_TICKS, 0));
-		server.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5f, 1.3f);
+		RelicFx.sound(server, entity, SoundEvents.PLAYER_BURP, 0.5f, 1.3f);
 		return stack;
 	}
 

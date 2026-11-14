@@ -3,9 +3,9 @@ package io.github.potatustudio.mythicrelics.norse;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.entity.Sleipnir;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -49,7 +49,7 @@ public class SleipnirHorseshoeItem extends RelicItem {
 			bolt.snapTo(player.getX() + 2.0, player.getY(), player.getZ());
 			server.addFreshEntity(bolt);
 		}
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.HORSE_AMBIENT, SoundSource.PLAYERS, 1.0f, 0.7f);
+		RelicFx.sound(server, player, SoundEvents.HORSE_AMBIENT, 1.0f, 0.7f);
 		player.startRiding(horse);
 		return InteractionResult.SUCCESS;
 	}

@@ -2,6 +2,8 @@ package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.minion.Minions;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
@@ -67,7 +69,7 @@ public class PurpleGoldGourdItem extends RelicItem {
 		return target instanceof Mob && !(target instanceof EnderDragon) && !(target instanceof WitherBoss) && target.isAlive()
 				&& target.getType().canSerialize()
 				&& target.getMaxHealth() <= ChinaRelics.GOURD_MAX_HEALTH && Minions.ownerOf(target) == null
-				&& !target.isPassenger() && !target.isVehicle() && !ChinaRelics.isFriend(player, target);
+				&& !target.isPassenger() && !target.isVehicle() && !Allies.isFriend(player, target);
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class PurpleGoldGourdItem extends RelicItem {
 		}
 		if (!canCapture(player, target)) {
 			if (!player.level().isClientSide()) {
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.gourd_too_strong").withStyle(ChatFormatting.RED));
+				RelicFx.notify(player, "gourd_too_strong", ChatFormatting.RED);
 			}
 			return InteractionResult.FAIL;
 		}
@@ -99,7 +101,7 @@ public class PurpleGoldGourdItem extends RelicItem {
 		});
 		level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 30,
 				target.getBbWidth() * 0.5, target.getBbHeight() * 0.4, target.getBbWidth() * 0.5, 0.05);
-		level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.BOTTLE_FILL_DRAGONBREATH, SoundSource.PLAYERS, 1.0f, 0.7f);
+		RelicFx.sound(level, target, SoundEvents.BOTTLE_FILL_DRAGONBREATH, 1.0f, 0.7f);
 		target.discard();
 		player.getCooldowns().addCooldown(stack, ChinaRelics.GOURD_COOLDOWN);
 		player.sendOverlayMessage(Component.translatable("message.mythicrelics.gourd_captured", Component.translatable(typeName))

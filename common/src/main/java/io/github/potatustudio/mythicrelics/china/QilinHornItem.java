@@ -3,10 +3,10 @@ package io.github.potatustudio.mythicrelics.china;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.entity.Qilin;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -44,8 +44,8 @@ public class QilinHornItem extends RelicItem {
 		server.addFreshEntity(qilin);
 		server.sendParticles(ParticleTypes.FLAME, player.getX(), player.getY() + 0.8, player.getZ(), 40, 0.8, 0.6, 0.8, 0.03);
 		server.sendParticles(ParticleTypes.WAX_ON, player.getX(), player.getY() + 1.2, player.getZ(), 20, 0.8, 0.6, 0.8, 0.05);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.HORSE_AMBIENT, SoundSource.PLAYERS, 1.0f, 0.7f);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0f, 0.8f);
+		RelicFx.sound(server, player, SoundEvents.HORSE_AMBIENT, 1.0f, 0.7f);
+		RelicFx.sound(server, player, SoundEvents.AMETHYST_BLOCK_CHIME, 1.0f, 0.8f);
 		player.startRiding(qilin);
 		return InteractionResult.SUCCESS;
 	}

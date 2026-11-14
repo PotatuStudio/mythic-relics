@@ -1,11 +1,11 @@
 package io.github.potatustudio.mythicrelics.japan;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,15 +48,14 @@ public class TideJewelsItem extends RelicItem {
 		JapanRelics.startBubble(player);
 		level.sendParticles(ParticleTypes.SPLASH, player.getX(), player.getY() + 1, player.getZ(), 60, 1.5, 1.0, 1.5, 0.2);
 		level.sendParticles(ParticleTypes.BUBBLE_POP, player.getX(), player.getY() + 1, player.getZ(), 40, 1.5, 1.0, 1.5, 0.05);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CONDUIT_ACTIVATE, SoundSource.PLAYERS, 1.2f, 0.8f);
+		RelicFx.sound(level, player, SoundEvents.CONDUIT_ACTIVATE, 1.2f, 0.8f);
 	}
 
 	/** Manju: una ola en cono frente a ti que arrastra a los mobs y apaga el fuego. */
 	private static void wave(ServerLevel level, Player player) {
 		Vec3 look = JapanRelics.flat(player.getLookAngle());
 		int r = JapanRelics.TIDE_WAVE_RANGE;
-		for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(r, 3, r),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e))) {
+		for (LivingEntity target : Allies.enemiesAround(player, player.getBoundingBox().inflate(r, 3, r))) {
 			Vec3 to = target.position().subtract(player.position());
 			if (to.horizontalDistance() > r || JapanRelics.flat(to).dot(look) < WAVE_COS) {
 				continue;
@@ -71,6 +70,6 @@ public class TideJewelsItem extends RelicItem {
 			level.sendParticles(ParticleTypes.SPLASH, p.x, p.y + 0.5, p.z, 25, 1.2, 0.5, 1.2, 0.2);
 			level.sendParticles(ParticleTypes.BUBBLE, p.x, p.y + 0.8, p.z, 8, 1.0, 0.5, 1.0, 0.05);
 		}
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_SPLASH_HIGH_SPEED, SoundSource.PLAYERS, 1.5f, 0.7f);
+		RelicFx.sound(level, player, SoundEvents.PLAYER_SPLASH_HIGH_SPEED, 1.5f, 0.7f);
 	}
 }

@@ -1,6 +1,8 @@
 package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.List;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -68,8 +70,7 @@ public class RuyiJinguBangItem extends RelicItem {
 		Vec3 from = player.getEyePosition();
 		Vec3 dir = player.getLookAngle();
 		Vec3 to = from.add(dir.scale(ChinaRelics.RUYI_LENGTH));
-		for (LivingEntity target : server.getEntitiesOfClass(LivingEntity.class, new AABB(from, to).inflate(1.0),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e))) {
+		for (LivingEntity target : Allies.enemiesAround(player, new AABB(from, to).inflate(1.0))) {
 			if (target.getBoundingBox().inflate(0.4).clip(from, to).isEmpty() && !target.getBoundingBox().contains(from)) {
 				continue;
 			}
@@ -83,7 +84,7 @@ public class RuyiJinguBangItem extends RelicItem {
 			server.sendParticles(i % 4 == 0 ? ParticleTypes.WAX_ON : ParticleTypes.CRIT, p.x, p.y - 0.2, p.z, 1, 0.02, 0.02, 0.02, 0.0);
 		}
 		server.sendParticles(ParticleTypes.WAX_ON, player.getX(), player.getY() + 1, player.getZ(), 20, 0.4, 0.6, 0.4, 0.3);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.35f, 1.6f);
+		RelicFx.sound(server, player, SoundEvents.ANVIL_LAND, 0.35f, 1.6f);
 		server.playSound(null, to.x, to.y, to.z, SoundEvents.IRON_GOLEM_ATTACK, SoundSource.PLAYERS, 1.0f, 0.8f);
 		return InteractionResult.SUCCESS;
 	}
@@ -93,7 +94,7 @@ public class RuyiJinguBangItem extends RelicItem {
 	public void inventoryTick(ItemStack stack, ServerLevel level, Entity holder, @Nullable EquipmentSlot slot) {
 		if (holder.tickCount % 5 == 0 && stack.has(DataComponents.CUSTOM_MODEL_DATA) && !isExtended(stack, level.getGameTime())) {
 			setExtended(stack, 0);
-			level.playSound(null, holder.getX(), holder.getY(), holder.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.2f, 2.0f);
+			RelicFx.sound(level, holder, SoundEvents.ANVIL_LAND, 0.2f, 2.0f);
 		}
 	}
 }

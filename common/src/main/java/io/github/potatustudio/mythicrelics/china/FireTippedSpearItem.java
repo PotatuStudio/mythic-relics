@@ -1,10 +1,11 @@
 package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,8 +44,7 @@ public class FireTippedSpearItem extends RelicItem {
 		Vec3 eye = player.getEyePosition();
 		Vec3 look = player.getLookAngle();
 		int range = ChinaGods.SPEAR_FLAME_RANGE;
-		for (LivingEntity target : server.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(range),
-				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e))) {
+		for (LivingEntity target : Allies.enemiesAround(player, player.getBoundingBox().inflate(range))) {
 			Vec3 to = target.getBoundingBox().getCenter().subtract(eye);
 			if (to.length() > range || to.normalize().dot(look) < CONE_COS || !player.hasLineOfSight(target)) {
 				continue;
@@ -57,7 +57,7 @@ public class FireTippedSpearItem extends RelicItem {
 			double spread = i * 0.08;
 			server.sendParticles(ParticleTypes.FLAME, p.x, p.y, p.z, 4, spread, spread, spread, 0.02);
 		}
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0f, 0.8f);
+		RelicFx.sound(server, player, SoundEvents.BLAZE_SHOOT, 1.0f, 0.8f);
 		return InteractionResult.SUCCESS;
 	}
 }

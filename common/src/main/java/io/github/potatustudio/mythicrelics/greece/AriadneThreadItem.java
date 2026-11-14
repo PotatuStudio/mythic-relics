@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.greece;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.GlobalPos;
@@ -12,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -42,8 +42,8 @@ public class AriadneThreadItem extends RelicItem {
 		}
 		if (!player.isShiftKeyDown()) {
 			stack.set(ModComponents.ARIADNE_ANCHOR.get(), GlobalPos.of(level.dimension(), player.blockPosition()));
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1.0f, 1.2f);
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.ariadne_tied").withStyle(ChatFormatting.RED));
+			RelicFx.sound(level, player, SoundEvents.WOOL_PLACE, 1.0f, 1.2f);
+			RelicFx.notify(player, "ariadne_tied", ChatFormatting.RED);
 			return InteractionResult.SUCCESS;
 		}
 		GlobalPos anchor = anchor(stack);
@@ -61,7 +61,7 @@ public class AriadneThreadItem extends RelicItem {
 		serverLevel.sendParticles(ParticleTypes.PORTAL, player.getX(), player.getY() + 1, player.getZ(), 30, 0.4, 0.8, 0.4, 0.1);
 		serverPlayer.teleportTo(anchor.pos().getX() + 0.5, anchor.pos().getY(), anchor.pos().getZ() + 0.5);
 		serverPlayer.resetFallDistance();
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.8f, 1.3f);
+		RelicFx.sound(level, player, SoundEvents.ENDERMAN_TELEPORT, 0.8f, 1.3f);
 		return InteractionResult.SUCCESS;
 	}
 

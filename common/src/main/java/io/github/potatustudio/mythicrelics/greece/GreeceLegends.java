@@ -3,9 +3,11 @@ package io.github.potatustudio.mythicrelics.greece;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Bosses;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -128,7 +130,7 @@ public final class GreeceLegends {
 			amount = Math.max(amount, TALOS_ROCK_DAMAGE);
 		}
 		// Piel de Nemea: ningún arma la atraviesa (mobs con arma en la mano y proyectiles), sí garras y fuego.
-		if (EgyptRelics.isWearing(self, ModItems.NEMEAN_LION_SKIN)) {
+		if (WornRelics.isWearing(self, ModItems.NEMEAN_LION_SKIN)) {
 			boolean projectile = source.is(DamageTypeTags.IS_PROJECTILE);
 			boolean weapon = source.getEntity() instanceof LivingEntity attacker && direct == attacker && !attacker.getMainHandItem().isEmpty()
 					&& !source.is(DamageTypeTags.IS_FIRE) && !source.is(DamageTypeTags.IS_EXPLOSION);
@@ -138,7 +140,7 @@ public final class GreeceLegends {
 		}
 		if (source.getEntity() instanceof Player attacker && direct == attacker) {
 			// Como Heracles: sin arma, con la piel puesta, el golpe pesa más.
-			if (attacker.getMainHandItem().isEmpty() && EgyptRelics.isWearing(attacker, ModItems.NEMEAN_LION_SKIN)) {
+			if (attacker.getMainHandItem().isEmpty() && WornRelics.isWearing(attacker, ModItems.NEMEAN_LION_SKIN)) {
 				amount += NEMEA_FIST_DAMAGE;
 			}
 			amount = releaseWrath(attacker, self, amount);
@@ -186,21 +188,16 @@ public final class GreeceLegends {
 		if (stacks == WRATH_MAX) {
 			Vec3 push = target.position().subtract(attacker.position()).multiply(1, 0, 1).normalize();
 			target.push(push.x * WRATH_KNOCKBACK, 0.45, push.z * WRATH_KNOCKBACK);
-			level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 1.2f, 0.7f);
+			RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1.2f, 0.7f);
 		}
 		return amount * (1.0f + WRATH_BONUS * stacks);
 	}
 
 	// ---- Harpe ------------------------------------------------------------------------------------------------------
 
-	public static boolean isBoss(LivingEntity e) {
-		EntityType<?> t = e.getType();
-		return t == EntityTypes.ENDER_DRAGON || t == EntityTypes.WITHER || t == EntityTypes.ELDER_GUARDIAN || t == EntityTypes.WARDEN;
-	}
-
 	/** Se puede decapitar: vivo, no jefe y con menos del 25 % de la vida. */
 	public static boolean canBehead(LivingEntity e) {
-		return e.isAlive() && !(e instanceof Player) && !isBoss(e) && e.getHealth() <= e.getMaxHealth() * HARPE_EXECUTE_HEALTH;
+		return e.isAlive() && !(e instanceof Player) && !Bosses.is(e) && e.getHealth() <= e.getMaxHealth() * HARPE_EXECUTE_HEALTH;
 	}
 
 	/** La cabeza de trofeo de cada mob, o vacío si no tiene. */

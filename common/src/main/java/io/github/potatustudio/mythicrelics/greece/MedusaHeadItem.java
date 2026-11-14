@@ -1,9 +1,9 @@
 package io.github.potatustudio.mythicrelics.greece;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,7 +25,7 @@ public class MedusaHeadItem extends RelicItem {
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
 		if (!level.isClientSide()) {
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ELDER_GUARDIAN_CURSE, SoundSource.PLAYERS, 0.35f, 1.6f);
+			RelicFx.sound(level, player, SoundEvents.ELDER_GUARDIAN_CURSE, 0.35f, 1.6f);
 		}
 		return InteractionResult.CONSUME;
 	}
@@ -45,7 +45,7 @@ public class MedusaHeadItem extends RelicItem {
 		if (entity instanceof ServerPlayer player) {
 			GreeceRelics.gaze(player);
 			if (remaining % 30 == 0) {
-				level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ELDER_GUARDIAN_AMBIENT, SoundSource.PLAYERS, 0.25f, 1.8f);
+				RelicFx.sound(level, player, SoundEvents.ELDER_GUARDIAN_AMBIENT, 0.25f, 1.8f);
 			}
 		}
 	}

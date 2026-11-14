@@ -3,12 +3,12 @@ package io.github.potatustudio.mythicrelics.greece;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.registry.ModEffects;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -58,7 +58,7 @@ public class StyxWaterItem extends RelicItem {
 		if (entity instanceof ServerPlayer player && level instanceof ServerLevel server
 				&& RelicCooldowns.tryStart(player, "styx_water", GreeceHeroes.STYX_COOLDOWN, BuiltInRegistries.ITEM.getKey(this))) {
 			player.addEffect(new MobEffectInstance(ModEffects.STYX_BATH.asHolder(), GreeceHeroes.STYX_TICKS, 0));
-			server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_DRINK.value(), SoundSource.PLAYERS, 0.8f, 0.7f);
+			RelicFx.sound(server, player, SoundEvents.GENERIC_DRINK.value(), 0.8f, 0.7f);
 			server.sendParticles(ParticleTypes.SOUL, player.getX(), player.getY() + 1.0, player.getZ(), 12, 0.3, 0.5, 0.3, 0.02);
 		}
 		return stack;

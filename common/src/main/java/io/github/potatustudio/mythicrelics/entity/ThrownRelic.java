@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.entity;
 import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Bosses;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -134,7 +135,7 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 			source = new DamageSource(level().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.DAMAGE_TYPE)
 					.getOrThrow(MISTLETOE), this, owner == null ? this : owner);
 			damage = io.github.potatustudio.mythicrelics.norse.NorseSagas.DART_DAMAGE;
-			if (target instanceof LivingEntity living && io.github.potatustudio.mythicrelics.greece.GreeceLegends.isBoss(living)) {
+			if (target instanceof LivingEntity living && Bosses.is(living)) {
 				damage *= io.github.potatustudio.mythicrelics.norse.NorseSagas.DART_BOSS_MULTIPLIER;
 			}
 			if (level() instanceof ServerLevel level) {

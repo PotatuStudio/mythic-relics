@@ -1,6 +1,5 @@
 package io.github.potatustudio.mythicrelics.relic;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -33,7 +32,7 @@ public final class RelicLightning {
 		}
 		level.addFreshEntity(bolt);
 		for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, bolt.getBoundingBox().inflate(RADIUS, 6, RADIUS),
-				e -> e.isAlive() && e != cause && (cause == null || !ChinaRelics.isFriend(cause, e)))) {
+				e -> e.isAlive() && e != cause && (cause == null || !Allies.isFriend(cause, e)))) {
 			e.hurtServer(level, level.damageSources().lightningBolt(), DAMAGE);
 		}
 	}

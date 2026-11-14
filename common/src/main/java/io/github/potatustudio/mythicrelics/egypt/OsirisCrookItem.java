@@ -1,12 +1,12 @@
 package io.github.potatustudio.mythicrelics.egypt;
 
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.core.particles.ParticleTypes;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
@@ -36,7 +36,7 @@ public class OsirisCrookItem extends RelicItem {
 			animal.setAge(0);
 			level.sendParticles(ParticleTypes.HAPPY_VILLAGER, animal.getX(), animal.getY() + animal.getBbHeight() / 2, animal.getZ(),
 					12, 0.4, 0.4, 0.4, 0);
-			level.playSound(null, animal.getX(), animal.getY(), animal.getZ(), SoundEvents.BONE_MEAL_USE, SoundSource.PLAYERS, 1.0f, 1.0f);
+			RelicFx.sound(level, animal, SoundEvents.BONE_MEAL_USE, 1.0f, 1.0f);
 		}
 		return InteractionResult.SUCCESS;
 	}

@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.china;
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -56,7 +57,7 @@ public class DragonPearlItem extends RelicItem {
 		server.addFreshEntity(dragon);
 		server.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 2.5, player.getZ(), 60, 2.0, 0.8, 2.0, 0.02);
 		server.sendParticles(ParticleTypes.FALLING_WATER, player.getX(), player.getY() + 3.0, player.getZ(), 40, 2.0, 0.5, 2.0, 0.0);
-		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_DRAGON_GROWL, SoundSource.PLAYERS, 0.6f, 1.5f);
+		RelicFx.sound(server, player, SoundEvents.ENDER_DRAGON_GROWL, 0.6f, 1.5f);
 		player.startRiding(dragon);
 		return InteractionResult.SUCCESS;
 	}

@@ -1,16 +1,16 @@
 package io.github.potatustudio.mythicrelics.entity;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -205,7 +205,7 @@ public class Pegasus extends PathfinderMob {
 		level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 0.5, getZ(), 2, 0.4, 0.3, 0.4, 0.0);
 		long now = level.getGameTime();
 		for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.6),
-				e -> e != this && e != rider && e.isAlive() && !ChinaRelics.isFriend(rider, e))) {
+				e -> e != this && e != rider && e.isAlive() && !Allies.isFriend(rider, e))) {
 			Long last = diveHits.get(e.getUUID());
 			if (last != null && now - last < DIVE_HIT_COOLDOWN) {
 				continue;
@@ -223,7 +223,7 @@ public class Pegasus extends PathfinderMob {
 	private void gadfly(ServerLevel level, Player rider) {
 		rider.stopRiding();
 		rider.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, GreeceLegends.PEGASUS_FALL_TICKS, 0, false, true));
-		rider.sendOverlayMessage(Component.translatable("message.mythicrelics.pegasus_gadfly").withStyle(ChatFormatting.GOLD));
+		RelicFx.notify(rider, "pegasus_gadfly", ChatFormatting.GOLD);
 		level.playSound(null, getX(), getY(), getZ(), SoundEvents.BEE_STING, getSoundSource(), 1.5f, 0.8f);
 		level.playSound(null, getX(), getY(), getZ(), SoundEvents.HORSE_ANGRY, getSoundSource(), 1.5f, 1.0f);
 		setDeltaMovement(getDeltaMovement().add(0, 0.6, 0));

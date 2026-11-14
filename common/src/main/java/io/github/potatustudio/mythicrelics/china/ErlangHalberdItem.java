@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.china;
 
 import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.Allies;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +25,7 @@ public class ErlangHalberdItem extends RelicItem {
 			return;
 		}
 		for (LivingEntity near : server.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(ChinaGods.HALBERD_SWEEP_RADIUS),
-				e -> e != player && e != target && e.isAlive() && !ChinaRelics.isFriend(player, e))) {
+				e -> e != player && e != target && e.isAlive() && !Allies.isFriend(player, e))) {
 			near.hurtServer(server, server.damageSources().playerAttack(player), ChinaGods.HALBERD_SWEEP_DAMAGE);
 		}
 		server.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 2,

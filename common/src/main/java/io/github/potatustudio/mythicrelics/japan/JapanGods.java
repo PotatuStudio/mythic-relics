@@ -4,8 +4,9 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -17,7 +18,6 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -103,11 +103,11 @@ public final class JapanGods {
 
 	/** Set de Fūjin y Raijin: la bolsa en el inventario y el tambor puesto. */
 	public static boolean hasWindAndThunder(Player player) {
-		return EgyptRelics.isWearing(player, ModItems.RAIJIN_DRUM) && player.getInventory().contains(s -> s.is(ModItems.FUJIN_WIND_BAG.get()));
+		return WornRelics.isWearing(player, ModItems.RAIJIN_DRUM) && player.getInventory().contains(s -> s.is(ModItems.FUJIN_WIND_BAG.get()));
 	}
 
 	public static boolean kappaWet(Player player) {
-		return EgyptRelics.isWearing(player, ModItems.KAPPA_DISH) && !DRY.contains(player.getUUID());
+		return WornRelics.isWearing(player, ModItems.KAPPA_DISH) && !DRY.contains(player.getUUID());
 	}
 
 	public static boolean isDisguised(Player player) {
@@ -129,7 +129,7 @@ public final class JapanGods {
 		if (!(source.getEntity() instanceof Player attacker) || source.getDirectEntity() != attacker) {
 			return amount;
 		}
-		if (EgyptRelics.isWearing(attacker, ModItems.TENGU_MASK) && attacker.fallDistance > 0 && !attacker.onGround()
+		if (WornRelics.isWearing(attacker, ModItems.TENGU_MASK) && attacker.fallDistance > 0 && !attacker.onGround()
 				&& !attacker.isInWater() && !attacker.onClimbable() && !attacker.isPassenger()) {
 			amount *= 1.0f + TENGU_CRIT;
 		}
@@ -146,7 +146,7 @@ public final class JapanGods {
 	/** Atacar deshace el disfraz del tanuki. */
 	private static EventResult onHurt(LivingEntity target, DamageSource source, float amount) {
 		if (source.getEntity() instanceof ServerPlayer player && DISGUISED.remove(player.getUUID()) != null) {
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.tanuki_revealed").withStyle(ChatFormatting.GRAY));
+			RelicFx.notify(player, "tanuki_revealed", ChatFormatting.GRAY);
 			player.level().sendParticles(ParticleTypes.POOF, player.getX(), player.getY() + 1, player.getZ(), 16, 0.4, 0.6, 0.4, 0.02);
 		}
 		return EventResult.pass();
@@ -220,7 +220,7 @@ public final class JapanGods {
 				}
 				level.sendParticles(ParticleTypes.COMPOSTER, player.getX(), player.getY() + 1.9, player.getZ(), 2, 0.2, 0.1, 0.2, 0.0);
 			}
-			if (EgyptRelics.isWearing(player, ModItems.KAPPA_DISH)) {
+			if (WornRelics.isWearing(player, ModItems.KAPPA_DISH)) {
 				kappa(level, player);
 			}
 			if (player.tickCount % 40 == 0 && ZashikiWarashis.near(level, player.blockPosition(), ZASHIKI_RADIUS)) {
@@ -236,7 +236,7 @@ public final class JapanGods {
 		if (player.isInWaterOrRain()) {
 			DRYING.remove(id);
 			if (DRY.remove(id)) {
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.kappa_wet").withStyle(ChatFormatting.AQUA));
+				RelicFx.notify(player, "kappa_wet", ChatFormatting.AQUA);
 			}
 			if (player.isInWater()) {
 				refresh(player, MobEffects.DOLPHINS_GRACE, 40);
@@ -248,7 +248,7 @@ public final class JapanGods {
 			if (t >= KAPPA_DRY_TICKS) {
 				DRY.add(id);
 				DRYING.remove(id);
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.kappa_dry").withStyle(ChatFormatting.GOLD));
+				RelicFx.notify(player, "kappa_dry", ChatFormatting.GOLD);
 			}
 		}
 	}
