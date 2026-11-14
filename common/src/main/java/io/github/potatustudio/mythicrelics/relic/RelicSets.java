@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 public enum RelicSets {
 	ANUBIS("anubis_set", EgyptRelics::hasAnubisSet, "jackal_mask", "jackal_ring", "anubis_scepter"),
 	OSIRIS("osiris_set", EgyptGods::hasOsirisSet, "osiris_crook", "osiris_flail"),
-	PERSEUS("perseus_set", GreeceRelics::hasPerseusSet, "hermes_sandals", "hades_helm", "athena_aegis"),
+	PERSEUS("perseus_set", GreeceRelics::hasPerseusSet, "hermes_sandals", "hades_helm", "athena_aegis", "harpe"),
 	THOR("thor_set", NorseRelics::hasThorSet, "mjolnir", "jarngreipr", "megingjord"),
 	ERLANG("erlang_set", ChinaGods::hasErlangSet, "erlang_eye", "erlang_halberd"),
 	REGALIA("regalia_set", JapanRelics::hasRegalia, "kusanagi", "yata_mirror", "yasakani_magatama"),

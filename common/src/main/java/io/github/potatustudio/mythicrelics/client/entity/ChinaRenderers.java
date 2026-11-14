@@ -130,6 +130,73 @@ public final class ChinaRenderers {
 		}
 	}
 
+	/** Pegaso: la brida de oro brilla un poco; el paso de suelo a vuelo se suaviza. */
+	public static class PegasusRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.Pegasus, PegasusModel> {
+		public static class State extends LivingEntityRenderState {
+			public float air;
+		}
+
+		public PegasusRenderer(EntityRendererProvider.Context context) {
+			super(context, new PegasusModel(context.bakeLayer(PegasusModel.LAYER)), 1.0f, "pegasus");
+		}
+
+		@Override
+		public LivingEntityRenderState createRenderState() {
+			return new State();
+		}
+
+		@Override
+		public void extractRenderState(io.github.potatustudio.mythicrelics.entity.Pegasus pegasus, LivingEntityRenderState state, float partialTick) {
+			super.extractRenderState(pegasus, state, partialTick);
+			if (state instanceof State s) {
+				s.air = net.minecraft.util.Mth.lerp(partialTick, pegasus.airAnimO, pegasus.airAnim);
+			}
+		}
+	}
+
+	/** Talos: hombre de bronce de unos 3 bloques (geometría a 1,5); ojos y vena de ícor que brillan. */
+	public static class TalosRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.Talos, TalosModel> {
+		public static final float SCALE = 1.5f;
+
+		public static class State extends LivingEntityRenderState {
+			public float sinceThrow = 100.0f;
+		}
+
+		public TalosRenderer(EntityRendererProvider.Context context) {
+			super(context, new TalosModel(context.bakeLayer(TalosModel.LAYER)), 1.0f, "talos");
+		}
+
+		@Override
+		public LivingEntityRenderState createRenderState() {
+			return new State();
+		}
+
+		@Override
+		public void extractRenderState(io.github.potatustudio.mythicrelics.entity.Talos talos, LivingEntityRenderState state, float partialTick) {
+			super.extractRenderState(talos, state, partialTick);
+			if (state instanceof State s) {
+				s.sinceThrow = talos.ticksSinceThrow() + partialTick;
+			}
+		}
+
+		@Override
+		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+			poseStack.scale(SCALE, SCALE, SCALE);
+		}
+	}
+
+	/** El halcón del manto de Freyja (geometría a 1,6). */
+	public static class FalconRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.FreyjaFalcon, FreyjaFalconModel> {
+		public FalconRenderer(EntityRendererProvider.Context context) {
+			super(context, new FreyjaFalconModel(context.bakeLayer(FreyjaFalconModel.LAYER)), 0.4f, "freyja_falcon");
+		}
+
+		@Override
+		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+			poseStack.scale(1.6f, 1.6f, 1.6f);
+		}
+	}
+
 	/** Huginn y Muninn: cuervos de Odín (los ojos brillan). */
 	public static class RavenRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.OdinRaven, OdinRavenModel> {
 		public RavenRenderer(EntityRendererProvider.Context context) {

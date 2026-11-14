@@ -52,6 +52,7 @@ public final class ModLoot {
 			// ---- Grecia ----
 			// Ruinas de los senderos: las ruinas antiguas (arqueología, por bloque cepillado).
 			Map.entry(BuiltInLootTables.TRAIL_RUINS_ARCHAEOLOGY_RARE, List.of(
+					new Drop(0.015f, ModItems.HARPE),
 					new Drop(0.020f, ModItems.HERMES_SANDALS),
 					new Drop(0.030f, ModItems.CHARON_OBOL),
 					new Drop(0.015f, ModItems.XIRANG_SACK),
@@ -73,6 +74,7 @@ public final class ModLoot {
 					new Drop(0.040f, ModItems.SIBYLLINE_BOOKS))),
 			// Cámaras de desafío: las pruebas del héroe.
 			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, List.of(
+					new Drop(0.030f, ModItems.NEMEAN_LION_SKIN),
 					new Drop(0.030f, ModItems.ATHENA_AEGIS),
 					new Drop(0.030f, ModItems.UNIVERSE_RING),
 					new Drop(0.030f, ModItems.RAIJIN_DRUM),
@@ -80,6 +82,8 @@ public final class ModLoot {
 			// Ciudad antigua: el descenso de Orfeo.
 			// Ciudad antigua: el descenso de Orfeo y el río del inframundo.
 			Map.entry(BuiltInLootTables.ANCIENT_CITY, List.of(
+					new Drop(0.020f, ModItems.TALOS_NAIL),
+					new Drop(0.030f, ModItems.DAINSLEIF),
 					new Drop(0.030f, ModItems.ORPHEUS_LYRE),
 					new Drop(0.020f, ModItems.STYX_WATER),
 					new Drop(0.030f, ModItems.GLEIPNIR),
@@ -92,10 +96,12 @@ public final class ModLoot {
 			Map.entry(BuiltInLootTables.VILLAGE_SHEPHERD, List.of(
 					new Drop(0.040f, ModItems.GOLDEN_FLEECE))),
 			Map.entry(BuiltInLootTables.SHIPWRECK_TREASURE, List.of(
+					new Drop(0.030f, ModItems.ACHILLES_SHIELD),
 					new Drop(0.020f, ModItems.GOLDEN_FLEECE),
 					new Drop(0.030f, ModItems.URASHIMA_ROD))),
 			// Bastiones: la puerta del Nether que guarda Cerbero.
 			Map.entry(BuiltInLootTables.BASTION_TREASURE, List.of(
+					new Drop(0.020f, ModItems.TYRFING),
 					new Drop(0.030f, ModItems.CERBERUS_COLLAR),
 					new Drop(0.030f, ModItems.ANDVARANAUT),
 					new Drop(0.050f, ModItems.WIND_FIRE_WHEELS))),
@@ -107,8 +113,13 @@ public final class ModLoot {
 					new Drop(0.030f, ModItems.ONI_KANABO))),
 			Map.entry(BuiltInLootTables.BASTION_HOGLIN_STABLE, List.of(
 					new Drop(0.030f, ModItems.CERBERUS_COLLAR))),
+			// Armeros de aldea: Gram, la espada que reforjó el herrero Regin.
+			Map.entry(BuiltInLootTables.VILLAGE_WEAPONSMITH, List.of(
+					new Drop(0.020f, ModItems.GRAM))),
 			// Mansiones del bosque: muy rara.
 			Map.entry(BuiltInLootTables.WOODLAND_MANSION, List.of(
+					new Drop(0.030f, ModItems.FREYR_SWORD),
+					new Drop(0.030f, ModItems.MISTLETOE_DART),
 					new Drop(0.050f, ModItems.PANDORA_JAR),
 					new Drop(0.040f, ModItems.ERLANG_HALBERD),
 					new Drop(0.030f, ModItems.TANUKI_LEAF))),
@@ -121,11 +132,13 @@ public final class ModLoot {
 			// ---- Roma ----
 			// Casas de aldeas de taiga: los lobos.
 			Map.entry(BuiltInLootTables.VILLAGE_TAIGA_HOUSE, List.of(
+					new Drop(0.030f, ModItems.FALCON_CLOAK),
 					new Drop(0.040f, ModItems.WOLF_BULLA),
 					new Drop(0.030f, ModItems.ODRERIR),
 					new Drop(0.030f, ModItems.KITSUNE_STAR_BALL))),
 			// Puestos de saqueadores: la guerra de Marte.
 			Map.entry(BuiltInLootTables.PILLAGER_OUTPOST, List.of(
+					new Drop(0.030f, ModItems.APPLE_OF_DISCORD),
 					new Drop(0.040f, ModItems.ANCILE),
 					new Drop(0.040f, ModItems.GJALLARHORN),
 					new Drop(0.030f, ModItems.TENGU_MASK))),
@@ -139,12 +152,14 @@ public final class ModLoot {
 					new Drop(0.040f, ModItems.KIBI_DANGO))),
 			// Templos de la jungla: las aves de los augures.
 			Map.entry(BuiltInLootTables.JUNGLE_TEMPLE, List.of(
+					new Drop(0.030f, ModItems.GOLDEN_BRIDLE),
 					new Drop(0.040f, ModItems.AUGUR_LITUUS),
 					new Drop(0.040f, ModItems.MONKEY_KING_HAIRS),
 					new Drop(0.030f, ModItems.IMMORTAL_PEACH_BRANCH))),
 			// ---- Nórdicos ----
 			// Bóvedas ominosas de las cámaras de desafío: el martillo de Thor.
 			Map.entry(BuiltInLootTables.TRIAL_CHAMBERS_REWARD_OMINOUS, List.of(
+					new Drop(0.015f, ModItems.ZEUS_THUNDERBOLT),
 					new Drop(0.020f, ModItems.MJOLNIR),
 					new Drop(0.020f, ModItems.KUSANAGI))),
 			// Minas abandonadas: las forjas de los enanos.

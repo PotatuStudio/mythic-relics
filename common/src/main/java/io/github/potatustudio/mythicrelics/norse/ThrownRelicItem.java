@@ -34,6 +34,9 @@ public class ThrownRelicItem extends RelicItem {
 
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
+		if (player.getCooldowns().isOnCooldown(player.getItemInHand(hand))) {
+			return InteractionResult.PASS;
+		}
 		player.startUsingItem(hand);
 		return InteractionResult.CONSUME;
 	}
@@ -62,6 +65,9 @@ public class ThrownRelicItem extends RelicItem {
 			}
 			server.addFreshEntity(thrown);
 			server.playSound(null, thrown, SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0f, homing ? 1.2f : 0.7f);
+			if (stack.is(io.github.potatustudio.mythicrelics.registry.ModItems.MISTLETOE_DART.get())) {
+				player.getCooldowns().addCooldown(stack, NorseSagas.DART_COOLDOWN);
+			}
 			if (!player.hasInfiniteMaterials()) {
 				player.getInventory().removeItem(stack);
 			}

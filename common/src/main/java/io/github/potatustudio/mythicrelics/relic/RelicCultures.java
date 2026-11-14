@@ -35,6 +35,13 @@ public final class RelicCultures {
 		CULTURE.put("pandora_jar", "greece");
 		CULTURE.put("styx_water", "greece");
 		CULTURE.put("prometheus_fennel", "greece");
+		CULTURE.put("zeus_thunderbolt", "greece");
+		CULTURE.put("nemean_lion_skin", "greece");
+		CULTURE.put("achilles_shield", "greece");
+		CULTURE.put("harpe", "greece");
+		CULTURE.put("golden_bridle", "greece");
+		CULTURE.put("apple_of_discord", "greece");
+		CULTURE.put("talos_nail", "greece");
 		CULTURE.put("wolf_bulla", "rome");
 		CULTURE.put("ancile", "rome");
 		CULTURE.put("palladium", "rome");
@@ -57,6 +64,12 @@ public final class RelicCultures {
 		CULTURE.put("mimir_head", "norse");
 		CULTURE.put("andvaranaut", "norse");
 		CULTURE.put("odrerir", "norse");
+		CULTURE.put("gram", "norse");
+		CULTURE.put("tyrfing", "norse");
+		CULTURE.put("dainsleif", "norse");
+		CULTURE.put("freyr_sword", "norse");
+		CULTURE.put("falcon_cloak", "norse");
+		CULTURE.put("mistletoe_dart", "norse");
 		CULTURE.put("ruyi_jingu_bang", "china");
 		CULTURE.put("monkey_king_hairs", "china");
 		CULTURE.put("purple_gold_gourd", "china");

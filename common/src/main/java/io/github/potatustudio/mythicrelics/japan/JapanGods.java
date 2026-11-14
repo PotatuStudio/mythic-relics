@@ -268,7 +268,7 @@ public final class JapanGods {
 			case "zashiki_warashi" -> new Object[] {ZASHIKI_RADIUS};
 			case "ame_no_nuboko" -> new Object[] {NUBOKO_RANGE, NUBOKO_RADIUS * 2 + 1, NUBOKO_COOLDOWN / 20};
 			case "orochi_scale" -> new Object[] {OROCHI_TICKS / 20, OROCHI_REACH, (int) OROCHI_BITE, OROCHI_COOLDOWN / 20 / 60};
-			default -> new Object[0];
+			default -> io.github.potatustudio.mythicrelics.greece.GreeceLegends.tooltipArgs(id);
 		};
 	}
 }

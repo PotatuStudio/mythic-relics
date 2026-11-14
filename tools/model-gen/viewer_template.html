@@ -140,6 +140,9 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button data-subject="sleipnir" aria-pressed="false" data-i18n="subjSleipnir">Sleipnir</button>
       <button data-subject="ravens" aria-pressed="false" data-i18n="subjRavens">Huginn y Muninn</button>
       <button data-subject="ship" aria-pressed="false" data-i18n="subjShip">Skíðblaðnir</button>
+      <button data-subject="falcon" aria-pressed="false" data-i18n="subjFalcon">Halcón de Freyja</button>
+      <button data-subject="pegasus" aria-pressed="false" data-i18n="subjPegasus">Pegaso</button>
+      <button data-subject="talos" aria-pressed="false" data-i18n="subjTalos">Talos</button>
       <button data-subject="monkey" aria-pressed="false" data-i18n="subjMonkey">Mono guerrero</button>
       <button data-subject="dragon" aria-pressed="false" data-i18n="subjDragon">Long</button>
       <button data-subject="dog" aria-pressed="false" data-i18n="subjDog">Perro Celestial</button>
@@ -171,7 +174,7 @@ const UI = {
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
     stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
-    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Halcón de Freyja", subjPegasus: "Pegaso", subjTalos: "Talos", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
     footKitsune: "El kitsune de nueve colas de la Esfera estelar: zorro blanco de Inari con marcas rojas y babero rojo, ojos dorados, nueve colas alzadas con la punta de llama celeste y dos kitsunebi que giran a su alrededor (brillan).",
     footOrochi: "La sombra de Yamata no Orochi que llama su escama: no se mueve; ocho cabezas de ojos rojos sobre cuellos largos que muerden a los hostiles cercanos, cuerpo de escamas con musgo y cipreses en el lomo, ocho colas por el suelo y el brillo de Kusanagi en una de ellas. Se dibuja al doble.",
     footTurtle: "La tortuga gigante de Urashima, que llama su caña: caparazón de escudos con borde ámbar, aletas que reman y las algas de la minogame, la tortuga de mil años. El jinete va sobre el caparazón.",
@@ -181,6 +184,9 @@ const UI = {
     footDragon: "El long de la Perla del dragón: dragón chino sin alas, de diez segmentos que ondulan al volar, con cuernos de ciervo, bigotes, melena y barba de llamas, garras de águila y la perla llameante delante del hocico (los ojos y la perla brillan). Se monta: el jinete va sobre el segundo segmento.",
     walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
+    footFalcon: "El halcón en que te convierte el manto de plumas de Freyja: halcón peregrino de lomo pardo con barras, pecho claro moteado, la bigotera oscura de la cara, pico ganchudo y patas amarillas. Aletea rápido y planea entre medio.",
+    footPegasus: "Pegaso, que llama la brida de oro de Atenea: caballo blanco con grandes alas de plumas, crin y cola plateadas, la brida de oro (brilla un poco) y una manta roja con greca. Vuela con el salto, planea al soltarlo y embiste en picada.",
+    footTalos: "Talos, que llama su clavo de bronce: hombre de bronce de unos 3 bloques con pelo y barba de rizos, ojos de horno, pátina verde, la vena de ícor dorada que baja al tobillo y el clavo en el tobillo. Da vueltas a tu alrededor, lanza rocas y abraza al rojo.",
     footRavens: "Huginn y Muninn, los cuervos de Odín: salen con clic derecho, se posan cerca de ti con las alas plegadas y te miran; de vez en cuando uno levanta el vuelo y vuelve a posarse. Sus ojos dorados brillan y, mientras están afuera, los hostiles cercanos brillan.",
     footShip: "Skíðblaðnir, el barco de Freyr que se pliega como un pañuelo: clic derecho mirando al agua y se despliega un bote con proa de dragón, escudos en la borda y vela a rayas detrás del jinete. Al bajarte se pliega solo; con viento a favor va más rápido.",
     footSleipnir: "Sleipnir, el caballo de ocho patas de Odín, que llama la herradura: corcel de guerra de Asgard con bardas de hierro rúnico, crin trenzada y cola larga. Las runas y los ojos brillan en la oscuridad y al galopar deja escarcha y chispas (en el agua, salpicaduras). Vuelve a Asgard cuando te bajas.",
@@ -195,7 +201,7 @@ const UI = {
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
     stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
-    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Freyja's falcon", subjPegasus: "Pegasus", subjTalos: "Talos", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
     footKitsune: "The nine-tailed kitsune of the Star Ball: a white Inari fox with red markings and a red bib, golden eyes, nine raised tails tipped with pale blue flame and two kitsunebi circling it (they glow).",
     footOrochi: "The shadow of Yamata no Orochi called by its scale: it does not move; eight red-eyed heads on long necks bite nearby hostiles, a scaly body with moss and cypresses on its back, eight tails across the ground and the gleam of Kusanagi in one of them. Drawn at double size.",
     footTurtle: "Urashima's giant turtle, called by his rod: a shell of amber-rimmed scutes, rowing flippers and the trailing seaweed of the minogame, the thousand-year turtle. The rider sits on the shell.",
@@ -205,6 +211,9 @@ const UI = {
     footDragon: "The long of the Dragon Pearl: a wingless Chinese dragon of ten segments that undulate as it flies, with stag antlers, whiskers, a mane and beard of flames, eagle claws and the flaming pearl before its snout (eyes and pearl glow). It can be ridden: the rider sits on the second segment.",
     walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
+    footFalcon: "The falcon Freyja's feather cloak turns you into: a peregrine with a barred brown back, a pale speckled chest, the dark facial stripe, a hooked beak and yellow feet. It flaps fast and glides in between.",
+    footPegasus: "Pegasus, called by Athena's golden bridle: a white horse with great feathered wings, silver mane and tail, the golden bridle (it glows a little) and a red cloth with a meander border. It flies with jump, glides when released and rams in a dive.",
+    footTalos: "Talos, called by his bronze nail: a bronze man about 3 blocks tall with curly hair and beard, furnace eyes, green patina, the golden vein of ichor running down to the ankle and the nail in it. He circles you, throws rocks and hugs red-hot.",
     footRavens: "Huginn and Muninn, Odin's ravens: right-click to send them out; they perch near you with folded wings and watch you, and now and then one takes off and lands again. Their golden eyes glow and, while they are out, nearby hostiles glow.",
     footShip: "Skíðblaðnir, Freyr's ship that folds like a cloth: right-click looking at water to unfold a boat with a dragon prow, shields along the gunwale and a striped sail behind the rider. It folds itself when you get off; with a fair wind it goes faster.",
     footSleipnir: "Sleipnir, Odin's eight-legged horse, called by the horseshoe: an Asgard warhorse with runic iron barding, braided mane and a long tail. Runes and eyes glow in the dark and his gallop leaves frost and sparks (splashes on water). He returns to Asgard when you dismount.",
@@ -223,7 +232,7 @@ const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma",
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
   greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"],
   china: ["wind_fire_wheels", "five_color_stone", "erlang_eye", "pixiu_bracelet"], japan: ["yasakani_magatama", "raijin_drum", "tengu_mask", "kappa_dish"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus"], rome: ["player"], norse: ["player", "sleipnir", "ravens", "ship"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus", "pegasus", "talos"], rome: ["player"], norse: ["player", "sleipnir", "ravens", "ship", "falcon"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -631,6 +640,12 @@ const ship = chinaEntity("skidbladnir");
   while (ship.root.children.length) inner.add(ship.root.children[0]);
   ship.root.add(inner); ship.root.position.y = 0.375;
 }
+/* Grecia 3 y nórdicos 3: Pegaso, Talos (a 1,5) y el halcón de Freyja (a 1,6). */
+const pegasus = chinaEntity("pegasus");
+const talos = chinaEntity("talos");
+talos.entity.scale.setScalar(DATA.china.talos.scale);
+const falcon = chinaEntity("falcon");
+falcon.entity.scale.setScalar(DATA.china.falcon.scale);
 const water = new THREE.Mesh(new THREE.BoxGeometry(7, 0.5, 7), new THREE.MeshLambertMaterial({ color: 0x2f5f9a, transparent: true, opacity: 0.8 }));
 water.position.y = -0.25; scene.add(water);
 function addRot(p, dx = 0, dy = 0, dz = 0) { const b = p.userData.base; p.rotation.set(b[0] + dx, b[1] + dy, b[2] + dz); }
@@ -889,6 +904,37 @@ function setupAnim() {
     addRot(R.tail, Math.sin(kt * 2) * 0.1);
     addRot(R.head, flying ? 0 : Math.max(0, Math.sin(kt * 1.7 + i * 2)) * 0.25);
   });
+  // Pegaso: camina en el suelo y, cada 8 s, alza el vuelo batiendo las alas y vuelve a bajar.
+  {
+    const P = pegasus.parts, c = kt % 8, air = c < 1 ? 0 : c < 2 ? (c - 1) : c < 6 ? 1 : c < 7 ? 7 - c : 0;
+    const flap = Math.sin(kt * 11) * 0.75 * air + Math.sin(kt * 1.2) * 0.06 * (1 - air);
+    const tip = Math.sin(kt * 11 - 0.7) * 0.45 * air;
+    addRot(P.wing_r, 0, 0, flap); addRot(P.wing_l, 0, 0, -flap);
+    addRot(P.wing_r2, 0, 0, tip); addRot(P.wing_l2, 0, 0, -tip);
+    const sw = Math.cos(kt * 6) * 0.5 * (1 - air) * (walking ? 1 : 0.15);
+    addRot(P.leg_fr, sw - 0.9 * air); addRot(P.leg_bl, sw + 0.8 * air); addRot(P.leg_fl, -sw - 0.9 * air); addRot(P.leg_br, -sw + 0.8 * air);
+    addRot(P.neck, Math.sin(kt * 1.6) * 0.04 + 0.25 * air); addRot(P.head, Math.sin(kt * 1.6 - 0.6) * 0.05 - 0.15 * air);
+    addRot(P.tail, Math.sin(kt * 1.4) * 0.08 + 0.6 * air, Math.sin(kt) * 0.15); addRot(P.tail2, Math.sin(kt * 1.4 - 0.6) * 0.12 - 0.2 * air);
+    if (subject === "pegasus") pegasus.entity.position.y = air * 1.6 + Math.sin(kt * 11) * 0.05 * air;
+  }
+  // Talos: camina pesado y cada 4 s levanta la roca y la arroja.
+  {
+    const T = talos.parts, sw = Math.cos(kt * 4) * 0.5 * (walking ? 1 : 0.2);
+    addRot(T.leg_r, sw); addRot(T.leg_l, -sw); addRot(T.arm_l, -sw * 0.8);
+    const u = (kt % 4) / 0.7;   // el lanzamiento dura 0,7 s
+    let raise = 0;
+    if (u < 1) { const r = u < 0.45 ? u / 0.45 : 1 - (u - 0.45) / 0.55; raise = r * r * (3 - 2 * r); }
+    addRot(T.arm_r, sw * 0.8 - 2.8 * raise, 0, 0.2 * raise);
+    T.rock.visible = !(u > 0.45 && u < 1.4);
+    addRot(T.head, 0, Math.sin(kt * 0.7) * 0.25);
+  }
+  // Halcón: aletea rápido y cada tanto planea con las alas abiertas.
+  {
+    const F = falcon.parts, glide = Math.min(1, Math.max(0, Math.sin(kt) * 2));
+    const flap = Math.sin(kt * 18) * 0.8 * (1 - glide) + Math.sin(kt * 2) * 0.05 * glide;
+    addRot(F.wing_r, 0, 0, flap); addRot(F.wing_l, 0, 0, -flap); addRot(F.tail, Math.sin(kt * 2.4) * 0.08);
+    if (subject === "falcon") falcon.entity.position.y = 0.4 + Math.sin(kt * 1.5) * 0.15;
+  }
   // Barco: se mece en el agua y la vela flamea.
   ship.entity.position.y = Math.sin(kt * 1.2) * 0.03;
   ship.entity.rotation.z = Math.sin(kt * 0.9) * 0.02;
@@ -944,6 +990,9 @@ const VIEWS = {
   orochi: { cam: [5.0, 3.6, 5.6], target: [0, 1.5, 0] },
   ravens: { cam: [1.4, 1.1, 2.2], target: [0, 0.4, -0.3] },
   ship: { cam: [3.6, 2.6, 3.8], target: [0, 0.6, 0] },
+  pegasus: { cam: [3.8, 2.6, 4.2], target: [0, 1.2, 0] },
+  talos: { cam: [3.8, 2.8, 4.4], target: [0, 1.5, 0] },
+  falcon: { cam: [2.8, 2.0, 3.0], target: [0, 1.0, 0] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
 function setSubject(s) {
@@ -960,6 +1009,9 @@ function setSubject(s) {
   turtle.entity.visible = s === "turtle";
   orochi.entity.visible = s === "orochi";
   ravens.forEach(r => { r.entity.visible = s === "ravens"; });
+  pegasus.entity.visible = s === "pegasus"; talos.entity.visible = s === "talos"; falcon.entity.visible = s === "falcon";
+  pegasus.entity.position.set(0, 0, 0); talos.entity.position.set(0, 0, 0); falcon.entity.position.set(0, 0.4, 0);
+  pegasus.entity.rotation.y = Math.PI * 0.75; talos.entity.rotation.y = Math.PI; falcon.entity.rotation.y = Math.PI * 0.7;
   ship.entity.visible = water.visible = s === "ship";
   ship.entity.position.set(0, 0, 0); ship.entity.rotation.y = Math.PI * 0.75;
   orochi.entity.position.set(0, 0, 0); orochi.entity.rotation.y = Math.PI;
@@ -981,7 +1033,7 @@ function setSubject(s) {
   renderStageText();
 }
 function renderStageText() {
-  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", ravens: "footRavens", ship: "footShip", player: "footPlayer" }[subject];
+  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", ravens: "footRavens", ship: "footShip", falcon: "footFalcon", pegasus: "footPegasus", talos: "footTalos", player: "footPlayer" }[subject];
   document.getElementById("stageFoot").textContent = UI[lang][foot];
   document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
   buildWornControls();

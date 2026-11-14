@@ -150,8 +150,75 @@ def skidbladnir():
     return m
 
 
-MODELS = {"raven": (raven, 64, 31), "skidbladnir": (skidbladnir, 128, 32)}
-SCALE = {"raven": 1.0, "skidbladnir": 1.0}
+# ---------------------------------------------------------------- Halcón (manto de plumas de Freyja)
+FALCON_BACK = [C("#5c4a3a"), C("#665240"), C("#544232"), C("#6e5a46")]
+FALCON_BAR = C("#3a2c22")
+FALCON_CHEST = [C("#efe6d6"), C("#e6dcc8"), C("#f4eee2")]
+FALCON_STREAK = C("#5a4636")
+FALCON_YELLOW = C("#f2c230")
+FALCON_DARK = C("#2a2220")
+
+
+def falcon_back(face, x, y, w, h):
+    """Lomo pardo pizarra con barras oscuras; vientre claro con motas (el halcón peregrino)."""
+    if face == "bottom" or (face in ("front",) and y >= 1):
+        return (FALCON_STREAK if random.random() < 0.18 else pick(FALCON_CHEST)), None
+    if face in ("west", "east") and y >= h - 2:
+        return (FALCON_STREAK if random.random() < 0.18 else pick(FALCON_CHEST)), None
+    return (FALCON_BAR if (x + 2 * y) % 5 == 0 else pick(FALCON_BACK)), None
+
+
+def falcon_head(face, x, y, w, h):
+    """Cabeza: capucha oscura, mejillas claras con la bigotera negra bajo el ojo, ojo oscuro con anillo amarillo."""
+    if face in ("west", "east"):
+        fx = front_x_dist(face, x, w)
+        if y == 1 and fx == 1:
+            return FALCON_DARK, None                         # ojo
+        if y == 1 and fx == 0:
+            return FALCON_YELLOW, None                       # anillo
+        if y == 2 and fx == 1:
+            return FALCON_DARK, None                         # bigotera
+        if y >= 2:
+            return pick(FALCON_CHEST), None
+    if face == "front" and y >= 2:
+        return pick(FALCON_CHEST), None
+    return pick([C("#3a3230"), C("#443a36")]), None
+
+
+def falcon_beak(face, x, y, w, h):
+    return (FALCON_YELLOW if y == 0 and face != "front" else C("#2e3440")), None   # cera amarilla y pico gris azulado
+
+
+def falcon_wing(face, x, y, w, h):
+    """Alas largas y puntiagudas: pardas con barras; por debajo, claras con barras finas."""
+    if face == "bottom":
+        return (FALCON_STREAK if (x + y) % 3 == 0 else pick(FALCON_CHEST)), None
+    if x >= w - 3:
+        return FALCON_DARK, None                             # puntas oscuras de las primarias
+    return (FALCON_BAR if y % 2 == 0 and x % 2 == 0 else pick(FALCON_BACK)), None
+
+
+def falcon_talon(face, x, y, w, h):
+    return FALCON_YELLOW, None
+
+
+def falcon():
+    """Halcón peregrino del tamaño de un jugador agachado (se dibuja a 1,6): cuerpo, cabeza con pico ganchudo, alas largas
+    y puntiagudas que se baten, cola y patas amarillas recogidas."""
+    m = Model()
+    body = m.part("body", None, [0, 16, 0], [0, 0, 0], [cube(-2.5, -2.5, -4.5, 5, 5, 9, falcon_back)])
+    head = m.part("head", None, [0, 14, -4.5], [0, 0, 0], [cube(-2, -3.5, -3.5, 4, 4, 4, falcon_head)])
+    m.part("beak", head, [0, -1.5, -3.5], [0.35, 0, 0], [cube(-0.5, -0.5, -2, 1, 2, 2, falcon_beak)])
+    m.part("wing_r", body, [-2.5, -2, -3], [0, 0, 0], [cube(-12, -0.5, 0, 12, 1, 7, falcon_wing)])
+    m.part("wing_l", body, [2.5, -2, -3], [0, 0, 0], [cube(0, -0.5, 0, 12, 1, 7, falcon_wing)])
+    m.part("tail", body, [0, -1.5, 4.5], [-0.15, 0, 0], [cube(-2, 0, 0, 4, 1, 6, falcon_wing)])
+    m.part("leg_r", body, [-1.2, 2.5, 1], [0.9, 0, 0], [cube(-0.5, 0, -0.5, 1, 3, 1, falcon_talon)])
+    m.part("leg_l", body, [1.2, 2.5, 1], [0.9, 0, 0], [cube(-0.5, 0, -0.5, 1, 3, 1, falcon_talon)])
+    return m
+
+
+MODELS = {"raven": (raven, 64, 31), "skidbladnir": (skidbladnir, 128, 32), "falcon": (falcon, 64, 33)}
+SCALE = {"raven": 1.0, "skidbladnir": 1.0, "falcon": 1.6}
 
 
 def bake_one(key):

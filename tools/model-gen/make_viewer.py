@@ -81,6 +81,15 @@ if __name__ == "__main__":
                               "scale": NE.SCALE[key],
                               "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
                               "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
+    # Pegaso y Talos (greece_entities.py, Grecia 3).
+    import greece_entities as GE  # noqa: E402
+    for key in GE.MODELS:
+        parts, _img, _glow, tex_w, tex_h = GE.bake_one(key)
+        name = CE.NAMES[key][1]
+        data["china"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "rootOffset": list(CE.ROOT_OFFSET[key]),
+                              "scale": GE.SCALE[key],
+                              "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
+                              "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
     template = read(os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer_template.html"))
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(template.replace("__DATA__", json.dumps(data, ensure_ascii=False)))

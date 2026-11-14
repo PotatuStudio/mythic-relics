@@ -28,6 +28,8 @@ public final class GreeceClient {
 
 	private static boolean jumpWasDown;
 	private static boolean doubleJumpUsed;
+	/** Manto de halcón: ya se pidió la forma de halcón en este salto. */
+	private static boolean falconAsked;
 	/** Se soltó el salto ya en el aire: el doble salto pide una segunda pulsación, no mantener la del primer salto. */
 	private static boolean releasedInAir;
 	private static int icarusFlaps;
@@ -54,10 +56,21 @@ public final class GreeceClient {
 		boolean grounded = player.onGround() || player.isInWater() || player.getAbilities().flying || player.isPassenger();
 		if (grounded) {
 			doubleJumpUsed = false;
+			falconAsked = false;
 			releasedInAir = false;
 			icarusFlaps = GreeceHeroes.ICARUS_FLAPS;
 		} else if (!jumpDown) {
 			releasedInAir = true;
+		} else if (pressed && releasedInAir && !falconAsked && (doubleJumpUsed || !(WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())
+				|| WornRelics.isWearing(player, ModItems.TENGU_MASK.get())))
+				&& WornRelics.isWearing(player, ModItems.FALCON_CLOAK.get())
+				&& !player.getCooldowns().isOnCooldown(new net.minecraft.world.item.ItemStack(ModItems.FALCON_CLOAK.get()))) {
+			// Manto de halcón: un toque de salto en el aire (después del doble salto, si lo hay) y te vuelves halcón.
+			falconAsked = true;
+			pressed = false;
+			if (NetworkManager.canServerReceive(io.github.potatustudio.mythicrelics.network.FalconPayload.TYPE)) {
+				NetworkManager.sendToServer(io.github.potatustudio.mythicrelics.network.FalconPayload.INSTANCE);
+			}
 		} else if (pressed && releasedInAir && !doubleJumpUsed && (WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())
 				|| WornRelics.isWearing(player, ModItems.TENGU_MASK.get()))) {
 			Vec3 motion = player.getDeltaMovement();

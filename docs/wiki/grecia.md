@@ -20,6 +20,13 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 | ![](img/pandora_jar.png) | [Jarra de Pandora](#pandora-jar) | mano | épica | Mansiones del bosque: 5 % por cofre |
 | ![](img/styx_water.png) | [Agua del Estigia](#styx-water) | mano | épica | Ciudades antiguas: 2 % por cofre |
 | ![](img/prometheus_fennel.png) | [Hinojo de Prometeo](#prometheus-fennel) | mano | rara | Portales en ruinas: 3 % por cofre |
+| ![](img/zeus_thunderbolt.png) | [Rayo de Zeus](#zeus-thunderbolt) | mano (arma) | épica | Bóvedas ominosas de cámaras de desafío: 1.5 % por cofre |
+| ![](img/nemean_lion_skin.png) | [Piel del león de Nemea](#nemean-lion-skin) | capa | épica | Recompensas de cámaras de desafío: 3 % por cofre |
+| ![](img/achilles_shield.png) | [Escudo de Aquiles](#achilles-shield) | mano secundaria | épica | Tesoros de naufragios: 3 % por cofre |
+| ![](img/harpe.png) | [Harpe](#harpe) | mano (arma) | épica | Arena y grava sospechosas de ruinas de los senderos: 1.5 % por bloque cepillado |
+| ![](img/golden_bridle.png) | [Brida de oro de Atenea](#golden-bridle) | mano | épica | Templos de la jungla: 3 % por cofre |
+| ![](img/apple_of_discord.png) | [Manzana de la Discordia](#apple-of-discord) | mano | rara | Puestos de saqueadores: 3 % por cofre |
+| ![](img/talos_nail.png) | [Clavo de bronce de Talos](#talos-nail) | mano | épica | Ciudades antiguas: 2 % por cofre |
 
 <a id="hermes-sandals"></a>
 ## Sandalias aladas de Hermes
@@ -31,7 +38,7 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 - +20% de velocidad y doble salto
 - La arena y la tierra de almas no te frenan
 
-*Set de Perseo (sandalias, yelmo y égida):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+*Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
 
 **Mito.** Hermes, mensajero de los dioses, volaba con sus sandalias aladas. También guiaba las almas de los muertos al inframundo.  
 Se las prestó a Perseo para ir a buscar a Medusa.
@@ -48,7 +55,7 @@ Se las prestó a Perseo para ir a buscar a Medusa.
 - Agachado y quieto 2 s: te vuelves invisible y los mobs pierden tu rastro
 - Correr, levantarte o atacar lo rompe
 
-*Set de Perseo (sandalias, yelmo y égida):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+*Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
 
 **Mito.** Los cíclopes forjaron para Hades un yelmo que vuelve invisible a quien lo lleva.  
 Atenea y Perseo también lo usaron; con él, Perseo escapó de las gorgonas.
@@ -64,7 +71,7 @@ Atenea y Perseo también lo usaron; con él, Perseo escapó de las gorgonas.
 
 - Al bloquear con escudo un golpe cuerpo a cuerpo, el atacante queda aturdido 2 s y retrocede
 
-*Set de Perseo (sandalias, yelmo y égida):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+*Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
 
 **Mito.** La égida, la piel de cabra de Zeus que llevaba Atenea, tenía el gorgoneion, el rostro de Medusa que aterraba a los enemigos.  
 Atenea le dio a Perseo el escudo pulido para no mirar a Medusa.
@@ -228,8 +235,126 @@ Zeus lo encadenó a una roca, donde un águila le comía el hígado cada día.
 
 **Dónde encontrarla.** **Portales en ruinas**: 3 % por cofre
 
+<a id="zeus-thunderbolt"></a>
+## Rayo de Zeus
+
+<img src="img/zeus_thunderbolt.png" width="64" alt="">
+
+**Espacio:** mano (arma) · **Rareza:** épica
+
+- Mantén clic derecho y suelta: cae un rayo donde apuntas (hasta 32 bloques)
+- 14 de daño al blanco; salta a 3 hostiles cercanos (7 de daño cada uno)
+- Con tormenta salta a 5. Es un rayo limpio: no quema y no te daña
+- Recarga: 5 s
+
+**Mito.** El keraunos: lo forjaron los cíclopes Brontes, Estéropes y Arges cuando Zeus los liberó del Tártaro.  
+Con él Zeus venció a los titanes y luego a Tifón.
+
+**Dónde encontrarla.** **Bóvedas ominosas de cámaras de desafío**: 1.5 % por cofre
+
+<a id="nemean-lion-skin"></a>
+## Piel del león de Nemea
+
+<img src="img/nemean_lion_skin.png" width="64" alt="">
+
+**Espacio:** capa · **Rareza:** épica
+
+- Ningún arma la atraviesa: recibes un 50% menos de daño de armas y proyectiles
+- No protege de garras, mordiscos, fuego, explosiones, magia ni caídas
+- Como Heracles: sin arma en la mano, tus golpes hacen +3 de daño
+
+**Mito.** El primero de los doce trabajos de Heracles: ningún arma atravesaba la piel del león de Nemea.  
+Heracles lo estranguló, lo desolló con sus propias garras y se puso la piel de armadura, con la cabeza del león como yelmo.
+
+**Dónde encontrarla.** **Recompensas de cámaras de desafío**: 3 % por cofre
+
+<a id="achilles-shield"></a>
+## Escudo de Aquiles
+
+<img src="img/achilles_shield.png" width="64" alt="">
+
+**Espacio:** mano secundaria · **Rareza:** épica
+
+- Escudo que no se rompe; bloqueando no te empujan
+- Cólera: cada golpe que bloqueas suma un nivel (máx. 5, dura 10 s)
+- Tu siguiente golpe hace +20% de daño por nivel; con 5, además lo manda lejos
+
+**Mito.** Hefesto lo forjó en una noche a pedido de Tetis, con el mundo entero grabado: el cielo, una ciudad en paz y otra en guerra, cosechas y danzas, y el río Océano en el borde.  
+La Ilíada empieza con «Canta, oh diosa, la cólera de Aquiles».
+
+**Dónde encontrarla.** **Tesoros de naufragios**: 3 % por cofre
+
+<a id="harpe"></a>
+## Harpe
+
+<img src="img/harpe.png" width="64" alt="">
+
+**Espacio:** mano (arma) · **Rareza:** épica
+
+- Trofeo: 15% de que el mob suelte su cabeza (esqueleto del Wither: 5%)
+- Clic derecho a un mob con menos del 25% de vida: lo decapita al instante (no jefes)
+- Cuando hay uno así y está lista, el mob brilla y suena un aviso
+- Recarga: 15 s. Es parte del set de Perseo
+
+*Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+
+**Mito.** La hoz de adamante: Gea se la dio a Cronos para castrar a Urano.  
+Más tarde Hermes se la entregó a Perseo, que con ella cortó la cabeza de Medusa.
+
+**Dónde encontrarla.** **Arena y grava sospechosas de ruinas de los senderos**: 1.5 % por bloque cepillado
+
+<a id="golden-bridle"></a>
+## Brida de oro de Atenea
+
+<img src="img/golden_bridle.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** épica
+
+- Clic derecho: llama a Pegaso, caballo alado propio, y te monta
+- Mantén el salto para subir y suéltalo para planear; mirando hacia abajo, en picada embiste (12 de daño)
+- Sobre la altura 200, el tábano de Zeus lo pica y te tira (caes lento)
+- Se va al bajarte. Si muere, vuelve en 5 min
+
+**Mito.** Belerofonte durmió en el templo de Atenea y la diosa le dio en sueños una brida de oro; con ella montó a Pegaso, el caballo alado nacido del cuello de Medusa.  
+Juntos mataron a la Quimera, pero cuando quiso subir al Olimpo, Zeus mandó un tábano que hizo caer a Belerofonte.
+
+**Dónde encontrarla.** **Templos de la jungla**: 3 % por cofre
+
+<a id="apple-of-discord"></a>
+## Manzana de la Discordia
+
+<img src="img/apple_of_discord.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** rara
+
+- Clic derecho a un mob (hasta 16 bloques): «para la más bella»
+- Brilla 15 s y los hostiles a 12 bloques lo atacan a él (no sirve con jefes)
+- Recarga: 60 s
+
+**Mito.** Eris, la diosa de la discordia, no fue invitada a la boda de Peleo y Tetis y lanzó entre los invitados una manzana de oro «para la más bella».  
+Hera, Atenea y Afrodita se la disputaron; Paris eligió a Afrodita y así empezó la guerra de Troya.
+
+**Dónde encontrarla.** **Puestos de saqueadores**: 3 % por cofre
+
+<a id="talos-nail"></a>
+## Clavo de bronce de Talos
+
+<img src="img/talos_nail.png" width="64" alt="">
+
+**Espacio:** mano · **Rareza:** épica
+
+- Clic derecho: Talos, el gigante de bronce, pelea a tu lado 90 s
+- Lanza rocas a los hostiles (10 de daño cada 3 s, hasta 16 bloques)
+- Abraza al rojo al que se le acerca (8 de daño y fuego 4 s)
+- Por la espalda (el tobillo) recibe el doble. Recarga: 5 min
+
+**Mito.** Talos era un hombre de bronce que Hefesto hizo para guardar Creta: daba tres vueltas a la isla cada día, tiraba rocas a los barcos y abrazaba al rojo a quien desembarcaba.  
+Tenía una sola vena de ícor cerrada con un clavo de bronce en el tobillo; Medea se lo quitó y Talos se desangró.
+
+**Dónde encontrarla.** **Ciudades antiguas**: 2 % por cofre
+
 ## Set de Perseo
 
-Set de Perseo (sandalias, yelmo y égida): La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+Set de Perseo (3 de: sandalias, yelmo, égida y harpe): La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
 
 **Mito.** Con las sandalias de Hermes, el yelmo de Hades y el escudo de Atenea, Perseo pudo acercarse a Medusa sin ser visto, sin mirarla y escapar volando.

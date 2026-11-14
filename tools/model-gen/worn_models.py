@@ -44,6 +44,8 @@ COLORS = {
     "wax_l": "#fff2c2", "wax": "#e6c66a", "silver": "#e8e8ec", "silver_d": "#a8a8b0", "bronze": "#e0954a",
     "bronze_d": "#a85f26", "ember": "#ff8a3a",
     "iron_l": "#cfd3dc", "iron": "#8a8f9c", "iron_d": "#4a4e58", "amber": "#ffb030", "ruby": "#d8392b",
+    # Grecia 3 y nórdicos 3: melena del león y plumas de halcón
+    "mane": "#6e4216", "falcon_l": "#c4955e", "falcon": "#7a4f2c", "falcon_d": "#4e3018", "feather_w": "#efe6d6",
 }
 SWATCHES = list(COLORS)
 # Cara de arriba más clara y de abajo más oscura: da volumen aunque cada elemento sea de un color.
@@ -56,7 +58,8 @@ SHADE = {"gold": ("gold_l", "gold_d"), "gold_l": ("gold_l", "gold"), "gold_d": (
          "fur": ("fur_l", "fur_d"), "fur_l": ("fur_l", "fur"), "ivory": ("ivory", "ivory_d"),
          "black": ("black_l", "black_d"), "crest": ("crest_l", "crest_d"), "wing": ("wing_l", "wing_d"),
          "leather": ("leather_l", "leather_d"), "stone": ("stone", "stone_d"), "wax": ("wax_l", "wax"),
-         "silver": ("silver", "silver_d"), "bronze": ("bronze", "bronze_d"), "iron": ("iron_l", "iron_d")}
+         "silver": ("silver", "silver_d"), "bronze": ("bronze", "bronze_d"), "iron": ("iron_l", "iron_d"),
+         "falcon": ("falcon_l", "falcon_d"), "mane": ("fur_d", "mane")}
 
 
 def uv(color):
@@ -497,6 +500,65 @@ def kappa_dish():
             box([5.6, 13.55, 5.6], [10.4, 13.75, 10.4], "wing", "agua")]
 
 
+def nemean_lion_skin():
+    """La piel del león de Nemea (capa, compite con el vellocino y usa sus mismos planos): cae por la espalda, la melena
+    cubre los hombros, las patas delanteras se anudan en el pecho y la cabeza del león cuelga detrás de la nuca, como una
+    capucha bajada (así no atraviesa la cabeza del jugador cuando mira a los lados), con las fauces y los colmillos."""
+    e = [box([3.6, 5.0, 5.4], [12.4, 13.95, 5.95], "fur", "piel en la espalda"),
+         box([3.6, 13.92, 5.4], [12.4, 14.55, 10.45], "mane", "melena en los hombros"),
+         box([3.6, 11.0, 10.05], [6.2, 14.05, 10.45], "fur", "pata der."),
+         box([9.8, 11.0, 10.05], [12.4, 14.05, 10.45], "fur", "pata izq."),
+         box([6.2, 11.6, 10.1], [9.8, 12.3, 10.35], "mane", "nudo")]
+    for i, x in enumerate((4.2, 10.4)):
+        e.append(box([x, 4.45, 5.52], [x + 1.4, 5.0, 5.9], "fur_d", f"pata trasera {i}"))
+    # Capucha bajada: la cabeza del león detrás de la nuca, mirando hacia atrás.
+    e += [box([3.4, 13.4, 2.2], [12.6, 19.6, 3.55], "mane", "melena de la cabeza"),
+          box([4.6, 14.6, 1.2], [11.4, 19.0, 2.2], "fur", "cara"),
+          box([6.0, 14.8, 0.2], [10.0, 16.8, 1.2], "fur_l", "hocico"),
+          box([6.4, 14.2, 0.4], [7.2, 14.8, 0.9], "ivory", "colmillo der."),
+          box([8.8, 14.2, 0.4], [9.6, 14.8, 0.9], "ivory", "colmillo izq."),
+          box([7.4, 16.4, 0.0], [8.6, 17.0, 0.2], "black", "nariz"),
+          box([5.4, 17.6, 1.0], [6.6, 18.2, 1.2], "black", "ojo der."),
+          box([9.4, 17.6, 1.0], [10.6, 18.2, 1.2], "black", "ojo izq."),
+          box([4.4, 19.6, 2.4], [5.8, 20.6, 3.4], "fur_d", "oreja der."),
+          box([10.2, 19.6, 2.4], [11.6, 20.6, 3.4], "fur_d", "oreja izq.")]
+    return e
+
+
+def freyr_sword():
+    """Espada de Freyr envainada (cinturón, compite con el escarabajo, Megingjörð y la piedra: usa los planos de
+    Megingjörð). Cinturón de cuero y la vaina al frente de la cadera izquierda, por fuera del brazo, con la guarda y el
+    pomo de oro arriba."""
+    e = ring(3.45, 12.55, 2.6, 3.6, 5.45, 10.55, 0.55, "leather", "cinturón")
+    e += [box([10.4, -6.0, 10.6], [11.6, 2.4, 11.6], "leather", "vaina"),
+          box([10.3, -6.6, 10.5], [11.7, -6.0, 11.7], "gold", "contera"),
+          box([10.3, 1.8, 10.5], [11.7, 2.4, 11.7], "gold", "boca de la vaina"),
+          box([9.8, 2.4, 10.4], [12.2, 3.0, 11.8], "gold", "guarda"),
+          box([10.6, 3.0, 10.8], [11.4, 5.0, 11.4], "leather_d", "puño"),
+          box([10.4, 5.0, 10.6], [11.6, 5.8, 11.6], "gold", "pomo")]
+    return e
+
+
+def falcon_cloak():
+    """Manto de plumas de halcón de Freyja (espalda, compite con la égida, las alas de Ícaro y el tambor: va por detrás de
+    la capa, z < 5,35, como las alas). Cae por la espalda y se abre abajo, con las barras claras del plumaje y un borde de
+    puntas de plumas; una esclavina de plumas por encima de los hombros de la capa (sin bajar por el pecho, donde van los collares),
+    cuello claro y broche de oro."""
+    e = [box([3.2, 3.0, 4.6], [12.8, 13.6, 5.3], "falcon", "manto"),
+         box([2.6, 0.4, 4.3], [13.4, 3.0, 5.1], "falcon", "manto abierto abajo")]
+    for i, y in enumerate((4.2, 6.6, 9.0, 11.4)):
+        e.append(box([3.1, y, 4.4], [12.9, y + 0.6, 4.55], "falcon_l", f"barra {i}"))
+    e.append(box([2.5, 1.4, 4.1], [13.5, 2.0, 4.25], "falcon_l", "barra de abajo"))
+    x = 2.6
+    while x < 13.2:
+        e.append(box([x, -1.0, 4.45], [x + 0.9, 0.4, 5.0], "falcon_d", "punta de pluma"))
+        x += 1.6
+    e += [box([2.9, 14.6, 4.4], [13.1, 15.1, 10.7], "falcon", "esclavina"),
+          box([3.4, 15.1, 4.7], [12.6, 15.6, 10.4], "feather_w", "cuello"),
+          box([7.0, 14.7, 10.7], [9.0, 15.3, 11.0], "gold", "broche")]
+    return e
+
+
 def attach(part, name, offset=(0, 0, 0)):
     return {"type": "model", "model_part": part, "model": f"{NS}:item/{name}_worn", "offset": list(offset), "centered": True}
 
@@ -546,6 +608,11 @@ WORN = {
     # Japón, tanda 2
     "tengu_mask": (lambda: model(tengu_mask()), [attach("head", "tengu_mask")]),
     "kappa_dish": (lambda: model(kappa_dish()), [attach("head", "kappa_dish")]),
+    # Grecia, tanda 3
+    "nemean_lion_skin": (lambda: model(nemean_lion_skin()), [attach("body", "nemean_lion_skin")]),
+    # Nórdicos, tanda 3
+    "freyr_sword": (lambda: model(freyr_sword()), [attach("body", "freyr_sword")]),
+    "falcon_cloak": (lambda: model(falcon_cloak()), [attach("body", "falcon_cloak")]),
 }
 
 

@@ -1,0 +1,18 @@
+{
+ "target": [
+  "mythicrelics:nemean_lion_skin"
+ ],
+ "render": [
+  {
+   "type": "model",
+   "model_part": "body",
+   "model": "mythicrelics:item/nemean_lion_skin_worn",
+   "offset": [
+    0,
+    0,
+    0
+   ],
+   "centered": true
+  }
+ ]
+}

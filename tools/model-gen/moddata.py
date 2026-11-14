@@ -19,9 +19,11 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
          "ra_disk", "bastet_amulet", "thoth_palette", "osiris_crook", "osiris_flail", "sekhmet_claws",
          "hermes_sandals", "hades_helm", "athena_aegis", "medusa_head", "ariadne_thread", "charon_obol", "orpheus_lyre",
          "icarus_wings", "golden_fleece", "cerberus_collar", "pandora_jar", "styx_water", "prometheus_fennel",
+         "zeus_thunderbolt", "nemean_lion_skin", "achilles_shield", "harpe", "golden_bridle", "apple_of_discord", "talos_nail",
          "wolf_bulla", "ancile", "palladium", "janus_key", "vesta_lamp", "sibylline_books", "augur_lituus",
          "mjolnir", "jarngreipr", "megingjord", "gungnir", "draupnir", "gjallarhorn", "gleipnir", "idunn_apples",
          "sleipnir_horseshoe", "odin_ravens", "brisingamen", "skidbladnir", "mimir_head", "andvaranaut", "odrerir",
+         "gram", "tyrfing", "dainsleif", "freyr_sword", "falcon_cloak", "mistletoe_dart",
          "ruyi_jingu_bang", "monkey_king_hairs", "purple_gold_gourd", "banana_leaf_fan", "dragon_pearl", "wind_fire_wheels",
          "hou_yi_bow", "change_elixir", "five_color_stone",
          "fire_tipped_spear", "universe_ring", "erlang_eye", "erlang_halberd", "qilin_horn", "pixiu_bracelet", "fu_talismans",
@@ -31,11 +33,11 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
          "fujin_wind_bag", "tengu_mask", "yashiori_sake", "kappa_dish", "tanuki_leaf", "kintaro_axe", "zashiki_warashi",
          "ame_no_nuboko", "orochi_scale"]
 # Cultura de cada reliquia (categoría del libro y página de la wiki), en el orden en que se muestran.
-CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:26], "rome": ORDER[26:33], "norse": ORDER[33:48], "china": ORDER[48:66],
-            "japan": ORDER[66:]}
+CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:33], "rome": ORDER[33:40], "norse": ORDER[40:61], "china": ORDER[61:79],
+            "japan": ORDER[79:]}
 # Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
 SETS = {"anubis_set": ["anubis_scepter", "jackal_mask", "jackal_ring"], "osiris_set": ["osiris_crook", "osiris_flail"],
-        "perseus_set": ["hermes_sandals", "hades_helm", "athena_aegis"],
+        "perseus_set": ["hermes_sandals", "hades_helm", "athena_aegis", "harpe"],
         "thor_set": ["mjolnir", "jarngreipr", "megingjord"]}
 SET_PIECES = {piece for pieces in SETS.values() for piece in pieces}
 SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "chest/necklace",
@@ -63,7 +65,12 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "urashima_rod": "hand",
          "fujin_wind_bag": "hand", "tengu_mask": "head/face", "yashiori_sake": "hand", "kappa_dish": "head/hat",
          "tanuki_leaf": "hand", "kintaro_axe": "mainhand", "zashiki_warashi": "block", "ame_no_nuboko": "hand",
-         "orochi_scale": "hand"}
+         "orochi_scale": "hand",
+         # Grecia 3 y nórdicos 3
+         "zeus_thunderbolt": "mainhand", "nemean_lion_skin": "chest/cape", "achilles_shield": "offhand", "harpe": "mainhand",
+         "golden_bridle": "hand", "apple_of_discord": "hand", "talos_nail": "hand",
+         "gram": "mainhand", "tyrfing": "mainhand", "dainsleif": "mainhand", "freyr_sword": "legs/belt",
+         "falcon_cloak": "chest/back", "mistletoe_dart": "mainhand"}
 
 
 def read(path):
@@ -81,7 +88,7 @@ def constants():
     for name in ("egypt/EgyptRelics.java", "egypt/EgyptGods.java", "greece/GreeceRelics.java", "greece/GreeceHeroes.java",
                  "rome/RomeRelics.java", "norse/NorseRelics.java",
                  "norse/NorseGods.java", "china/ChinaRelics.java", "china/ChinaGods.java",
-                 "japan/JapanRelics.java", "japan/JapanGods.java"):
+                 "japan/JapanRelics.java", "japan/JapanGods.java", "greece/GreeceLegends.java", "norse/NorseSagas.java"):
         src = read(os.path.join(JAVA, *name.split("/")))
         out.update({k: float(v) for k, v in re.findall(r"public static final (?:float|int|double) (\w+) = ([\d.]+)f?;", src)})
     return out
@@ -219,6 +226,26 @@ def tooltip_args(c):
         "ame_no_nuboko": [int(c["NUBOKO_RANGE"]), int(c["NUBOKO_RADIUS"]) * 2 + 1, int(c["NUBOKO_COOLDOWN"] // 20)],
         "orochi_scale": [int(c["OROCHI_TICKS"] // 20), int(c["OROCHI_REACH"]), int(c["OROCHI_BITE"]),
                          int(c["OROCHI_COOLDOWN"] // 20 // 60)],
+        # Grecia 3 (GreeceLegends.tooltipArgs)
+        "zeus_thunderbolt": [int(c["ZEUS_RANGE"]), int(c["ZEUS_DAMAGE"]), int(c["ZEUS_CHAIN_TARGETS"]), int(c["ZEUS_CHAIN_DAMAGE"]),
+                             int(c["ZEUS_STORM_CHAIN_TARGETS"]), int(c["ZEUS_COOLDOWN"] // 20)],
+        "nemean_lion_skin": [round(c["NEMEA_REDUCTION"] * 100), int(c["NEMEA_FIST_DAMAGE"])],
+        "achilles_shield": [int(c["WRATH_MAX"]), int(c["WRATH_TICKS"] // 20), round(c["WRATH_BONUS"] * 100)],
+        "harpe": [round(c["HARPE_HEAD_CHANCE"] * 100), round(c["HARPE_WITHER_SKULL_CHANCE"] * 100),
+                  round(c["HARPE_EXECUTE_HEALTH"] * 100), int(c["HARPE_COOLDOWN"] // 20)],
+        "golden_bridle": [int(c["PEGASUS_DIVE_DAMAGE"]), int(c["PEGASUS_OLYMPUS_Y"]), int(c["PEGASUS_COOLDOWN"] // 20 // 60)],
+        "apple_of_discord": [int(c["APPLE_RANGE"]), int(c["APPLE_TICKS"] // 20), int(c["APPLE_RADIUS"]), int(c["APPLE_COOLDOWN"] // 20)],
+        "talos_nail": [int(c["TALOS_TICKS"] // 20), int(c["TALOS_ROCK_DAMAGE"]), int(c["TALOS_ROCK_INTERVAL"] // 20),
+                       int(c["TALOS_ROCK_RANGE"]), int(c["TALOS_HUG_DAMAGE"]), int(c["TALOS_HUG_FIRE_SECONDS"]),
+                       int(c["TALOS_COOLDOWN"] // 20 // 60)],
+        # Nórdicos 3 (NorseSagas.tooltipArgs)
+        "gram": [int(c["GRAM_CHARGE_TICKS"] // 20), int(c["GRAM_THRUST_DAMAGE"]), int(c["GRAM_BIG_HEALTH"]), int(c["GRAM_COOLDOWN"] // 20)],
+        "tyrfing": [round(c["TYRFING_CRIT"] * 100), int(c["TYRFING_CURSE_TICKS"] // 20), int(c["TYRFING_CURSE_DAMAGE"] / 2)],
+        "dainsleif": [int(c["DAINSLEIF_NO_HEAL_TICKS"] // 20), int(c["DAINSLEIF_BLEED_TICKS"] // 20)],
+        "freyr_sword": [int(c["FREYR_RADIUS"]), int(c["FREYR_DAMAGE"]), round(c["FREYR_BIG_BONUS"] * 100), int(c["FREYR_WISE_LEVEL"]),
+                        round(c["FREYR_WISE_BONUS"] * 100), int(c["FREYR_IDLE_TICKS"] // 20)],
+        "falcon_cloak": [int(c["FALCON_TICKS"] // 20), int(c["FALCON_COOLDOWN"] // 20)],
+        "mistletoe_dart": [int(c["DART_DAMAGE"]), int(c["DART_COOLDOWN"] // 20)],
     }
 
 
@@ -270,6 +297,7 @@ LOOT_TABLE_KEYS = {"desert_pyramid": "loot.mythicrelics.chests.desert_pyramid",
                    "stronghold_library": "loot.mythicrelics.chests.stronghold_library",
                    "trial_chambers_reward": "loot.mythicrelics.chests.trial_chambers.reward",
                    "ancient_city": "loot.mythicrelics.chests.ancient_city",
+                   "village_weaponsmith": "loot.mythicrelics.chests.village.village_weaponsmith",
                    "ocean_ruin_cold_archaeology": "loot.mythicrelics.archaeology.ocean_ruin_cold",
                    "village_shepherd": "loot.mythicrelics.chests.village.village_shepherd",
                    "shipwreck_treasure": "loot.mythicrelics.chests.shipwreck_treasure",

@@ -34,7 +34,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  *   <li>el renacer de Osiris, en la misma comprobación que el tótem;</li>
  *   <li>la égida de Atenea, al bloquear con escudo, y el Ancile, que devuelve los proyectiles bloqueados;</li>
  *   <li>la lámpara de Vesta impide congelarse; el Ancile protege a los aldeanos en una invasión;</li>
- *   <li>China: daño de las ruedas, la piedra, el arco de Hou Yi y el elixir; las ruedas pisan la lava corriendo.</li>
+ *   <li>China: daño de las ruedas, la piedra, el arco de Hou Yi y el elixir; las ruedas pisan la lava corriendo;</li>
+ *   <li>Grecia 3 y nórdicos 3: la piel de Nemea, la cólera de Aquiles al bloquear, Talos, Tyrfing y Dáinsleif (que no
+ *       deja curarse).</li>
  * </ul>
  */
 @Mixin(LivingEntity.class)
@@ -49,8 +51,18 @@ public abstract class LivingEntityMixin {
 		amount = EgyptGods.modifyIncomingDamage(self, source, amount);
 		amount = GreeceHeroes.modifyIncomingDamage(self, source, GreeceRelics.modifyIncomingDamage(self, source, amount));
 		amount = NorseRelics.modifyIncomingDamage(self, source, RomeRelics.modifyIncomingDamage(self, source, amount));
-		return JapanGods.modifyIncomingDamage(self, source,
+		amount = JapanGods.modifyIncomingDamage(self, source,
 				JapanRelics.modifyIncomingDamage(self, source, ChinaRelics.modifyIncomingDamage(self, source, amount)));
+		return io.github.potatustudio.mythicrelics.norse.NorseSagas.modifyIncomingDamage(self, source,
+				io.github.potatustudio.mythicrelics.greece.GreeceLegends.modifyIncomingDamage(self, source, amount));
+	}
+
+	/** Dáinsleif: sus heridas no sanan; el herido no se cura ni regenera mientras dure. */
+	@Inject(method = "heal", at = @At("HEAD"), cancellable = true)
+	private void mythicrelics$dainsleifWound(float amount, CallbackInfo ci) {
+		if (io.github.potatustudio.mythicrelics.norse.NorseSagas.healBlocked((LivingEntity) (Object) this)) {
+			ci.cancel();
+		}
 	}
 
 	@Inject(method = "canBeAffected", at = @At("HEAD"), cancellable = true)
@@ -72,6 +84,7 @@ public abstract class LivingEntityMixin {
 	@Inject(method = "applyItemBlocking", at = @At("RETURN"))
 	private void mythicrelics$ancile(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Float> cir) {
 		RomeRelics.afterBlocking((LivingEntity) (Object) this, source, cir.getReturnValue());
+		io.github.potatustudio.mythicrelics.greece.GreeceLegends.afterBlocking((LivingEntity) (Object) this, source, cir.getReturnValue());
 	}
 
 	/** Lámpara de Vesta: el fuego que no se apaga no te deja congelarte. */

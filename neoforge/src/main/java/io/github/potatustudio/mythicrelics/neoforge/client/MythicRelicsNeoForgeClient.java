@@ -34,6 +34,9 @@ public final class MythicRelicsNeoForgeClient {
 		ICurioRenderer.register(ModItems.ATHENA_AEGIS.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.ICARUS_WINGS.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.GOLDEN_FLEECE.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.NEMEAN_LION_SKIN.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.FREYR_SWORD.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
+		ICurioRenderer.register(ModItems.FALCON_CLOAK.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.CERBERUS_COLLAR.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.WOLF_BULLA.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.JARNGREIPR.get(), () -> new CuriosRelicRenderer(Part.BOTH_ARMS, 0f));

@@ -66,7 +66,7 @@ Fidelidad: ninguna depende de cultura pop. Correcciones: el vellocino no cura (P
 de hinojo, Cerbero no tenía collar (Heracles lo sacó encadenado). Licencias: planeo y aleteos, Héroe de la aldea, la
 ruleta de Pandora con vexes como las keres, el talón «por la espalda», cocinar al instante.
 
-### Grecia, tanda 3 (lista aprobada el 2026-11-12; efectos revisados el 2026-11-14)
+### Grecia, tanda 3 (aprobada y programada el 2026-11-14)
 Elegidas por el usuario entre lo «mainstream que sí es mito». Fuentes: Hesíodo (*Teogonía*), Homero (*Ilíada* XVIII),
 Apolodoro, Píndaro (*Olímpica* 13), Apolonio de Rodas y los *Cantos ciprios*. Decisiones del 2026-11-14: rayo sin fuego
 y con 5 s de recarga (arma a distancia principal: recargas cortas); la harpe se suma al set de Perseo (cuenta con 3 de 4
@@ -167,7 +167,7 @@ Skíðblaðnir y Sleipnir sobre el agua los dos, las 7 reliquias. La cabeza de M
 | Andvaranaut | anillo | Mineral de oro doble y trueques de piglins dobles; maldición: 2 corazones menos y los hostiles te prefieren. | Bastiones, 3 % |
 | Óðrerir | mano (se bebe) | +5 niveles y Prisa I 5 min; una vez por día de Minecraft. | Casas de aldeas de taiga, 3 % |
 
-### Nórdicos, tanda 3 (lista aprobada el 2026-11-12; efectos revisados el 2026-11-14)
+### Nórdicos, tanda 3 (aprobada y programada el 2026-11-14)
 Fuentes: *Edda prosaica* (*Gylfaginning*, *Skáldskaparmál*), *Edda poética* (*Skírnismál*, *Þrymskviða*), *Saga de los
 Volsungos* y *Saga de Hervör*. Decisiones del 2026-11-14: la maldición de «debe matar» solo en Tyrfing (4 corazones cada
 60 s sin matar, aprobada); la espada de Freyr es **pasiva y permanente**, no una invocación por tiempo; el Bifröst queda

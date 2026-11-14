@@ -52,6 +52,8 @@ public final class MythicRelics {
 		ChinaGods.init();
 		JapanRelics.init();
 		JapanGods.init();
+		io.github.potatustudio.mythicrelics.greece.GreeceLegends.init();
+		io.github.potatustudio.mythicrelics.norse.NorseSagas.init();
 		LOGGER.info("Mythic Relics cargado");
 	}
 

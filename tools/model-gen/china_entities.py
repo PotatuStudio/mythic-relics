@@ -482,11 +482,13 @@ JAVA_OUT = os.path.join(ROOT, "common", "src", "main", "java", "io", "github", "
 # (donde va el jinete) quede sobre el segundo segmento; el mono ya tiene el suelo en y = 24.
 ROOT_OFFSET = {"monkey": (0, 0, 0), "dragon": (0, 16, -16), "dog": (0, 0, 0), "qilin": (0, 0, 0), "kitsune": (0, 0, 0),
                "turtle": (0, 0, 0), "orochi": (0, 0, 0),
-               "raven": (0, 0, 0), "skidbladnir": (0, 0, 0)}
+               "raven": (0, 0, 0), "skidbladnir": (0, 0, 0), "falcon": (0, 0, 0),
+               "pegasus": (0, 0, 0), "talos": (0, 0, 0)}
 NAMES = {"monkey": ("monkeyWarrior", "monkey_warrior"), "dragon": ("longDragon", "long_dragon"),
          "dog": ("celestialDog", "celestial_dog"), "qilin": ("qilin", "qilin"), "kitsune": ("kitsune", "kitsune"),
          "turtle": ("urashimaTurtle", "urashima_turtle"), "orochi": ("orochiShadow", "orochi_shadow"),
-         "raven": ("odinRaven", "odin_raven"), "skidbladnir": ("skidbladnir", "boat/skidbladnir")}
+         "raven": ("odinRaven", "odin_raven"), "skidbladnir": ("skidbladnir", "boat/skidbladnir"),
+         "falcon": ("freyjaFalcon", "freyja_falcon"), "pegasus": ("pegasus", "pegasus"), "talos": ("talos", "talos")}
 
 
 def jf(v):
@@ -531,7 +533,7 @@ def write_mod(baked):
            "import net.minecraft.client.model.geom.builders.LayerDefinition;\n"
            "import net.minecraft.client.model.geom.builders.MeshDefinition;\n"
            "import net.minecraft.client.model.geom.builders.PartDefinition;\n\n"
-           "/**\n * Geometría de las entidades chinas (mono guerrero y long). GENERADO por tools/model-gen/china_entities.py\n"
+           "/**\n * Geometría de las entidades del mod (China, Japón, nórdicos y Grecia). GENERADO por tools/model-gen/china_entities.py\n"
            " * --mod a partir del mismo diseño que el visor: no editar a mano.\n */\n"
            "@SuppressWarnings(\"unused\")\n"
            "public final class MythicModelLayers {\n\tprivate MythicModelLayers() {\n\t}\n\n"
@@ -552,6 +554,9 @@ if __name__ == "__main__":
         import norse_entities as NE  # noqa: E402
         for key in NE.MODELS:
             baked[key] = NE.bake_one(key)
+        import greece_entities as GE  # noqa: E402  (Grecia 3: Pegaso y Talos)
+        for key in GE.MODELS:
+            baked[key] = GE.bake_one(key)
         os.makedirs(os.path.join(ENTITY_TEX, "boat"), exist_ok=True)
         write_mod(baked)
         print("ok: texturas en", ENTITY_TEX, "y", JAVA_OUT)

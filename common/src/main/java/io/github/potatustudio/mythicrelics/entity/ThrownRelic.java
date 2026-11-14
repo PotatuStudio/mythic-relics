@@ -70,6 +70,15 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 		return getItem().is(ModItems.MJOLNIR.get());
 	}
 
+	private boolean isDart() {
+		return getItem().is(ModItems.MISTLETOE_DART.get());
+	}
+
+	/** Muérdago: nada juró protegerlo, así que ignora la armadura, la Resistencia y los encantamientos de protección. */
+	public static final net.minecraft.resources.ResourceKey<net.minecraft.world.damagesource.DamageType> MISTLETOE =
+			net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DAMAGE_TYPE,
+					io.github.potatustudio.mythicrelics.MythicRelics.id("mistletoe"));
+
 	@Override
 	protected ItemStack getDefaultPickupItem() {
 		return new ItemStack(ModItems.MJOLNIR.get());
@@ -123,6 +132,18 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 		DamageSource source = damageSources().trident(this, owner == null ? this : owner);
 		dealtDamage = true;
 		float damage = isMjolnir() ? NorseRelics.MJOLNIR_DAMAGE : NorseRelics.GUNGNIR_DAMAGE;
+		if (isDart()) {
+			source = new DamageSource(level().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.DAMAGE_TYPE)
+					.getOrThrow(MISTLETOE), this, owner == null ? this : owner);
+			damage = io.github.potatustudio.mythicrelics.norse.NorseSagas.DART_DAMAGE;
+			if (target instanceof LivingEntity living && io.github.potatustudio.mythicrelics.greece.GreeceLegends.isBoss(living)) {
+				damage *= io.github.potatustudio.mythicrelics.norse.NorseSagas.DART_BOSS_MULTIPLIER;
+			}
+			if (level() instanceof ServerLevel level) {
+				level.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, target.getX(), target.getY(0.6), target.getZ(),
+						12, 0.3, 0.3, 0.3, 0.0);
+			}
+		}
 		if (level() instanceof ServerLevel level && target.hurtServer(level, source, damage)) {
 			if (isMjolnir() && (level.isThundering() || NorseRelics.hasThorSet(owner))) {
 				// Rayo sin fuego: no quema el terreno.

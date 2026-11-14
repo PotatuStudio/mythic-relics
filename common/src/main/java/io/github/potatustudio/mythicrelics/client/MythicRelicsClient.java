@@ -59,6 +59,17 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.OROCHI_SHADOW, ChinaRenderers.OrochiRenderer::new);
 		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
 		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, io.github.potatustudio.mythicrelics.client.entity.ThrownRelicRenderer::new);
+		// Grecia 3 y nórdicos 3.
+		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.PegasusModel.LAYER,
+				io.github.potatustudio.mythicrelics.client.entity.PegasusModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.PEGASUS, ChinaRenderers.PegasusRenderer::new);
+		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.TalosModel.LAYER,
+				io.github.potatustudio.mythicrelics.client.entity.TalosModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.TALOS, ChinaRenderers.TalosRenderer::new);
+		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.FreyjaFalconModel.LAYER,
+				io.github.potatustudio.mythicrelics.client.entity.FreyjaFalconModel::createBodyLayer);
+		EntityRendererRegistry.register(ModEntities.FREYJA_FALCON, ChinaRenderers.FalconRenderer::new);
+		EntityRendererRegistry.register(ModEntities.FREYR_SWORD, io.github.potatustudio.mythicrelics.client.entity.FreyrSwordRenderer::new);
 		GreeceClient.init();
 		RelicTooltips.init();
 		PetrifiedClient.init();

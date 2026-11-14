@@ -24,6 +24,7 @@ public class ThrownRelicRenderer extends EntityRenderer<ThrownRelic, ThrownRelic
 		float xRot;
 		float yRot;
 		boolean hammer;
+		boolean dart;
 	}
 
 	private final ItemModelResolver items;
@@ -45,6 +46,7 @@ public class ThrownRelicRenderer extends EntityRenderer<ThrownRelic, ThrownRelic
 		state.xRot = entity.getXRot(partialTick);
 		state.yRot = entity.getYRot(partialTick);
 		state.hammer = entity.getItem().is(ModItems.MJOLNIR.get());
+		state.dart = entity.getItem().is(ModItems.MISTLETOE_DART.get());
 	}
 
 	@Override
@@ -54,7 +56,11 @@ public class ThrownRelicRenderer extends EntityRenderer<ThrownRelic, ThrownRelic
 		poseStack.rotateDegrees(Axis.ZP, state.xRot + 90.0f);
 		// El modelo del ítem tiene la punta hacia +y; el tridente, hacia -y.
 		poseStack.rotateDegrees(Axis.ZP, 180.0f);
-		if (state.hammer) {
+		if (state.dart) {
+			// El dardo es el ícono plano (en diagonal): se gira 45° para que la punta vaya por delante.
+			poseStack.rotateDegrees(Axis.ZP, 45.0f);
+			poseStack.scale(1.6f, 1.6f, 1.6f);
+		} else if (state.hammer) {
 			poseStack.rotateDegrees(Axis.XP, state.ageInTicks * 30.0f);
 			poseStack.scale(1.1f, 1.1f, 1.1f);
 		} else {

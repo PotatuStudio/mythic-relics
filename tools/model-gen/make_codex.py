@@ -45,11 +45,13 @@ CULTURE_INFO = {
         "wiki": "grecia.md", "title": "Grecia", "icon": "hades_helm", "intro_icon": "minecraft:chiseled_quartz_block",
         "positions": {
             "intro": (0, 0),
-            "hermes_sandals": (-2, 2), "hades_helm": (0, 2), "athena_aegis": (2, 2), "perseus_set": (0, 4),
+            "hermes_sandals": (-2, 2), "hades_helm": (0, 2), "athena_aegis": (2, 2), "perseus_set": (0, 4), "harpe": (2, 4),
             "medusa_head": (0, 6),
             "ariadne_thread": (-3, 8), "charon_obol": (0, 8), "orpheus_lyre": (3, 8),
             "icarus_wings": (-2, 11), "golden_fleece": (0, 11), "cerberus_collar": (2, 11),
             "pandora_jar": (-2, 13), "styx_water": (0, 13), "prometheus_fennel": (2, 13),
+            "nemean_lion_skin": (-2, 16), "zeus_thunderbolt": (0, 16), "achilles_shield": (2, 16),
+            "golden_bridle": (-2, 18), "apple_of_discord": (0, 18), "talos_nail": (2, 18),
         },
     },
     "rome": {
@@ -69,6 +71,8 @@ CULTURE_INFO = {
             "idunn_apples": (0, 9),
             "sleipnir_horseshoe": (-3, 12), "odin_ravens": (-1, 12), "mimir_head": (1, 12), "brisingamen": (3, 12),
             "skidbladnir": (-2, 14), "andvaranaut": (0, 14), "odrerir": (2, 14),
+            "gram": (-2, 17), "tyrfing": (0, 17), "dainsleif": (2, 17),
+            "freyr_sword": (-2, 19), "falcon_cloak": (0, 19), "mistletoe_dart": (2, 19),
         },
     },
     "china": {

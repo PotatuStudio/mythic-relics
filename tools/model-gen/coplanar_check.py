@@ -8,8 +8,8 @@ ASSETS = r"C:\dev\mods\mythic-relics\common\src\main\resources\assets\mythicreli
 # cada parte tiene sus propias coordenadas).
 PARTS = {
     "cuerpo": {"collar": ["ankh", "bastet_amulet", "cerberus_collar", "wolf_bulla", "brisingamen", "yasakani_magatama"],
-               "cinturón": ["golden_scarab", "megingjord", "five_color_stone"],
-               "espalda": ["athena_aegis", "icarus_wings", "raijin_drum"], "capa": ["golden_fleece"]},
+               "cinturón": ["golden_scarab", "megingjord", "five_color_stone", "freyr_sword"],
+               "espalda": ["athena_aegis", "icarus_wings", "raijin_drum", "falcon_cloak"], "capa": ["golden_fleece", "nemean_lion_skin"]},
     "cabeza": {"cara": ["eye_of_horus", "jackal_mask", "erlang_eye", "tengu_mask"], "sombrero": ["ra_disk", "hades_helm", "kappa_dish"]},
     "brazo": {"anillo": ["jackal_ring", "draupnir", "andvaranaut", "pixiu_bracelet"],
               "guantes": ["mummy_wraps", "sekhmet_claws", "jarngreipr"]},

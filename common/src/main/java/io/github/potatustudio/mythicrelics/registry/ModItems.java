@@ -218,6 +218,37 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> AME_NO_NUBOKO = register("ame_no_nuboko", AmeNoNubokoItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> OROCHI_SCALE = register("orochi_scale", OrochiScaleItem::new, p -> p.rarity(Rarity.EPIC));
 
+	// Grecia, tercera tanda.
+	public static final RegistrySupplier<Item> ZEUS_THUNDERBOLT = register("zeus_thunderbolt",
+			io.github.potatustudio.mythicrelics.greece.ZeusThunderboltItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> NEMEAN_LION_SKIN = relic("nemean_lion_skin", p -> p.rarity(Rarity.EPIC));
+	// Escudo como el Ancile: bloquea como el vanilla y nunca se rompe; la cólera la suma GreeceLegends.
+	public static final RegistrySupplier<Item> ACHILLES_SHIELD = relic("achilles_shield", p -> p.rarity(Rarity.EPIC)
+			.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(0.25f, 1.0f,
+					List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0.0f, 1.0f)),
+					new BlocksAttacks.ItemDamageFunction(3.0f, 1.0f, 1.0f), Optional.empty(),
+					Optional.of(SoundEvents.SHIELD_BLOCK), Optional.of(SoundEvents.SHIELD_BREAK))));
+	public static final RegistrySupplier<Item> HARPE = register("harpe", io.github.potatustudio.mythicrelics.greece.HarpeItem::new,
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 4.0f, -2.2f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> GOLDEN_BRIDLE = register("golden_bridle",
+			io.github.potatustudio.mythicrelics.greece.GoldenBridleItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> APPLE_OF_DISCORD = register("apple_of_discord",
+			io.github.potatustudio.mythicrelics.greece.AppleOfDiscordItem::new, p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> TALOS_NAIL = register("talos_nail",
+			io.github.potatustudio.mythicrelics.greece.TalosNailItem::new, p -> p.rarity(Rarity.EPIC));
+
+	// Nórdicos, tercera tanda.
+	public static final RegistrySupplier<Item> GRAM = register("gram", io.github.potatustudio.mythicrelics.norse.GramItem::new,
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -2.5f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> TYRFING = relic("tyrfing", p -> p.rarity(Rarity.EPIC)
+			.sword(ToolMaterial.IRON, 7.0f, -2.6f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> DAINSLEIF = relic("dainsleif", p -> p.rarity(Rarity.EPIC)
+			.sword(ToolMaterial.IRON, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+	public static final RegistrySupplier<Item> FREYR_SWORD = relic("freyr_sword", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> FALCON_CLOAK = relic("falcon_cloak", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> MISTLETOE_DART = register("mistletoe_dart", p -> new ThrownRelicItem(p, false),
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 1.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+
 	/** Estatua de piedra de un mob que murió petrificado por la cabeza de Medusa (no es una reliquia). */
 	public static final RegistrySupplier<Item> STONE_STATUE = register("stone_statue",
 			io.github.potatustudio.mythicrelics.greece.StoneStatueItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));

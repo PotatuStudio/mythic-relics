@@ -117,10 +117,17 @@ public final class GreeceRelics {
 		CharonStash.init();
 	}
 
+	/** Set de Perseo: tres de sus cuatro piezas (sandalias, yelmo y égida puestas; la harpe en la mano o en el inventario). */
 	public static boolean hasPerseusSet(LivingEntity entity) {
-		return EgyptRelics.isWearing(entity, ModItems.HERMES_SANDALS) && EgyptRelics.isWearing(entity, ModItems.HADES_HELM)
-				&& EgyptRelics.isWearing(entity, ModItems.ATHENA_AEGIS);
+		int pieces = (EgyptRelics.isWearing(entity, ModItems.HERMES_SANDALS) ? 1 : 0) + (EgyptRelics.isWearing(entity, ModItems.HADES_HELM) ? 1 : 0)
+				+ (EgyptRelics.isWearing(entity, ModItems.ATHENA_AEGIS) ? 1 : 0);
+		boolean harpe = entity instanceof net.minecraft.world.entity.player.Player player
+				? player.getInventory().contains(s -> s.is(ModItems.HARPE.get()))
+				: entity.getMainHandItem().is(ModItems.HARPE.get());
+		return pieces + (harpe ? 1 : 0) >= PERSEUS_SET_PIECES;
 	}
+
+	public static final int PERSEUS_SET_PIECES = 3;
 
 	// ---- Hermes ------------------------------------------------------------------------------------------------------
 

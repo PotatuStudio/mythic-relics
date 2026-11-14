@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-12 (pendientes menores: visor, ícono del mod, Orochi). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
+Última sesión: 2026-11-14 (Grecia 3 y nórdicos 3 programadas; recargas más cortas en armas principales). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
 programadas). El usuario ya empezó a probar en NeoForge (con `runClient` en su PC) y se hicieron cuatro rondas de
 arreglos con lo que reportó; ver «Arreglos tras…» y «Después». Para retomar: leer «Después», punto 1.
 
@@ -297,6 +297,29 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
   (visor de aliados y, con `--mod`, la geometría en Java y las texturas del mono y del long).
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
+## Grecia 3 y nórdicos 3 (programadas el 2026-11-14)
+Diseño aprobado en las páginas `tools/design-page/grecia-tanda-3.html`, `grecia-criaturas.html`,
+`nordicos-tanda-3.html` y `nordicos-espada-freyr.html` (fichas en `docs/ideas.md`). Lógica en `greece/GreeceLegends`
+(constantes, daño, cólera de Aquiles, aviso de la harpe, manzana, Talos) y `norse/NorseSagas` (Gram, Tyrfing,
+Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (JapanGods → GreeceLegends → NorseSagas) y
+`modifyIncomingDamage` en `LivingEntityMixin`, que además cancela `heal` mientras dura la herida de Dáinsleif.
+- Ítems: `ZeusThunderboltItem` (carga 0,5 s, rayo visual del vanilla + daño aparte, salta a 3/5 hostiles), `HarpeItem`
+  (decapita con clic derecho bajo el 25 %, cabezas de trofeo en `GreeceLegends.onDeath`), `GoldenBridleItem`,
+  `AppleOfDiscordItem`, `TalosNailItem`, `GramItem` (estocada cargada 1 s); Tyrfing, Dáinsleif, la piel, el escudo
+  (`BLOCKS_ATTACKS` como el Ancile), la espada de Freyr y el manto son `relic(...)`; el dardo es un `ThrownRelicItem`
+  con su rama en `ThrownRelic` y el tipo de daño `mythicrelics:mistletoe` (data + tags `bypasses_armor/resistance/
+  enchantments`).
+- Entidades: `Pegasus` (vuela con salto, planea, picada de 12, tábano sobre Y 200), `Talos` (aliado de `Minions`, rocas
+  = bola de nieve con la etiqueta `mythicrelics.talos_rock`, abrazo con fuego, da vueltas al dueño), `FreyrSword` (Mob
+  sin IA movido con `setPos` y seguimiento amortiguado; posición cada tick) y `FreyjaFalcon` (figura que sigue al jugador
+  invisible). Geometría en `greece_entities.py` y `norse_entities.py` (halcón), exportada por `china_entities.py --mod`.
+- Halcón: el cliente (`GreeceClient`) manda `FalconPayload` con un toque de salto en el aire (después del doble salto
+  si hay sandalias o máscara de tengu); el servidor da vuelo de creativo 20 s, invisibilidad y la figura.
+- Set de Perseo: ahora 4 piezas (con la harpe en la mano o el inventario), se activa con 3.
+- Íconos: `greece3_icons.py` (incluye el escudo 3D, como el Ancile) y `norse3_icons.py`; puestos en `worn_models.py`
+  (piel con la cabeza del león colgando detrás de la nuca, espada envainada al frente de la cadera, manto).
+- Botín nuevo: armeros de aldea (`VILLAGE_WEAPONSMITH`) para Gram.
+
 ## Después
 1. **Seguir probando en el juego** (NeoForge en el PC del usuario, con Jade para ver la vida). Lo pendiente de confirmar
    tras la cuarta ronda:
@@ -311,6 +334,12 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
    - Set de Anubis y lira (que los mobs no disparen), doble salto de Hermes y tengu, recarga y bloque de set en los
      tooltips, pestañas por mitología, ícono del mod en la lista.
    - Todo lo de Japón 2 (ver su sección) y lo de las rondas de arreglos.
+   - Grecia 3 y nórdicos 3 (ver su sección): rayo (salto entre enemigos, sin fuego), piel de Nemea, cólera del escudo
+     y que bloquee bien en la mano, harpe (aviso, decapitar, cabezas, set de Perseo con 3 de 4), Pegaso (despegar,
+     planear, picada, tábano), manzana, Talos (rocas, abrazo, vueltas, tobillo); Gram (estocada y aviso), Tyrfing
+     (críticos, chispas, maldición), Dáinsleif (sin curación y sangrado), espada de Freyr (sale, pelea, vuelve; que se
+     vea suave y bien orientada en el renderizador), halcón (activar en el aire, volar, volver al ser golpeado) y dardo
+     (orientación en vuelo, daño que ignora armadura). Recargas nuevas de Kusanagi, lanza de Nezha y Ruyi.
    Después, probar también en Fabric (Trinkets).
 2. **Cuando el usuario apruebe las pruebas: Chile/mapuche** como tanda especial (los celtas se descartaron el
    2026-11-10). Flujo: enseñar el mito, proponer reliquias (fiel / licencia / pop), página de diseño, preguntas con

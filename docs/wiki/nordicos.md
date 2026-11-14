@@ -22,6 +22,12 @@ Están donde su mito calza: el frío del norte, las minas de los enanos y las pr
 | ![](img/mimir_head.png) | [Cabeza de Mímir](#mimir-head) | mano secundaria | épica | Cruces de la fortaleza: 4 % por cofre |
 | ![](img/andvaranaut.png) | [Andvaranaut](#andvaranaut) | anillo | épica | Tesoros de bastiones: 3 % por cofre |
 | ![](img/odrerir.png) | [Óðrerir](#odrerir) | mano | rara | Casas de aldeas de taiga: 3 % por cofre |
+| ![](img/gram.png) | [Gram](#gram) | mano (arma) | épica | Armeros de aldea: 2 % por cofre |
+| ![](img/tyrfing.png) | [Tyrfing](#tyrfing) | mano (arma) | épica | Tesoros de bastiones: 2 % por cofre |
+| ![](img/dainsleif.png) | [Dáinsleif](#dainsleif) | mano (arma) | épica | Ciudades antiguas: 3 % por cofre |
+| ![](img/freyr_sword.png) | [Espada de Freyr](#freyr-sword) | cinturón | épica | Mansiones del bosque: 3 % por cofre |
+| ![](img/falcon_cloak.png) | [Manto de plumas de halcón](#falcon-cloak) | espalda | épica | Casas de aldeas de taiga: 3 % por cofre |
+| ![](img/mistletoe_dart.png) | [Dardo de muérdago](#mistletoe-dart) | mano (arma) | épica | Mansiones del bosque: 3 % por cofre |
 
 <a id="mjolnir"></a>
 ## Mjölnir
@@ -251,6 +257,102 @@ Así fue con Hreidmar, con Fafnir y con Sigurd.
 Odín se lo robó a los gigantes convertido en águila.
 
 **Dónde encontrarla.** **Casas de aldeas de taiga**: 3 % por cofre
+
+<a id="gram"></a>
+## Gram
+
+<img src="img/gram.png" width="64" alt="">
+
+**Espacio:** mano (arma) · **Rareza:** épica
+
+- Mantén clic derecho 1 s y suelta: estocada desde el foso de 20 de daño
+- El doble contra mobs de 100 de vida o más (dragón, Wither, devastador, gólem, Warden)
+- Cuando apuntas a uno así y está lista, brilla y suena un aviso
+- Recarga: 12 s
+
+**Mito.** Odín clavó una espada en el árbol Barnstokkr y solo Sigmund pudo sacarla. El herrero Regin reforjó sus pedazos para Sigurd: Gram partió el yunque de un golpe.  
+Con ella Sigurd mató al dragón Fáfnir desde un foso, hiriéndolo desde abajo.
+
+**Dónde encontrarla.** **Armeros de aldea**: 2 % por cofre
+
+<a id="tyrfing"></a>
+## Tyrfing
+
+<img src="img/tyrfing.png" width="64" alt="">
+
+**Espacio:** mano (arma) · **Rareza:** épica
+
+- Nunca falla: todos tus golpes son críticos (+50% de daño)
+- Brilla como el fuego
+- Maldición: si pasa 60 s en tu mano sin matar, te hiere 4 corazones
+
+**Mito.** El rey Svafrlami obligó a los enanos Dvalinn y Durinn a forjarle una espada que no fallara nunca: brillaba como el fuego y cortaba hierro como tela.  
+Pero la maldijeron: cada vez que se desenvainara tendría que matar a un hombre.
+
+**Dónde encontrarla.** **Tesoros de bastiones**: 2 % por cofre
+
+<a id="dainsleif"></a>
+## Dáinsleif
+
+<img src="img/dainsleif.png" width="64" alt="">
+
+**Espacio:** mano (arma) · **Rareza:** épica
+
+- Heridas que no sanan: el golpeado no se cura ni regenera por 10 s y sangra medio corazón por segundo durante 4 s
+
+**Mito.** La espada del rey Högni en la batalla de los Hjaðningar, que no termina nunca: cada noche la valquiria Hildr revive a los caídos.  
+La forjaron los enanos y sus heridas nunca sanaban.
+
+**Dónde encontrarla.** **Ciudades antiguas**: 3 % por cofre
+
+<a id="freyr-sword"></a>
+## Espada de Freyr
+
+<img src="img/freyr_sword.png" width="64" alt="">
+
+**Espacio:** cinturón · **Rareza:** épica
+
+- Va envainada a tu costado. En combate (o con un hostil persiguiéndote a 12 bloques) sale y pelea sola
+- 5 de daño por tajo; +50% contra mobs grandes
+- +50% si tienes 30 niveles o más («si su portador es sabio»)
+- No se puede herir. A los 5 s sin combate vuelve a la vaina
+
+**Mito.** Freyr, el señor del sol de verano y de Álfheimr, tenía una espada que peleaba sola contra los gigantes si la llevaba alguien sabio.  
+Se la dio a Skírnir para pedir la mano de Gerðr; por eso en el Ragnarök enfrentará a Surtr solo con un asta de ciervo.
+
+**Dónde encontrarla.** **Mansiones del bosque**: 3 % por cofre
+
+<a id="falcon-cloak"></a>
+## Manto de plumas de halcón
+
+<img src="img/falcon_cloak.png" width="64" alt="">
+
+**Espacio:** espalda · **Rareza:** épica
+
+- Toca el salto en el aire (después del doble salto, si lo tienes): te vuelves halcón 20 s
+- Vuelas libre, pero no puedes atacar ni usar objetos; si te golpean, vuelves a ser humano y caes lento
+- Recarga: 90 s
+
+**Mito.** Freyja tenía un manto de plumas de halcón que convertía en halcón a quien se lo ponía.  
+Loki se lo pidió prestado para buscar el martillo que le robaron a Thor y para rescatar a Iðunn, que llevó de vuelta a Asgard convertida en nuez.
+
+**Dónde encontrarla.** **Casas de aldeas de taiga**: 3 % por cofre
+
+<a id="mistletoe-dart"></a>
+## Dardo de muérdago
+
+<img src="img/mistletoe_dart.png" width="64" alt="">
+
+**Espacio:** mano (arma) · **Rareza:** épica
+
+- Mantén clic derecho y suelta para lanzarlo; vuelve a tu mano
+- 12 de daño que ignora armadura, Resistencia y encantamientos de protección; el doble contra jefes
+- Recarga: 20 s
+
+**Mito.** Frigg hizo jurar a todas las cosas que no dañarían a su hijo Baldr; solo dejó fuera al muérdago, que le pareció demasiado joven.  
+Loki, disfrazado de anciana, le sacó el secreto, hizo un dardo de muérdago y se lo puso en la mano al ciego Höðr, que lo lanzó y mató a Baldr.
+
+**Dónde encontrarla.** **Mansiones del bosque**: 3 % por cofre
 
 ## Set de Thor
 

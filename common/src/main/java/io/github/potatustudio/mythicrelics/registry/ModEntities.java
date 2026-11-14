@@ -153,6 +153,42 @@ public final class ModEntities {
 					.clientTrackingRange(10)
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("skidbladnir_boat"))));
 
+	/** Pegaso, montura de la brida de oro (no es noSave para poder montarlo; no se guarda por shouldBeSaved). */
+	public static final RegistrySupplier<EntityType<io.github.potatustudio.mythicrelics.entity.Pegasus>> PEGASUS =
+			ENTITIES.register("pegasus", () -> EntityType.Builder.of(io.github.potatustudio.mythicrelics.entity.Pegasus::new,
+							MobCategory.MISC)
+					.sized(1.4f, 1.7f)
+					.clientTrackingRange(10)
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("pegasus"))));
+	/** Talos, el gigante de bronce del clavo (aliado; no se guarda con el mundo). */
+	public static final RegistrySupplier<EntityType<io.github.potatustudio.mythicrelics.entity.Talos>> TALOS =
+			ENTITIES.register("talos", () -> EntityType.Builder.of(io.github.potatustudio.mythicrelics.entity.Talos::new,
+							MobCategory.MISC)
+					.sized(1.5f, 2.9f)
+					.clientTrackingRange(10)
+					.fireImmune()
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("talos"))));
+	/** La espada de Freyr cuando sale a pelear sola (posición cada tick: se mueve rápido y debe verse suave). */
+	public static final RegistrySupplier<EntityType<io.github.potatustudio.mythicrelics.entity.FreyrSword>> FREYR_SWORD =
+			ENTITIES.register("freyr_sword", () -> EntityType.Builder.of(io.github.potatustudio.mythicrelics.entity.FreyrSword::new,
+							MobCategory.MISC)
+					.sized(0.5f, 0.5f)
+					.clientTrackingRange(10)
+					.updateInterval(1)
+					.fireImmune()
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("freyr_sword"))));
+	/** El halcón del manto de Freyja (la figura del jugador transformado; posición cada tick para no quedarse atrás). */
+	public static final RegistrySupplier<EntityType<io.github.potatustudio.mythicrelics.entity.FreyjaFalcon>> FREYJA_FALCON =
+			ENTITIES.register("freyja_falcon", () -> EntityType.Builder.of(io.github.potatustudio.mythicrelics.entity.FreyjaFalcon::new,
+							MobCategory.MISC)
+					.sized(0.6f, 0.5f)
+					.clientTrackingRange(10)
+					.updateInterval(1)
+					.noSave()
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("freyja_falcon"))));
+
 	private ModEntities() {
 	}
 
@@ -170,5 +206,9 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(URASHIMA_TURTLE, UrashimaTurtle::createAttributes);
 		EntityAttributeRegistry.register(OROCHI_SHADOW, OrochiShadow::createAttributes);
 		EntityAttributeRegistry.register(ODIN_RAVEN, io.github.potatustudio.mythicrelics.entity.OdinRaven::createAttributes);
+		EntityAttributeRegistry.register(PEGASUS, io.github.potatustudio.mythicrelics.entity.Pegasus::createAttributes);
+		EntityAttributeRegistry.register(TALOS, io.github.potatustudio.mythicrelics.entity.Talos::createAttributes);
+		EntityAttributeRegistry.register(FREYR_SWORD, io.github.potatustudio.mythicrelics.entity.FreyrSword::createAttributes);
+		EntityAttributeRegistry.register(FREYJA_FALCON, io.github.potatustudio.mythicrelics.entity.FreyjaFalcon::createAttributes);
 	}
 }
