@@ -3,7 +3,8 @@
 > **Estado (2026-11-14, segunda sesión): hecho.** Etapas 1 a 5 en `main` (`bdc589e`, `9f14cba`, `9ed0c53`, `e27a606`,
 > `55d15ca`) y la 6 completa: `relic/DamageModifiers` (`4cd6392`), una clase de geometría por entidad en
 > `client/entity/geometry` generada por `china_entities.py --mod` (`66bcbcf`) y los resúmenes `.summary` del tooltip
-> corto (`summaries_lang.py`). Los resúmenes son textos nuevos: quedan para que> el usuario los revise en el juego. Diferencias con el plan: `isFriend` unificado considera aliado a cualquier entidad del mismo equipo (antes
+> corto (`summaries_lang.py`). Los resúmenes son textos nuevos: quedan para que
+> el usuario los revise en el juego. Diferencias con el plan: `isFriend` unificado considera aliado a cualquier entidad del mismo equipo (antes
 > la versión de China solo a jugadores); `TooltipArgs` guarda arreglos (todo es constante) en vez de `Supplier`; no se
 > agregaron ayudantes de segundos y minutos (los `/ 20` de los tooltips se dejaron como están).
 
