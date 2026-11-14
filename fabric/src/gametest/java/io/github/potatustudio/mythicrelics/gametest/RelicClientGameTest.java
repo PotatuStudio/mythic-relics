@@ -76,6 +76,9 @@ public class RelicClientGameTest implements FabricClientGameTest {
 			if (run.test("puestas")) {
 				worn(ctx, srv, relics);
 			}
+			if (run.test("una")) {
+				wornOneByOne(ctx, srv, relics);
+			}
 			if (run.test("entidades")) {
 				entities(ctx, srv, sp);
 			}
@@ -136,6 +139,17 @@ public class RelicClientGameTest implements FabricClientGameTest {
 	}
 
 	private void shot(ClientGameTestContext ctx, String name) {
+		// Tras un tp el cuerpo se queda girado respecto de la cabeza (hasta 50°) y las reliquias se ven torcidas:
+		// se alinea el cuerpo con la mirada antes de cada captura.
+		ctx.runOnClient(mc -> {
+			if (mc.player != null) {
+				float yaw = mc.player.getYRot();
+				mc.player.yBodyRot = yaw;
+				mc.player.yBodyRotO = yaw;
+				mc.player.yHeadRot = yaw;
+				mc.player.yHeadRotO = yaw;
+			}
+		});
 		ctx.takeScreenshot(TestScreenshotOptions.of(name).withSize(640, 360).withDestinationDir(out).disableCounterPrefix());
 	}
 
@@ -303,6 +317,38 @@ public class RelicClientGameTest implements FabricClientGameTest {
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
 			shot(ctx, "puestas" + r + "_lado");
 			place(srv, 0.5, 0.5, 0, 10);
+		}
+		camera(ctx, CameraType.FIRST_PERSON);
+	}
+
+	/** Cada reliquia puesta sola, de frente, de espalda y de lado (para revisar su modelo sin otras encima). */
+	private void wornOneByOne(ClientGameTestContext ctx, TestServerContext srv, List<Item> relics) {
+		reset(ctx, srv);
+		for (Item item : relics) {
+			boolean worn = srv.computeOnServer(s -> {
+				ServerPlayer p = player(s);
+				unequipAll(p);
+				return equip(p, new ItemStack(item));
+			});
+			if (!worn) {
+				continue;
+			}
+			place(srv, 0.5, 0.5, 0, 10);
+			camera(ctx, CameraType.THIRD_PERSON_FRONT);
+			ctx.waitTicks(4);
+			shot(ctx, "una_" + id(item) + "_1frente");
+			camera(ctx, CameraType.THIRD_PERSON_BACK);
+			ctx.waitTicks(2);
+			shot(ctx, "una_" + id(item) + "_2espalda");
+			place(srv, 0.5, 0.5, 90, 10);
+			camera(ctx, CameraType.THIRD_PERSON_FRONT);
+			ctx.waitTicks(3);
+			shot(ctx, "una_" + id(item) + "_3lado");
+			// Desde arriba: mirando hacia abajo, la cámara de espalda queda sobre el jugador.
+			place(srv, 0.5, 0.5, 0, 90);
+			camera(ctx, CameraType.THIRD_PERSON_BACK);
+			ctx.waitTicks(3);
+			shot(ctx, "una_" + id(item) + "_4arriba");
 		}
 		camera(ctx, CameraType.FIRST_PERSON);
 	}
