@@ -1,5 +1,5 @@
-"""Página para elegir el nuevo ícono del mod y el emblema de la pestaña creativa.
-Uso: python ../model-gen/emblem_concepts.py <carpeta> && python emblem_page.py <carpeta>  (escribe emblema-opciones.html)"""
+"""Página para elegir el nuevo ícono del mod y el emblema de la pestaña creativa (segunda ronda: un solo símbolo).
+Uso: python ../model-gen/emblem_concepts2.py <carpeta> && python emblem_page.py <carpeta>  (escribe emblema-opciones.html)"""
 import base64
 import os
 import sys
@@ -12,40 +12,30 @@ def b64(name):
     return base64.b64encode(open(os.path.join(D, name), "rb").read()).decode()
 
 
-SYMS = [("egypt", "Egipto", "La pirámide con el disco solar de Ra"), ("greece", "Grecia", "El templo de columnas con su frontón"),
-        ("rome", "Roma", "El águila de las legiones sobre su estandarte"), ("norse", "Nórdicos", "El barco vikingo con proa de dragón"),
-        ("china", "China", "El long con sus aletas rojas y la perla"), ("japan", "Japón", "El torii rojo con el sol naciente")]
-syms = "\n".join(f'''<figure class="sym"><img src="data:image/png;base64,{b64(f"sym_{k}.png")}" alt="{name}"><figcaption><b>{name}</b><br>{desc}</figcaption></figure>'''
-                 for k, name, desc in SYMS)
+CONCEPTS = [
+    ("ouroboros", "1", "Ouroboros", "La serpiente de oro que se muerde la cola rodeando una gema de reliquia. Está en Egipto (el Libro del Mundo Inferior), le da nombre el griego y es Jörmungandr en el mito nórdico: el ciclo eterno de los mitos. Se reconoce incluso a 16 px."),
+    ("tree", "2", "Árbol del mundo", "El eje del cosmos con frutos de oro bajo el cielo estrellado: Yggdrasil, el Fusang chino donde descansan los soles, el árbol de las Hespérides. El más cálido y mitológico de los tres."),
+    ("altar", "3", "La reliquia en su altar", "Un pedestal antiguo de piedra con una reliquia que flota y brilla: lo que el mod te hace buscar. El más directo sobre «reliquias», el menos sobre «mitos»."),
+]
 
 
-def icon_card(key, title, desc):
-    data = b64(f"icon_{key}.png")
+def card(key, n, title, desc):
+    big, tab = b64(f"c2_{key}.png"), b64(f"c2_{key}_tab.png")
     return f'''<article class="card">
-  <h3><span class="key">{key}</span> {title}</h3>
+  <h3><span class="key">{n}</span> {title}</h3>
   <div class="row">
-    <img class="i128" src="data:image/png;base64,{data}" alt="{title} a 128 px">
+    <img class="i128" src="data:image/png;base64,{big}" alt="{title}, ícono del mod">
     <div class="small">
-      <figure><img class="i64" src="data:image/png;base64,{data}" alt=""><figcaption>64 px</figcaption></figure>
-      <figure><img class="i32" src="data:image/png;base64,{data}" alt=""><figcaption>32 px (lista de mods)</figcaption></figure>
+      <figure><img class="i64" src="data:image/png;base64,{big}" alt=""><figcaption>64 px</figcaption></figure>
+      <figure><img class="i32" src="data:image/png;base64,{big}" alt=""><figcaption>32 px (lista de mods)</figcaption></figure>
+      <figure><div class="tab"><img src="data:image/png;base64,{tab}" alt=""></div><figcaption>Pestaña (16 px)</figcaption></figure>
     </div>
   </div>
   <p>{desc}</p>
 </article>'''
 
 
-def tab_card(key, title, desc):
-    data = b64(f"tab_{key}.png")
-    return f'''<article class="card">
-  <h3><span class="key">T{key}</span> {title}</h3>
-  <div class="row">
-    <img class="t160" src="data:image/png;base64,{data}" alt="{title} ampliado">
-    <figure><div class="tab"><img src="data:image/png;base64,{data}" alt=""></div><figcaption>En la pestaña</figcaption></figure>
-  </div>
-  <p>{desc}</p>
-</article>'''
-
-
+cards = "\n".join(card(*c) for c in CONCEPTS)
 html = f'''<title>Emblema de Mythic Relics</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -65,13 +55,13 @@ img {{ image-rendering: pixelated; display: block; }}
   border: 1px solid var(--line); border-radius: 8px; padding: 12px; }}
 .sym img {{ width: 112px; height: 112px; }}
 figcaption {{ font-size: 13px; }}
-.grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }}
+.grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }}
 .card {{ background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 12px; min-width: 0; }}
 .key {{ background: var(--gold); color: #1a1208; border-radius: 6px; padding: 0 8px; font-weight: 700; }}
 .row {{ display: flex; gap: 16px; align-items: end; flex-wrap: wrap; }}
 .small {{ display: grid; gap: 8px; }}
 figure {{ margin: 0; display: grid; gap: 4px; justify-items: center; }}
-.i128 {{ width: 256px; height: 256px; max-width: 100%; }}
+.i128 {{ width: 256px; height: 256px; max-width: 100%; background: #2a2620; border-radius: 8px; }}
 .i64 {{ width: 64px; height: 64px; }}
 .i32 {{ width: 32px; height: 32px; }}
 .t160 {{ width: 160px; height: 160px; background: #2a2620; border-radius: 6px; }}
@@ -81,21 +71,8 @@ figure {{ margin: 0; display: grid; gap: 4px; justify-items: center; }}
 </style>
 <main>
   <h1>Emblema de Mythic Relics</h1>
-  <p class="lead">Un símbolo propio de cada mitología, no los ítems del juego, para que el ícono diga de un vistazo qué culturas trae el mod. Elige un ícono del mod (A o B) y un emblema de pestaña (T1, T2 o T3) en el chat.</p>
-  <h2>Los seis símbolos</h2>
-  <section class="syms">{syms}</section>
-  <h2>Ícono del mod (lista de mods)</h2>
-  <section class="grid">
-    {icon_card("A", "Escudo de seis cuarteles", "Como el emblema actual, pero con un símbolo propio de cada cultura sobre su color, con borde y cruz de oro. Se lee como un blasón de las mitologías.")}
-    {icon_card("B", "Medallón de las seis culturas", "Un medallón de oro con los seis símbolos en anillo, cada uno sobre su color, y una gema de reliquia al centro: las culturas reunidas alrededor de lo que el mod colecciona.")}
-  </section>
-  <h2>Emblema de la pestaña creativa (16×16)</h2>
-  <p class="lead">A 16 píxeles no caben seis dibujos: estas variantes resumen la idea y se ven bien en la pestaña.</p>
-  <section class="grid">
-    {tab_card("1", "Escudo de colores", "El escudo con los seis colores de las culturas y la cruz de oro. Combina con el ícono A.")}
-    {tab_card("2", "Medallón", "El aro de oro con seis puntos de color y la gema al centro. Combina con el ícono B.")}
-    {tab_card("3", "Gema de reliquia", "Solo la gema tallada en su engaste de oro: lo que une a todas las reliquias. Sirve con cualquiera de los dos.")}
-  </section>
+  <p class="lead">Un solo símbolo con personalidad propia que evoque la mitología en general, sin repartir un espacio por cultura. Cada uno se muestra como ícono del mod y, simplificado, en la pestaña creativa. Elige en el chat.</p>
+  <section class="grid">{cards}</section>
 </main>
 '''
 open(os.path.join(HERE, "emblema-opciones.html"), "w", encoding="utf-8").write(html)
