@@ -501,27 +501,89 @@ def kappa_dish():
 
 
 def nemean_lion_skin():
-    """La piel del león de Nemea (capa, compite con el vellocino y usa sus mismos planos): cae por la espalda, la melena
-    cubre los hombros, las patas delanteras se anudan en el pecho y la cabeza del león cuelga detrás de la nuca, como una
-    capucha bajada (así no atraviesa la cabeza del jugador cuando mira a los lados), con las fauces y los colmillos."""
-    e = [box([3.6, 5.0, 5.4], [12.4, 13.95, 5.95], "fur", "piel en la espalda"),
-         box([3.6, 13.92, 5.4], [12.4, 14.55, 10.45], "mane", "melena en los hombros"),
-         box([3.6, 11.0, 10.05], [6.2, 14.05, 10.45], "fur", "pata der."),
-         box([9.8, 11.0, 10.05], [12.4, 14.05, 10.45], "fur", "pata izq."),
-         box([6.2, 11.6, 10.1], [9.8, 12.3, 10.35], "mane", "nudo")]
-    for i, x in enumerate((4.2, 10.4)):
-        e.append(box([x, 4.45, 5.52], [x + 1.4, 5.0, 5.9], "fur_d", f"pata trasera {i}"))
-    # Capucha bajada: la cabeza del león detrás de la nuca, mirando hacia atrás.
-    e += [box([3.4, 13.4, 2.2], [12.6, 19.6, 3.55], "mane", "melena de la cabeza"),
-          box([4.6, 14.6, 1.2], [11.4, 19.0, 2.2], "fur", "cara"),
-          box([6.0, 14.8, 0.2], [10.0, 16.8, 1.2], "fur_l", "hocico"),
-          box([6.4, 14.2, 0.4], [7.2, 14.8, 0.9], "ivory", "colmillo der."),
-          box([8.8, 14.2, 0.4], [9.6, 14.8, 0.9], "ivory", "colmillo izq."),
-          box([7.4, 16.4, 0.0], [8.6, 17.0, 0.2], "black", "nariz"),
-          box([5.4, 17.6, 1.0], [6.6, 18.2, 1.2], "black", "ojo der."),
-          box([9.4, 17.6, 1.0], [10.6, 18.2, 1.2], "black", "ojo izq."),
-          box([4.4, 19.6, 2.4], [5.8, 20.6, 3.4], "fur_d", "oreja der."),
-          box([10.2, 19.6, 2.4], [11.6, 20.6, 3.4], "fur_d", "oreja izq.")]
+    """La piel del león de Nemea, como la lleva Heracles en las vasijas (capa, compite con el vellocino y usa su misma
+    franja: espalda en z 5,4..5,95, por fuera de las reliquias de espalda; pecho en z 10,05..10,5).
+
+    - Espalda: la piel entera en franjas verticales de tres tonos, unas más salientes que otras (relieve de pelaje), la
+      columna más oscura, los bordes del vientre más claros y el borde de abajo desflecado; las patas traseras caen en
+      las esquinas con almohadillas y garras de marfil, y la cola con su borla oscura cuelga al centro.
+    - Melena: espesa sobre los hombros, con mechones que sobresalen a los lados del cuello y un fleco que baja por la
+      parte alta de la espalda.
+    - Pecho: las patas delanteras bajan en diagonal desde los hombros y se anudan al centro, con las garras de marfil.
+    - Cabeza: cuelga detrás de la nuca como una capucha bajada (así no atraviesa la cabeza del jugador cuando mira a los
+      lados), mirando hacia atrás: marco de melena con mechones, frente y ceño marcados, ojos ámbar con pupila, hocico
+      claro con la nariz oscura, las fauces abiertas (boca roja oscura) con colmillos arriba y abajo, y orejas redondas."""
+    e = []
+    # ---- Espalda. Arriba de los cinturones (y > 5,9) la piel va en z 5,4..5,93 en franjas con relieve; a la altura de
+    # los cinturones (que dan la vuelta por atrás en z 5,45..6) baja como una capa fina por fuera, z 5,32..5,42, sin
+    # tocar las reliquias de espalda (z <= 5,3). Garras y cola cuelgan por debajo de los cinturones (y < 1).
+    tones = ["fur", "fur_l", "fur", "fur_d", "fur", "fur_l", "fur", "fur_d"]
+    hems = [2.9, 2.1, 2.7, 1.7, 2.3, 1.9, 2.8, 2.2]
+    width = (12.4 - 3.6) / len(tones)
+    for i, (tone, hem) in enumerate(zip(tones, hems)):
+        x0 = 3.6 + i * width
+        z0 = 5.4 if i % 2 == 0 else 5.48
+        e.append(box([x0, 5.9, z0], [x0 + width, 12.0, 5.93], tone, f"piel franja {i}"))
+        e.append(box([x0, hem, 5.32], [x0 + width, 5.9, 5.42], tone, f"piel baja franja {i}"))
+    e.append(box([7.55, 5.9, 5.37], [8.45, 12.0, 5.47], "fur_d", "columna"))
+    e.append(box([3.52, 5.9, 5.42], [3.62, 11.8, 5.92], "fur_l", "vientre der."))
+    e.append(box([12.38, 5.9, 5.42], [12.48, 11.8, 5.92], "fur_l", "vientre izq."))
+    # Fleco de melena que baja por la parte alta de la espalda, con puntas de distinto largo.
+    for i, bottom in enumerate([11.0, 10.2, 10.8, 9.9, 10.6, 10.1, 10.9, 10.3]):
+        x0 = 3.6 + i * width
+        e.append(box([x0, bottom, 5.38], [x0 + width, 13.88, 5.91], "mane" if i % 2 == 0 else "fur_d", f"fleco {i}"))
+    # Patas traseras en las esquinas de abajo (en la capa fina), con almohadilla y tres garras colgando.
+    for side, x0 in (("der.", 3.6), ("izq.", 10.8)):
+        e.append(box([x0, 0.3, 5.3], [x0 + 1.6, 1.7, 5.43], "fur_d", f"pata trasera {side}"))
+        e.append(box([x0 + 0.1, -0.1, 5.33], [x0 + 1.5, 0.3, 5.41], "black", f"almohadilla trasera {side}"))
+        for k in range(3):
+            cx = x0 + 0.2 + k * 0.5
+            e.append(box([cx, -0.55, 5.34], [cx + 0.25, -0.1, 5.4], "ivory", f"garra trasera {side} {k}"))
+    # Cola al centro, bajo los cinturones, y su borla.
+    e.append(box([7.65, -2.4, 5.34], [8.35, 0.9, 5.7], "fur", "cola"))
+    e.append(box([7.45, -3.6, 5.31], [8.55, -2.4, 5.74], "mane", "borla de la cola"))
+    # ---- Melena sobre los hombros y alrededor del cuello.
+    e.append(box([3.6, 13.92, 5.4], [12.4, 14.55, 10.45], "mane", "melena en los hombros"))
+    for side, (x0, x1) in (("der.", (3.0, 3.95)), ("izq.", (12.05, 13.0))):
+        e.append(box([x0, 12.9, 5.62], [x1, 15.2, 9.4], "mane", f"melena del cuello {side}"))
+        for k, (y1, z0) in enumerate([(15.7, 5.8), (15.4, 6.9), (15.9, 8.0)]):
+            e.append(box([x0 + 0.1, 15.2, z0], [x1 - 0.1, y1, z0 + 0.9], "fur_d" if k % 2 else "mane", f"mechón {side} {k}"))
+    # ---- Pecho: patas delanteras en diagonal (escalones) que se anudan, con garras.
+    for side, sign in (("der.", 1), ("izq.", -1)):
+        steps = [(3.7, 5.5, 12.9, 14.05), (4.6, 6.4, 12.0, 12.9), (5.5, 7.3, 11.1, 12.0)]
+        for k, (a, b, y0, y1) in enumerate(steps):
+            x0, x1 = (a, b) if sign == 1 else (16 - b, 16 - a)
+            e.append(box([x0, y0, 10.05], [x1, y1, 10.45], "fur" if k != 1 else "fur_l", f"pata delantera {side} {k}"))
+        px0, px1 = (6.1, 7.4) if sign == 1 else (8.6, 9.9)
+        e.append(box([px0, 10.3, 10.1], [px1, 11.1, 10.48], "fur_d", f"zarpa {side}"))
+        for k in range(3):
+            cx = px0 + 0.15 + k * 0.42
+            e.append(box([cx, 9.85, 10.2], [cx + 0.22, 10.3, 10.4], "ivory", f"garra delantera {side} {k}"))
+    e.append(box([7.2, 11.2, 10.12], [8.8, 12.1, 10.48], "mane", "nudo"))
+    e.append(box([7.55, 10.6, 10.15], [8.45, 11.2, 10.42], "fur_d", "cabo del nudo"))
+    # ---- Cabeza del león detrás de la nuca, mirando hacia atrás (-z).
+    e.append(box([2.8, 13.2, 2.4], [13.2, 21.0, 3.9], "mane", "melena de la cabeza"))
+    for k, (x0, y0, x1, y1) in enumerate([(2.2, 15.0, 2.8, 19.4), (13.2, 15.0, 13.8, 19.4), (4.0, 21.0, 6.6, 21.7),
+                                          (9.4, 21.0, 12.0, 21.7), (6.8, 21.0, 9.2, 21.4), (3.4, 12.6, 5.6, 13.2),
+                                          (10.4, 12.6, 12.6, 13.2)]):
+        e.append(box([x0, y0, 2.6], [x1, y1, 3.7], "fur_d", f"mechón de la melena {k}"))
+    e.append(box([4.4, 14.2, 1.4], [11.6, 19.6, 2.4], "fur", "cara"))
+    e.append(box([4.8, 18.4, 0.9], [11.2, 19.2, 1.4], "fur_d", "ceño"))
+    for side, x0 in (("der.", 5.3), ("izq.", 9.3)):
+        e.append(box([x0, 17.3, 1.15], [x0 + 1.4, 18.1, 1.4], "amber", f"ojo {side}"))
+        e.append(box([x0 + 0.45, 17.4, 1.05], [x0 + 0.95, 18.0, 1.15], "black", f"pupila {side}"))
+    e.append(box([5.8, 14.6, 0.4], [10.2, 17.0, 1.4], "fur_l", "hocico"))
+    e.append(box([7.2, 16.9, 0.8], [8.8, 18.4, 1.4], "fur", "caña de la nariz"))
+    e.append(box([7.0, 16.3, 0.15], [9.0, 17.0, 0.4], "black", "nariz"))
+    e.append(box([6.2, 13.8, 0.55], [9.8, 14.6, 1.4], "crest_d", "fauces"))
+    e.append(box([6.0, 12.9, 0.75], [10.0, 13.8, 1.8], "fur_l", "mandíbula"))
+    for side, x0 in (("der.", 6.35), ("izq.", 9.05)):
+        e.append(box([x0, 13.75, 0.45], [x0 + 0.6, 14.65, 0.85], "ivory", f"colmillo de arriba {side}"))
+    for side, x0 in (("der.", 7.1), ("izq.", 8.5)):
+        e.append(box([x0, 13.8, 0.6], [x0 + 0.4, 14.25, 0.95], "ivory", f"colmillo de abajo {side}"))
+    for side, x0 in (("der.", 3.9), ("izq.", 10.5)):
+        e.append(box([x0, 19.7, 1.8], [x0 + 1.6, 21.1, 2.6], "fur_d", f"oreja {side}"))
+        e.append(box([x0 + 0.4, 20.0, 1.65], [x0 + 1.2, 20.8, 1.8], "fur_l", f"oreja por dentro {side}"))
     return e
 
 

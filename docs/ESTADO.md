@@ -345,6 +345,12 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
    - Armas en vuelo con modelo 3D (`WeaponModel`, geometría de `weapon_entities.py`): espada de Freyr, Mjölnir,
      Gungnir y dardo ya no se ven como el ícono en el aire. Revisar que la punta vaya hacia adelante, el tamaño, que
      Mjölnir gire de punta a punta y que brillen el canal de la espada y las runas de Gungnir.
+   - Cuarta ronda de arreglos (2026-11-14): escudos de Aquiles y Ancile en la mano y al bloquear (posición del vanilla);
+     Sleipnir galopa sobre el agua; la espada de Freyr sale y vuelve por la vaina izquierda; Mímir marca minerales y
+     guía con estela y aviso sobre la barra (sin chat); cuervos: el brillo de los hostiles sigue aunque se alejen;
+     saco de xirang solo pasiva (5 min); harpe pasiva (bajo 25 %, 1 s, cabeza 75 %); cetro de Anubis avisa a quién
+     puede juzgar; estatua de Medusa sin crash; halcón con la tecla V (se encoge, se ve como el ave, sin capa ni
+     manos; la misma tecla vuelve); carga visible del rayo, Gram, Mjölnir, Gungnir y el dardo; piel de Nemea nueva.
    Después, probar también en Fabric (Trinkets).
 2. **Cuando el usuario apruebe las pruebas: Chile/mapuche** como tanda especial (los celtas se descartaron el
    2026-11-10). Flujo: enseñar el mito, proponer reliquias (fiel / licencia / pop), página de diseño, preguntas con
