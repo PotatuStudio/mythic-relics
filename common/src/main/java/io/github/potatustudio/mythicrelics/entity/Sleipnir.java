@@ -68,6 +68,7 @@ public class Sleipnir extends AbstractHorse {
 	@Override
 	public void tick() {
 		super.tick();
+		floatOnWater();
 		if (level().isClientSide()) {
 			trail();
 			return;
@@ -82,6 +83,26 @@ public class Sleipnir extends AbstractHorse {
 			level.playSound(null, getX(), getY(), getZ(), SoundEvents.HORSE_GALLOP, getSoundSource(), 1.0f, 1.4f);
 			discard();
 		}
+	}
+
+	/**
+	 * Galopa sobre el agua como el strider sobre la lava: {@link #canStandOnFluid} solo sostiene si ya está encima, así
+	 * que si se mete en el agua (al caer, al bajar de una orilla) se lo empuja hacia arriba hasta la superficie y ahí se
+	 * queda parado. Corre en los dos lados porque el jinete mueve al caballo desde su cliente.
+	 */
+	private void floatOnWater() {
+		double depth = getFluidHeight(FluidTags.WATER);
+		if (depth <= 0.0) {
+			return;
+		}
+		if (depth < 0.4 && !level().getFluidState(blockPosition().above()).is(FluidTags.WATER)) {
+			// Casi en la superficie: se apoya sobre el agua.
+			setDeltaMovement(getDeltaMovement().multiply(1.0, 0.0, 1.0));
+			setOnGround(true);
+		} else {
+			setDeltaMovement(getDeltaMovement().multiply(1.0, 0.5, 1.0).add(0.0, 0.12, 0.0));
+		}
+		resetFallDistance();
 	}
 
 	/** Cliente: al galopar, chispas de escarcha y niebla bajo los cascos; sobre el agua, salpicaduras. */

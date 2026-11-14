@@ -60,12 +60,15 @@ def palette():
 
 
 def shield_elements():
-    """Placa redonda de 15 px de diámetro (centro x 8, y 8) en franjas de 1 px; cada anillo es una franja más adelante
-    (z 10 es el frente), así los anillos quedan en relieve sin caras coplanares. Asa de cuero atrás como el vanilla."""
+    """Placa redonda de 17 px de diámetro en franjas de 1 px, ubicada donde el escudo vanilla tiene la suya: centrada
+    en el origen del ítem (x 0, y 0), con la placa en z 1..2 y el frente hacia +z (ShieldModel + la escala (1, -1, -1)
+    de items/shield.json). Así las posiciones de mano del vanilla (shield.json y shield_blocking.json) le calzan tal
+    cual. Cada anillo es una franja más adelante, en relieve sin caras coplanares. El asa de cuero va atrás, como el
+    vanilla (x -1..1, y -3..3, z -5..1)."""
     e = []
-    cx, cy, R = 8.0, 8.0, 7.5
-    rings = [(7.5, "ocean", 9.0, 10.0), (6.4, "bronze", 10.0, 10.25), (5.2, "gold", 10.25, 10.45),
-             (3.8, "bronze", 10.45, 10.6), (2.4, "silver", 10.6, 10.8), (1.0, "gold", 10.8, 11.0)]
+    cx, cy = 0.0, 0.0
+    rings = [(8.5, "ocean", 1.0, 2.0), (7.3, "bronze", 2.0, 2.25), (5.9, "gold", 2.25, 2.45),
+             (4.3, "bronze", 2.45, 2.6), (2.7, "silver", 2.6, 2.8), (1.1, "gold", 2.8, 3.0)]
     for r, color, z0, z1 in rings:
         for y in range(int(cy - r), int(math.ceil(cy + r))):
             dy = abs(y + 0.5 - cy)
@@ -75,7 +78,7 @@ def shield_elements():
             if half <= 0:
                 continue
             e.append(box([cx - half, y, z0], [cx + half, y + 1, z1], color, f"anillo {color}"))
-    e.append(box([7.0, 5.0, 3.0], [9.0, 11.0, 9.0], "leather", "asa"))
+    e.append(box([-1.0, -3.0, -5.0], [1.0, 3.0, 1.0], "leather", "asa"))
     return e
 
 

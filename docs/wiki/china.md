@@ -283,9 +283,8 @@ En el folclore, uno pegado en la frente de un jiangshi (el cadáver que salta) l
 
 **Espacio:** mano · **Rareza:** rara
 
-- Clic derecho: crece frente a ti un muro de tierra de 5 de ancho y 3 de alto que corta el agua
-- 3 puñados; vuelve uno cada 60 s
-- Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga 2 min)
+- Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga 5 min)
+- Basta con llevarlo en el inventario
 
 **Mito.** El xirang era la tierra que crecía sola. Gun la robó del Cielo para contener el Gran Diluvio; su hijo Yu el Grande la usó para levantar diques y abrir canales hasta domar las aguas.
 

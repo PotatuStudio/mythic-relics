@@ -13,7 +13,6 @@ import io.github.potatustudio.mythicrelics.china.FuTalismansItem;
 import io.github.potatustudio.mythicrelics.china.ImmortalPeachBranchItem;
 import io.github.potatustudio.mythicrelics.china.QilinHornItem;
 import io.github.potatustudio.mythicrelics.china.UniverseRingItem;
-import io.github.potatustudio.mythicrelics.china.XirangSackItem;
 import io.github.potatustudio.mythicrelics.china.HouYiBowItem;
 import io.github.potatustudio.mythicrelics.china.MonkeyHairsItem;
 import io.github.potatustudio.mythicrelics.china.PurpleGoldGourdItem;
@@ -186,7 +185,7 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> QILIN_HORN = register("qilin_horn", QilinHornItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> PIXIU_BRACELET = relic("pixiu_bracelet", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> FU_TALISMANS = register("fu_talismans", FuTalismansItem::new, p -> p.rarity(Rarity.RARE));
-	public static final RegistrySupplier<Item> XIRANG_SACK = register("xirang_sack", XirangSackItem::new, p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> XIRANG_SACK = relic("xirang_sack", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> IMMORTAL_PEACH_BRANCH = register("immortal_peach_branch", ImmortalPeachBranchItem::new,
 			p -> p.rarity(Rarity.EPIC));
 

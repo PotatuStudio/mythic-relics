@@ -90,9 +90,15 @@ public class FreyrSword extends Mob {
 		}
 	}
 
+	/**
+	 * La boca de la vaina: el cinto la lleva adelante, en la cadera izquierda (freyr_sword_worn.json), así que la espada
+	 * sale y vuelve por ese mismo lado. directionFromRotation(0, yRot - 90) es la izquierda del jugador.
+	 */
 	private static Vec3 hip(Player player) {
 		Vec3 left = Vec3.directionFromRotation(0, player.getYRot() - 90.0f);
-		return player.position().add(left.scale(-0.3)).add(0, 0.7, 0);
+		Vec3 forward = Vec3.directionFromRotation(0, player.getYRot());
+		// Vaina en x 11, z 11 y boca a la altura 2,4 del modelo puesto (centro del cuerpo x 8, z 8; y 2 = cintura, 0,75 bloques).
+		return player.position().add(left.scale(0.19)).add(forward.scale(0.19)).add(0, 0.78, 0);
 	}
 
 	private Vec3 guardPoint(Player player) {

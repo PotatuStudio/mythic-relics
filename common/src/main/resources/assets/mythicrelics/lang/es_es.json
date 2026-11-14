@@ -286,8 +286,8 @@
   "book.mythicrelics.relics.entry.wolf_bulla.description": "Tus lobos a 16 bloques tienen Regeneración I y Fuerza I",
   "book.mythicrelics.relics.entry.wolf_bulla.effect": "Tus lobos a 16 bloques tienen Regeneración I y Fuerza I\\\nLos lobos salvajes no te atacan\\\nCon 3 corazones o menos aúllas: acuden 2 lobos aliados por 30 s\\\nRecarga: 5 min\\\n\\\nEspacio: collar",
   "book.mythicrelics.relics.entry.wolf_bulla.where": "**Casas de aldeas de taiga**: 4 % por cofre",
-  "book.mythicrelics.relics.entry.xirang_sack.description": "Clic derecho: crece frente a ti un muro de tierra de 5 de ancho y 3 de alto que corta el agua",
-  "book.mythicrelics.relics.entry.xirang_sack.effect": "Clic derecho: crece frente a ti un muro de tierra de 5 de ancho y 3 de alto que corta el agua\\\n3 puñados; vuelve uno cada 60 s\\\nSi caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga 2 min)\\\n\\\nEspacio: mano",
+  "book.mythicrelics.relics.entry.xirang_sack.description": "Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga 5 min)",
+  "book.mythicrelics.relics.entry.xirang_sack.effect": "Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga 5 min)\\\nBasta con llevarlo en el inventario\\\n\\\nEspacio: mano",
   "book.mythicrelics.relics.entry.xirang_sack.where": "**Arena y grava sospechosas de ruinas de los senderos**: 1.5 % por bloque cepillado",
   "book.mythicrelics.relics.entry.yasakani_magatama.description": "De día y bajo el cielo recuperas medio corazón cada 5 s",
   "book.mythicrelics.relics.entry.yasakani_magatama.effect": "De día y bajo el cielo recuperas medio corazón cada 5 s\\\n\\\nEspacio: collar",
@@ -740,9 +740,8 @@
   "item.mythicrelics.wolf_bulla.tooltip.3": "Con %2$s corazones o menos aúllas: acuden %3$s lobos aliados por %4$s s",
   "item.mythicrelics.wolf_bulla.tooltip.4": "Recarga: %5$s min",
   "item.mythicrelics.xirang_sack": "Saco de Xirang",
-  "item.mythicrelics.xirang_sack.tooltip.1": "Clic derecho: crece frente a ti un muro de tierra de %1$s de ancho y %2$s de alto que corta el agua",
-  "item.mythicrelics.xirang_sack.tooltip.2": "%3$s puñados; vuelve uno cada %4$s s",
-  "item.mythicrelics.xirang_sack.tooltip.3": "Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga %5$s min)",
+  "item.mythicrelics.xirang_sack.tooltip.1": "Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga %1$s min)",
+  "item.mythicrelics.xirang_sack.tooltip.2": "Basta con llevarlo en el inventario",
   "item.mythicrelics.yasakani_magatama": "Yasakani no Magatama",
   "item.mythicrelics.yasakani_magatama.tooltip.1": "De día y bajo el cielo recuperas medio corazón cada %1$s s",
   "item.mythicrelics.yashiori_sake": "Sake de Yashiori",
@@ -1050,6 +1049,5 @@
   "tooltip.mythicrelics.thor_set.1": "Set de Thor (Mjölnir, Járngreipr y Megingjörð):",
   "tooltip.mythicrelics.thor_set.2": " Cada martillo lanzado llama un rayo",
   "tooltip.mythicrelics.thor_set.3": " donde golpea, con o sin tormenta",
-  "tooltip.mythicrelics.thoth_palette.written": "Escrito: %s/%s puntos",
-  "tooltip.mythicrelics.xirang_charges": "Puñados: %s de %s"
+  "tooltip.mythicrelics.thoth_palette.written": "Escrito: %s/%s puntos"
 }

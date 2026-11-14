@@ -35,8 +35,13 @@ public class OdinRavensItem extends RelicItem {
 		super(properties);
 	}
 
-	/** Cuervos afuera por dueño (se sacan del mapa cuando ya no existen). */
+	/** Cuervos afuera por dueño: solo para devolverlos al llamarlos (el efecto no depende de ellos). */
 	private static final java.util.Map<java.util.UUID, java.util.List<OdinRaven>> OUT = new java.util.concurrent.ConcurrentHashMap<>();
+	/**
+	 * Dueños con los cuervos enviados: Huginn le cuenta a Odín lo que ve, así que el efecto es alrededor del jugador
+	 * aunque los cuervos se alejen, se posen lejos o desaparezcan. Se apaga al volver a usar el ítem.
+	 */
+	private static final java.util.Set<java.util.UUID> ACTIVE = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
@@ -53,9 +58,9 @@ public class OdinRavensItem extends RelicItem {
 			return InteractionResult.SUCCESS;
 		}
 		java.util.List<OdinRaven> out = OUT.remove(player.getUUID());
-		if (out != null && out.stream().anyMatch(r -> !r.isRemoved())) {
+		if (ACTIVE.remove(player.getUUID())) {
 			// Vuelven con Odín.
-			for (OdinRaven r : out) {
+			for (OdinRaven r : out != null ? out : java.util.List.<OdinRaven>of()) {
 				server.sendParticles(ParticleTypes.SMOKE, r.getX(), r.getY() + 0.3, r.getZ(), 10, 0.3, 0.3, 0.3, 0.03);
 				r.discard();
 			}
@@ -77,21 +82,22 @@ public class OdinRavensItem extends RelicItem {
 			ravens.add(raven);
 		}
 		OUT.put(player.getUUID(), ravens);
+		ACTIVE.add(player.getUUID());
 		server.sendParticles(ParticleTypes.SMOKE, player.getX(), player.getY() + 2.0, player.getZ(), 16, 0.6, 0.3, 0.6, 0.05);
 		server.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_FLY, SoundSource.PLAYERS, 1.0f, 0.6f);
 		serverPlayer.sendOverlayMessage(Component.translatable("message.mythicrelics.huginn").withStyle(ChatFormatting.DARK_GRAY));
 		return InteractionResult.SUCCESS;
 	}
 
-	/** Mientras los cuervos están afuera, los hostiles cercanos al dueño brillan sin parar. */
+	/** Mientras los cuervos están enviados, los hostiles alrededor del dueño brillan sin parar (estén o no los cuervos cerca). */
 	static void tick(net.minecraft.server.MinecraftServer server) {
 		if (server.getTickCount() % 20 != 0) {
 			return;
 		}
 		OUT.entrySet().removeIf(e -> e.getValue().stream().allMatch(net.minecraft.world.entity.Entity::isRemoved));
-		OUT.forEach((id, ravens) -> {
+		ACTIVE.forEach(id -> {
 			ServerPlayer player = server.getPlayerList().getPlayer(id);
-			if (player == null) {
+			if (player == null || !player.isAlive()) {
 				return;
 			}
 			for (LivingEntity foe : player.level().getEntitiesOfClass(LivingEntity.class,

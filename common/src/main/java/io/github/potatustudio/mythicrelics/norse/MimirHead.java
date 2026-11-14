@@ -62,13 +62,15 @@ public final class MimirHead {
 	}
 
 	private static final List<Outline> OUTLINES = new ArrayList<>();
+	/** Mientras se agrega un contorno nuevo (el evento ADD no debe borrarlo: todavía no está en OUTLINES). */
+	private static boolean spawning;
 
 	private MimirHead() {
 	}
 
 	static void init() {
 		// Si el mundo se cerró con contornos puestos, al volver a cargarse se quitan.
-		EntityEvent.ADD.register((entity, level) -> !level.isClientSide() && entity.entityTags().contains(TAG)
+		EntityEvent.ADD.register((entity, level) -> !spawning && !level.isClientSide() && entity.entityTags().contains(TAG)
 				&& OUTLINES.stream().noneMatch(o -> o.display() == entity) ? EventResult.interruptFalse() : EventResult.pass());
 	}
 
@@ -132,10 +134,15 @@ public final class MimirHead {
 					e.snapTo(pos.getX(), pos.getY(), pos.getZ(), 0, 0);
 					return e;
 				});
-		if (display != null) {
-			level.addFreshEntity(display);
+		if (display == null) {
+			return null;
 		}
-		return display;
+		spawning = true;
+		try {
+			return level.addFreshEntity(display) ? display : null;
+		} finally {
+			spawning = false;
+		}
 	}
 
 	private static ListTag floats(float... values) {

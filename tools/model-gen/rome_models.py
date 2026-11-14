@@ -81,6 +81,12 @@ def ancile_elements():
     e.append(box([7.5, -2.5, 10.0], [8.5, 18.5, 10.3], "bronze", name="nervio"))
     e.append(box([6.5, 6.5, 10.0], [9.5, 9.5, 10.6], "gold", name="umbo"))
     e.append(box([7.0, 5.0, 3.0], [9.0, 11.0, 9.0], "leather", name="asa"))
+    # Se dibujó con el centro en (8, 8) y la placa en z 9..10; el escudo vanilla, cuyas posiciones de mano usamos, tiene
+    # la placa centrada en el origen del ítem y en z 1..2 (asa en z -5..1). Correr todo 8 px en los tres ejes la deja
+    # exactamente en ese lugar (alto 22 y asa iguales a las del vanilla).
+    for el in e:
+        el["from"] = [round(v - 8, 3) for v in el["from"]]
+        el["to"] = [round(v - 8, 3) for v in el["to"]]
     return e
 
 

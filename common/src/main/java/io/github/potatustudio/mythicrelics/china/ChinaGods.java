@@ -49,7 +49,7 @@ import net.minecraft.world.level.Level;
  * Celestial), el qilin, el pixiu, los talismanes, el xirang y los melocotones de la inmortalidad.
  * <ul>
  *   <li>Ítems: {@link FireTippedSpearItem}, {@link UniverseRingItem}, {@link ErlangHalberdItem}, {@link QilinHornItem},
- *       {@link FuTalismansItem}, {@link XirangSackItem} e {@link ImmortalPeachBranchItem}.</li>
+ *       {@link FuTalismansItem}, el saco de xirang (solo pasiva) e {@link ImmortalPeachBranchItem}.</li>
  *   <li>Aquí: el Ojo de Erlang (hostiles e invisibles brillan), el alcance de la alabarda, el set de Erlang Shen (el
  *       perro aparece al recibir daño), el pixiu (pepitas al matar, tesoros al morir) y los talismanes que vencen.</li>
  * </ul>
@@ -86,11 +86,8 @@ public final class ChinaGods {
 	public static final int TALISMAN_TICKS = 160;
 	public static final int TALISMAN_COOLDOWN = 300;
 
-	public static final int XIRANG_WIDTH = 5;
-	public static final int XIRANG_HEIGHT = 3;
-	public static final int XIRANG_CHARGES = 3;
-	public static final int XIRANG_RECHARGE_TICKS = 1200;
-	public static final int XIRANG_RESCUE_COOLDOWN = 2400;
+	/** Saco de xirang: solo la pasiva (te salva de la lava o del vacío), con recarga de 5 min. */
+	public static final int XIRANG_RESCUE_COOLDOWN = 6000;
 
 	public static final int PEACH_GROW_TICKS = 72000;
 	public static final int PEACH_ABSORPTION_TICKS = 3600;
@@ -299,8 +296,7 @@ public final class ChinaGods {
 			case "qilin_horn" -> new Object[] {QILIN_AURA_RADIUS, QILIN_LEAVE_TICKS / 20, QILIN_COOLDOWN / 20 / 60};
 			case "pixiu_bracelet" -> new Object[] {Math.round(PIXIU_CHANCE * 100), PIXIU_MAX_NUGGETS};
 			case "fu_talismans" -> new Object[] {TALISMAN_TICKS / 20, TALISMAN_COOLDOWN / 20};
-			case "xirang_sack" -> new Object[] {XIRANG_WIDTH, XIRANG_HEIGHT, XIRANG_CHARGES, XIRANG_RECHARGE_TICKS / 20,
-					XIRANG_RESCUE_COOLDOWN / 20 / 60};
+			case "xirang_sack" -> new Object[] {XIRANG_RESCUE_COOLDOWN / 20 / 60};
 			case "immortal_peach_branch" -> new Object[] {PEACH_GROW_TICKS / 24000, PEACH_ABSORPTION_TICKS / 20 / 60, PEACH_REGEN_TICKS / 20};
 			default -> io.github.potatustudio.mythicrelics.japan.JapanRelics.tooltipArgs(id);
 		};

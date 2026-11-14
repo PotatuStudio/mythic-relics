@@ -286,8 +286,8 @@
   "book.mythicrelics.relics.entry.wolf_bulla.description": "Your wolves within 16 blocks get Regeneration I and Strength I",
   "book.mythicrelics.relics.entry.wolf_bulla.effect": "Your wolves within 16 blocks get Regeneration I and Strength I\\\nWild wolves don't attack you\\\nAt 3 hearts or less you howl: 2 allied wolves come for 30 s\\\nCooldown: 5 min\\\n\\\nSlot: necklace",
   "book.mythicrelics.relics.entry.wolf_bulla.where": "**Taiga village houses**: 4% per chest",
-  "book.mythicrelics.relics.entry.xirang_sack.description": "Right-click: a wall of earth 5 wide and 3 high grows in front of you and cuts off water",
-  "book.mythicrelics.relics.entry.xirang_sack.effect": "Right-click: a wall of earth 5 wide and 3 high grows in front of you and cuts off water\\\n3 handfuls; one comes back every 60 s\\\nIf you fall into lava or the void, the earth grows under your feet and saves you (cooldown 2 min)\\\n\\\nSlot: hand",
+  "book.mythicrelics.relics.entry.xirang_sack.description": "If you fall into lava or the void, the earth grows under your feet and saves you (cooldown 5 min)",
+  "book.mythicrelics.relics.entry.xirang_sack.effect": "If you fall into lava or the void, the earth grows under your feet and saves you (cooldown 5 min)\\\nJust keep it in your inventory\\\n\\\nSlot: hand",
   "book.mythicrelics.relics.entry.xirang_sack.where": "**Suspicious sand and gravel in trail ruins**: 1.5% per brushed block",
   "book.mythicrelics.relics.entry.yasakani_magatama.description": "By day under the open sky you heal half a heart every 5 s",
   "book.mythicrelics.relics.entry.yasakani_magatama.effect": "By day under the open sky you heal half a heart every 5 s\\\n\\\nSlot: necklace",
@@ -740,9 +740,8 @@
   "item.mythicrelics.wolf_bulla.tooltip.3": "At %2$s hearts or less you howl: %3$s allied wolves come for %4$s s",
   "item.mythicrelics.wolf_bulla.tooltip.4": "Cooldown: %5$s min",
   "item.mythicrelics.xirang_sack": "Sack of Xirang",
-  "item.mythicrelics.xirang_sack.tooltip.1": "Right-click: a wall of earth %1$s wide and %2$s high grows in front of you and cuts off water",
-  "item.mythicrelics.xirang_sack.tooltip.2": "%3$s handfuls; one comes back every %4$s s",
-  "item.mythicrelics.xirang_sack.tooltip.3": "If you fall into lava or the void, the earth grows under your feet and saves you (cooldown %5$s min)",
+  "item.mythicrelics.xirang_sack.tooltip.1": "If you fall into lava or the void, the earth grows under your feet and saves you (cooldown %1$s min)",
+  "item.mythicrelics.xirang_sack.tooltip.2": "Just keep it in your inventory",
   "item.mythicrelics.yasakani_magatama": "Yasakani no Magatama",
   "item.mythicrelics.yasakani_magatama.tooltip.1": "By day under the open sky you heal half a heart every %1$s s",
   "item.mythicrelics.yashiori_sake": "Yashiori Sake",
@@ -1050,6 +1049,5 @@
   "tooltip.mythicrelics.thor_set.1": "Thor set (Mjölnir, Járngreipr and Megingjörð):",
   "tooltip.mythicrelics.thor_set.2": " Every thrown hammer calls lightning",
   "tooltip.mythicrelics.thor_set.3": " where it strikes, storm or not",
-  "tooltip.mythicrelics.thoth_palette.written": "Written: %s/%s points",
-  "tooltip.mythicrelics.xirang_charges": "Handfuls: %s of %s"
+  "tooltip.mythicrelics.thoth_palette.written": "Written: %s/%s points"
 }

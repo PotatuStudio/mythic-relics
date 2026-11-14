@@ -197,8 +197,7 @@ def tooltip_args(c):
         "qilin_horn": [int(c["QILIN_AURA_RADIUS"]), int(c["QILIN_LEAVE_TICKS"] // 20), int(c["QILIN_COOLDOWN"] // 20 // 60)],
         "pixiu_bracelet": [round(c["PIXIU_CHANCE"] * 100), int(c["PIXIU_MAX_NUGGETS"])],
         "fu_talismans": [int(c["TALISMAN_TICKS"] // 20), int(c["TALISMAN_COOLDOWN"] // 20)],
-        "xirang_sack": [int(c["XIRANG_WIDTH"]), int(c["XIRANG_HEIGHT"]), int(c["XIRANG_CHARGES"]), int(c["XIRANG_RECHARGE_TICKS"] // 20),
-                        int(c["XIRANG_RESCUE_COOLDOWN"] // 20 // 60)],
+        "xirang_sack": [int(c["XIRANG_RESCUE_COOLDOWN"] // 20 // 60)],
         "immortal_peach_branch": [int(c["PEACH_GROW_TICKS"] // 24000), int(c["PEACH_ABSORPTION_TICKS"] // 20 // 60),
                                   int(c["PEACH_REGEN_TICKS"] // 20)],
         # Japón (JapanRelics#tooltipArgs)
