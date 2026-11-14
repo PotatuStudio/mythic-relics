@@ -22,17 +22,20 @@ def inside_poly(px, py, pts):
 
 
 def keraunos():
-    """Rayo de Zeus: el rayo en zigzag que todos reconocen, grueso, en diagonal como un arma en la mano; centro blanco
-    incandescente, bordes de oro y chispas celestes."""
-    pts = [(11.0, 0.0), (15.0, 0.0), (10.5, 6.2), (13.5, 6.2), (2.0, 16.0), (6.2, 8.8), (3.0, 8.8)]
-    core = [(12.6, 0.8), (13.8, 0.8), (9.0, 7.0), (11.6, 7.0), (4.2, 14.0), (7.6, 8.0), (5.0, 8.0)]
+    """Rayo de Zeus como en las monedas griegas: empuñadura de oro al centro y un rayo en zigzag (un ⚡, con su quiebre
+    hacia afuera bien marcado) en cada punta; en diagonal como un arma en la mano. La mitad de abajo es la de arriba
+    girada 180°. Deja un píxel libre en cada borde para que el contorno no se corte."""
+    upper = {1: {11: 'G', 12: 'W'}, 2: {10: 'G', 11: 'W'}, 3: {9: 'G', 10: 'W'},
+             4: {8: 'G', 9: 'W', 10: 'W', 11: 'W', 12: 'G'},          # quiebre hacia afuera
+             5: {10: 'G', 11: 'W'}, 6: {9: 'G', 10: 'W'}, 7: {7: 'd', 8: 'g'}}
     c = blank()
-    for y in range(16):
-        for x in range(16):
-            if inside_poly(x + 0.5, y + 0.5, pts):
-                c[y][x] = 'W' if inside_poly(x + 0.5, y + 0.5, core) else 'G' if (x + y) % 3 else 'g'
+    for y, row in upper.items():
+        for x, ch in row.items():
+            c[y][x] = ch
+            c[15 - y][15 - x] = ch
+    c[8][7], c[8][8] = 'g', 'G'                              # empuñadura de oro (2x2)
     c = outline(c)
-    for x, y in [(1, 9), (0, 10), (15, 8), (14, 9), (8, 14)]:
+    for x, y in [(13, 1), (13, 5), (2, 14), (2, 10)]:       # chispas celestes
         if c[y][x] == '.':
             c[y][x] = '7'
     return c
