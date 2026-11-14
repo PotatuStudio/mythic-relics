@@ -28,13 +28,14 @@ worn_texture.FUR |= {"beard", "beard_d", "hair_grey"}
 worn_texture.SCALES |= {"skin", "skin_d"}
 worn_texture.FEATHER |= {"herb", "herb_l"}
 
-# Las de la cabeza de mob vanilla (models/item/template_skull.json).
+# Las de la cabeza de mob vanilla (models/item/template_skull.json), salvo la tercera persona (ver abajo).
 SKULL_DISPLAY = {
     "gui": {"rotation": [30, 45, 0], "translation": [0, 3, 0], "scale": [1, 1, 1]},
     "fixed": {"rotation": [0, 180, 0], "translation": [0, 4, 0], "scale": [1, 1, 1]},
     "on_shelf": {"rotation": [0, 0, 0], "translation": [0, 8, 0], "scale": [2, 2, 2]},
     "ground": {"rotation": [0, 0, 0], "translation": [0, 3, 0], "scale": [0.5, 0.5, 0.5]},
-    "thirdperson_righthand": {"rotation": [45, 45, 0], "translation": [0, 3, 0], "scale": [0.5, 0.5, 0.5]},
+    # En tercera persona la cara quedaba mirando al jugador: media vuelta en Y respecto de la vanilla.
+    "thirdperson_righthand": {"rotation": [45, 225, 0], "translation": [0, 3, 0], "scale": [0.5, 0.5, 0.5]},
 }
 
 

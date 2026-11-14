@@ -5528,7 +5528,7 @@
   "thirdperson_righthand": {
    "rotation": [
     45,
-    45,
+    225,
     0
    ],
    "translation": [
