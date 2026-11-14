@@ -4,10 +4,10 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
-import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -253,19 +253,16 @@ public final class JapanGods {
 	}
 
 	/** Números de los tooltips de la segunda tanda japonesa. */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "fujin_wind_bag" -> new Object[] {WIND_GLIDE_TICKS / 20, WIND_GALE_RADIUS, WIND_COOLDOWN / 20, SET_RAIJIN_HITS, SET_CHAIN_TARGETS};
-			case "tengu_mask" -> new Object[] {Math.round(TENGU_CRIT * 100)};
-			case "yashiori_sake" -> new Object[] {SAKE_RADIUS, SAKE_RANGE, SAKE_TICKS / 20, SAKE_COOLDOWN / 20};
-			case "kappa_dish" -> new Object[] {Math.round(KAPPA_DAMAGE * 100), KAPPA_DRY_TICKS / 20};
-			case "tanuki_leaf" -> new Object[] {TANUKI_TICKS / 20, TANUKI_COOLDOWN / 20 / 60};
-			case "kintaro_axe" -> new Object[] {KINTARO_MAX_LOGS, Math.round(KINTARO_BEAST_DAMAGE * 100)};
-			case "zashiki_warashi" -> new Object[] {ZASHIKI_RADIUS};
-			case "ame_no_nuboko" -> new Object[] {NUBOKO_RANGE, NUBOKO_RADIUS * 2 + 1, NUBOKO_COOLDOWN / 20};
-			case "orochi_scale" -> new Object[] {OROCHI_TICKS / 20, OROCHI_REACH, (int) OROCHI_BITE, OROCHI_COOLDOWN / 20 / 60};
-			default -> GreeceLegends.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("fujin_wind_bag", WIND_GLIDE_TICKS / 20, WIND_GALE_RADIUS, WIND_COOLDOWN / 20, SET_RAIJIN_HITS, SET_CHAIN_TARGETS);
+		TooltipArgs.register("tengu_mask", Math.round(TENGU_CRIT * 100));
+		TooltipArgs.register("yashiori_sake", SAKE_RADIUS, SAKE_RANGE, SAKE_TICKS / 20, SAKE_COOLDOWN / 20);
+		TooltipArgs.register("kappa_dish", Math.round(KAPPA_DAMAGE * 100), KAPPA_DRY_TICKS / 20);
+		TooltipArgs.register("tanuki_leaf", TANUKI_TICKS / 20, TANUKI_COOLDOWN / 20 / 60);
+		TooltipArgs.register("kintaro_axe", KINTARO_MAX_LOGS, Math.round(KINTARO_BEAST_DAMAGE * 100));
+		TooltipArgs.register("zashiki_warashi", ZASHIKI_RADIUS);
+		TooltipArgs.register("ame_no_nuboko", NUBOKO_RANGE, NUBOKO_RADIUS * 2 + 1, NUBOKO_COOLDOWN / 20);
+		TooltipArgs.register("orochi_scale", OROCHI_TICKS / 20, OROCHI_REACH, (int) OROCHI_BITE, OROCHI_COOLDOWN / 20 / 60);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

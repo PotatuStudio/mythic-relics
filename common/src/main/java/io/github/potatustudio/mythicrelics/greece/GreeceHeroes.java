@@ -13,8 +13,8 @@ import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
-import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -209,17 +209,14 @@ public final class GreeceHeroes {
 	}
 
 	/** Números de los tooltips de la segunda tanda (%1$s, %2$s… de sus líneas de traducción, en este orden). */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "icarus_wings" -> new Object[] {ICARUS_FLAPS, ICARUS_MELT_HEIGHT, ICARUS_MELT_TICKS / 20};
-			case "golden_fleece" -> new Object[] {Math.round(FLEECE_NUGGET_CHANCE * 100)};
-			case "cerberus_collar" -> new Object[] {CERBERUS_TICKS / 20, CERBERUS_BITES, CERBERUS_BURN_SECONDS, CERBERUS_COOLDOWN / 20};
-			case "pandora_jar" -> new Object[] {PANDORA_COOLDOWN / 20, PANDORA_EVIL_CHANCE, PANDORA_EVIL_TICKS / 20, PANDORA_VEX_CHANCE,
-					PANDORA_VEXES, PANDORA_VEX_TICKS / 20, PANDORA_TREASURE_CHANCE, PANDORA_HOPE_CHANCE,
-					PANDORA_HOPE_ABSORPTION_TICKS / 20 / 60};
-			case "styx_water" -> new Object[] {STYX_TICKS / 20 / 60, Math.round(STYX_FRONT_FACTOR * 100), STYX_COOLDOWN / 20 / 60};
-			case "prometheus_fennel" -> new Object[] {PROMETHEUS_BURN_SECONDS, PROMETHEUS_COOLDOWN_PER_ITEM / 20, PROMETHEUS_COOLDOWN_MIN / 20};
-			default -> RomeRelics.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("icarus_wings", ICARUS_FLAPS, ICARUS_MELT_HEIGHT, ICARUS_MELT_TICKS / 20);
+		TooltipArgs.register("golden_fleece", Math.round(FLEECE_NUGGET_CHANCE * 100));
+		TooltipArgs.register("cerberus_collar", CERBERUS_TICKS / 20, CERBERUS_BITES, CERBERUS_BURN_SECONDS, CERBERUS_COOLDOWN / 20);
+		TooltipArgs.register("pandora_jar", PANDORA_COOLDOWN / 20, PANDORA_EVIL_CHANCE, PANDORA_EVIL_TICKS / 20, PANDORA_VEX_CHANCE,
+				PANDORA_VEXES, PANDORA_VEX_TICKS / 20, PANDORA_TREASURE_CHANCE, PANDORA_HOPE_CHANCE,
+				PANDORA_HOPE_ABSORPTION_TICKS / 20 / 60);
+		TooltipArgs.register("styx_water", STYX_TICKS / 20 / 60, Math.round(STYX_FRONT_FACTOR * 100), STYX_COOLDOWN / 20 / 60);
+		TooltipArgs.register("prometheus_fennel", PROMETHEUS_BURN_SECONDS, PROMETHEUS_COOLDOWN_PER_ITEM / 20, PROMETHEUS_COOLDOWN_MIN / 20);
 	}
 }

@@ -12,6 +12,7 @@ import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
@@ -161,19 +162,16 @@ public final class EgyptRelics {
 	}
 
 	/** Números que muestra el tooltip de cada reliquia (%1$s, %2$s… de sus líneas de traducción, en este orden). */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "golden_scarab" -> new Object[] {TooltipNumbers.fmt(SCARAB_THRESHOLD / 2), TooltipNumbers.roman(SCARAB_ABSORPTION + 1), SCARAB_MINION_TICKS / 20,
-					SCARAB_COOLDOWN / 20};
-			case "eye_of_horus" -> new Object[] {TooltipNumbers.fmt(EYE_BIG_HIT / 2), Math.round(EYE_HEAL_FRACTION * 100), EYE_HEAL_TICKS / 20,
-					EYE_COOLDOWN / 20};
-			case "ankh" -> new Object[] {TooltipNumbers.fmt(ANKH_HEAL_EVERY / 20.0), Math.round(ANKH_UNDEAD_REDUCTION * 100)};
-			case "mummy_wraps" -> new Object[] {WRAPS_HUNGER_TICKS / 20, WRAPS_SLOW_TICKS / 20};
-			case "anubis_scepter" -> new Object[] {Math.round(SCEPTER_JUDGMENT_HEALTH * 100), SCEPTER_XP_MULTIPLIER};
-			case "jackal_mask" -> new Object[] {TooltipNumbers.fmt(MASK_SOUL_HEAL / 2), MASK_SOUL_TICKS / 20};
-			case "jackal_ring" -> new Object[] {RING_JACKALS, RING_JACKAL_TICKS / 20, RING_COOLDOWN / 20};
-			default -> EgyptGods.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("golden_scarab", TooltipNumbers.fmt(SCARAB_THRESHOLD / 2), TooltipNumbers.roman(SCARAB_ABSORPTION + 1), SCARAB_MINION_TICKS / 20,
+				SCARAB_COOLDOWN / 20);
+		TooltipArgs.register("eye_of_horus", TooltipNumbers.fmt(EYE_BIG_HIT / 2), Math.round(EYE_HEAL_FRACTION * 100), EYE_HEAL_TICKS / 20,
+				EYE_COOLDOWN / 20);
+		TooltipArgs.register("ankh", TooltipNumbers.fmt(ANKH_HEAL_EVERY / 20.0), Math.round(ANKH_UNDEAD_REDUCTION * 100));
+		TooltipArgs.register("mummy_wraps", WRAPS_HUNGER_TICKS / 20, WRAPS_SLOW_TICKS / 20);
+		TooltipArgs.register("anubis_scepter", Math.round(SCEPTER_JUDGMENT_HEALTH * 100), SCEPTER_XP_MULTIPLIER);
+		TooltipArgs.register("jackal_mask", TooltipNumbers.fmt(MASK_SOUL_HEAL / 2), MASK_SOUL_TICKS / 20);
+		TooltipArgs.register("jackal_ring", RING_JACKALS, RING_JACKAL_TICKS / 20, RING_COOLDOWN / 20);
 	}
 
 	/**

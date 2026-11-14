@@ -8,6 +8,7 @@ import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -184,19 +185,16 @@ public final class NorseRelics {
 	}
 
 	/** Números de los tooltips nórdicos (%1$s, %2$s… de sus líneas de traducción, en este orden). */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "mjolnir" -> new Object[] {MJOLNIR_RANGE};
-			case "jarngreipr" -> new Object[] {(int) JARNGREIPR_FIST};
-			case "megingjord" -> new Object[] {Math.round(MEGINGJORD_DAMAGE * 100), Math.round(MEGINGJORD_KNOCKBACK * 100)};
-			case "gungnir" -> new Object[] {GUNGNIR_RANGE};
-			case "draupnir" -> new Object[] {DRAUPNIR_NIGHTS, DRAUPNIR_INGOTS};
-			case "gjallarhorn" -> new Object[] {HORN_USE_TICKS / 20, HORN_ALLY_RADIUS, HORN_BUFF_TICKS / 20, HORN_SIGHT_RADIUS,
-					HORN_GLOW_TICKS / 20, HORN_COOLDOWN / 20 / 60};
-			case "gleipnir" -> new Object[] {GLEIPNIR_TICKS / 20, GLEIPNIR_COOLDOWN / 20};
-			case "idunn_apples" -> new Object[] {IDUNN_REGEN_TICKS / 20, IDUNN_ABSORPTION_TICKS / 20 / 60, IDUNN_MAX};
-			default -> NorseGods.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("mjolnir", MJOLNIR_RANGE);
+		TooltipArgs.register("jarngreipr", (int) JARNGREIPR_FIST);
+		TooltipArgs.register("megingjord", Math.round(MEGINGJORD_DAMAGE * 100), Math.round(MEGINGJORD_KNOCKBACK * 100));
+		TooltipArgs.register("gungnir", GUNGNIR_RANGE);
+		TooltipArgs.register("draupnir", DRAUPNIR_NIGHTS, DRAUPNIR_INGOTS);
+		TooltipArgs.register("gjallarhorn", HORN_USE_TICKS / 20, HORN_ALLY_RADIUS, HORN_BUFF_TICKS / 20, HORN_SIGHT_RADIUS,
+				HORN_GLOW_TICKS / 20, HORN_COOLDOWN / 20 / 60);
+		TooltipArgs.register("gleipnir", GLEIPNIR_TICKS / 20, GLEIPNIR_COOLDOWN / 20);
+		TooltipArgs.register("idunn_apples", IDUNN_REGEN_TICKS / 20, IDUNN_ABSORPTION_TICKS / 20 / 60, IDUNN_MAX);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

@@ -6,11 +6,11 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.minion.Minions;
-import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
 import java.util.List;
@@ -295,18 +295,15 @@ public final class RomeRelics {
 	}
 
 	/** Números de los tooltips de Roma (%1$s, %2$s… de sus líneas de traducción, en este orden). */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "wolf_bulla" -> new Object[] {WOLF_RADIUS, WOLF_HOWL_HEALTH / 2, WOLF_HOWL_WOLVES, WOLF_HOWL_TICKS / 20, WOLF_HOWL_COOLDOWN / 20 / 60};
-			case "ancile" -> new Object[] {ANCILE_RAID_RADIUS, Math.round(ANCILE_RAID_FACTOR * 100)};
-			case "palladium" -> new Object[] {PALLADIUM_RADIUS};
-			case "vesta_lamp" -> new Object[] {VESTA_RADIUS, Math.round(VESTA_HUNGER_FACTOR * 100), VESTA_FIRE_TICKS / 20 / 60,
-					VESTA_FIRE_COOLDOWN / 20 / 60};
-			case "sibylline_books" -> new Object[] {SIBYL_LEVELS, SIBYL_RADIUS, SIBYL_GLOW_TICKS / 20, SIBYL_COOLDOWN / 20 / 60};
-			case "augur_lituus" -> new Object[] {LITUUS_FAVOR_TICKS / 20 / 60, LITUUS_BAD_TICKS / 20 / 60, LITUUS_BIRD_RADIUS,
-					LITUUS_COOLDOWN / 20 / 60};
-			default -> NorseRelics.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("wolf_bulla", WOLF_RADIUS, WOLF_HOWL_HEALTH / 2, WOLF_HOWL_WOLVES, WOLF_HOWL_TICKS / 20, WOLF_HOWL_COOLDOWN / 20 / 60);
+		TooltipArgs.register("ancile", ANCILE_RAID_RADIUS, Math.round(ANCILE_RAID_FACTOR * 100));
+		TooltipArgs.register("palladium", PALLADIUM_RADIUS);
+		TooltipArgs.register("vesta_lamp", VESTA_RADIUS, Math.round(VESTA_HUNGER_FACTOR * 100), VESTA_FIRE_TICKS / 20 / 60,
+				VESTA_FIRE_COOLDOWN / 20 / 60);
+		TooltipArgs.register("sibylline_books", SIBYL_LEVELS, SIBYL_RADIUS, SIBYL_GLOW_TICKS / 20, SIBYL_COOLDOWN / 20 / 60);
+		TooltipArgs.register("augur_lituus", LITUUS_FAVOR_TICKS / 20 / 60, LITUUS_BAD_TICKS / 20 / 60, LITUUS_BIRD_RADIUS,
+				LITUUS_COOLDOWN / 20 / 60);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

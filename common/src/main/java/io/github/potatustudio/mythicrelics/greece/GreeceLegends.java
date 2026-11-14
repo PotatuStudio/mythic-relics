@@ -4,12 +4,12 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.entity.Talos;
-import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.ExecuteWarning;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Map;
@@ -300,20 +300,17 @@ public final class GreeceLegends {
 	}
 
 	/** Números de los tooltips de la tercera tanda griega. */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "zeus_thunderbolt" -> new Object[] {ZEUS_RANGE, (int) ZEUS_DAMAGE, ZEUS_CHAIN_TARGETS, (int) ZEUS_CHAIN_DAMAGE,
-					ZEUS_STORM_CHAIN_TARGETS, ZEUS_COOLDOWN / 20, ZEUS_STRONG_TICKS / 20, ZEUS_STRONG_BOLTS, ZEUS_STRONG_COOLDOWN / 20};
-			case "nemean_lion_skin" -> new Object[] {Math.round(NEMEA_REDUCTION * 100), (int) NEMEA_FIST_DAMAGE};
-			case "achilles_shield" -> new Object[] {WRATH_MAX, WRATH_TICKS / 20, Math.round(WRATH_BONUS * 100)};
-			case "harpe" -> new Object[] {Math.round(HARPE_HEAD_CHANCE * 100), Math.round(HARPE_WITHER_SKULL_CHANCE * 100),
-					Math.round(HARPE_EXECUTE_HEALTH * 100), HARPE_COOLDOWN / 20};
-			case "golden_bridle" -> new Object[] {(int) PEGASUS_DIVE_DAMAGE, PEGASUS_OLYMPUS_Y, PEGASUS_COOLDOWN / 20 / 60};
-			case "apple_of_discord" -> new Object[] {APPLE_RANGE, APPLE_TICKS / 20, APPLE_RADIUS, APPLE_COOLDOWN / 20};
-			case "talos_nail" -> new Object[] {TALOS_TICKS / 20, (int) TALOS_ROCK_DAMAGE, TALOS_ROCK_INTERVAL / 20, TALOS_ROCK_RANGE,
-					(int) TALOS_HUG_DAMAGE, TALOS_HUG_FIRE_SECONDS, TALOS_COOLDOWN / 20 / 60};
-			default -> NorseSagas.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("zeus_thunderbolt", ZEUS_RANGE, (int) ZEUS_DAMAGE, ZEUS_CHAIN_TARGETS, (int) ZEUS_CHAIN_DAMAGE,
+				ZEUS_STORM_CHAIN_TARGETS, ZEUS_COOLDOWN / 20, ZEUS_STRONG_TICKS / 20, ZEUS_STRONG_BOLTS, ZEUS_STRONG_COOLDOWN / 20);
+		TooltipArgs.register("nemean_lion_skin", Math.round(NEMEA_REDUCTION * 100), (int) NEMEA_FIST_DAMAGE);
+		TooltipArgs.register("achilles_shield", WRATH_MAX, WRATH_TICKS / 20, Math.round(WRATH_BONUS * 100));
+		TooltipArgs.register("harpe", Math.round(HARPE_HEAD_CHANCE * 100), Math.round(HARPE_WITHER_SKULL_CHANCE * 100),
+				Math.round(HARPE_EXECUTE_HEALTH * 100), HARPE_COOLDOWN / 20);
+		TooltipArgs.register("golden_bridle", (int) PEGASUS_DIVE_DAMAGE, PEGASUS_OLYMPUS_Y, PEGASUS_COOLDOWN / 20 / 60);
+		TooltipArgs.register("apple_of_discord", APPLE_RANGE, APPLE_TICKS / 20, APPLE_RADIUS, APPLE_COOLDOWN / 20);
+		TooltipArgs.register("talos_nail", TALOS_TICKS / 20, (int) TALOS_ROCK_DAMAGE, TALOS_ROCK_INTERVAL / 20, TALOS_ROCK_RANGE,
+				(int) TALOS_HUG_DAMAGE, TALOS_HUG_FIRE_SECONDS, TALOS_COOLDOWN / 20 / 60);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

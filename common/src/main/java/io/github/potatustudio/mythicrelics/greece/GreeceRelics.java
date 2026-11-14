@@ -15,6 +15,7 @@ import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -389,16 +390,13 @@ public final class GreeceRelics {
 	}
 
 	/** Números de los tooltips de Grecia (%1$s, %2$s… de sus líneas de traducción, en este orden). */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "hermes_sandals" -> new Object[] {Math.round(HERMES_SPEED * 100)};
-			case "hades_helm" -> new Object[] {HADES_STILL_TICKS / 20};
-			case "athena_aegis" -> new Object[] {AEGIS_STUN_TICKS / 20};
-			case "medusa_head" -> new Object[] {MEDUSA_TICKS / 20, (int) MEDUSA_RADIUS, MEDUSA_GAZE_TICKS * 50};
-			case "ariadne_thread" -> new Object[] {ARIADNE_MAX_DISTANCE, ARIADNE_COOLDOWN / 20 / 60};
-			case "orpheus_lyre" -> new Object[] {(int) ORPHEUS_ANIMALS, (int) ORPHEUS_HOSTILES};
-			default -> GreeceHeroes.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("hermes_sandals", Math.round(HERMES_SPEED * 100));
+		TooltipArgs.register("hades_helm", HADES_STILL_TICKS / 20);
+		TooltipArgs.register("athena_aegis", AEGIS_STUN_TICKS / 20);
+		TooltipArgs.register("medusa_head", MEDUSA_TICKS / 20, (int) MEDUSA_RADIUS, MEDUSA_GAZE_TICKS * 50);
+		TooltipArgs.register("ariadne_thread", ARIADNE_MAX_DISTANCE, ARIADNE_COOLDOWN / 20 / 60);
+		TooltipArgs.register("orpheus_lyre", (int) ORPHEUS_ANIMALS, (int) ORPHEUS_HOSTILES);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

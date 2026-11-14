@@ -5,11 +5,11 @@ import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.entity.Sleipnir;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -228,17 +228,14 @@ public final class NorseGods {
 	}
 
 	/** Números de los tooltips de la segunda tanda nórdica. */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "sleipnir_horseshoe" -> new Object[] {SLEIPNIR_LEAVE_TICKS / 20, SLEIPNIR_COOLDOWN / 20 / 60};
-			case "odin_ravens" -> new Object[] {RAVENS_RADIUS};
-			case "brisingamen" -> new Object[] {BRISINGAMEN_RADIUS, (int) (BRISINGAMEN_HEAL / 2)};
-			case "skidbladnir" -> new Object[] {Math.round(SKIDBLADNIR_BOOST * 100)};
-			case "mimir_head" -> new Object[] {MIMIR_RADIUS, MimirHead.GUIDE_TICKS / 20, MimirHead.GUIDE_RADIUS, MimirHead.ASK_COOLDOWN / 20};
-			case "andvaranaut" -> new Object[] {(int) (ANDVARANAUT_HEALTH / 2)};
-			case "odrerir" -> new Object[] {ODRERIR_LEVELS, ODRERIR_HASTE_TICKS / 20 / 60};
-			default -> ChinaRelics.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("sleipnir_horseshoe", SLEIPNIR_LEAVE_TICKS / 20, SLEIPNIR_COOLDOWN / 20 / 60);
+		TooltipArgs.register("odin_ravens", RAVENS_RADIUS);
+		TooltipArgs.register("brisingamen", BRISINGAMEN_RADIUS, (int) (BRISINGAMEN_HEAL / 2));
+		TooltipArgs.register("skidbladnir", Math.round(SKIDBLADNIR_BOOST * 100));
+		TooltipArgs.register("mimir_head", MIMIR_RADIUS, MimirHead.GUIDE_TICKS / 20, MimirHead.GUIDE_RADIUS, MimirHead.ASK_COOLDOWN / 20);
+		TooltipArgs.register("andvaranaut", (int) (ANDVARANAUT_HEALTH / 2));
+		TooltipArgs.register("odrerir", ODRERIR_LEVELS, ODRERIR_HASTE_TICKS / 20 / 60);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

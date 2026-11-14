@@ -9,6 +9,7 @@ import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicLightning;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
@@ -320,22 +321,19 @@ public final class JapanRelics {
 	}
 
 	/** Números de los tooltips japoneses. */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "kusanagi" -> new Object[] {KUSANAGI_SLASH_RANGE, (int) KUSANAGI_SLASH_DAMAGE, KUSANAGI_COOLDOWN / 20};
-			case "yata_mirror" -> new Object[] {MIRROR_FLASH_RADIUS, MIRROR_BLIND_TICKS / 20, MIRROR_COOLDOWN / 20};
-			case "yasakani_magatama" -> new Object[] {MAGATAMA_INTERVAL / 20, Math.round(SET_DAMAGE * 100)};
-			case "raijin_drum" -> new Object[] {RAIJIN_HITS, RAIJIN_WINDOW / 20};
-			case "oni_kanabo" -> new Object[] {Math.round(KANABO_ARMOR_IGNORED * 100)};
-			case "kitsune_star_ball" -> new Object[] {KITSUNE_TICKS / 20, KITSUNE_HEALTH, KITSUNE_DAMAGE, KITSUNEBI_INTERVAL / 20,
-					KITSUNEBI_BURN_SECONDS, KITSUNE_COOLDOWN / 20 / 60};
-			case "tide_jewels" -> new Object[] {TIDE_BUBBLE_RADIUS, TIDE_TICKS / 20, TIDE_WAVE_RANGE, TIDE_COOLDOWN / 20};
-			case "lucky_mallet" -> new Object[] {TooltipNumbers.fmtTenths(1 + MALLET_SCALE), MALLET_TICKS / 20, MALLET_HEALTH / 2, MALLET_COOLDOWN / 20 / 60,
-					MALLET_GROW_RADIUS};
-			case "kibi_dango" -> new Object[] {KIBI_STRENGTH_TICKS / 20, KIBI_MAX};
-			case "urashima_rod" -> new Object[] {TURTLE_LEAVE_TICKS / 20, TURTLE_COOLDOWN / 20 / 60};
-			default -> JapanGods.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("kusanagi", KUSANAGI_SLASH_RANGE, (int) KUSANAGI_SLASH_DAMAGE, KUSANAGI_COOLDOWN / 20);
+		TooltipArgs.register("yata_mirror", MIRROR_FLASH_RADIUS, MIRROR_BLIND_TICKS / 20, MIRROR_COOLDOWN / 20);
+		TooltipArgs.register("yasakani_magatama", MAGATAMA_INTERVAL / 20, Math.round(SET_DAMAGE * 100));
+		TooltipArgs.register("raijin_drum", RAIJIN_HITS, RAIJIN_WINDOW / 20);
+		TooltipArgs.register("oni_kanabo", Math.round(KANABO_ARMOR_IGNORED * 100));
+		TooltipArgs.register("kitsune_star_ball", KITSUNE_TICKS / 20, KITSUNE_HEALTH, KITSUNE_DAMAGE, KITSUNEBI_INTERVAL / 20,
+				KITSUNEBI_BURN_SECONDS, KITSUNE_COOLDOWN / 20 / 60);
+		TooltipArgs.register("tide_jewels", TIDE_BUBBLE_RADIUS, TIDE_TICKS / 20, TIDE_WAVE_RANGE, TIDE_COOLDOWN / 20);
+		TooltipArgs.register("lucky_mallet", TooltipNumbers.fmtTenths(1 + MALLET_SCALE), MALLET_TICKS / 20, MALLET_HEALTH / 2, MALLET_COOLDOWN / 20 / 60,
+				MALLET_GROW_RADIUS);
+		TooltipArgs.register("kibi_dango", KIBI_STRENGTH_TICKS / 20, KIBI_MAX);
+		TooltipArgs.register("urashima_rod", TURTLE_LEAVE_TICKS / 20, TURTLE_COOLDOWN / 20 / 60);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

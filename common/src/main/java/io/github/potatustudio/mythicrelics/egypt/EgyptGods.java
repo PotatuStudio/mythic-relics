@@ -5,13 +5,13 @@ import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -346,16 +346,13 @@ public final class EgyptGods {
 	}
 
 	/** Números de los tooltips de la tanda 2 (%1$s, %2$s… de sus líneas de traducción, en este orden). */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "ra_disk" -> new Object[] {Math.round(RA_UNDEAD_BONUS * 100), RA_BURN_SECONDS, URAEUS_BURN_SECONDS, URAEUS_COOLDOWN / 20};
-			case "thoth_palette" -> new Object[] {THOTH_MAX_LEVELS, Math.round(THOTH_XP_BONUS * 100), THOTH_MAX_POINTS};
-			case "osiris_crook" -> new Object[] {CROOK_GROW_COOLDOWN / 20};
-			case "osiris_flail" -> new Object[] {FLAIL_SWEEP_RADIUS, Math.round(FLAIL_SWEEP_DAMAGE * 100)};
-			case "sekhmet_claws" -> new Object[] {SEKHMET_WINDOW / 20, SEKHMET_MAX, Math.round(SEKHMET_PER_LEVEL * 100), SEKHMET_BURN_SECONDS,
-					Math.round(SEKHMET_CALM_HEAL / 2)};
-			default -> GreeceRelics.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("ra_disk", Math.round(RA_UNDEAD_BONUS * 100), RA_BURN_SECONDS, URAEUS_BURN_SECONDS, URAEUS_COOLDOWN / 20);
+		TooltipArgs.register("thoth_palette", THOTH_MAX_LEVELS, Math.round(THOTH_XP_BONUS * 100), THOTH_MAX_POINTS);
+		TooltipArgs.register("osiris_crook", CROOK_GROW_COOLDOWN / 20);
+		TooltipArgs.register("osiris_flail", FLAIL_SWEEP_RADIUS, Math.round(FLAIL_SWEEP_DAMAGE * 100));
+		TooltipArgs.register("sekhmet_claws", SEKHMET_WINDOW / 20, SEKHMET_MAX, Math.round(SEKHMET_PER_LEVEL * 100), SEKHMET_BURN_SECONDS,
+				Math.round(SEKHMET_CALM_HEAL / 2));
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

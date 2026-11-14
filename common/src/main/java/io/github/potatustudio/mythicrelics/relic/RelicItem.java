@@ -1,6 +1,5 @@
 package io.github.potatustudio.mythicrelics.relic;
 
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -15,7 +14,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 /**
  * Reliquia. El tooltip sale de {@code item.mythicrelics.<id>.tooltip.1}, {@code .2}… (tantas líneas como haya en la
  * traducción; Minecraft no corta las líneas largas): la primera en dorado con el efecto principal, el resto en gris, con
- * los números de {@link EgyptRelics#tooltipArgs}. Las piezas de los sets (Anubis, Osiris, Perseo, Thor) agregan el bono como los atributos vanilla
+ * los números de {@link TooltipArgs}. Las piezas de los sets (Anubis, Osiris, Perseo, Thor) agregan el bono como los atributos vanilla
  * y al final va dónde se encuentra, según {@link ModLoot}.
  */
 public class RelicItem extends Item {
@@ -37,7 +36,7 @@ public class RelicItem extends Item {
 	/** Las líneas del efecto de cualquier reliquia (también las que no son RelicItem, como el bloque del Paladio). */
 	public static void effectLines(Item item, Consumer<Component> tooltip) {
 		String id = BuiltInRegistries.ITEM.getKey(item).getPath();
-		Object[] args = EgyptRelics.tooltipArgs(id);
+		Object[] args = TooltipArgs.of(id);
 		Language language = Language.getInstance();
 		for (int i = 1; i <= MAX_LINES; i++) {
 			String key = "item.mythicrelics." + id + ".tooltip." + i;

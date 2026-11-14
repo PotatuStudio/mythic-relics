@@ -10,6 +10,7 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
@@ -326,22 +327,19 @@ public final class ChinaRelics {
 	}
 
 	/** Números de los tooltips chinos (%1$s, %2$s… de sus líneas de traducción, en este orden). */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "ruyi_jingu_bang" -> new Object[] {TooltipNumbers.fmt(RUYI_REACH), RUYI_LENGTH, (int) RUYI_STRETCH_DAMAGE, RUYI_COOLDOWN / 20,
-					RUYI_EXTENDED_TICKS / 20, (int) RUYI_EXTENDED_REACH};
-			case "monkey_king_hairs" -> new Object[] {HAIRS_MONKEYS, HAIRS_TICKS / 20, MONKEY_HEALTH, MONKEY_DAMAGE, HAIRS_COOLDOWN / 20 / 60};
-			case "purple_gold_gourd" -> new Object[] {GOURD_MAX_HEALTH, GOURD_DISSOLVE_TICKS / 20 / 60, GOURD_COOLDOWN / 20};
-			case "banana_leaf_fan" -> new Object[] {FAN_BLADE_RANGE, (int) FAN_BLADE_DAMAGE, FAN_DASH_BLOCKS, FAN_CHARGES,
-					FAN_RECHARGE_TICKS / 20, (int) FAN_DASH_DAMAGE};
-			case "dragon_pearl" -> new Object[] {DRAGON_LEAVE_TICKS / 20, DRAGON_COOLDOWN / 20 / 60};
-			case "wind_fire_wheels" -> new Object[] {Math.round(WHEELS_SPEED * 100)};
-			case "hou_yi_bow" -> new Object[] {Math.round(HOU_YI_DAMAGE * 100), HOU_YI_SUN_FACTOR};
-			case "change_elixir" -> new Object[] {Math.round(ELIXIR_AIR_DAMAGE * 100), ELIXIR_FULL_SECONDS, ELIXIR_QUARTER_SECONDS,
-					ELIXIR_NEW_SECONDS, ELIXIR_COOLDOWN / 20 / 60};
-			case "five_color_stone" -> new Object[] {STONE_INTERVAL / 20};
-			default -> ChinaGods.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("ruyi_jingu_bang", TooltipNumbers.fmt(RUYI_REACH), RUYI_LENGTH, (int) RUYI_STRETCH_DAMAGE, RUYI_COOLDOWN / 20,
+				RUYI_EXTENDED_TICKS / 20, (int) RUYI_EXTENDED_REACH);
+		TooltipArgs.register("monkey_king_hairs", HAIRS_MONKEYS, HAIRS_TICKS / 20, MONKEY_HEALTH, MONKEY_DAMAGE, HAIRS_COOLDOWN / 20 / 60);
+		TooltipArgs.register("purple_gold_gourd", GOURD_MAX_HEALTH, GOURD_DISSOLVE_TICKS / 20 / 60, GOURD_COOLDOWN / 20);
+		TooltipArgs.register("banana_leaf_fan", FAN_BLADE_RANGE, (int) FAN_BLADE_DAMAGE, FAN_DASH_BLOCKS, FAN_CHARGES,
+				FAN_RECHARGE_TICKS / 20, (int) FAN_DASH_DAMAGE);
+		TooltipArgs.register("dragon_pearl", DRAGON_LEAVE_TICKS / 20, DRAGON_COOLDOWN / 20 / 60);
+		TooltipArgs.register("wind_fire_wheels", Math.round(WHEELS_SPEED * 100));
+		TooltipArgs.register("hou_yi_bow", Math.round(HOU_YI_DAMAGE * 100), HOU_YI_SUN_FACTOR);
+		TooltipArgs.register("change_elixir", Math.round(ELIXIR_AIR_DAMAGE * 100), ELIXIR_FULL_SECONDS, ELIXIR_QUARTER_SECONDS,
+				ELIXIR_NEW_SECONDS, ELIXIR_COOLDOWN / 20 / 60);
+		TooltipArgs.register("five_color_stone", STONE_INTERVAL / 20);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

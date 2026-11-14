@@ -22,6 +22,7 @@ import io.github.potatustudio.mythicrelics.registry.ModLoot;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -46,6 +47,7 @@ public final class MythicRelics {
 		Minions.init();
 		RelicCooldowns.init();
 		RelicSets.init();
+		TooltipArgs.init();
 		EgyptRelics.init();
 		EgyptGods.init();
 		GreeceRelics.init();

@@ -16,6 +16,7 @@ import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Map;
@@ -427,17 +428,14 @@ public final class NorseSagas {
 	}
 
 	/** Números de los tooltips de la tercera tanda nórdica. */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "gram" -> new Object[] {GRAM_CHARGE_TICKS / 20, (int) GRAM_THRUST_DAMAGE, (int) GRAM_BIG_HEALTH, GRAM_COOLDOWN / 20};
-			case "tyrfing" -> new Object[] {Math.round(TYRFING_CRIT * 100), TYRFING_CURSE_TICKS / 20, (int) (TYRFING_CURSE_DAMAGE / 2)};
-			case "dainsleif" -> new Object[] {DAINSLEIF_NO_HEAL_TICKS / 20, DAINSLEIF_BLEED_TICKS / 20};
-			case "freyr_sword" -> new Object[] {FREYR_RADIUS, (int) FREYR_DAMAGE, Math.round(FREYR_BIG_BONUS * 100), FREYR_WISE_LEVEL,
-					Math.round(FREYR_WISE_BONUS * 100), FREYR_IDLE_TICKS / 20};
-			case "falcon_cloak" -> new Object[] {FALCON_TICKS / 20, FALCON_COOLDOWN / 20};
-			case "mistletoe_dart" -> new Object[] {(int) DART_DAMAGE, DART_COOLDOWN / 20};
-			default -> new Object[0];
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("gram", GRAM_CHARGE_TICKS / 20, (int) GRAM_THRUST_DAMAGE, (int) GRAM_BIG_HEALTH, GRAM_COOLDOWN / 20);
+		TooltipArgs.register("tyrfing", Math.round(TYRFING_CRIT * 100), TYRFING_CURSE_TICKS / 20, (int) (TYRFING_CURSE_DAMAGE / 2));
+		TooltipArgs.register("dainsleif", DAINSLEIF_NO_HEAL_TICKS / 20, DAINSLEIF_BLEED_TICKS / 20);
+		TooltipArgs.register("freyr_sword", FREYR_RADIUS, (int) FREYR_DAMAGE, Math.round(FREYR_BIG_BONUS * 100), FREYR_WISE_LEVEL,
+				Math.round(FREYR_WISE_BONUS * 100), FREYR_IDLE_TICKS / 20);
+		TooltipArgs.register("falcon_cloak", FALCON_TICKS / 20, FALCON_COOLDOWN / 20);
+		TooltipArgs.register("mistletoe_dart", (int) DART_DAMAGE, DART_COOLDOWN / 20);
 	}
 
 

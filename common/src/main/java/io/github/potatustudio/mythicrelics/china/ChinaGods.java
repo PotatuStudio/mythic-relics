@@ -5,7 +5,6 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.greece.CharonStash;
-import io.github.potatustudio.mythicrelics.japan.JapanRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
@@ -13,6 +12,7 @@ import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -293,20 +293,17 @@ public final class ChinaGods {
 	}
 
 	/** Números de los tooltips de la segunda tanda china. */
-	public static Object[] tooltipArgs(String id) {
-		return switch (id) {
-			case "fire_tipped_spear" -> new Object[] {SPEAR_BURN_SECONDS, SPEAR_FLAME_RANGE, (int) SPEAR_FLAME_DAMAGE, SPEAR_COOLDOWN / 20,
-					SPEAR_WHEELS_COOLDOWN / 20};
-			case "universe_ring" -> new Object[] {RING_TARGETS, RING_RANGE, (int) RING_DAMAGE, RING_STUN_TICKS / 20, RING_COOLDOWN / 20};
-			case "erlang_eye" -> new Object[] {ERLANG_SIGHT_RADIUS};
-			case "erlang_halberd" -> new Object[] {(int) HALBERD_REACH, HALBERD_SWEEP_RADIUS, DOG_TICKS / 20, DOG_COOLDOWN / 20};
-			case "qilin_horn" -> new Object[] {QILIN_AURA_RADIUS, QILIN_LEAVE_TICKS / 20, QILIN_COOLDOWN / 20 / 60};
-			case "pixiu_bracelet" -> new Object[] {Math.round(PIXIU_CHANCE * 100), PIXIU_MAX_NUGGETS};
-			case "fu_talismans" -> new Object[] {TALISMAN_TICKS / 20, TALISMAN_COOLDOWN / 20};
-			case "xirang_sack" -> new Object[] {XIRANG_RESCUE_COOLDOWN / 20 / 60};
-			case "immortal_peach_branch" -> new Object[] {PEACH_GROW_TICKS / 24000, PEACH_ABSORPTION_TICKS / 20 / 60, PEACH_REGEN_TICKS / 20};
-			default -> JapanRelics.tooltipArgs(id);
-		};
+	public static void registerTooltipArgs() {
+		TooltipArgs.register("fire_tipped_spear", SPEAR_BURN_SECONDS, SPEAR_FLAME_RANGE, (int) SPEAR_FLAME_DAMAGE, SPEAR_COOLDOWN / 20,
+				SPEAR_WHEELS_COOLDOWN / 20);
+		TooltipArgs.register("universe_ring", RING_TARGETS, RING_RANGE, (int) RING_DAMAGE, RING_STUN_TICKS / 20, RING_COOLDOWN / 20);
+		TooltipArgs.register("erlang_eye", ERLANG_SIGHT_RADIUS);
+		TooltipArgs.register("erlang_halberd", (int) HALBERD_REACH, HALBERD_SWEEP_RADIUS, DOG_TICKS / 20, DOG_COOLDOWN / 20);
+		TooltipArgs.register("qilin_horn", QILIN_AURA_RADIUS, QILIN_LEAVE_TICKS / 20, QILIN_COOLDOWN / 20 / 60);
+		TooltipArgs.register("pixiu_bracelet", Math.round(PIXIU_CHANCE * 100), PIXIU_MAX_NUGGETS);
+		TooltipArgs.register("fu_talismans", TALISMAN_TICKS / 20, TALISMAN_COOLDOWN / 20);
+		TooltipArgs.register("xirang_sack", XIRANG_RESCUE_COOLDOWN / 20 / 60);
+		TooltipArgs.register("immortal_peach_branch", PEACH_GROW_TICKS / 24000, PEACH_ABSORPTION_TICKS / 20 / 60, PEACH_REGEN_TICKS / 20);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
