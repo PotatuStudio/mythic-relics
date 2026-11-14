@@ -1,0 +1,306 @@
+<title>Grecia · Pegaso y Talos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;600&display=swap">
+<style>
+/* Visor de las dos entidades de la tanda 3 griega: Pegaso y Talos. La geometría es la del juego (partes y cubos de
+   ModelPart, UV de caja) y las texturas son las que se usarían. */
+:root {
+  --night: #0c1118; --stone: #151d28; --stone-2: #1c2633; --line: #2e3c50;
+  --sand: #ece6da; --muted: #9eabbd; --gold: #e9b949; --jade: #8ab4f0;
+  --font-display: "Marcellus", Georgia, serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--night); color: var(--sand); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px; margin: 0; }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 24px; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: 2.1rem; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; margin: 0; color: var(--gold); }
+h3 { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 4px; font-weight: 600; }
+p { margin: 0; }
+.lead { color: var(--muted); max-width: 72ch; }
+.box { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; }
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #0a0f16; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { font: inherit; font-size: 14px; color: var(--sand); background: var(--stone-2); border: 1px solid var(--line);
+  border-radius: 999px; padding: 6px 14px; cursor: pointer; min-height: 36px; }
+.btn[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+.btn:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.card { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 10px; align-content: start; }
+.fid { display: grid; gap: 6px; }
+.fid p b { color: var(--jade); font-weight: 600; }
+ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.note { color: var(--muted); font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="box" style="background:none;border:none;padding:0">
+    <h1>Grecia · Pegaso y Talos</h1>
+    <p class="lead">Pegaso y Talos, con la geometría y la textura que tendrían en el juego. Gira con el mouse o el dedo y acerca con la rueda. Las partes que brillan (la brida de oro, los ojos de Talos y su vena de ícor) se ven más de noche. «Al rojo» muestra a Talos cuando abraza.</p>
+  </header>
+
+  <section class="box">
+    <div class="controls" id="subjects">
+      <button class="btn" data-s="pegasus" aria-pressed="true">Pegaso</button>
+      <button class="btn" data-s="flying" aria-pressed="false">Pegaso volando</button>
+      <button class="btn" data-s="rider" aria-pressed="false">Pegaso con jinete</button>
+      <button class="btn" data-s="talos" aria-pressed="false">Talos</button>
+      <button class="btn" data-s="guard" aria-pressed="false">Talos junto al jugador</button>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="controls">
+      <button class="btn" id="anim" aria-pressed="true">Movimiento</button>
+      <button class="btn" id="night" aria-pressed="false">De noche</button>
+      <button class="btn" id="hot" aria-pressed="false">Al rojo</button>
+      <button class="btn" id="puff" aria-pressed="false">Aparecer</button>
+    </div>
+  </section>
+
+  <div class="cards">
+    <article class="card">
+      <h2>Pegaso</h2>
+      <p class="note">Lo llama la Brida de oro de Atenea: montura propia que vuela; en picada embiste a 12 de daño. Si subes sobre la altura 200, el tábano de Zeus lo pica.</p>
+      <div class="fid">
+        <h3>Aspecto</h3>
+        <ul>
+          <li>Caballo blanco con grandes alas de plumas que nacen en la cruz, levantadas como en las monedas de Corinto.</li>
+          <li>Crin y cola plateadas, cascos grises.</li>
+          <li>La brida de oro de Atenea en la cabeza: frontalera, muserola y anillas del bocado. Brilla un poco, porque es un regalo divino.</li>
+          <li>Manta roja con greca de oro en vez de silla.</li>
+        </ul>
+        <h3>Fidelidad</h3>
+        <p><b>Fiel:</b> el caballo alado blanco nacido del cuello de Medusa y la brida de oro que Atenea le dio a Belerofonte (Píndaro, Olímpica 13).</p>
+        <p><b>Licencia:</b> la manta (Belerofonte lo montaba a pelo; es para que se vea montable) y que la brida lo invoque.</p>
+        <p><b>Pop:</b> nada. No es el Pegaso de Disney.</p>
+      </div>
+    </article>
+    <article class="card">
+      <h2>Talos</h2>
+      <p class="note">Lo llama el Clavo de bronce: 90 s a tu lado, da vueltas a tu alrededor, lanza rocas (10 de daño) y abraza al rojo (8 de daño y fuego). Por la espalda recibe el doble.</p>
+      <div class="fid">
+        <h3>Aspecto</h3>
+        <ul>
+          <li>Hombre de bronce de unos 3 bloques, con pelo y barba de rizos como un bronce griego.</li>
+          <li>Ojos de horno que brillan y pátina verde en las partes bajas.</li>
+          <li>La única vena de ícor, dorada, baja del cuello al tobillo derecho (brilla).</li>
+          <li>El clavo de bronce en el tobillo derecho: su punto débil.</li>
+          <li>Una roca en la mano derecha, lista para lanzar.</li>
+        </ul>
+        <h3>Fidelidad</h3>
+        <p><b>Fiel:</b> el guardián de bronce de Creta que hizo Hefesto: tira rocas, se pone al rojo para abrazar y tiene una sola vena cerrada con un clavo en el tobillo (Apolonio de Rodas, Apolodoro; la vasija de Ruvo, c. 400 a. C.).</p>
+        <p><b>Licencia:</b> el faldellín de bronce (en la vasija está desnudo) y que lo invoque un clavo.</p>
+        <p><b>Pop:</b> nada. No es el coloso gigante de Jasón y los argonautas (1963).</p>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DATA = {"pegasus": {"parts": [{"name": "body", "parent": null, "offset": [0, 9, 0], "rot": [0, 0, 0], "cubes": [[0, 0, -5, -5, -11, 10, 10, 22]]}, {"name": "blanket", "parent": "body", "offset": [0, 0, 0], "rot": [0, 0, 0], "cubes": [[32, 32, -5.5, -5.5, -4, 11, 5, 8]]}, {"name": "leg_fr", "parent": null, "offset": [-3, 14, -8], "rot": [0, 0, 0], "cubes": [[92, 0, -2, 0, -2, 4, 10, 4]]}, {"name": "leg_fl", "parent": null, "offset": [3, 14, -8], "rot": [0, 0, 0], "cubes": [[108, 0, -2, 0, -2, 4, 10, 4]]}, {"name": "leg_br", "parent": null, "offset": [-3, 14, 8], "rot": [0, 0, 0], "cubes": [[0, 32, -2, 0, -2, 4, 10, 4]]}, {"name": "leg_bl", "parent": null, "offset": [3, 14, 8], "rot": [0, 0, 0], "cubes": [[16, 32, -2, 0, -2, 4, 10, 4]]}, {"name": "neck", "parent": "body", "offset": [0, -3, -9], "rot": [0.5, 0, 0], "cubes": [[64, 0, -2, -12, -3, 4, 13, 6], [84, 0, -1, -13, 3, 2, 14, 2]]}, {"name": "head", "parent": "neck", "offset": [0, -12, -1], "rot": [0.2, 0, 0], "cubes": [[70, 32, -3, -4, -5, 6, 6, 7], [76, 59, -2, -3, -10, 4, 5, 5], [12, 70, -2.5, -7, 0, 2, 3, 1], [18, 70, 0.5, -7, 0, 2, 3, 1]]}, {"name": "bridle", "parent": "head", "offset": [0, 0, 0], "rot": [0, 0, 0], "cubes": [[0, 70, -2.5, -3.5, -8, 5, 6, 1], [106, 59, -3.5, -4.5, -2, 7, 7, 1], [24, 70, -3, 0, -9, 1, 1, 1], [28, 70, 2, 0, -9, 1, 1, 1]]}, {"name": "wing_r", "parent": "body", "offset": [-5, -4, -6], "rot": [0, 0.2, 0.6], "cubes": [[0, 59, -10, -1, 0, 10, 2, 9]]}, {"name": "wing_r2", "parent": "wing_r", "offset": [-10, 0, 0], "rot": [0, 0.1, 0.3], "cubes": [[0, 46, -12, -0.5, 0, 12, 1, 12]]}, {"name": "wing_l", "parent": "body", "offset": [5, -4, -6], "rot": [0, -0.2, -0.6], "cubes": [[38, 59, 0, -1, 0, 10, 2, 9]]}, {"name": "wing_l2", "parent": "wing_l", "offset": [10, 0, 0], "rot": [0, -0.1, -0.3], "cubes": [[48, 46, 0, -0.5, 0, 12, 1, 12]]}, {"name": "tail", "parent": "body", "offset": [0, -4, 11], "rot": [0.6, 0, 0], "cubes": [[96, 46, -1.5, 0, -1.5, 3, 10, 3]]}, {"name": "tail2", "parent": "tail", "offset": [0, 10, 0], "rot": [0.3, 0, 0], "cubes": [[94, 59, -1.5, 0, -1.5, 3, 7, 3]]}], "texW": 128, "texH": 128, "tex": "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", "glow": "iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAABsElEQVR4nO3ZMU4bURAAUK/lKtwAIUqq1ATaXIE+d0jLAWi5Q3quQBugpqKMLG5AWkd/rcHjn10ZJ2sla96TLM/asFppvufPzk4mAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMrBn6hOzO/fXR4uP5SRs/fn+anF58aeOHm2/te/nuw+FZe5zjT1/nvXme7vB6GTj55b0kNfx8vmtfoSyKoiyMiMtCiP/tMhvyItmd+LXnX39Jfq4EISpA/O0ynnee1wIYkTrheSEUufwXOe5jAYxE7PN5388LYWm9L8hVoI8mcCQWPy4XdRWIOBq+qASrsr+KD85uO3OtCRyRnPBNyS+fxULJjWNNBRiJ6OR/b+7WS3xXc7jpVhCAd6npGzF2DRP6Osm37l+xD9XH/DvTPCasu8U8Tixx3IpsI5+/xPXxX1w7A2he7j6/zpjzQ4Qshg6lu/zTKsD/aRbJrp8gbbrdYD80UYbr+8e+R4wqwB5uATFJqh8uhDxdao6vbAF7ZBpbQD1iLJ/X48SoCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAZFu/AMYcBgy9yJGfAAAAAElFTkSuQmCC", "scale": 1.0}, "talos": {"parts": [{"name": "body", "parent": null, "offset": [0, 0, 0], "rot": [0, 0, 0], "cubes": [[0, 19, -6, 0, -3, 12, 12, 6], [0, 66, -6.5, 9, -3.5, 13, 4, 7]]}, {"name": "head", "parent": null, "offset": [0, 0, 0], "rot": [0, 0, 0], "cubes": [[20, 37, -4, -8, -4, 8, 8, 8], [0, 54, -4.5, -8.5, -4.5, 9, 3, 9], [0, 77, -3, -2, -5, 6, 4, 2]]}, {"name": "arm_r", "parent": null, "offset": [-6, 1, 0], "rot": [0, 0, 0], "cubes": [[0, 0, -4, -1, -2.5, 4, 14, 5]]}, {"name": "rock", "parent": "arm_r", "offset": [-2, 13, -1], "rot": [0, 0, 0], "cubes": [[40, 66, -3, -1, -4, 6, 5, 6]]}, {"name": "arm_l", "parent": null, "offset": [6, 1, 0], "rot": [0, 0, 0], "cubes": [[18, 0, 0, -1, -2.5, 4, 14, 5]]}, {"name": "leg_r", "parent": null, "offset": [-3, 12, 0], "rot": [0, 0, 0], "cubes": [[36, 19, -2.5, 0, -2.5, 5, 12, 5]]}, {"name": "nail", "parent": "leg_r", "offset": [0, 0, 0], "rot": [0, 0, 0], "cubes": [[16, 77, -4, 9, -0.5, 2, 1, 1]]}, {"name": "leg_l", "parent": null, "offset": [3, 12, 0], "rot": [0, 0, 0], "cubes": [[0, 37, -2.5, 0, -2.5, 5, 12, 5]]}], "texW": 64, "texH": 128, "tex": "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", "glow": "iVBORw0KGgoAAAANSUhEUgAAAEAAAACACAYAAAC7gW9qAAAAhUlEQVR4nO3asRWEQAgFQKScC64QS7MgC7EhrgHD27erzERE8EOCHwEAAAAAALCYuvYasTdnHl9BRnMZzWU0l9FcRnMZzWU0l7MDPEJ5hN4rZwcAAAB6qeNTdzMAAAAAAADACNuIKu32Pf+y9xFN0brpEb+5WwwAAAAAAAAAAAAAABCr+wGSfxkAltroagAAAABJRU5ErkJggg==", "scale": 1.5}};
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+renderer.outputEncoding = THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0f16);
+const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.05, 200);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+const hemi = new THREE.HemisphereLight(0xf6f8ff, 0x6a7488, 0.85); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffffff, 0.75); sun.position.set(3, 6, 4); scene.add(sun);
+
+function texFromB64(b64) {
+  const img = new Image(); const tex = new THREE.Texture(img);
+  img.onload = () => { tex.needsUpdate = true; };
+  img.src = "data:image/png;base64," + b64;
+  tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; tex.encoding = THREE.sRGBEncoding;
+  return tex;
+}
+/* Suelo de mármol procedural. */
+function groundTexture() {
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16; const g = c.getContext("2d");
+  const tones = ["#e8e4dc", "#dedad1", "#f0ece4", "#d6d1c6", "#e2ddd3"]; let seed = 11;
+  const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) { g.fillStyle = tones[Math.floor(rnd() * tones.length)]; g.fillRect(x, y, 1, 1); }
+  const t = new THREE.CanvasTexture(c); t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding; return t;
+}
+const groundMat = new THREE.MeshLambertMaterial({ map: groundTexture() });
+const ground = new THREE.Group(); scene.add(ground);
+for (let x = -5; x <= 5; x++) for (let z = -5; z <= 5; z++) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), groundMat); m.position.set(x, -0.5, z); ground.add(m);
+}
+
+/* Cubo con UV de caja de Minecraft (igual que ModelPart.Cube). */
+function cube(material, texW, texH, u, v, x0, y0, z0, w, h, d) {
+  const x1 = x0 + w, y1 = y0 + h, z1 = z0 + d;
+  const v000 = [x0, y0, z0], v100 = [x1, y0, z0], v110 = [x1, y1, z0], v010 = [x0, y1, z0];
+  const v001 = [x0, y0, z1], v101 = [x1, y0, z1], v111 = [x1, y1, z1], v011 = [x0, y1, z1];
+  const f8 = u + d, f9 = u + d + w, f10 = u + d + w + w, f11 = u + d + w + d, f12 = u + d + w + d + w, f13 = v + d, f14 = v + d + h;
+  const faces = [
+    [[v101, v001, v000, v100], f8, v, f9, f13],
+    [[v110, v010, v011, v111], f9, f13, f10, v],
+    [[v000, v001, v011, v010], u, f13, f8, f14],
+    [[v100, v000, v010, v110], f8, f13, f9, f14],
+    [[v101, v100, v110, v111], f9, f13, f11, f14],
+    [[v001, v101, v111, v011], f11, f13, f12, f14],
+  ];
+  const pos = [], uv = [], idx = [];
+  for (const [verts, u1, v1, u2, v2] of faces) {
+    const base = pos.length / 3; const uvs = [[u2, v1], [u1, v1], [u1, v2], [u2, v2]];
+    verts.forEach((p, i) => { pos.push(...p); uv.push(uvs[i][0] / texW, 1 - uvs[i][1] / texH); });
+    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return new THREE.Mesh(g, material);
+}
+function material(e) {
+  return new THREE.MeshLambertMaterial({ map: texFromB64(e.tex), side: THREE.DoubleSide, alphaTest: 0.1,
+    emissiveMap: texFromB64(e.glow), emissive: new THREE.Color(0xffffff) });
+}
+/* Arma una entidad: raíz con la escala del juego (-1/16, -1/16, 1/16) y el suelo en y = 24. */
+function build(e, mat) {
+  const entity = new THREE.Group(); const root = new THREE.Group();
+  root.scale.set(-1 / 16, -1 / 16, 1 / 16); root.position.y = 1.5; entity.add(root);
+  const parts = {};
+  for (const p of e.parts) {
+    const g = new THREE.Group(); g.position.set(...p.offset); g.rotation.order = "ZYX"; g.rotation.set(...p.rot);
+    for (const c of p.cubes) g.add(cube(mat, e.texW, e.texH, ...c));
+    (p.parent ? parts[p.parent] : root).add(g); g.userData.base = [...p.rot]; parts[p.name] = g;
+  }
+  entity.rotation.y = Math.PI; scene.add(entity);
+  return { entity, parts };
+}
+const pegasusMat = material(DATA.pegasus), talosMat = material(DATA.talos);
+const pegasus = build(DATA.pegasus, pegasusMat);
+const talos = build(DATA.talos, talosMat);
+talos.entity.scale.setScalar(DATA.talos.scale);
+const talosColor = talosMat.color.clone();
+
+/* Jinete: muñeco del jugador sentado sobre la manta; el mismo muñeco hace de jugador junto a Talos. */
+const rider = new THREE.Group();
+function rbox(color, x, y, z, w, h, d, parent = rider) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w / 16, h / 16, d / 16), new THREE.MeshLambertMaterial({ color }));
+  m.position.set(x / 16, y / 16, z / 16); parent.add(m); return m;
+}
+rbox(0xc69c6d, 0, 22, 0, 8, 8, 8); rbox(0x2b2118, 0, 25.2, 0, 8.4, 2.4, 8.4);
+rbox(0x3d6fb0, 0, 12, 0, 8, 12, 4); rbox(0xc69c6d, -6, 12, 0, 4, 12, 4); rbox(0xc69c6d, 6, 12, 0, 4, 12, 4);
+const legR = rbox(0x3a3a6a, -2, 4, -4, 4, 4, 12), legL = rbox(0x3a3a6a, 2, 4, -4, 4, 4, 12);
+legR.rotation.z = 0.5; legR.position.x = -5 / 16; legL.rotation.z = -0.5; legL.position.x = 5 / 16;
+function seatRider(on) {
+  if (on) { pegasus.parts.body.add(rider); rider.scale.set(-16, -16, 16); rider.rotation.set(0, Math.PI, 0); rider.position.set(0, -3, 1);
+    legR.rotation.set(1.25, 0, 0); legL.rotation.set(1.25, 0, 0); legR.position.set(-6.5 / 16, 1 / 16, -1 / 16); legL.position.set(6.5 / 16, 1 / 16, -1 / 16); legR.scale.set(1, 1, 1); legL.scale.set(1, 1, 1); }
+  else { scene.add(rider); rider.scale.set(1, 1, 1); rider.rotation.set(0, -0.6, 0); rider.position.set(1.6, 0, 1.2);
+    legR.rotation.set(0, 0, 0); legL.rotation.set(0, 0, 0); legR.position.set(-2 / 16, 6 / 16, 0); legL.position.set(2 / 16, 6 / 16, 0); legR.scale.set(1, 3, 0.34); legL.scale.set(1, 3, 0.34); }
+}
+
+/* Nubecitas al aparecer. */
+const puffs = [];
+const puffMat = new THREE.MeshLambertMaterial({ color: 0xf4f6fb, transparent: true, opacity: 0.9 });
+function puff(at, n, spread) {
+  for (let i = 0; i < n; i++) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.18, 0.18), puffMat.clone());
+    m.position.set(at.x + (Math.random() - 0.5) * spread, at.y + Math.random() * 1.6, at.z + (Math.random() - 0.5) * spread);
+    m.userData.v = new THREE.Vector3((Math.random() - 0.5) * 0.6, 0.4 + Math.random() * 0.5, (Math.random() - 0.5) * 0.6);
+    m.userData.life = 1.2; scene.add(m); puffs.push(m);
+  }
+}
+
+let subject = "pegasus", animate = true, hot = false;
+const CAMS = {
+  pegasus: { cam: [3.4, 2.2, 3.6], target: [0, 1.0, 0] },
+  flying: { cam: [4.2, 3.0, 4.4], target: [0, 2.6, 0] },
+  rider: { cam: [3.6, 2.6, 3.8], target: [0, 1.3, 0] },
+  talos: { cam: [4.0, 2.8, 4.6], target: [0, 1.5, 0] },
+  guard: { cam: [6.0, 3.6, 6.4], target: [0, 1.4, 0] },
+};
+function show(s) {
+  subject = s;
+  document.querySelectorAll("#subjects .btn").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === s)));
+  pegasus.entity.visible = s === "pegasus" || s === "flying" || s === "rider";
+  talos.entity.visible = s === "talos" || s === "guard";
+  rider.visible = s === "rider" || s === "guard";
+  seatRider(s === "rider");
+  pegasus.entity.position.set(0, 0, 0); talos.entity.position.set(0, 0, 0); talos.entity.rotation.y = Math.PI;
+  const c = CAMS[s]; camera.position.set(...c.cam); controls.target.set(...c.target);
+}
+document.querySelectorAll("#subjects .btn").forEach(b => b.addEventListener("click", () => show(b.dataset.s)));
+document.getElementById("anim").addEventListener("click", e => { animate = !animate; e.target.setAttribute("aria-pressed", String(animate)); });
+document.getElementById("night").addEventListener("click", e => {
+  const night = e.target.getAttribute("aria-pressed") !== "true"; e.target.setAttribute("aria-pressed", String(night));
+  hemi.intensity = night ? 0.18 : 0.85; sun.intensity = night ? 0.1 : 0.75;
+  scene.background = new THREE.Color(night ? 0x05070d : 0x0a0f16);
+});
+document.getElementById("hot").addEventListener("click", e => {
+  hot = !hot; e.target.setAttribute("aria-pressed", String(hot));
+  talosMat.color.copy(hot ? new THREE.Color(1.0, 0.45, 0.25) : talosColor);
+  talosMat.emissive.copy(hot ? new THREE.Color(1.0, 0.55, 0.3) : new THREE.Color(0xffffff));
+  talosMat.emissiveIntensity = 1;
+});
+document.getElementById("puff").addEventListener("click", () => {
+  const at = (subject === "talos" || subject === "guard") ? talos.entity.position : pegasus.entity.position;
+  puff(new THREE.Vector3(at.x, 0.4, at.z), 30, 2);
+});
+show("pegasus");
+
+const clock = new THREE.Clock(); let t = 0;
+function setRot(p, dx = 0, dy = 0, dz = 0) { const b = p.userData.base; p.rotation.set(b[0] + dx, b[1] + dy, b[2] + dz); }
+function animatePegasus(t) {
+  const P = pegasus.parts, k = animate ? 1 : 0, fly = subject === "flying";
+  // Alas: en el suelo se mecen; volando aletean.
+  const flap = fly ? Math.sin(t * 5) * 0.7 * k : Math.sin(t * 1.2) * 0.08 * k;
+  setRot(P.wing_r, 0, 0, flap); setRot(P.wing_l, 0, 0, -flap);
+  setRot(P.wing_r2, 0, 0, fly ? Math.sin(t * 5 - 0.6) * 0.4 * k : 0); setRot(P.wing_l2, 0, 0, fly ? -Math.sin(t * 5 - 0.6) * 0.4 * k : 0);
+  // Patas: quieto respira; volando las recoge.
+  for (const [n, ph] of [["leg_fr", 0], ["leg_fl", Math.PI], ["leg_br", Math.PI], ["leg_bl", 0]]) {
+    setRot(P[n], fly ? (n.startsWith("leg_f") ? -0.9 : 0.8) : Math.sin(t * 1.5 + ph) * 0.04 * k);
+  }
+  setRot(P.neck, Math.sin(t * 1.4) * 0.05 * k);
+  setRot(P.head, Math.sin(t * 1.4 - 0.5) * 0.06 * k);
+  setRot(P.tail, Math.sin(t * 1.1) * 0.08 * k, Math.sin(t * 0.9) * 0.2 * k);
+  setRot(P.tail2, Math.sin(t * 1.1 - 0.6) * 0.15 * k);
+  pegasus.entity.position.y = fly ? 2.2 + Math.sin(t * 5) * 0.12 * k : 0;
+}
+function animateTalos(t) {
+  const P = talos.parts, k = animate ? 1 : 0, guard = subject === "guard";
+  // Junto al jugador: da vueltas a su alrededor, como alrededor de Creta.
+  if (guard && animate) {
+    const a = t * 0.35, r = 3.4;
+    talos.entity.position.set(1.6 + Math.cos(a) * r, 0, 1.2 + Math.sin(a) * r);
+    talos.entity.rotation.y = -a;
+  }
+  const walk = guard ? Math.sin(t * 3) * 0.45 * k : 0;
+  setRot(P.leg_r, walk); setRot(P.leg_l, -walk);
+  // Brazo derecho: cada 4 s levanta la roca y la lanza.
+  const c = (t % 4) / 4, throwing = c > 0.7;
+  setRot(P.arm_r, throwing ? -2.6 + (c - 0.7) / 0.3 * 2.2 : -walk * 0.8 - 0.15 * Math.sin(t) * k);
+  P.rock.visible = !(c > 0.9);
+  setRot(P.arm_l, walk * 0.8);
+  setRot(P.head, 0, Math.sin(t * 0.7) * 0.25 * k);
+}
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage); resize();
+(function loop() {
+  const dt = Math.min(0.05, clock.getDelta()); t += dt;
+  animatePegasus(t);
+  animateTalos(t);
+  for (let i = puffs.length - 1; i >= 0; i--) {
+    const p = puffs[i]; p.userData.life -= dt; p.position.addScaledVector(p.userData.v, dt);
+    p.scale.setScalar(1 + (1.2 - p.userData.life) * 1.5); p.material.opacity = Math.max(0, p.userData.life / 1.2) * 0.9;
+    if (p.userData.life <= 0) { scene.remove(p); puffs.splice(i, 1); }
+  }
+  controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop);
+})();
+</script>
