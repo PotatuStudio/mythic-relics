@@ -1,0 +1,463 @@
+package io.github.potatustudio.mythicrelics.gametest;
+
+import eu.pb4.trinkets.api.SlotGroup;
+import eu.pb4.trinkets.api.SlotType;
+import eu.pb4.trinkets.api.TrinketAttachment;
+import eu.pb4.trinkets.api.TrinketSlotAccess;
+import eu.pb4.trinkets.api.TrinketsApi;
+import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.RelicClientTicks;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
+import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext;
+import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
+import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.phys.AABB;
+
+/**
+ * Recorrido automático de las reliquias en un mundo de prueba: tooltips (texto), cada reliquia en la mano (primera y
+ * tercera persona), puesta (frente y espalda), las entidades del mod (frente y costado) y cada habilidad (clic derecho
+ * mantenido y soltado, agachado si su texto lo menciona, y un golpe a un zombi). Las entradas son del juego (TestInput),
+ * nunca del sistema. Salida: carpeta mythic-test/ en el directorio de la ejecución (capturas y registro.txt).
+ */
+public class RelicClientGameTest implements FabricClientGameTest {
+	private static final int Y = 150;
+	private Path out;
+	private PrintWriter log;
+
+	@Override
+	public void runTest(ClientGameTestContext ctx) {
+		out = Path.of("mythic-test").toAbsolutePath();
+		try {
+			Files.createDirectories(out);
+			log = new PrintWriter(Files.newBufferedWriter(out.resolve("registro.txt"), StandardCharsets.UTF_8), true);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		try (TestSingleplayerContext sp = ctx.worldBuilder().create()) {
+			TestServerContext srv = sp.getServer();
+			setup(srv);
+			sp.getConnection().waitForChunksRender();
+			ctx.waitTicks(20);
+
+			List<Item> relics = relics();
+			log("reliquias: " + relics.size());
+			tooltips(ctx, relics);
+			hands(ctx, srv, relics);
+			worn(ctx, srv, relics);
+			entities(ctx, srv, sp);
+			vanillaShield(ctx, srv);
+			setTooltip(ctx, srv);
+			abilities(ctx, srv, relics);
+			log("FIN");
+		} catch (Throwable t) {
+			log("FALLO GENERAL: " + t);
+			t.printStackTrace(log);
+			throw t;
+		} finally {
+			log.close();
+		}
+	}
+
+	// ---- Preparación ------------------------------------------------------------------------------------------------
+
+	private void setup(TestServerContext srv) {
+		for (String c : List.of("gamerule advance_time false", "gamerule advance_weather false", "gamerule spawn_mobs false",
+				"gamerule spawn_monsters false", "gamerule keep_inventory true", "gamerule send_command_feedback false",
+				"gamerule spawn_phantoms false", "time set noon", "weather clear", "gamemode survival @a",
+				"fill -24 " + (Y - 1) + " -24 24 " + (Y - 1) + " 24 minecraft:grass_block",
+				"fill -24 " + Y + " -24 24 " + (Y + 12) + " 24 minecraft:air",
+				"effect give @a minecraft:resistance infinite 4 true", "effect give @a minecraft:saturation infinite 0 true",
+				"effect give @a minecraft:regeneration infinite 2 true")) {
+			srv.runCommand(c);
+		}
+		place(srv, 0.5, 0.5, 0, 10);
+	}
+
+	private void place(TestServerContext srv, double x, double z, float yaw, float pitch) {
+		srv.runCommand(String.format(Locale.ROOT, "tp @a %.2f %d %.2f %.1f %.1f", x, Y, z, yaw, pitch));
+	}
+
+	private static List<Item> relics() {
+		List<Item> list = new ArrayList<>();
+		for (Item item : BuiltInRegistries.ITEM) {
+			if (BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(MythicRelics.MOD_ID)) {
+				list.add(item);
+			}
+		}
+		return list;
+	}
+
+	private static String id(Item item) {
+		return BuiltInRegistries.ITEM.getKey(item).getPath();
+	}
+
+	private static ServerPlayer player(MinecraftServer s) {
+		return s.getPlayerList().getPlayers().getFirst();
+	}
+
+	private void shot(ClientGameTestContext ctx, String name) {
+		ctx.takeScreenshot(TestScreenshotOptions.of(name).withSize(640, 360).withDestinationDir(out).disableCounterPrefix());
+	}
+
+	private void camera(ClientGameTestContext ctx, CameraType type) {
+		ctx.runOnClient(mc -> mc.options.setCameraType(type));
+	}
+
+	private void log(String s) {
+		log.println(s);
+	}
+
+	/** Mata lo que no es jugador, baja de la montura, limpia manos, accesorios y recargas, y cura. */
+	private void reset(ClientGameTestContext ctx, TestServerContext srv) {
+		srv.runCommand("ride @a dismount");
+		srv.runCommand("weather clear");
+		srv.runCommand("time set noon");
+		srv.runCommand("kill @e[type=!minecraft:player]");
+		srv.runOnServer(s -> {
+			ServerPlayer p = player(s);
+			p.getInventory().clearContent();
+			unequipAll(p);
+			for (Item item : relics()) {
+				ItemStack st = new ItemStack(item);
+				p.getCooldowns().removeCooldown(p.getCooldowns().getCooldownGroup(st));
+			}
+			p.setHealth(p.getMaxHealth());
+			p.clearFire();
+		});
+		ctx.waitTicks(2);
+	}
+
+	// ---- Accesorios (Trinkets) --------------------------------------------------------------------------------------
+
+	private static List<SlotType> slotTypes(Player p) {
+		List<SlotType> types = new ArrayList<>();
+		for (SlotGroup g : TrinketsApi.getPlayerSlots(p).values()) {
+			types.addAll(g.getSlots());
+		}
+		return types;
+	}
+
+	/** Primer espacio de accesorio que acepta el ítem, o null si no se pone. */
+	private static SlotType wornSlot(Player p, ItemStack stack) {
+		TrinketAttachment att = TrinketsApi.getAttachment(p);
+		for (SlotType t : slotTypes(p)) {
+			TrinketSlotAccess access = att.getSlotAccess(t.getId(), 0);
+			if (t.validatorCheck(stack, access, p)) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+	private static boolean equip(Player p, ItemStack stack) {
+		SlotType t = wornSlot(p, stack);
+		if (t == null) {
+			return false;
+		}
+		TrinketAttachment att = TrinketsApi.getAttachment(p);
+		for (int i = 0; i < t.amount(); i++) {
+			TrinketSlotAccess a = att.getSlotAccess(t.getId(), i);
+			if (a.get().isEmpty()) {
+				return a.set(stack.copy());
+			}
+		}
+		return false;
+	}
+
+	private static void unequipAll(Player p) {
+		TrinketAttachment att = TrinketsApi.getAttachment(p);
+		for (SlotType t : slotTypes(p)) {
+			for (int i = 0; i < t.amount(); i++) {
+				att.getSlotAccess(t.getId(), i).set(ItemStack.EMPTY);
+			}
+		}
+	}
+
+	// ---- 1. Tooltips --------------------------------------------------------------------------------------------------
+
+	private void tooltips(ClientGameTestContext ctx, List<Item> relics) {
+		StringBuilder sb = new StringBuilder();
+		for (boolean shift : new boolean[] {false, true}) {
+			if (shift) {
+				ctx.getInput().holdShift();
+			}
+			ctx.waitTick();
+			sb.append(shift ? "\n===== CON SHIFT =====\n" : "===== SIN SHIFT =====\n");
+			ctx.runOnClient(mc -> {
+				for (Item item : relics) {
+					sb.append("--- ").append(id(item)).append('\n');
+					for (Component c : new ItemStack(item).getTooltipLines(Item.TooltipContext.of(mc.level), mc.player,
+							TooltipFlag.NORMAL)) {
+						sb.append("  ").append(c.getString()).append('\n');
+					}
+				}
+			});
+			if (shift) {
+				ctx.getInput().releaseShift();
+			}
+		}
+		try {
+			Files.writeString(out.resolve("tooltips.txt"), sb.toString(), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			log("tooltips: " + e);
+		}
+	}
+
+	// ---- 2. En la mano ------------------------------------------------------------------------------------------------
+
+	private void hands(ClientGameTestContext ctx, TestServerContext srv, List<Item> relics) {
+		reset(ctx, srv);
+		place(srv, 0.5, 0.5, 0, 10);
+		for (Item item : relics) {
+			srv.runOnServer(s -> player(s).setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(item)));
+			camera(ctx, CameraType.FIRST_PERSON);
+			ctx.waitTicks(12);
+			shot(ctx, "mano1_" + id(item));
+			camera(ctx, CameraType.THIRD_PERSON_FRONT);
+			ctx.waitTicks(2);
+			shot(ctx, "mano3_" + id(item));
+		}
+		camera(ctx, CameraType.FIRST_PERSON);
+	}
+
+	// ---- 3. Puestas -------------------------------------------------------------------------------------------------
+
+	private void worn(ClientGameTestContext ctx, TestServerContext srv, List<Item> relics) {
+		reset(ctx, srv);
+		Map<String, List<Item>> bySlot = srv.computeOnServer(s -> {
+			Map<String, List<Item>> m = new LinkedHashMap<>();
+			for (Item item : relics) {
+				SlotType t = wornSlot(player(s), new ItemStack(item));
+				if (t != null) {
+					m.computeIfAbsent(t.getId(), k -> new ArrayList<>()).add(item);
+				}
+			}
+			return m;
+		});
+		int rounds = bySlot.values().stream().mapToInt(List::size).max().orElse(0);
+		bySlot.forEach((slot, items) -> log("espacio " + slot + ": " + items.stream().map(RelicClientGameTest::id).toList()));
+		for (int r = 0; r < rounds; r++) {
+			int round = r;
+			List<String> names = srv.computeOnServer(s -> {
+				ServerPlayer p = player(s);
+				unequipAll(p);
+				List<String> n = new ArrayList<>();
+				for (List<Item> items : bySlot.values()) {
+					if (round < items.size() && equip(p, new ItemStack(items.get(round)))) {
+						n.add(id(items.get(round)));
+					}
+				}
+				return n;
+			});
+			log("puestas ronda " + r + ": " + names);
+			camera(ctx, CameraType.THIRD_PERSON_FRONT);
+			ctx.waitTicks(4);
+			shot(ctx, "puestas" + r + "_frente");
+			camera(ctx, CameraType.THIRD_PERSON_BACK);
+			ctx.waitTicks(2);
+			shot(ctx, "puestas" + r + "_espalda");
+			// De costado: el jugador gira 90° y la cámara de frente lo ve de lado.
+			place(srv, 0.5, 0.5, 90, 10);
+			camera(ctx, CameraType.THIRD_PERSON_FRONT);
+			ctx.waitTicks(3);
+			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+			shot(ctx, "puestas" + r + "_lado");
+			place(srv, 0.5, 0.5, 0, 10);
+		}
+		camera(ctx, CameraType.FIRST_PERSON);
+	}
+
+	// ---- 4. Entidades -----------------------------------------------------------------------------------------------
+
+	private void entities(ClientGameTestContext ctx, TestServerContext srv, TestSingleplayerContext sp) {
+		reset(ctx, srv);
+		List<EntityType<?>> types = new ArrayList<>();
+		for (EntityType<?> t : BuiltInRegistries.ENTITY_TYPE) {
+			if (BuiltInRegistries.ENTITY_TYPE.getKey(t).getNamespace().equals(MythicRelics.MOD_ID)) {
+				types.add(t);
+			}
+		}
+		for (EntityType<?> type : types) {
+			String name = BuiltInRegistries.ENTITY_TYPE.getKey(type).getPath();
+			reset(ctx, srv);
+			place(srv, 0.5, 0.5, 0, 10);
+			ctx.waitTicks(25);
+			srv.runCommand("summon mythicrelics:" + name + " 0.5 " + Y + " 8.5 {NoAI:1b,NoGravity:0b,Rotation:[180f,0f]}");
+			ctx.waitTicks(5);
+			double[] size = srv.computeOnServer(s -> {
+				List<? extends Entity> found = player(s).level().getEntities(type, new AABB(-20, Y - 5, -20, 20, Y + 20, 30),
+						e -> true);
+				if (found.isEmpty()) {
+					return null;
+				}
+				Entity e = found.getFirst();
+				return new double[] {e.getBbWidth(), e.getBbHeight()};
+			});
+			if (size == null) {
+				log("entidad " + name + ": NO QUEDÓ EN EL MUNDO (se descarta sola o no se puede invocar)");
+				continue;
+			}
+			double span = Math.max(size[0], size[1]);
+			double back = 8.5 - (2.5 + span * 1.6);
+			float pitch = (float) Math.toDegrees(Math.atan2(1.62 - size[1] / 2, 8.5 - back));
+			place(srv, 0.5, back, 0, pitch);
+			ctx.waitTicks(6);
+			shot(ctx, "entidad_" + name + "_frente");
+			srv.runCommand("tp @e[type=mythicrelics:" + name + "] 0.5 " + Y + " 8.5 90 0");
+			ctx.waitTicks(15);
+			shot(ctx, "entidad_" + name + "_lado");
+			log("entidad " + name + ": tamaño " + size[0] + " x " + size[1]);
+		}
+	}
+
+	// ---- Referencias ------------------------------------------------------------------------------------------------
+
+	private void vanillaShield(ClientGameTestContext ctx, TestServerContext srv) {
+		reset(ctx, srv);
+		place(srv, 0.5, 0.5, 0, 6);
+		for (String id : List.of("minecraft:shield", "mythicrelics:achilles_shield", "mythicrelics:ancile")) {
+			srv.runOnServer(s -> player(s).setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+					new ItemStack(BuiltInRegistries.ITEM.getValue(net.minecraft.resources.Identifier.parse(id)))));
+			String n = id.substring(id.indexOf(':') + 1);
+			ctx.waitTicks(12);
+			shot(ctx, "escudo_" + n + "_quieto");
+			ctx.getInput().holdKey(o -> o.keyUse);
+			ctx.waitTicks(12);
+			shot(ctx, "escudo_" + n + "_bloqueando");
+			camera(ctx, CameraType.THIRD_PERSON_FRONT);
+			ctx.waitTicks(3);
+			shot(ctx, "escudo_" + n + "_bloqueando3");
+			ctx.getInput().releaseKey(o -> o.keyUse);
+			camera(ctx, CameraType.FIRST_PERSON);
+			ctx.waitTicks(5);
+		}
+	}
+
+	/** Set de Erlang con el ojo puesto y la alabarda en el inventario (no en la mano): debe salir ◐. */
+	private void setTooltip(ClientGameTestContext ctx, TestServerContext srv) {
+		reset(ctx, srv);
+		Item eye = BuiltInRegistries.ITEM.getValue(MythicRelics.id("erlang_eye"));
+		Item halberd = BuiltInRegistries.ITEM.getValue(MythicRelics.id("erlang_halberd"));
+		srv.runOnServer(s -> {
+			ServerPlayer p = player(s);
+			equip(p, new ItemStack(eye));
+			p.getInventory().setItem(5, new ItemStack(halberd));
+		});
+		ctx.waitTicks(5);
+		ctx.getInput().holdShift();
+		ctx.waitTick();
+		String text = ctx.computeOnClient(mc -> {
+			StringBuilder sb = new StringBuilder();
+			for (Component c : new ItemStack(halberd).getTooltipLines(Item.TooltipContext.of(mc.level), mc.player, TooltipFlag.NORMAL)) {
+				sb.append(c.getString()).append('\n');
+			}
+			return sb.toString();
+		});
+		ctx.getInput().releaseShift();
+		log("set de Erlang (ojo puesto, alabarda en el inventario):\n" + text);
+	}
+
+	// ---- 5. Habilidades ---------------------------------------------------------------------------------------------
+
+	private void abilities(ClientGameTestContext ctx, TestServerContext srv, List<Item> relics) {
+		for (Item item : relics) {
+			String id = id(item);
+			reset(ctx, srv);
+			place(srv, 0.5, 0.5, 0, 6);
+			for (String x : List.of("-2.5", "0.5", "3.5")) {
+				srv.runCommand("summon minecraft:husk " + x + " " + Y + " 6.5 {NoAI:1b,Rotation:[180f,0f],PersistenceRequired:1b}");
+			}
+			srv.runCommand("summon minecraft:cow -4.5 " + Y + " 3.5 {NoAI:1b}");
+			boolean wornToo = srv.computeOnServer(s -> {
+				ServerPlayer p = player(s);
+				ItemStack stack = new ItemStack(item);
+				p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, stack.copy());
+				return equip(p, stack);
+			});
+			String text = ctx.computeOnClient(mc -> {
+				StringBuilder sb = new StringBuilder();
+				for (Component c : new ItemStack(item).getTooltipLines(Item.TooltipContext.of(mc.level), mc.player,
+						TooltipFlag.NORMAL)) {
+					sb.append(c.getString()).append(' ');
+				}
+				return sb.toString().toLowerCase(Locale.ROOT);
+			});
+			ctx.waitTicks(5);
+			try {
+				// Clic derecho mantenido 45 ticks y soltado (cubre los que se cargan: rayo, Gram, Mjölnir, dardo…).
+				ctx.getInput().holdKey(o -> o.keyUse);
+				ctx.waitTicks(20);
+				shot(ctx, "hab_" + id + "_1cargando");
+				ctx.waitTicks(25);
+				ctx.getInput().releaseKey(o -> o.keyUse);
+				ctx.waitTicks(4);
+				shot(ctx, "hab_" + id + "_2soltar");
+				ctx.waitTicks(16);
+				shot(ctx, "hab_" + id + "_3despues");
+				if (wornToo && id.equals("falcon_cloak")) {
+					ctx.getInput().pressKey(RelicClientTicks.FALCON_KEY);
+					ctx.waitTicks(20);
+					shot(ctx, "hab_" + id + "_4tecla");
+					ctx.getInput().pressKey(RelicClientTicks.FALCON_KEY);
+					ctx.waitTicks(10);
+				}
+				if (text.contains("sneak") || text.contains("crouch") || text.contains("agachado")) {
+					srv.runCommand("ride @a dismount");
+					srv.runOnServer(s -> {
+						ServerPlayer p = player(s);
+						p.getCooldowns().removeCooldown(p.getCooldowns().getCooldownGroup(new ItemStack(item)));
+					});
+					ctx.getInput().holdKey(o -> o.keyShift);
+					ctx.waitTicks(3);
+					ctx.getInput().pressKey(o -> o.keyUse);
+					ctx.waitTicks(8);
+					shot(ctx, "hab_" + id + "_5agachado");
+					ctx.getInput().releaseKey(o -> o.keyShift);
+					ctx.waitTicks(4);
+				}
+				// Un golpe al zombi del medio.
+				srv.runCommand("ride @a dismount");
+				place(srv, 0.5, 4.2, 0, 20);
+				ctx.waitTicks(3);
+				ctx.getInput().pressKey(o -> o.keyAttack);
+				ctx.waitTicks(5);
+				shot(ctx, "hab_" + id + "_6golpe");
+				String state = srv.computeOnServer(s -> {
+					ServerPlayer p = player(s);
+					return String.format(Locale.ROOT, "vida %.1f/%.1f, recarga %s, montado %s, en mano %s",
+							p.getHealth(), p.getMaxHealth(), p.getCooldowns().isOnCooldown(new ItemStack(item)),
+							p.getVehicle() == null ? "no" : BuiltInRegistries.ENTITY_TYPE.getKey(p.getVehicle().getType()).getPath(),
+							BuiltInRegistries.ITEM.getKey(p.getMainHandItem().getItem()).getPath());
+				});
+				log("habilidad " + id + (wornToo ? " (puesta)" : "") + ": " + state);
+			} catch (Throwable t) {
+				log("habilidad " + id + ": EXCEPCIÓN " + t);
+				ctx.getInput().releaseKey(o -> o.keyUse);
+				ctx.getInput().releaseKey(o -> o.keyShift);
+			}
+		}
+	}
+}

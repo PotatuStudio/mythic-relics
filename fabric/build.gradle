@@ -40,6 +40,18 @@ dependencies {
 	shadowBundle(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }
 
+// Pruebas automáticas de cliente (./gradlew :fabric:runClientGameTest): abre el juego, crea un mundo y prueba las
+// reliquias con entradas simuladas dentro del juego (no del sistema). Capturas en fabric/build/run/clientGameTest.
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "mythicrelics-gametest"
+		enableGameTests = false
+		enableClientGameTests = true
+		eula = false
+	}
+}
+
 processResources {
 	inputs.property "version", project.version
 	filesMatching("fabric.mod.json") {
