@@ -342,6 +342,9 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
      (críticos, chispas, maldición), Dáinsleif (sin curación y sangrado), espada de Freyr (sale, pelea, vuelve; que se
      vea suave y bien orientada en el renderizador), halcón (activar en el aire, volar, volver al ser golpeado) y dardo
      (orientación en vuelo, daño que ignora armadura). Recargas nuevas de Kusanagi, lanza de Nezha y Ruyi.
+   - Armas en vuelo con modelo 3D (`WeaponModel`, geometría de `weapon_entities.py`): espada de Freyr, Mjölnir,
+     Gungnir y dardo ya no se ven como el ícono en el aire. Revisar que la punta vaya hacia adelante, el tamaño, que
+     Mjölnir gire de punta a punta y que brillen el canal de la espada y las runas de Gungnir.
    Después, probar también en Fabric (Trinkets).
 2. **Cuando el usuario apruebe las pruebas: Chile/mapuche** como tanda especial (los celtas se descartaron el
    2026-11-10). Flujo: enseñar el mito, proponer reliquias (fiel / licencia / pop), página de diseño, preguntas con

@@ -69,6 +69,15 @@ public final class MythicRelicsClient {
 		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.FreyjaFalconModel.LAYER,
 				io.github.potatustudio.mythicrelics.client.entity.FreyjaFalconModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.FREYJA_FALCON, ChinaRenderers.FalconRenderer::new);
+		// Armas en vuelo: modelo 3D propio (el ícono queda para el inventario y la mano).
+		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.WeaponModel.FREYR_SWORD,
+				io.github.potatustudio.mythicrelics.client.entity.MythicModelLayers::freyrSword);
+		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.WeaponModel.MJOLNIR,
+				io.github.potatustudio.mythicrelics.client.entity.MythicModelLayers::mjolnir);
+		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.WeaponModel.GUNGNIR,
+				io.github.potatustudio.mythicrelics.client.entity.MythicModelLayers::gungnir);
+		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.WeaponModel.MISTLETOE_DART,
+				io.github.potatustudio.mythicrelics.client.entity.MythicModelLayers::mistletoeDart);
 		EntityRendererRegistry.register(ModEntities.FREYR_SWORD, io.github.potatustudio.mythicrelics.client.entity.FreyrSwordRenderer::new);
 		GreeceClient.init();
 		RelicTooltips.init();
