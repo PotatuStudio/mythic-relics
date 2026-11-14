@@ -73,7 +73,7 @@ def box(frm, to, color, name=""):
     faces = {side: {"uv": uv(color), "texture": "#p"} for side in ("north", "south", "east", "west")}
     faces["up"] = {"uv": uv(top), "texture": "#p"}
     faces["down"] = {"uv": uv(bottom), "texture": "#p"}
-    return {"name": name, "from": [round(v, 3) for v in frm], "to": [round(v, 3) for v in to], "faces": faces}
+    return {"name": name, "from": [round(v, 3) for v in frm], "to": [round(v, 3) for v in to], "faces": faces, "__color": color}
 
 
 def ring(x0, x1, y0, y1, z0, z1, t, color, name):
@@ -803,13 +803,25 @@ def write(path, data):
         f.write("\n")
 
 
+# Reliquias con textura pintada por cara (luz, sombras, ruido y patrón del material; worn_texture.py) en lugar de los
+# colores planos de la paleta.
+TEXTURED = {"nemean_lion_skin", "hermes_sandals", "hades_helm", "athena_aegis", "icarus_wings", "golden_fleece", "cerberus_collar"}
+
+
 if __name__ == "__main__":
+    import worn_texture  # noqa: E402
     png(os.path.join(ASSETS, "textures", "item", "worn_palette.png"), palette())
+    os.makedirs(os.path.join(ASSETS, "textures", "item", "worn"), exist_ok=True)
     for name, (make, render) in WORN.items():
         m = make()
         for el in m["elements"]:
             assert all(-16 <= c <= 32 for c in el["from"] + el["to"]), (name, el["name"])
             assert all(a < b for a, b in zip(el["from"], el["to"])), (name, el["name"])
+        if name in TEXTURED:
+            m, img = worn_texture.texture(name, m["elements"], COLORS, NS)
+            img.save(os.path.join(ASSETS, "textures", "item", "worn", name + ".png"))
+        for el in m["elements"]:
+            el.pop("__color", None)
         write(os.path.join(ASSETS, "models", "item", name + "_worn.json"), m)
         write(os.path.join(ASSETS, "items", name + ".json"), {"model": {
             "type": "minecraft:select",

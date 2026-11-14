@@ -45,6 +45,8 @@ if __name__ == "__main__":
         "wornModels": {name: json.loads(read(os.path.join(ASSETS, "models", "item", name + "_worn.json")))
                        for name in ORDER if os.path.exists(os.path.join(ASSETS, "models", "item", name + "_worn.json"))},
         "wornPalette": b64(os.path.join(ASSETS, "textures", "item", "worn_palette.png")),
+        "wornTextures": {name: b64(os.path.join(ASSETS, "textures", "item", "worn", name + ".png"))
+                         for name in ORDER if os.path.exists(os.path.join(ASSETS, "textures", "item", "worn", name + ".png"))},
     }
     # Entidades chinas: la geometría sale del mismo diseño que ChinaModelLayers.java (china_entities.py) y las texturas,
     # de los archivos del mod.

@@ -71,7 +71,6 @@ public final class NorseGods {
 	public static final float SKIDBLADNIR_BOOST = 0.6f;
 
 	public static final int MIMIR_RADIUS = 8;
-	public static final int MIMIR_INTERVAL = 200;
 
 	public static final float ANDVARANAUT_HEALTH = 4.0f;
 	public static final int ANDVARANAUT_LURE_RADIUS = 16;
@@ -158,11 +157,8 @@ public final class NorseGods {
 			if (player.tickCount % 20 == 0 && EgyptRelics.isWearing(player, ModItems.BRISINGAMEN)) {
 				fertility(level, player);
 			}
-			MimirHead.guide(level, player, player.getOffhandItem().is(ModItems.MIMIR_HEAD.get()));
-			if (player.getOffhandItem().is(ModItems.MIMIR_HEAD.get())) {
-				if (player.tickCount % MIMIR_INTERVAL == 0) {
-					MimirHead.outlineOres(level, player);
-				}
+			MimirHead.tickGuide(level, player);
+			if (player.getOffhandItem().is(ModItems.MIMIR_HEAD.get()) || player.getMainHandItem().is(ModItems.MIMIR_HEAD.get())) {
 				if (player.tickCount % 5 == 0) {
 					creeperWarning(level, player);
 				}
@@ -240,7 +236,7 @@ public final class NorseGods {
 			case "odin_ravens" -> new Object[] {RAVENS_RADIUS};
 			case "brisingamen" -> new Object[] {BRISINGAMEN_RADIUS, (int) (BRISINGAMEN_HEAL / 2)};
 			case "skidbladnir" -> new Object[] {Math.round(SKIDBLADNIR_BOOST * 100)};
-			case "mimir_head" -> new Object[] {MIMIR_RADIUS, MIMIR_INTERVAL / 20, MimirHead.GUIDE_RADIUS};
+			case "mimir_head" -> new Object[] {MIMIR_RADIUS, MimirHead.GUIDE_TICKS / 20, MimirHead.GUIDE_RADIUS, MimirHead.ASK_COOLDOWN / 20};
 			case "andvaranaut" -> new Object[] {(int) (ANDVARANAUT_HEALTH / 2)};
 			case "odrerir" -> new Object[] {ODRERIR_LEVELS, ODRERIR_HASTE_TICKS / 20 / 60};
 			default -> io.github.potatustudio.mythicrelics.china.ChinaRelics.tooltipArgs(id);

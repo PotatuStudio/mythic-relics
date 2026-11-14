@@ -722,7 +722,7 @@ function iconTexture(name) {
 const paletteTex = texFromB64(DATA.wornPalette);
 const paletteMat = new THREE.MeshLambertMaterial({ map: paletteTex });
 const FACE_ORDER = ["east", "west", "up", "down", "south", "north"];   // orden de caras de BoxGeometry
-function elementMesh(el) {
+function elementMesh(el, mat = paletteMat) {
   const [x0, y0, z0] = el.from, [x1, y1, z1] = el.to;
   const g = new THREE.BoxGeometry((x1 - x0) / 16, (y1 - y0) / 16, (z1 - z0) / 16);
   const uvAttr = g.attributes.uv;
@@ -734,11 +734,19 @@ function elementMesh(el) {
     corners.forEach(([u, v], i) => uvAttr.setXY(f * 4 + i, u / 16, 1 - v / 16));
   });
   uvAttr.needsUpdate = true;
-  const m = new THREE.Mesh(g, paletteMat);
+  const m = new THREE.Mesh(g, mat);
   m.position.set(((x0 + x1) / 2 - 8) / 16, ((y0 + y1) / 2 - 8) / 16, ((z0 + z1) / 2 - 8) / 16);
   return m;
 }
 const HAND_PART = { ":main_hand": ":main_hand", ":off_hand": ":off_hand", "right_arm": ":main_hand", "left_arm": ":off_hand" };
+/** Material de una reliquia puesta: su textura pintada (textures/item/worn/<nombre>.png) o la paleta de colores planos. */
+const WORN_MATS = {};
+function wornMat(name) {
+  const b64 = DATA.wornTextures && DATA.wornTextures[name];
+  if (!b64) return paletteMat;
+  if (!WORN_MATS[name]) WORN_MATS[name] = new THREE.MeshLambertMaterial({ map: texFromB64(b64), alphaTest: 0.1 });
+  return WORN_MATS[name];
+}
 function wornMeshes(name) {
   const out = [];
   const cfg = DATA.trinkets[name];
@@ -750,7 +758,7 @@ function wornMeshes(name) {
     if (!p || e.type !== "model") continue;
     const g = new THREE.Group();
     g.position.copy(p.center).add(new THREE.Vector3(e.offset[0] * p.half.x, e.offset[1] * p.half.y, e.offset[2] * p.half.z));
-    for (const el of modelJson.elements) g.add(elementMesh(el));
+    for (const el of modelJson.elements) g.add(elementMesh(el, wornMat(name)));
     player.add(g);
     out.push(g);
   }

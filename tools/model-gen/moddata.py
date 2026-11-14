@@ -171,7 +171,7 @@ def tooltip_args(c):
         "odin_ravens": [int(c["RAVENS_RADIUS"])],
         "brisingamen": [int(c["BRISINGAMEN_RADIUS"]), int(c["BRISINGAMEN_HEAL"] // 2)],
         "skidbladnir": [round(c["SKIDBLADNIR_BOOST"] * 100)],
-        "mimir_head": [int(c["MIMIR_RADIUS"]), int(c["MIMIR_INTERVAL"] // 20), int(c["GUIDE_RADIUS"])],
+        "mimir_head": [int(c["MIMIR_RADIUS"]), int(c["GUIDE_TICKS"] // 20), int(c["GUIDE_RADIUS"]), int(c["ASK_COOLDOWN"] // 20)],
         "andvaranaut": [int(c["ANDVARANAUT_HEALTH"] // 2)],
         "odrerir": [int(c["ODRERIR_LEVELS"]), int(c["ODRERIR_HASTE_TICKS"] // 20 // 60)],
         # China (ChinaRelics#tooltipArgs)

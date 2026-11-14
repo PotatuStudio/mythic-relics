@@ -155,7 +155,7 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> ODIN_RAVENS = register("odin_ravens", OdinRavensItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> BRISINGAMEN = relic("brisingamen", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> SKIDBLADNIR = register("skidbladnir", SkidbladnirItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> MIMIR_HEAD = relic("mimir_head", p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> MIMIR_HEAD = register("mimir_head", io.github.potatustudio.mythicrelics.norse.MimirHeadItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ANDVARANAUT = relic("andvaranaut", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ODRERIR = register("odrerir", OdrerirItem::new, p -> p.rarity(Rarity.RARE));
 

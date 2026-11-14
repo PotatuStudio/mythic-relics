@@ -40,6 +40,12 @@ public class OdrerirItem extends RelicItem {
 		return DRINK_TICKS;
 	}
 
+	/** Mordiscos (o sorbos) y migas mientras se usa, como la comida vanilla. */
+	@Override
+	public void onUseTick(net.minecraft.world.level.Level level, net.minecraft.world.entity.LivingEntity entity, ItemStack stack, int remaining) {
+		io.github.potatustudio.mythicrelics.relic.ConsumeFeedback.tick(level, entity, stack, remaining, getUseDuration(stack, entity), true);
+	}
+
 	@Override
 	public ItemUseAnimation getUseAnimation(ItemStack stack) {
 		return ItemUseAnimation.DRINK;

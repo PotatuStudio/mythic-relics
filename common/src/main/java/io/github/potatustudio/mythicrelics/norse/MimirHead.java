@@ -39,11 +39,11 @@ import net.minecraft.world.phys.Vec3;
 /**
  * Cabeza de Mímir en la mano secundaria:
  * <ul>
- *   <li>Cada {@link NorseGods#MIMIR_INTERVAL} ticks, los minerales valiosos cercanos se marcan unos segundos con un
- *       contorno brillante (una copia del bloque que brilla y se ve a través de las paredes), del color del mineral.</li>
- *   <li>Te guía: al tomarlo dice en una línea fugaz qué siente cerca y, mientras lo llevas, una estela de luz sale de ti
- *       hacia el tesoro más valioso (debris, diamante o cofre sin abrir, esmeralda, oro, lapislázuli); al llegar pasa al
- *       siguiente. Nada va al chat.</li>
+ *   <li>Al preguntarle, los minerales valiosos cercanos se marcan unos segundos con un contorno brillante (una copia
+ *       del bloque que brilla y se ve a través de las paredes), del color del mineral.</li>
+ *   <li>Se le pregunta (clic derecho): dice una vez, sobre la barra, cuál es el tesoro más valioso cerca (debris,
+ *       diamante o cofre sin abrir, esmeralda, oro, lapislázuli), marca los minerales y te guía con una estela unos
+ *       segundos; al llegar avisa y calla. Recarga corta entre preguntas. Nada va al chat.</li>
  * </ul>
  */
 public final class MimirHead {
@@ -159,8 +159,6 @@ public final class MimirHead {
 	public static final int GUIDE_RADIUS = 24;
 	/** Cada cuánto se dibuja la estela y se actualiza el aviso sobre la barra. */
 	private static final int TRAIL_INTERVAL = 30;
-	/** Cada cuánto vuelve a buscar el mejor tesoro (antes, si el actual desaparece o llegas). */
-	private static final int SCAN_INTERVAL = 100;
 	private static final double ARRIVED = 2.5;
 	/** Un cofre sin abrir vale como un diamante. */
 	private static final int CHEST_VALUE = 5;
@@ -195,47 +193,53 @@ public final class MimirHead {
 		return 0;
 	}
 
+	/** Cuánto dura la guía después de preguntarle. */
+	public static final int GUIDE_TICKS = 600;
+	/** Recarga entre preguntas. */
+	public static final int ASK_COOLDOWN = 100;
+
 	/**
-	 * Llamado cada tick por jugador. Al tomar a Mímir en la mano secundaria dice en una línea (sobre la barra) qué siente
-	 * cerca; mientras lo llevas, una estela de luz sale de ti hacia el tesoro más valioso y el aviso se renueva; al llegar
-	 * (o si el tesoro desaparece) pasa al siguiente. Al guardarlo, calla. Nada va al chat.
+	 * Clic derecho con Mímir en la mano: le preguntas. Busca el tesoro más valioso, te lo dice una sola vez (sobre la
+	 * barra), marca los minerales cercanos y te guía con una estela durante {@link #GUIDE_TICKS} ticks. Sin tesoro, lo dice
+	 * y no gasta la recarga.
 	 */
-	static void guide(ServerLevel level, ServerPlayer player, boolean holding) {
+	static boolean ask(ServerLevel level, ServerPlayer player) {
+		Guide g = new Guide();
+		scan(level, player, g);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 0.7f, 0.6f);
+		if (g.target == null) {
+			GUIDES.remove(player.getUUID());
+			player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_nothing").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
+			return false;
+		}
+		g.nextScan = level.getGameTime() + GUIDE_TICKS;   // aquí: hasta cuándo guía
+		GUIDES.put(player.getUUID(), g);
+		BlockPos here = player.blockPosition();
+		player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_guide", g.name,
+				(int) Math.round(Math.sqrt(g.target.distSqr(here))), where(here, g.target)).withStyle(ChatFormatting.DARK_AQUA));
+		outlineOres(level, player);
+		trail(level, player, g.target);
+		return true;
+	}
+
+	/** Cada tick por jugador: mientras dura la guía, la estela cada {@link #TRAIL_INTERVAL} ticks; al llegar, avisa y calla. */
+	static void tickGuide(ServerLevel level, ServerPlayer player) {
 		Guide g = GUIDES.get(player.getUUID());
-		if (!holding) {
-			if (g != null) {
-				GUIDES.remove(player.getUUID());
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_silent")
-						.withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
-			}
+		if (g == null || g.target == null) {
 			return;
 		}
-		long now = level.getGameTime();
-		boolean fresh = g == null;
-		if (fresh) {
-			g = new Guide();
-			GUIDES.put(player.getUUID(), g);
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 0.6f, 0.6f);
+		boolean gone = value(level.getBlockState(g.target)) == 0 && !isChest(level, g.target);
+		if (level.getGameTime() > g.nextScan || player.level() != level) {
+			GUIDES.remove(player.getUUID());
+			return;
 		}
-		boolean lost = g.target != null && (value(level.getBlockState(g.target)) == 0 && !isChest(level, g.target)
-				|| player.getEyePosition().distanceTo(Vec3.atCenterOf(g.target)) < ARRIVED);
-		if (fresh || lost || now >= g.nextScan) {
-			BlockPos before = g.target;
-			scan(level, player, g);
-			g.nextScan = now + SCAN_INTERVAL;
-			if (lost && g.target != null && !g.target.equals(before)) {
-				level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8f, 0.8f);
-			}
+		if (gone || player.getEyePosition().distanceTo(Vec3.atCenterOf(g.target)) < ARRIVED) {
+			GUIDES.remove(player.getUUID());
+			player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_arrived").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
+			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8f, 0.8f);
+			return;
 		}
-		if (fresh || lost || player.tickCount % TRAIL_INTERVAL == 0) {
-			if (g.target == null) {
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_nothing")
-						.withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
-				return;
-			}
-			BlockPos here = player.blockPosition();
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_guide", g.name,
-					(int) Math.round(Math.sqrt(g.target.distSqr(here))), where(here, g.target)).withStyle(ChatFormatting.DARK_AQUA));
+		if (player.tickCount % TRAIL_INTERVAL == 0) {
 			trail(level, player, g.target);
 		}
 	}

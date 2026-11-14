@@ -219,9 +219,10 @@ Freyja era diosa del amor y la fertilidad, y recibía en su salón a la mitad de
 
 **Espacio:** mano secundaria · **Rareza:** épica
 
-- En la mano secundaria: cada 10 s, los minerales valiosos a 8 bloques brillan a través de la piedra
-- Te guía con una estela de luz al tesoro más valioso a 24 bloques (debris, diamante, cofre sin abrir…)
-- Te avisa cuando un creeper empieza a explotar
+- Clic derecho: le preguntas a Mímir por el tesoro más valioso a 24 bloques (debris, diamante, cofre sin abrir…)
+- Te responde una vez y te guía con una estela de luz 30 s; los minerales valiosos a 8 bloques brillan
+- Recarga: 5 s
+- Mientras lo sostienes, te avisa cuando un creeper empieza a explotar
 
 **Mito.** Mímir era el más sabio de los dioses. Cuando los vanir lo decapitaron, Odín untó su cabeza con hierbas para que no se pudriera y le cantó encantamientos.  
 Así la cabeza hablaba y le contaba a Odín lo que nadie más sabía.
