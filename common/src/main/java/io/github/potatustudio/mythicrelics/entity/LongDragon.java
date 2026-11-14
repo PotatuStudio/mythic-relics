@@ -149,7 +149,10 @@ public class LongDragon extends PathfinderMob {
 		if (getFirstPassenger() instanceof Player rider) {
 			riderless = 0;
 			rider.resetFallDistance();
-			rider.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 40, 0, true, false));
+			var breathing = rider.getEffect(MobEffects.WATER_BREATHING);
+			if (breathing == null || breathing.getDuration() < 20) {
+				rider.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 40, 0, true, false));
+			}
 			return;
 		}
 		// Sin jinete: se queda flotando y vuelve a las nubes.

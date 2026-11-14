@@ -47,7 +47,8 @@ public class SibyllineBooksItem extends RelicItem {
 			new Sight(StructureTags.ON_JUNGLE_PYRAMID_MAPS, "jungle_temple", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.JUNGLE_TEMPLE),
 			new Sight(StructureTags.ON_WOODLAND_MANSION_MAPS, "mansion", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.WOODLAND_MANSION),
 			new Sight(StructureTags.EYE_OF_ENDER_LOCATED, "stronghold", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.TARGET_X));
-	private static final int SEARCH_CHUNKS = 32;
+	/** Radio de búsqueda de estructuras (en chunks): 32 congelaba el servidor con seis búsquedas seguidas. */
+	private static final int SEARCH_CHUNKS = 16;
 	private static final String[] DIRECTIONS = {"south", "southwest", "west", "northwest", "north", "northeast", "east", "southeast"};
 
 	public SibyllineBooksItem(Properties properties) {

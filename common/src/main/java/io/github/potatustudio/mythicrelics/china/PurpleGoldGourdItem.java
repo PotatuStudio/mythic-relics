@@ -182,6 +182,7 @@ public class PurpleGoldGourdItem extends RelicItem {
 
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		return data(stack) != null;
+		// Se llama en cada frame: basta con ver si guarda algo (solo guarda al capturado), sin copiar todo su NBT.
+		return stack.has(DataComponents.CUSTOM_DATA);
 	}
 }

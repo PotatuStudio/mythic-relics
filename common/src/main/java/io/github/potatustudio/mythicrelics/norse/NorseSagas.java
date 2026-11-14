@@ -251,7 +251,7 @@ public final class NorseSagas {
 			SWORDS.remove(player.getUUID());
 			sword = null;
 		}
-		if (!wearing || sword != null || player.isSpectator() || !inCombat(player) || freyrTarget(player) == null) {
+		if (!wearing || sword != null || player.isSpectator() || player.tickCount % 10 != 0 || !inCombat(player) || freyrTarget(player) == null) {
 			return;
 		}
 		ServerLevel level = player.level();

@@ -60,6 +60,7 @@ public class OrochiShadow extends PathfinderMob {
 								&& (owner == null || !e.getUUID().equals(owner)) && e.distanceToSqr(this) <= r * r)
 				.stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(this))).limit(HEADS).toList();
 		if (prey.isEmpty()) {
+			bite = JapanGods.OROCHI_BITE_INTERVAL - 10;   // vuelve a buscar en 10 ticks, no en cada tick
 			return;
 		}
 		bite = 0;

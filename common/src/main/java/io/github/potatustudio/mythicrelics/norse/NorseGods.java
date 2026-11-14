@@ -107,7 +107,7 @@ public final class NorseGods {
 
 	/** Cliente: ¿el jugador navega con Skíðblaðnir en el inventario? (viento a favor). */
 	public static boolean favorableWind(Player player) {
-		return player.getVehicle() instanceof AbstractBoat && player.getInventory().contains(new ItemStack(ModItems.SKIDBLADNIR.get()));
+		return player.getVehicle() instanceof AbstractBoat && player.getInventory().contains(s -> s.is(ModItems.SKIDBLADNIR.get()));
 	}
 
 	private static EventResult onDeath(LivingEntity entity, DamageSource source) {

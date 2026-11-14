@@ -104,7 +104,7 @@ public final class JapanGods {
 
 	/** Set de Fūjin y Raijin: la bolsa en el inventario y el tambor puesto. */
 	public static boolean hasWindAndThunder(Player player) {
-		return EgyptRelics.isWearing(player, ModItems.RAIJIN_DRUM) && player.getInventory().contains(new ItemStack(ModItems.FUJIN_WIND_BAG.get()));
+		return EgyptRelics.isWearing(player, ModItems.RAIJIN_DRUM) && player.getInventory().contains(s -> s.is(ModItems.FUJIN_WIND_BAG.get()));
 	}
 
 	public static boolean kappaWet(Player player) {
@@ -214,14 +214,12 @@ public final class JapanGods {
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
-			if (DISGUISED.containsKey(player.getUUID())) {
+			if (DISGUISED.containsKey(player.getUUID()) && player.tickCount % 10 == 0) {
 				// Los objetivos los niega TargetVeto; aquí solo se sueltan los que ya lo tenían fijado.
 				for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(32), m -> m.getTargetUnchecked() == player)) {
 					mob.setTarget(null);
 				}
-				if (player.tickCount % 10 == 0) {
-					level.sendParticles(ParticleTypes.COMPOSTER, player.getX(), player.getY() + 1.9, player.getZ(), 2, 0.2, 0.1, 0.2, 0.0);
-				}
+				level.sendParticles(ParticleTypes.COMPOSTER, player.getX(), player.getY() + 1.9, player.getZ(), 2, 0.2, 0.1, 0.2, 0.0);
 			}
 			if (EgyptRelics.isWearing(player, ModItems.KAPPA_DISH)) {
 				kappa(level, player);
@@ -242,7 +240,7 @@ public final class JapanGods {
 				player.sendOverlayMessage(Component.translatable("message.mythicrelics.kappa_wet").withStyle(ChatFormatting.AQUA));
 			}
 			if (player.isInWater()) {
-				player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 40, 0, true, false));
+				refresh(player, MobEffects.DOLPHINS_GRACE, 40);
 			}
 			return;
 		}
@@ -277,5 +275,13 @@ public final class JapanGods {
 		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(DRYING, DISGUISED);
 		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> DRY.remove(p.getUUID()));
 		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(DRY, DRUNK);
+	}
+
+	/** Pone el efecto solo si falta o le quedan menos de 20 ticks (cada addEffect manda un paquete al cliente). */
+	private static void refresh(Player player, net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> effect, int ticks) {
+		MobEffectInstance current = player.getEffect(effect);
+		if (current == null || current.getDuration() < 20) {
+			player.addEffect(new MobEffectInstance(effect, ticks, 0, true, false));
+		}
 	}
 }

@@ -155,7 +155,8 @@ public final class Minions {
 					mob.setTarget(null);
 					current = null;
 				}
-				if (owner != null && (current == null || !current.isAlive())) {
+				// Buscar objetivo cuesta (un rayo de vista por hostil): cada 10 ticks, escalonado entre aliados.
+				if (owner != null && (current == null || !current.isAlive()) && (mob.tickCount + mob.getId()) % 10 == 0) {
 					LivingEntity next = pick(owner, mob);
 					if (next != null) {
 						mob.setTarget(next);
@@ -176,11 +177,17 @@ public final class Minions {
 		if (valid(owner, mob, attacker, owner.getLastHurtByMobTimestamp())) {
 			return attacker;
 		}
-		// Si nadie pelea con su dueño, van por el hostil más cercano (a la vista del aliado).
-		return mob.level().getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(SEARCH_RANGE),
-						e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive() && ownerOf(e) == null
-								&& !isAlly(e, owner.getUUID()) && mob.hasLineOfSight(e))
-				.stream().min(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(mob))).orElse(null);
+		// Si nadie pelea con su dueño, van por el hostil más cercano a la vista: se ordena por distancia y el rayo de vista
+		// (lo caro) se prueba solo hasta encontrar el primero visible.
+		java.util.List<LivingEntity> near = mob.level().getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(SEARCH_RANGE),
+				e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive() && ownerOf(e) == null && !isAlly(e, owner.getUUID()));
+		near.sort(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(mob)));
+		for (LivingEntity e : near) {
+			if (mob.hasLineOfSight(e)) {
+				return e;
+			}
+		}
+		return null;
 	}
 
 	private static boolean valid(Player owner, Mob mob, @Nullable LivingEntity t, int timestamp) {

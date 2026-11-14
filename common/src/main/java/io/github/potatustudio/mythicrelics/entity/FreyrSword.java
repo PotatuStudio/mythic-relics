@@ -94,6 +94,9 @@ public class FreyrSword extends Mob {
 	 * La boca de la vaina: el cinto la lleva adelante, en la cadera izquierda (freyr_sword_worn.json), así que la espada
 	 * sale y vuelve por ese mismo lado. directionFromRotation(0, yRot - 90) es la izquierda del jugador.
 	 */
+	/** Objetivo en guardia (se recalcula cada 5 ticks). */
+	private @org.jspecify.annotations.Nullable LivingEntity guardTarget;
+
 	private static Vec3 hip(Player player) {
 		Vec3 left = Vec3.directionFromRotation(0, player.getYRot() - 90.0f);
 		Vec3 forward = Vec3.directionFromRotation(0, player.getYRot());
@@ -205,9 +208,12 @@ public class FreyrSword extends Mob {
 				Vec3 guard = guardPoint(player);
 				double k = ease(Math.min(1.0, stateTicks / (double) GUARD_TICKS));
 				goal = from.lerp(guard, k);
-				LivingEntity next = NorseSagas.freyrTarget(player);
+				if (tickCount % 5 == 0 || guardTarget != null && !guardTarget.isAlive()) {
+					guardTarget = NorseSagas.freyrTarget(player);
+				}
+				LivingEntity next = guardTarget;
 				aim = next != null ? center(next) : goal.add(Vec3.directionFromRotation(-30, player.getYRot()));
-				if (next == null && !NorseSagas.inCombat(player)) {
+				if (next == null && (tickCount % 10 != 0 || !NorseSagas.inCombat(player))) {
 					if (++idle >= NorseSagas.FREYR_IDLE_TICKS) {
 						setState(SHEATHE);
 					}

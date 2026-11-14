@@ -163,7 +163,10 @@ public class UrashimaTurtle extends PathfinderMob {
 		}
 		if (getFirstPassenger() instanceof Player rider) {
 			riderless = 0;
-			rider.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, 220, 0, true, false));
+			var conduit = rider.getEffect(MobEffects.CONDUIT_POWER);
+			if (conduit == null || conduit.getDuration() < 200) {
+				rider.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, 220, 0, true, false));
+			}
 			rider.resetFallDistance();
 			return;
 		}

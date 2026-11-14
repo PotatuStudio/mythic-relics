@@ -240,11 +240,11 @@ public final class GreeceRelics {
 		Vec3 look = player.getLookAngle();
 		int speed = hasPerseusSet(player) ? 2 : 1;
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(MEDUSA_RADIUS),
-				m -> m.isAlive() && !isBoss(m) && !m.entityTags().contains(PETRIFIED_TAG)
-						&& !io.github.potatustudio.mythicrelics.china.ChinaRelics.isFriend(player, m)
-						&& m.distanceToSqr(player) <= MEDUSA_RADIUS * MEDUSA_RADIUS)) {
-			Vec3 toMob = mob.getBoundingBox().getCenter().subtract(eyes).normalize();
-			if (look.dot(toMob) < MEDUSA_CONE || !player.hasLineOfSight(mob)) {
+				m -> m.isAlive() && m.distanceToSqr(player) <= MEDUSA_RADIUS * MEDUSA_RADIUS
+						&& look.dot(m.getBoundingBox().getCenter().subtract(eyes).normalize()) >= MEDUSA_CONE
+						&& !isBoss(m) && !m.entityTags().contains(PETRIFIED_TAG)
+						&& !io.github.potatustudio.mythicrelics.china.ChinaRelics.isFriend(player, m))) {
+			if (!player.hasLineOfSight(mob)) {
 				continue;
 			}
 			long[] g = GAZE.computeIfAbsent(mob.getUUID(), k -> new long[2]);
