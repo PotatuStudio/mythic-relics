@@ -118,3 +118,70 @@ def texture(name, elements, colors, namespace):
         u1, v1 = (ox + w) * 16 / width, (oy + h) * 16 / height
         el["faces"][face] = {"uv": [round(u0, 4), round(v0, 4), round(u1, 4), round(v1, 4)], "texture": "#t"}
     return {"textures": {"t": tex, "particle": tex}, "elements": elements}, img
+
+
+# ---- Repintar modelos hechos con una paleta de colores planos ------------------------------------------------------
+
+def _material(rgb_):
+    """Adivina el material por el color, para elegir el patrón: oro/bronce, metal gris, cuero/madera o liso."""
+    r, g, b = rgb_
+    mx, mn = max(rgb_), min(rgb_)
+    sat = (mx - mn) / mx if mx else 0
+    if r > 150 and g > 100 and b < g * 0.75 and sat > 0.35:
+        return "gold"
+    if sat < 0.12 and mx > 70:
+        return "iron"
+    if r > g > b and mx < 170 and sat > 0.25:
+        return "leather"
+    return "plain"
+
+
+def retexture(model, palette_path, texture_id):
+    """Toma un modelo cuyas caras apuntan a casillas de una paleta (colores planos) y devuelve el modelo con una textura
+    propia pintada (luz, sombras, ruido y patrón del material adivinado por el color) y la imagen."""
+    pal = Image.open(palette_path).convert("RGBA")
+    pw, ph = pal.size
+    pp = pal.load()
+    colors, elements = {}, []
+    for el in model["elements"]:
+        face_colors = {}
+        for face, fd in el.get("faces", {}).items():
+            u0, v0, u1, v1 = fd["uv"]
+            x = min(pw - 1, int((u0 + u1) / 2 / 16 * pw))
+            y = min(ph - 1, int((v0 + v1) / 2 / 16 * ph))
+            r, g, b, a = pp[x, y]
+            name = f"#{r:02x}{g:02x}{b:02x}"
+            colors[name] = name
+            face_colors[face] = name
+        # Un color por elemento (el de su cara lateral; arriba/abajo ya son más claros/oscuros en la paleta).
+        side = next((face_colors[f] for f in ("north", "south", "east", "west") if f in face_colors), None)
+        el["__color"] = side or next(iter(face_colors.values()), "#808080")
+        elements.append(el)
+    for name in list(colors):
+        mat = _material(rgb(name))
+        {"gold": METAL, "iron": METAL, "leather": LEATHER}.get(mat, set()).add(name)
+    out, img = texture(texture_id.split("/")[-1], elements, colors, "x")
+    for el in out["elements"]:
+        el.pop("__color", None)
+    result = dict(model)
+    result["elements"] = out["elements"]
+    result["textures"] = {"t": texture_id, "particle": texture_id}
+    return result, img
+
+
+def retexture_file(model_path, palette_path, texture_id, assets):
+    """Repinta un modelo ya escrito (JSON) y guarda su textura en assets/textures/<texture_id sin namespace>.png."""
+    import json
+    import os
+    with open(model_path, encoding="utf-8") as f:
+        model = json.load(f)
+    if model.get("textures", {}).get("t") == texture_id:
+        return   # ya está pintado (sus UV ya no apuntan a la paleta)
+    model, img = retexture(model, palette_path, texture_id)
+    rel = texture_id.split(":", 1)[1]
+    out = os.path.join(assets, "textures", *rel.split("/")) + ".png"
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    img.save(out)
+    with open(model_path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(model, f, indent=1, ensure_ascii=False)
+        f.write("\n")

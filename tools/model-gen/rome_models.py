@@ -177,3 +177,5 @@ if __name__ == "__main__":
                    "conditions": [{"condition": "minecraft:survives_explosion"}]}]})
     write(os.path.join(DATA, "minecraft", "tags", "block", "mineable", "axe.json"), {"replace": False, "values": [f"{NS}:palladium"]})
     print("ok: ancile, palladium")
+    import paint_models  # noqa: E402  (textura pintada en lugar de la paleta plana)
+    paint_models.run(['item/ancile_shield', 'block/palladium'])

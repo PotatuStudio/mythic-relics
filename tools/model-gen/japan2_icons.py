@@ -102,3 +102,5 @@ if __name__ == "__main__":
         "pools": [{"rolls": 1, "bonus_rolls": 0, "entries": [{"type": "minecraft:item", "name": f"{NS}:zashiki_warashi"}],
                    "conditions": [{"condition": "minecraft:survives_explosion"}]}]})
     print("ok:", ", ".join(CD.ICONS))
+    import paint_models  # noqa: E402  (textura pintada en lugar de la paleta plana)
+    paint_models.run(['block/zashiki_warashi'])

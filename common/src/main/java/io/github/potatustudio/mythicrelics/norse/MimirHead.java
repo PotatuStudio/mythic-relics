@@ -90,7 +90,7 @@ public final class MimirHead {
 		return COLORS.containsKey(state.getBlock()) || state.is(BlockTags.GOLD_ORES);
 	}
 
-	/** Marca los minerales valiosos a {@link NorseGods#MIMIR_RADIUS} bloques con un contorno brillante. */
+	/** Marca los minerales valiosos a {@link NorseGods#MIMIR_RADIUS} bloques y los cofres sin abrir cercanos con un contorno brillante. */
 	static void outlineOres(ServerLevel level, ServerPlayer player) {
 		BlockPos center = player.blockPosition();
 		int r = NorseGods.MIMIR_RADIUS;
@@ -109,10 +109,33 @@ public final class MimirHead {
 				OUTLINES.add(new Outline(level, display, until));
 			}
 		}
-		if (!found.isEmpty()) {
+		// Los cofres sin abrir de los chunks cercanos (hasta GUIDE_RADIUS bloques), con contorno dorado.
+		int chests = 0;
+		for (int cx = -1; cx <= 1; cx++) {
+			for (int cz = -1; cz <= 1; cz++) {
+				LevelChunk chunk = level.getChunkSource().getChunkNow((center.getX() >> 4) + cx, (center.getZ() >> 4) + cz);
+				if (chunk == null) {
+					continue;
+				}
+				for (BlockEntity be : chunk.getBlockEntities().values()) {
+					if (chests < MAX_OUTLINES && be instanceof RandomizableContainerBlockEntity box && box.getLootTable() != null
+							&& be.getBlockPos().distSqr(center) <= (double) GUIDE_RADIUS * GUIDE_RADIUS) {
+						Entity display = outline(level, be.getBlockPos(), be.getBlockState(), CHEST_COLOR);
+						if (display != null) {
+							OUTLINES.add(new Outline(level, display, until));
+							chests++;
+						}
+					}
+				}
+			}
+		}
+		if (!found.isEmpty() || chests > 0) {
 			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 0.6f, 0.7f);
 		}
 	}
+
+	/** Contorno de los cofres sin abrir. */
+	private static final int CHEST_COLOR = 0xFFB040;
 
 	private static Entity outline(ServerLevel level, BlockPos pos, BlockState state, int color) {
 		CompoundTag tag = new CompoundTag();

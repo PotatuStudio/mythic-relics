@@ -819,7 +819,7 @@ def write(path, data):
 
 # Reliquias con textura pintada por cara (luz, sombras, ruido y patrón del material; worn_texture.py) en lugar de los
 # colores planos de la paleta.
-TEXTURED = {"nemean_lion_skin", "hermes_sandals", "hades_helm", "athena_aegis", "icarus_wings", "golden_fleece", "cerberus_collar"}
+TEXTURED = set(WORN)   # todas
 
 
 if __name__ == "__main__":

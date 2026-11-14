@@ -42,3 +42,5 @@ if __name__ == "__main__":
                     "cases": [{"when": ["gui", "ground", "fixed", "on_shelf"], "model": icon}],
                     "fallback": {"type": "minecraft:model", "model": f"{NS}:item/ruyi_jingu_bang_extended"}}}})
     print("ok: ruyi_jingu_bang_extended")
+    import paint_models  # noqa: E402  (textura pintada en lugar de la paleta plana)
+    paint_models.run(['item/ruyi_jingu_bang_extended'])

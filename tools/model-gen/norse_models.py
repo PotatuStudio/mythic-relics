@@ -147,3 +147,5 @@ if __name__ == "__main__":
             "cases": [{"when": ["gui", "ground", "fixed", "on_shelf"], "model": icon}],
             "fallback": held}})
     print("ok:", ", ".join(MODELS))
+    import paint_models  # noqa: E402  (textura pintada en lugar de la paleta plana)
+    paint_models.run(['item/mjolnir_3d', 'item/gungnir_3d'])

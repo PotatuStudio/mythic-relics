@@ -114,3 +114,5 @@ if __name__ == "__main__":
                      "on_true": {"type": "minecraft:model", "model": f"{NS}:item/achilles_shield_blocking"},
                      "on_false": {"type": "minecraft:model", "model": f"{NS}:item/achilles_shield_3d"}}}})
     print("ok:", ", ".join(CD.ICONS))
+    import paint_models  # noqa: E402  (textura pintada en lugar de la paleta plana)
+    paint_models.run(['item/achilles_shield_3d'])
