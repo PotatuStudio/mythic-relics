@@ -58,7 +58,8 @@ public final class ChinaGods {
 	public static final int SPEAR_BURN_SECONDS = 4;
 	public static final int SPEAR_FLAME_RANGE = 6;
 	public static final float SPEAR_FLAME_DAMAGE = 16.0f;
-	public static final int SPEAR_COOLDOWN = 200;
+	public static final int SPEAR_COOLDOWN = 100;
+	public static final int SPEAR_WHEELS_COOLDOWN = 60;
 
 	public static final int RING_TARGETS = 3;
 	public static final int RING_RANGE = 8;
@@ -120,7 +121,7 @@ public final class ChinaGods {
 
 	/** Nezha completo: la llamarada de la lanza recarga a la mitad con las ruedas puestas. */
 	static int spearCooldown(Player player) {
-		return EgyptRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS) ? SPEAR_COOLDOWN / 2 : SPEAR_COOLDOWN;
+		return EgyptRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS) ? SPEAR_WHEELS_COOLDOWN : SPEAR_COOLDOWN;
 	}
 
 	// ---- Eventos ----------------------------------------------------------------------------------------------------
@@ -291,7 +292,7 @@ public final class ChinaGods {
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
 			case "fire_tipped_spear" -> new Object[] {SPEAR_BURN_SECONDS, SPEAR_FLAME_RANGE, (int) SPEAR_FLAME_DAMAGE, SPEAR_COOLDOWN / 20,
-					SPEAR_COOLDOWN / 40};
+					SPEAR_WHEELS_COOLDOWN / 20};
 			case "universe_ring" -> new Object[] {RING_TARGETS, RING_RANGE, (int) RING_DAMAGE, RING_STUN_TICKS / 20, RING_COOLDOWN / 20};
 			case "erlang_eye" -> new Object[] {ERLANG_SIGHT_RADIUS};
 			case "erlang_halberd" -> new Object[] {(int) HALBERD_REACH, HALBERD_SWEEP_RADIUS, DOG_TICKS / 20, DOG_COOLDOWN / 20};

@@ -234,7 +234,7 @@ Página de diseño: `tools/design-page/china_*.py`. Fuentes: mitos antiguos (Nü
 
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
-| Ruyi Jingu Bang | arma | 9 de daño, +1,5 de alcance; clic derecho: se estira 10 bloques en línea (10 de daño y empuje). Recarga 8 s. Hierro negro con aros de oro (el rojo es de Dragon Ball). | Cofre grande de ruinas submarinas, 4 % |
+| Ruyi Jingu Bang | arma | 9 de daño, +1,5 de alcance; clic derecho: se estira 10 bloques en línea (10 de daño y empuje). Recarga 15 s (ajustada el 2026-11-14; antes 30 s). Hierro negro con aros de oro (el rojo es de Dragon Ball). | Cofre grande de ruinas submarinas, 4 % |
 | Pelos del Rey Mono | mano | 4 monos guerreros (20 de vida, 5 de daño) durante 60 s. Recarga 4 min. Aspecto de la novela. | Templos de la jungla, 4 % |
 | Calabaza roja de oro púrpura | mano | Atrapa un mob de 40 de vida o menos (no jefes ni jugadores) y lo suelta después; un hostil dentro 5 min se disuelve y da botín y experiencia. Recarga 20 s. | Mazmorras, 3 % |
 | Abanico de hoja de plátano | arma | 6 de daño + cuchilla de viento (12 bloques, 4 de daño); dash de 10 bloques con 3 cargas (6 s cada una); 3 aleteos en 4 s traen lluvia 15 s que apaga el fuego. | Portales en ruinas, 4 % |
@@ -249,7 +249,7 @@ Modelos del Perro Celestial y del qilin aprobados; íconos: los del primer borra
 
 | Reliquia | Tipo | Efecto | Dónde |
 |---|---|---|---|
-| Lanza de punta de fuego (Nezha) | arma | 8 de daño y fuego 4 s; clic derecho: llamarada en cono de 6 bloques (5 de daño y fuego). Recarga 10 s; 5 s con las ruedas de viento y fuego puestas. | Bastiones, 3 % |
+| Lanza de punta de fuego (Nezha) | arma | 8 de daño y fuego 4 s; clic derecho: llamarada en cono de 6 bloques (5 de daño y fuego). Recarga 5 s; 3 s con las ruedas de viento y fuego puestas (antes 10 y 5). | Bastiones, 3 % |
 | Aro del Universo (Nezha) | se lanza | Golpea hasta 3 enemigos a 8 bloques (7 de daño, aturde 1 s) y vuelve. Recarga 4 s. | Recompensas de cámaras de desafío, 3 % |
 | Ojo de Erlang Shen | cara | Los invisibles brillan; los hostiles a 16 bloques brillan a través de las paredes. | Ciudades del End, 3 % |
 | Alabarda de tres puntas | arma | 9 de daño, +1 de alcance, barre a 2 bloques. Set de Erlang (con el Ojo): el Perro Celestial aparece al recibir daño, 45 s, recarga 90 s. | Mansiones del bosque, 4 % |
@@ -264,7 +264,7 @@ Tanda 1: aprobada y programada el 2026-11-10 (kitsune a 1,5 veces, del tamaño d
 
 | Reliquia | Tipo | Efecto | Dónde |
 |---|---|---|---|
-| Kusanagi no Tsurugi | arma | 8 de daño; clic derecho: tajo de viento en arco de 5 bloques (6 de daño, empuje, corta hierba alta, apaga fuego). Recarga 8 s. | Bóvedas ominosas, 2 % |
+| Kusanagi no Tsurugi | arma | 8 de daño; clic derecho: tajo de viento en arco de 5 bloques (6 de daño, empuje, corta hierba alta, apaga fuego). Recarga 5 s (antes 8). | Bóvedas ominosas, 2 % |
 | Yata no Kagami | mano secundaria | Devuelve flechas y bolas de fuego; clic derecho: ciega a los hostiles a 12 bloques 5 s. Recarga 30 s. | Ciudades antiguas, 3 % |
 | Yasakani no Magatama | collar | De día bajo el cielo, medio corazón cada 5 s. Set de los Tres Tesoros (espada, espejo y joya): de día +20 % de daño y Resistencia I. | Arqueología de ruinas de los senderos (raras), 1,5 % |
 | Tambor de Raijin | espalda | Cada 4 golpes seguidos (menos de 3 s entre golpes) cae un rayo sobre el objetivo; los rayos no te dañan. | Recompensas de cámaras de desafío, 3 % |

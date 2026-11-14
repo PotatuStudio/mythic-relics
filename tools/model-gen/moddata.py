@@ -182,7 +182,7 @@ def tooltip_args(c):
         "five_color_stone": [int(c["STONE_INTERVAL"] // 20)],
         # China, tanda 2 (ChinaGods#tooltipArgs)
         "fire_tipped_spear": [int(c["SPEAR_BURN_SECONDS"]), int(c["SPEAR_FLAME_RANGE"]), int(c["SPEAR_FLAME_DAMAGE"]),
-                              int(c["SPEAR_COOLDOWN"] // 20), int(c["SPEAR_COOLDOWN"] // 40)],
+                              int(c["SPEAR_COOLDOWN"] // 20), int(c["SPEAR_WHEELS_COOLDOWN"] // 20)],
         "universe_ring": [int(c["RING_TARGETS"]), int(c["RING_RANGE"]), int(c["RING_DAMAGE"]), int(c["RING_STUN_TICKS"] // 20),
                           int(c["RING_COOLDOWN"] // 20)],
         "erlang_eye": [int(c["ERLANG_SIGHT_RADIUS"])],

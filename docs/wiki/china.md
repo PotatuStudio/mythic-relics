@@ -35,7 +35,7 @@ Los dragones chinos (long) no tienen alas ni escupen fuego: vuelan entre las nub
 
 - Arma pesada con 1.5 bloques más de alcance
 - Clic derecho: se estira 10 bloques golpeando todo en línea recta (18 de daño) y queda largo 10 s: +4 bloques de alcance y golpes al doble que barren alrededor
-- Recarga: 30 s
+- Recarga: 15 s
 
 **Mito.** El bastón del Rey Mono. Era la columna de hierro con que el Rey Dragón del Mar del Este medía la profundidad del océano; pesaba 13.500 jin y obedecía a Sun Wukong.  
 Crecía hasta el cielo o se encogía hasta caber detrás de su oreja. Es de hierro negro con un aro de oro en cada punta.
@@ -179,7 +179,7 @@ Una de las que sobraron es la piedra de «Sueño en el pabellón rojo».
 
 - Prende fuego al golpeado 4 s
 - Clic derecho: llamarada en cono de 6 bloques, 16 de daño y fuego
-- Recarga: 10 s (5 s con las ruedas de viento y fuego puestas)
+- Recarga: 5 s (3 s con las ruedas de viento y fuego puestas)
 
 **Mito.** La lanza de Nezha en La investidura de los dioses (huojian qiang): su punta ardía y con ella derrotó a ejércitos enteros, junto con sus ruedas de viento y fuego.
 

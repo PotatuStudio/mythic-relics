@@ -52,7 +52,7 @@ import net.minecraft.world.phys.Vec3;
 public final class JapanRelics {
 	public static final float KUSANAGI_SLASH_DAMAGE = 16.0f;
 	public static final int KUSANAGI_SLASH_RANGE = 5;
-	public static final int KUSANAGI_COOLDOWN = 160;
+	public static final int KUSANAGI_COOLDOWN = 100;
 
 	public static final int MIRROR_FLASH_RADIUS = 12;
 	public static final int MIRROR_BLIND_TICKS = 100;

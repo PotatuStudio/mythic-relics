@@ -69,7 +69,7 @@ public final class ChinaRelics {
 	public static final float RUYI_REACH = 1.5f;
 	public static final int RUYI_LENGTH = 10;
 	public static final float RUYI_STRETCH_DAMAGE = 18.0f;
-	public static final int RUYI_COOLDOWN = 600;
+	public static final int RUYI_COOLDOWN = 300;
 	public static final int RUYI_EXTENDED_TICKS = 200;
 	public static final float RUYI_EXTENDED_REACH = 4.0f;
 	public static final float RUYI_SWEEP_RADIUS = 2.5f;

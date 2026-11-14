@@ -36,7 +36,7 @@ A eso se suman los dioses del trueno y del mar y el folclore: los kitsune, los o
 
 - Clic derecho: tajo de viento en arco de 5 bloques, 16 de daño y empuje
 - Siega la hierba y apaga el fuego que alcanza
-- Recarga: 8 s
+- Recarga: 5 s
 
 **Mito.** La espada que Susanoo encontró dentro de la cola de Yamata no Orochi, la serpiente de ocho cabezas.  
 Su nombre, «cortadora de hierba», viene de Yamato Takeru: atrapado en un campo en llamas, segó la hierba con ella y el viento volvió el fuego contra sus enemigos.
