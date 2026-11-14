@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.KitsuneGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Kitsune de nueve colas (geometría en {@link MythicModelLayers#kitsune}, igual que el visor de diseño): zorro blanco de
+ * Kitsune de nueve colas (geometría en {@link KitsuneGeometry}, igual que el visor de diseño): zorro blanco de
  * Inari con babero rojo, nueve colas alzadas que se mecen y dos kitsunebi que giran a su alrededor. Se dibuja a 1,5
  * veces ({@link MythicRenderers.KitsuneRenderer}).
  */
@@ -46,7 +47,7 @@ public class KitsuneModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.kitsune();
+		return KitsuneGeometry.create();
 	}
 
 	@Override

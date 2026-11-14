@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.FreyjaFalconGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * El halcón del manto de Freyja (geometría en {@link MythicModelLayers#freyjaFalcon}): bate las alas largas y
+ * El halcón del manto de Freyja (geometría en {@link FreyjaFalconGeometry}): bate las alas largas y
  * puntiagudas con un aleteo rápido y planeos entre medio, la cola se abre y las patas van recogidas.
  */
 public class FreyjaFalconModel extends EntityModel<LivingEntityRenderState> {
@@ -30,7 +31,7 @@ public class FreyjaFalconModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.freyjaFalcon();
+		return FreyjaFalconGeometry.create();
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import io.github.potatustudio.mythicrelics.client.entity.CelestialDogModel;
 import io.github.potatustudio.mythicrelics.client.entity.CerberusModel;
 import io.github.potatustudio.mythicrelics.client.entity.FreyjaFalconModel;
 import io.github.potatustudio.mythicrelics.client.entity.FreyrSwordRenderer;
-import io.github.potatustudio.mythicrelics.client.entity.MythicModelLayers;
 import io.github.potatustudio.mythicrelics.client.entity.MythicRenderers;
 import io.github.potatustudio.mythicrelics.client.entity.LongDragonModel;
 import io.github.potatustudio.mythicrelics.client.entity.MonkeyWarriorModel;
@@ -28,6 +27,11 @@ import io.github.potatustudio.mythicrelics.client.entity.JackalRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabModel;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.WeaponModel;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.FreyrSwordGeometry;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.GungnirGeometry;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.MistletoeDartGeometry;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.MjolnirGeometry;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.SkidbladnirGeometry;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.BoatRenderer;
@@ -65,7 +69,7 @@ public final class MythicRelicsClient {
 		// Skíðblaðnir: el renderizador de botes vanilla con el modelo y la textura propios (textures/entity/boat/skidbladnir.png).
 		ModelLayerLocation ship = new ModelLayerLocation(
 				MythicRelics.id("boat/skidbladnir"), "main");
-		EntityModelLayerRegistry.register(ship, MythicModelLayers::skidbladnir);
+		EntityModelLayerRegistry.register(ship, SkidbladnirGeometry::create);
 		EntityRendererRegistry.register(ModEntities.SKIDBLADNIR_BOAT, context -> new BoatRenderer(context, ship));
 		EntityRendererRegistry.register(ModEntities.OROCHI_SHADOW, MythicRenderers.OrochiRenderer::new);
 		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
@@ -81,13 +85,13 @@ public final class MythicRelicsClient {
 				FreyjaFalconModel::createBodyLayer);
 		// Armas en vuelo: modelo 3D propio (el ícono queda para el inventario y la mano).
 		EntityModelLayerRegistry.register(WeaponModel.FREYR_SWORD,
-				MythicModelLayers::freyrSword);
+				FreyrSwordGeometry::create);
 		EntityModelLayerRegistry.register(WeaponModel.MJOLNIR,
-				MythicModelLayers::mjolnir);
+				MjolnirGeometry::create);
 		EntityModelLayerRegistry.register(WeaponModel.GUNGNIR,
-				MythicModelLayers::gungnir);
+				GungnirGeometry::create);
 		EntityModelLayerRegistry.register(WeaponModel.MISTLETOE_DART,
-				MythicModelLayers::mistletoeDart);
+				MistletoeDartGeometry::create);
 		EntityRendererRegistry.register(ModEntities.FREYR_SWORD, FreyrSwordRenderer::new);
 		RelicClientTicks.init();
 		ChargeFeedback.init();

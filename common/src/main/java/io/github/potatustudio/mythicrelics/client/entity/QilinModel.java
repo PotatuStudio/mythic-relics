@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.QilinGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * El qilin (geometría en {@link MythicModelLayers#qilin}, igual que el visor de diseño): cabeza de dragón con barba y un
+ * El qilin (geometría en {@link QilinGeometry}, igual que el visor de diseño): cabeza de dragón con barba y un
  * cuerno, cuerpo de ciervo escamado verde jade y oro, cascos, cola de buey y llamas que brillan. Se dibuja a 1,35 veces
  * ({@link MythicRenderers.QilinRenderer}), del tamaño de un caballo.
  */
@@ -40,7 +41,7 @@ public class QilinModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.qilin();
+		return QilinGeometry.create();
 	}
 
 	@Override

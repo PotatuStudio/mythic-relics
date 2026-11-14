@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.PegasusGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Pegaso (geometría en {@link MythicModelLayers#pegasus}, igual que la página de diseño): en el suelo camina como un
+ * Pegaso (geometría en {@link PegasusGeometry}, igual que la página de diseño): en el suelo camina como un
  * caballo y mece las alas; en el aire bate las alas, recoge las patas y la cola flota hacia atrás. El paso de un estado a
  * otro es gradual ({@code air}, de 0 a 1, lo suaviza el renderizador).
  */
@@ -47,7 +48,7 @@ public class PegasusModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.pegasus();
+		return PegasusGeometry.create();
 	}
 
 	@Override

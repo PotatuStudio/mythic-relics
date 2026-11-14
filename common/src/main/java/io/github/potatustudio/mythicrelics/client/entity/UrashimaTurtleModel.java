@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.UrashimaTurtleGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Tortuga de Urashima (geometría en {@link MythicModelLayers#urashimaTurtle}, igual que el visor de diseño): caparazón
+ * Tortuga de Urashima (geometría en {@link UrashimaTurtleGeometry}, igual que el visor de diseño): caparazón
  * de escudos con borde ámbar, aletas que reman (más rápido al nadar) y algas que flotan detrás. Se dibuja a 1,7 veces
  * ({@link MythicRenderers.TurtleRenderer}).
  */
@@ -37,7 +38,7 @@ public class UrashimaTurtleModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.urashimaTurtle();
+		return UrashimaTurtleGeometry.create();
 	}
 
 	@Override

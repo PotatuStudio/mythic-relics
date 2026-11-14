@@ -10,7 +10,7 @@ ModelPart con cubos y UV de caja de Minecraft, y en Minecraft la y crece hacia a
 
 Escribe un JSON con las partes y las texturas (normal y la que brilla) en base64.
 Uso: python china_entities.py <salida.json> [<carpeta_png>]   (visor)
-     python china_entities.py --mod                         (texturas y MythicModelLayers.java del mod)"""
+     python china_entities.py --mod                         (texturas y client/entity/geometry/*Geometry.java del mod)"""
 import base64
 import io
 import json
@@ -476,8 +476,10 @@ def b64(img):
 # ---------------------------------------------------------------- mod: texturas y geometría en Java
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 ENTITY_TEX = os.path.join(ROOT, "common", "src", "main", "resources", "assets", "mythicrelics", "textures", "entity")
-JAVA_OUT = os.path.join(ROOT, "common", "src", "main", "java", "io", "github", "potatustudio", "mythicrelics", "client",
-                        "entity", "MythicModelLayers.java")
+# Una clase por entidad (client/entity/geometry/<Nombre>Geometry.java), cada una con su create().
+JAVA_DIR = os.path.join(ROOT, "common", "src", "main", "java", "io", "github", "potatustudio", "mythicrelics", "client",
+                        "entity", "geometry")
+GENERATED_MARK = "GENERADO por tools/model-gen/china_entities.py --mod"
 # Desplazamiento de las partes raíz en el juego: el long se baja y se corre hacia adelante para que el centro de su caja
 # (donde va el jinete) quede sobre el segundo segmento; el mono ya tiene el suelo en y = 24.
 ROOT_OFFSET = {"monkey": (0, 0, 0), "dragon": (0, 16, -16), "dog": (0, 0, 0), "qilin": (0, 0, 0), "kitsune": (0, 0, 0),
@@ -500,9 +502,8 @@ def jf(v):
 
 
 def java_layer(key, parts, tex_w, tex_h):
-    method, _ = NAMES[key]
     dx, dy, dz = ROOT_OFFSET[key]
-    out = [f"\tpublic static LayerDefinition {method}() {{",
+    out = ["\tpublic static LayerDefinition create() {",
            "\t\tMeshDefinition mesh = new MeshDefinition();",
            "\t\tPartDefinition root = mesh.getRoot();"]
     for p in parts:
@@ -522,28 +523,40 @@ def java_layer(key, parts, tex_w, tex_h):
     return "\n".join(out)
 
 
+def class_name(key):
+    method = NAMES[key][0]
+    return method[0].upper() + method[1:] + "Geometry"
+
+
 def write_mod(baked):
     os.makedirs(ENTITY_TEX, exist_ok=True)
-    methods = []
+    os.makedirs(JAVA_DIR, exist_ok=True)
+    written = set()
     for key, (parts, img, glow, w, h) in baked.items():
         name = NAMES[key][1]
         img.save(os.path.join(ENTITY_TEX, name + ".png"))
         if key != "skidbladnir":   # el bote usa el BoatRenderer vanilla, que no dibuja capa de brillo
             glow.save(os.path.join(ENTITY_TEX, name + "_glow.png"))
-        methods.append(java_layer(key, parts, w, h))
-    src = ("package io.github.potatustudio.mythicrelics.client.entity;\n\n"
-           "import net.minecraft.client.model.geom.PartPose;\n"
-           "import net.minecraft.client.model.geom.builders.CubeListBuilder;\n"
-           "import net.minecraft.client.model.geom.builders.LayerDefinition;\n"
-           "import net.minecraft.client.model.geom.builders.MeshDefinition;\n"
-           "import net.minecraft.client.model.geom.builders.PartDefinition;\n\n"
-           "/**\n * Geometría de las entidades del mod (China, Japón, nórdicos y Grecia). GENERADO por tools/model-gen/china_entities.py\n"
-           " * --mod a partir del mismo diseño que el visor: no editar a mano.\n */\n"
-           "@SuppressWarnings(\"unused\")\n"
-           "public final class MythicModelLayers {\n\tprivate MythicModelLayers() {\n\t}\n\n"
-           + "\n\n".join(methods) + "\n}\n")
-    with open(JAVA_OUT, "w", encoding="utf-8", newline="\n") as f:
-        f.write(src)
+        cls = class_name(key)
+        src = ("package io.github.potatustudio.mythicrelics.client.entity.geometry;\n\n"
+               "import net.minecraft.client.model.geom.PartPose;\n"
+               "import net.minecraft.client.model.geom.builders.CubeListBuilder;\n"
+               "import net.minecraft.client.model.geom.builders.LayerDefinition;\n"
+               "import net.minecraft.client.model.geom.builders.MeshDefinition;\n"
+               "import net.minecraft.client.model.geom.builders.PartDefinition;\n\n"
+               f"/**\n * Geometría de la entidad {name}. {GENERATED_MARK} a partir del mismo diseño que el visor: no\n"
+               " * editar a mano.\n */\n"
+               "@SuppressWarnings(\"unused\")\n"
+               f"public final class {cls} {{\n\tprivate {cls}() {{\n\t}}\n\n"
+               + java_layer(key, parts, w, h) + "\n}\n")
+        with open(os.path.join(JAVA_DIR, cls + ".java"), "w", encoding="utf-8", newline="\n") as f:
+            f.write(src)
+        written.add(cls + ".java")
+    # Borra las clases generadas de entidades que ya no existen.
+    for f in os.listdir(JAVA_DIR):
+        path = os.path.join(JAVA_DIR, f)
+        if f.endswith(".java") and f not in written and GENERATED_MARK in open(path, encoding="utf-8").read():
+            os.remove(path)
 
 
 if __name__ == "__main__":
@@ -567,7 +580,7 @@ if __name__ == "__main__":
         os.makedirs(os.path.join(ENTITY_TEX, "boat"), exist_ok=True)
         os.makedirs(os.path.join(ENTITY_TEX, "weapon"), exist_ok=True)
         write_mod(baked)
-        print("ok: texturas en", ENTITY_TEX, "y", JAVA_OUT)
+        print("ok: texturas en", ENTITY_TEX, "y geometría en", JAVA_DIR)
         sys.exit(0)
     out = {}
     folder = sys.argv[2] if len(sys.argv) > 2 else None

@@ -13,7 +13,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
 
 /**
- * Modelo 3D de un arma que vuela (geometría en {@link MythicModelLayers}, generada por tools/model-gen/weapon_entities.py).
+ * Modelo 3D de un arma que vuela (geometría en {@code client/entity/geometry}, generada por tools/model-gen/weapon_entities.py).
  * Como el tridente vanilla: en el inventario y en la mano se ve el ícono, pero en el aire se dibuja este modelo, sin los
  * destellos de adorno del ícono. La punta mira a -y (como la del tridente) y el origen queda cerca del centro de la
  * pieza. Cada arma tiene su textura y una capa que brilla.

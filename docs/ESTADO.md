@@ -197,7 +197,7 @@ ticks mientras dura; tamaño del mazo con el atributo `scale`) y los ítems `Kus
 el zorro confía con `FoxAccessor`) y `UrashimaRodItem`. Entidades: `entity/Kitsune` (aliado de `Minions` que lanza
 kitsunebi; se dibuja a 1,5) y `entity/UrashimaTurtle` (montura que nada hacia donde mira el jinete y da el poder del
 conducto; se dibuja a 1,7). Geometría: `tools/model-gen/japan_entities.py`; la clase generada pasó a llamarse
-`client/entity/MythicModelLayers` (China y Japón). Íconos: `japan_icons.py`.
+`client/entity/geometry` (China y Japón). Íconos: `japan_icons.py`.
 **Sin probar en el juego**: montar la tortuga bajo el agua (control, velocidad, altura del jinete, que no se hunda ni
 flote mal), el kitsune y sus kitsunebi, el pasillo seco de kanju (que el agua no lo inunde y vuelva al terminar), la ola
 de manju, el reflejo del espejo (flechas y bolas de fuego), el rayo del tambor, el golpe del kanabō contra armadura,
@@ -383,7 +383,7 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
 ## Cómo trabajar (recordatorio)
 - No abrir el juego en este PC: solo `./gradlew build` (con conexión la primera vez que cambia una dependencia).
 - Push con la cuenta Friedpotatu (ver memoria «push-friedpotatu»).
-- Modelos y texturas se generan con `tools/model-gen/*.py` (no editar los JSON ni `MythicModelLayers.java` a mano);
+- Modelos y texturas se generan con `tools/model-gen/*.py` (no editar los JSON ni `client/entity/geometry/*Geometry.java` a mano);
   textos con `feedback4_lang.py`; libro y wiki con `make_codex.py` (también genera `relic/RelicCultures.java`).
 - Visor global: `python tools/model-gen/make_viewer.py tools/design-page/viewer_check.html` y publicarlo en
   https://claude.ai/artifact/KmBKXReYGwHWo2DGQRyHgh al cerrar cada tanda.

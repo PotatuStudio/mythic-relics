@@ -32,7 +32,7 @@ actualizar la herramienta en la misma etapa:
   - `_sets()` lee `relic/RelicSets.java`: si cambia el formato de declaración de sets, hay que ajustar la expresión.
   - `loot()` lee `registry/ModLoot.java` y `rarity()` lee `registry/ModItems.java`.
 - `make_codex.py` genera `relic/RelicCultures.java`: no se edita a mano.
-- `china_entities.py --mod` genera geometría Java de las entidades (`MythicModelLayers.java` y modelos): no se edita a mano.
+- `china_entities.py --mod` genera geometría Java de las entidades (`client/entity/geometry/*Geometry.java` y modelos): no se edita a mano.
 
 Comprobación final de cada etapa: `python tools/model-gen/make_codex.py` no debe cambiar nada en `docs/wiki` ni en el
 libro (`git diff --stat` vacío en esas carpetas) si la etapa no cambia el juego. Usar `PYTHONIOENCODING=utf-8` en Windows.

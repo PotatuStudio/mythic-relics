@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.OrochiShadowGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Sombra de Yamata no Orochi (geometría en {@link MythicModelLayers#orochiShadow}, igual que el visor de diseño): cuerpo
+ * Sombra de Yamata no Orochi (geometría en {@link OrochiShadowGeometry}, igual que el visor de diseño): cuerpo
  * de escamas con musgo y cipreses en el lomo, ocho cuellos que se mecen con cabezas que muerden y ocho colas por el
  * suelo. Se dibuja al doble ({@link MythicRenderers.OrochiRenderer}).
  */
@@ -40,7 +41,7 @@ public class OrochiModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.orochiShadow();
+		return OrochiShadowGeometry.create();
 	}
 
 	@Override

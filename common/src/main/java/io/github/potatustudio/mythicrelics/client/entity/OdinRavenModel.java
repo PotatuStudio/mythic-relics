@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.OdinRavenGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Cuervo de Odín (geometría en {@link MythicModelLayers#odinRaven}, igual que la página de revisión): vuela con las alas
+ * Cuervo de Odín (geometría en {@link OdinRavenGeometry}, igual que la página de revisión): vuela con las alas
  * abiertas que se baten, la cola que se abre y la cabeza hacia su dueño.
  */
 public class OdinRavenModel extends EntityModel<LivingEntityRenderState> {
@@ -33,7 +34,7 @@ public class OdinRavenModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.odinRaven();
+		return OdinRavenGeometry.create();
 	}
 
 	@Override

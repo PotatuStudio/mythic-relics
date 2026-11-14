@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.CelestialDogGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * El Perro Celestial (geometría en {@link MythicModelLayers#celestialDog}, igual que el visor de diseño): lebrel negro de
+ * El Perro Celestial (geometría en {@link CelestialDogGeometry}, igual que el visor de diseño): lebrel negro de
  * pecho hondo, collar de oro con campanita y ojos ámbar que brillan. Corre con las patas en diagonal y mueve la cola.
  */
 public class CelestialDogModel extends EntityModel<LivingEntityRenderState> {
@@ -33,7 +34,7 @@ public class CelestialDogModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.celestialDog();
+		return CelestialDogGeometry.create();
 	}
 
 	@Override

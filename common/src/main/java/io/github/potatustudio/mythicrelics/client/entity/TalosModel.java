@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.client.entity.geometry.TalosGeometry;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -9,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Talos (geometría en {@link MythicModelLayers#talos}): camina pesado como un gólem, balancea los brazos y, al lanzar,
+ * Talos (geometría en {@link TalosGeometry}): camina pesado como un gólem, balancea los brazos y, al lanzar,
  * levanta la roca por detrás de la cabeza y la arroja (la roca desaparece de la mano un instante y vuelve). Se dibuja a
  * 1,5 ({@link MythicRenderers.TalosRenderer}).
  */
@@ -35,7 +36,7 @@ public class TalosModel extends EntityModel<LivingEntityRenderState> {
 	}
 
 	public static LayerDefinition createBodyLayer() {
-		return MythicModelLayers.talos();
+		return TalosGeometry.create();
 	}
 
 	@Override

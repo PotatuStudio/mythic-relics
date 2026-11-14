@@ -82,7 +82,7 @@ if __name__ == "__main__":
                               "scale": JE.SCALE[key],
                               "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
                               "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
-    # Cuervos de Odín y Skíðblaðnir (norse_entities.py, el mismo diseño que MythicModelLayers.java).
+    # Cuervos de Odín y Skíðblaðnir (norse_entities.py, el mismo diseño que client/entity/geometry).
     import norse_entities as NE  # noqa: E402
     for key in NE.MODELS:
         parts, _img, _glow, tex_w, tex_h = NE.bake_one(key)
