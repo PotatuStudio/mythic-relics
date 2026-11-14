@@ -346,7 +346,7 @@ Loki se lo pidió prestado para buscar el martillo que le robaron a Thor y para 
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Mantén clic derecho y suelta para lanzarlo; vuelve a tu mano
+- Mantén clic derecho y suelta para lanzarlo; queda clavado donde cae hasta que lo recojas
 - 12 de daño que ignora armadura, Resistencia y encantamientos de protección; el doble contra jefes
 - Recarga: 20 s
 

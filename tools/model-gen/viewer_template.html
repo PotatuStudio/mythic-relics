@@ -195,7 +195,7 @@ const UI = {
     footFreyr: "La espada de Freyr pelea sola: envainada en la cadera, sale con un destello cuando hay combate, embiste con estela dorada, da tajos en arco y estocadas, vuelve a tu lado y se envaina a los 5 s sin combate. El movimiento es suavizado: cada paso parte de donde terminó el anterior.",
     footHeads: "La cabeza de Medusa y la de Mímir como objetos 3D (en la mano, el inventario y el suelo), con la misma forma de cráneo que las cabezas de mob. Medusa alterna con su mirada: al alzarla, los ojos se encienden. Gira la vista para mirarlas por todos lados.",
     footArsenal: "Los modelos 3D que se ven en el aire (el ícono queda solo para el inventario): la espada de Freyr con su canal dorado que brilla, Mjölnir con su mango corto, Gungnir con las runas en la punta y el dardo de muérdago con sus hojas y bayas. Gira la vista para mirarlos por todos lados.",
-    footThrown: "Armas que se lanzan y vuelven: Mjölnir gira de punta a punta, Gungnir vuela de punta y busca a su blanco, y el dardo de muérdago (que ignora armadura) vuelve a la mano.",
+    footThrown: "Armas que se lanzan: Mjölnir gira de punta a punta y vuelve, Gungnir vuela de punta, busca a su blanco y vuelve, y el dardo de muérdago (que ignora armadura) queda clavado donde cae hasta que lo recojas.",
     footTalos: "Talos, que llama su clavo de bronce: hombre de bronce de unos 3 bloques con pelo y barba de rizos, ojos de horno, pátina verde, la vena de ícor dorada que baja al tobillo y el clavo en el tobillo. Da vueltas a tu alrededor, lanza rocas y abraza al rojo.",
     footRavens: "Huginn y Muninn, los cuervos de Odín: salen con clic derecho, se posan cerca de ti con las alas plegadas y te miran; de vez en cuando uno levanta el vuelo y vuelve a posarse. Sus ojos dorados brillan y, mientras están afuera, los hostiles cercanos brillan.",
     footShip: "Skíðblaðnir, el barco de Freyr que se pliega como un pañuelo: clic derecho mirando al agua y se despliega un bote con proa de dragón, escudos en la borda y vela a rayas detrás del jinete. Al bajarte se pliega solo; con viento a favor va más rápido.",
@@ -227,7 +227,7 @@ const UI = {
     footFreyr: "The sword of Freyr fights on its own: sheathed at your hip, it flies out with a flash when combat starts, rams with a golden trail, slashes in arcs and thrusts, returns to your side and sheathes itself after 5 s out of combat. Motion is smoothed: each move starts where the last one ended.",
     footHeads: "Medusa's head and Mímir's head as 3D objects (in hand, inventory and on the ground), with the same skull shape as mob heads. Medusa alternates with her gaze: when raised, her eyes light up. Drag the view to see them from every side.",
     footArsenal: "The 3D models seen in flight (the icon stays in the inventory only): the sword of Freyr with its glowing golden fuller, Mjölnir with its short handle, Gungnir with the runes on its point and the mistletoe dart with its leaves and berries. Drag the view to look at them from every side.",
-    footThrown: "Weapons that are thrown and come back: Mjölnir tumbles end over end, Gungnir flies point first and seeks its target, and the mistletoe dart (which ignores armour) returns to your hand.",
+    footThrown: "Thrown weapons: Mjölnir tumbles end over end and comes back, Gungnir flies point first, seeks its target and comes back, and the mistletoe dart (which ignores armour) stays where it lands until you pick it up.",
     footTalos: "Talos, called by his bronze nail: a bronze man about 3 blocks tall with curly hair and beard, furnace eyes, green patina, the golden vein of ichor running down to the ankle and the nail in it. He circles you, throws rocks and hugs red-hot.",
     footRavens: "Huginn and Muninn, Odin's ravens: right-click to send them out; they perch near you with folded wings and watch you, and now and then one takes off and lands again. Their golden eyes glow and, while they are out, nearby hostiles glow.",
     footShip: "Skíðblaðnir, Freyr's ship that folds like a cloth: right-click looking at water to unfold a boat with a dragon prow, shields along the gunwale and a striped sail behind the rider. It folds itself when you get off; with a fair wind it goes faster.",
@@ -341,30 +341,52 @@ function line(text, cls) {
   return d;
 }
 
+/* Tooltip como en el juego: corto (la primera frase del efecto, una línea del set y «Shift: ver detalles») y, con Shift
+   mantenido, el detalle completo por secciones (efecto, set, dónde se encuentra). */
+let shiftHeld = false;
+for (const [ev, on] of [["keydown", true], ["keyup", false]]) {
+  window.addEventListener(ev, e => { if (e.key === "Shift" && shiftHeld !== on) { shiftHeld = on; renderTooltip(); } });
+}
 function renderTooltip() {
   const tip = document.getElementById("tooltip");
   tip.innerHTML = "";
   const args = DATA.args[selected] || [];
   tip.appendChild(line(tr("item.mythicrelics." + selected), "name " + RARITY_COLOR[DATA.rarity[selected] || "common"]));
+  const effect = [];
   for (let i = 1; i <= 8; i++) {
     const key = "item.mythicrelics." + selected + ".tooltip." + i;
     if (DATA.lang[lang][key] === undefined) break;
-    tip.appendChild(line(tr(key, args), i === 1 ? "c-gold" : "c-gray"));
+    effect.push(tr(key, args));
   }
+  let keep = 1;
+  while (keep < effect.length && /^\p{Ll}/u.test(effect[keep])) keep++;
+  const setId = Object.keys(DATA.sets).find(id => DATA.sets[id].includes(selected));
+  const sources = DATA.loot[selected] || [];
+  if (!shiftHeld) {
+    effect.slice(0, keep).forEach((t, i) => tip.appendChild(line(t, i === 0 ? "c-gold" : "c-gray")));
+    if (setId) {
+      const name = tr("tooltip.mythicrelics." + setId + ".1", DATA.setArgs[setId] || []).split(" (")[0].replace(/:$/, "");
+      tip.appendChild(line("◈ " + name + " · 0/" + DATA.sets[setId].length, "c-purple"));
+    }
+    if (effect.length > keep || setId || sources.length) tip.appendChild(line(tr("tooltip.mythicrelics.more"), "c-dgray"));
+    return;
+  }
+  effect.forEach((t, i) => tip.appendChild(line(t, i === 0 ? "c-gold" : "c-gray")));
   if (selected === "thoth_palette") {
     tip.appendChild(line(tr("tooltip.mythicrelics.thoth_palette.written", [0, args[2]]), "c-aqua"));
   }
-  const setId = Object.keys(DATA.sets).find(id => DATA.sets[id].includes(selected));
   if (setId) {
     const sargs = DATA.setArgs[setId] || [];
     tip.appendChild(line(" ", ""));
     tip.appendChild(line(tr("tooltip.mythicrelics." + setId + ".1", sargs), "c-gray"));
-    tip.appendChild(line(tr("tooltip.mythicrelics." + setId + ".2", sargs), "c-blue"));
-    tip.appendChild(line(tr("tooltip.mythicrelics." + setId + ".3", sargs), "c-blue"));
+    for (let i = 1; i <= 3; i++) {
+      const k = "set.mythicrelics." + setId + ".bonus." + i;
+      if (DATA.lang[lang][k] !== undefined) tip.appendChild(line(" " + tr(k, sargs), "c-blue"));
+    }
   }
-  const sources = DATA.loot[selected] || [];
   if (sources.length) {
     const places = sources.map(s => tr(DATA.lootKeys[s.table])).join(", ");
+    tip.appendChild(line(" ", ""));
     tip.appendChild(line(tr("tooltip.mythicrelics.found_in", [places]), "c-dgray"));
   }
 }
@@ -1264,6 +1286,12 @@ try { (function thrownScene() {
     if (w.k === "spin") { w.m.rotation.set(-t * 14, Math.PI / 2, 0); }
     else { const dir = out || u < 0.55 ? hitAt.clone().sub(hand) : hand.clone().sub(hitAt);
       w.m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize()); }
+    if (i === 2 && u >= 0.45) {
+      // El dardo de muérdago no vuelve: cae y queda clavado en el suelo junto al blanco.
+      const f = Math.min(1, (u - 0.45) / 0.15);
+      w.m.position.set(hitAt.x + 0.35 * f, hitAt.y + (0.05 - hitAt.y) * f * f, hitAt.z + 0.3 * f);
+      w.m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0.3, -1, 0.2).normalize());
+    }
     if (u > 0.44 && u < 0.47) { burst3(hitAt, 3, 1.2, w.m === weapons[2].m ? [0x8ad874, 0xffffff] : [0xffffff, 0xffd36a]);
       z.flash = 0.3; if (w.k === "spin") burst3(hitAt.clone().add(new THREE.Vector3(0, 0.5, 0)), 2, 1.5, [0xcfe8ff]); }
     z.flash = Math.max(0, z.flash - dt); const f = z.flash / 0.3; z.meshes.forEach(m => m.material.emissive.setRGB(0.3 * f, 0.02 * f, 0.02 * f));

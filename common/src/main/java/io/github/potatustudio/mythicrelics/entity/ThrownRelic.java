@@ -101,7 +101,8 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 			setDeltaMovement(motion.lerp(wanted, 0.3));
 		}
 		Entity owner = getOwner();
-		if ((dealtDamage || isNoPhysics()) && owner != null) {
+		// El dardo de muérdago no vuelve: queda clavado donde cae hasta que lo recojas (como una flecha).
+		if (!isDart() && (dealtDamage || isNoPhysics()) && owner != null) {
 			if (!owner.isAlive() || owner instanceof ServerPlayer player && player.isSpectator()) {
 				if (level() instanceof ServerLevel level && pickup == Pickup.ALLOWED) {
 					spawnAtLocation(level, getPickupItem(), 0.1f);
@@ -169,7 +170,7 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 
 	@Override
 	public void tickDespawn() {
-		// Vuelve siempre a su dueño: no se borra solo.
+		// Mjölnir y Gungnir vuelven siempre a su dueño y el dardo espera a que lo recojan: no se borran solos.
 		if (pickup != Pickup.ALLOWED) {
 			super.tickDespawn();
 		}

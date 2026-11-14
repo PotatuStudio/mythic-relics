@@ -52,8 +52,79 @@ public final class RelicTooltips {
 			lines.add(at + 1, Component.translatable("tooltip.mythicrelics.cooldown", pct).withStyle(ChatFormatting.RED));
 		}
 		RelicSets set = RelicSets.of(key.getPath());
+		boolean details = Minecraft.getInstance().hasShiftDown();
+		if (!details) {
+			compact(lines, key.getPath(), set, player);
+			return;
+		}
 		if (set != null) {
 			setBlock(lines, set, player);
+		}
+		// Con Shift: secciones separadas (efecto, set, dónde se encuentra).
+		for (int i = lines.size() - 1; i > 0; i--) {
+			if (key(lines.get(i)).equals("tooltip.mythicrelics.found_in") && !lines.get(i - 1).getString().isEmpty()) {
+				lines.add(i, Component.empty());
+				break;
+			}
+		}
+	}
+
+	private static String key(Component line) {
+		return line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t ? t.getKey() : "";
+	}
+
+	/**
+	 * Tooltip corto (sin Shift): solo el efecto principal (la línea dorada), la recarga si corre, una línea del set (cuántas
+	 * piezas y si está activo) y el aviso de que Shift muestra el detalle. Se quitan las demás líneas del efecto y
+	 * «Se encuentra en».
+	 */
+	private static void compact(List<Component> lines, String id, RelicSets set, Player player) {
+		String prefix = "item.mythicrelics." + id + ".tooltip.";
+		// La primera frase completa: la línea 1 y las que la continúan (empiezan en minúscula).
+		int keep = 1;
+		while (true) {
+			int n = keep + 1;
+			Component next = lines.stream().filter(l -> key(l).equals(prefix + n)).findFirst().orElse(null);
+			String text = next == null ? "" : next.getString();
+			if (text.isEmpty() || !Character.isLowerCase(text.charAt(0))) {
+				break;
+			}
+			keep = n;
+		}
+		boolean hidden = false;
+		for (int i = lines.size() - 1; i > 0; i--) {
+			String k = key(lines.get(i));
+			boolean extraEffect = false;
+			if (k.startsWith(prefix)) {
+				try {
+					extraEffect = Integer.parseInt(k.substring(prefix.length())) > keep;
+				} catch (NumberFormatException ignored) {
+					extraEffect = false;
+				}
+			}
+			if (extraEffect || k.equals("tooltip.mythicrelics.found_in")) {
+				lines.remove(i);
+				hidden = true;
+			}
+		}
+		int at = lines.size();
+		if (set != null) {
+			int have = 0;
+			for (String piece : set.pieces()) {
+				net.minecraft.world.item.Item item = BuiltInRegistries.ITEM.getValue(MythicRelics.id(piece));
+				if (player.getInventory().contains(s -> s.is(item))
+						|| io.github.potatustudio.mythicrelics.relic.WornRelics.isWearing(player, item)) {
+					have++;
+				}
+			}
+			boolean on = set.isComplete(player);
+			lines.add(Component.literal("◈ ").append(set.displayName()).append(Component.literal(" · " + have + "/" + set.pieces().size()))
+					.append(on ? Component.literal(" ✔").withStyle(ChatFormatting.GREEN) : Component.empty())
+					.withStyle(ChatFormatting.LIGHT_PURPLE));
+			hidden = true;
+		}
+		if (hidden) {
+			lines.add(Component.translatable("tooltip.mythicrelics.more").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
 		}
 	}
 

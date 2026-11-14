@@ -1,4 +1,4 @@
-"""Traducciones de la cuarta ronda de arreglos (2026-11-14): saco de xirang solo con la pasiva (5 min), harpe pasiva, Mímir como guía, aviso del cetro de Anubis, halcón con tecla y forma real, Mímir se pregunta (clic derecho), mirada de Medusa sostenida.
+"""Traducciones de la cuarta ronda de arreglos (2026-11-14): saco de xirang solo con la pasiva (5 min), harpe pasiva, Mímir como guía, aviso del cetro de Anubis, halcón con tecla y forma real, Mímir se pregunta (clic derecho), mirada de Medusa sostenida, tooltip corto con Shift, dardo que no vuelve.
 También ajusta los números de moddata (tooltip_args) que cambiaron. Uso: python feedback4_lang.py"""
 import io
 import json
@@ -18,6 +18,8 @@ ES = {
     "item.mythicrelics.mimir_head.tooltip.2": "Te responde una vez y te guía con una estela de luz %2$s s; los minerales valiosos a %1$s bloques brillan",
     "item.mythicrelics.mimir_head.tooltip.3": "Recarga: %4$s s",
     "message.mythicrelics.mimir_arrived": "Mímir: aquí está",
+    "tooltip.mythicrelics.more": "Shift: ver detalles",
+    "item.mythicrelics.mistletoe_dart.tooltip.1": "Mantén clic derecho y suelta para lanzarlo; queda clavado donde cae hasta que lo recojas",
     "item.mythicrelics.medusa_head.tooltip.1": "Mantén clic derecho para alzarla como un escudo: sus ojos abren un cono de mirada de %2$s bloques",
     "item.mythicrelics.medusa_head.tooltip.2": "Todo mob que quede %3$s ms en la mirada se petrifica %1$s s (hostiles, neutros y pasivos; no jefes)",
     "item.mythicrelics.medusa_head.tooltip.3": "La piedra se agrieta hasta romperse. Si muere así se derrumba: doble botín y a veces su estatua",
@@ -42,6 +44,8 @@ EN = {
     "item.mythicrelics.mimir_head.tooltip.2": "He answers once and guides you with a trail of light for %2$s s; valuable ores within %1$s blocks glow",
     "item.mythicrelics.mimir_head.tooltip.3": "Cooldown: %4$s s",
     "message.mythicrelics.mimir_arrived": "Mímir: here it is",
+    "tooltip.mythicrelics.more": "Shift: details",
+    "item.mythicrelics.mistletoe_dart.tooltip.1": "Hold right click and release to throw it; it stays where it lands until you pick it up",
     "item.mythicrelics.medusa_head.tooltip.1": "Hold right-click to raise it like a shield: its eyes open a gaze cone of %2$s blocks",
     "item.mythicrelics.medusa_head.tooltip.2": "Any mob that stays %3$s ms in the gaze turns to stone for %1$s s (hostile, neutral and passive; not bosses)",
     "item.mythicrelics.medusa_head.tooltip.3": "The stone cracks until it breaks. If it dies like that it crumbles: double loot and sometimes its statue",
