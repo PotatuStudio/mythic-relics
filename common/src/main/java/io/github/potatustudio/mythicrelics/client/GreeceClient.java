@@ -30,6 +30,8 @@ public final class GreeceClient {
 	private static boolean doubleJumpUsed;
 	/** Manto de halcón: ya se pidió la forma de halcón en este salto. */
 	private static boolean falconAsked;
+	/** Siendo halcón: el clic derecho ya estaba apretado (para pedir volver a ser humano una sola vez por pulsación). */
+	private static boolean useWasDown;
 	/** Se soltó el salto ya en el aire: el doble salto pide una segunda pulsación, no mantener la del primer salto. */
 	private static boolean releasedInAir;
 	private static int icarusFlaps;
@@ -86,6 +88,13 @@ public final class GreeceClient {
 			icarus(player, pressed, jumpDown);
 		}
 		jumpWasDown = jumpDown;
+		// Siendo halcón, lo único que se puede hacer (además de volar) es volver a ser humano con clic derecho.
+		boolean useDown = client.options.keyUse.isDown();
+		if (useDown && !useWasDown && io.github.potatustudio.mythicrelics.norse.NorseSagas.isFalconForm(player)
+				&& NetworkManager.canServerReceive(io.github.potatustudio.mythicrelics.network.FalconPayload.TYPE)) {
+			NetworkManager.sendToServer(io.github.potatustudio.mythicrelics.network.FalconPayload.INSTANCE);
+		}
+		useWasDown = useDown;
 		skidbladnirWind(player);
 
 		if (player.tickCount % 2 == 0) {

@@ -330,7 +330,7 @@ Se la dio a Skírnir para pedir la mano de Gerðr; por eso en el Ragnarök enfre
 **Espacio:** espalda · **Rareza:** épica
 
 - Toca el salto en el aire (después del doble salto, si lo tienes): te vuelves halcón 20 s
-- Vuelas libre, pero no puedes atacar ni usar objetos; si te golpean, vuelves a ser humano y caes lento
+- Solo vuelas: no atacas, no usas, no rompes, no pones ni recoges nada. Clic derecho: vuelves a ser humano; si te golpean, también (y caes lento)
 - Recarga: 90 s
 
 **Mito.** Freyja tenía un manto de plumas de halcón que convertía en halcón a quien se lo ponía.  

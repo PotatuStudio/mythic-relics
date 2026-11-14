@@ -1,7 +1,10 @@
 package io.github.potatustudio.mythicrelics.norse;
 
 import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
+import dev.architectury.event.events.common.InteractionEvent;
+import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.china.ChinaRelics;
@@ -106,9 +109,39 @@ public final class NorseSagas {
 		NetworkManager.registerReceiver(NetworkManager.c2s(), FalconPayload.TYPE, FalconPayload.CODEC,
 				(payload, context) -> context.queue(() -> {
 					if (context.getPlayer() instanceof ServerPlayer player) {
-						startFalcon(player);
+						if (isFalcon(player)) {
+							endFalcon(player, false);   // clic derecho siendo halcón: vuelves a ser humano
+						} else {
+							startFalcon(player);
+						}
 					}
 				}));
+		// Siendo halcón solo se vuela: no se ataca, no se usan ni se recogen objetos, no se rompe, no se pone ni se
+		// interactúa con nada (en los dos lados, para que el cliente tampoco lo intente).
+		InteractionEvent.RIGHT_CLICK_ITEM.register((player, hand) -> blockFalcon(player));
+		InteractionEvent.RIGHT_CLICK_BLOCK.register((player, hand, pos, face) -> blockFalcon(player));
+		InteractionEvent.LEFT_CLICK_BLOCK.register((player, hand, pos, face) -> blockFalcon(player));
+		InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> blockFalcon(player));
+		PlayerEvent.ATTACK_ENTITY.register((player, level, target, hand, hit) -> blockFalcon(player));
+		PlayerEvent.PICKUP_ITEM_PRE.register((player, item, stack) -> blockFalcon(player));
+		BlockEvent.BREAK.register((level, pos, state, player) -> blockFalcon(player));
+		BlockEvent.PLACE.register((level, pos, state, placer) -> placer instanceof Player player ? blockFalcon(player) : EventResult.pass());
+	}
+
+	private static EventResult blockFalcon(@Nullable Player player) {
+		return player != null && isFalconForm(player) ? EventResult.interruptFalse() : EventResult.pass();
+	}
+
+	/**
+	 * Transformado en halcón, en los dos lados. El servidor lo sabe por su registro; el cliente lo deduce (lleva el manto,
+	 * es invisible y puede volar sin estar en creativo), lo que basta para no intentar acciones bloqueadas.
+	 */
+	public static boolean isFalconForm(Player player) {
+		if (!player.level().isClientSide()) {
+			return isFalcon(player);
+		}
+		return player.isInvisible() && player.getAbilities().mayfly && !player.isCreative() && !player.isSpectator()
+				&& io.github.potatustudio.mythicrelics.relic.WornRelics.isWearing(player, ModItems.FALCON_CLOAK.get());
 	}
 
 	// ---- Daño ---------------------------------------------------------------------------------------------------------
@@ -289,7 +322,7 @@ public final class NorseSagas {
 			endFalcon(player, false);
 			return;
 		}
-		// Es un halcón: no se ve al jugador, no usa objetos y siempre puede volar.
+		// Es un halcón: no se ve al jugador, no usa objetos (los eventos bloquean el resto) y siempre puede volar.
 		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 10, 0, false, false));
 		if (player.isUsingItem()) {
 			player.stopUsingItem();
