@@ -80,7 +80,7 @@ section.stagebox { background: var(--stone); border: 1px solid var(--line); bord
 
   <section class="stagebox">
     <h2>Así se verían</h2>
-    <p class="note">Mismo muñeco que los otros visores. La espada de Freyr cuelga envainada del costado izquierdo y el manto de halcón cae por la espalda; en la mano derecha, Gram, Tyrfing o Dáinsleif (una a la vez), y en la izquierda el dardo.</p>
+    <p class="note">Mismo muñeco que los otros visores. La espada de Freyr cuelga envainada del costado izquierdo y el manto de halcón cae por la espalda; en la mano derecha, Gram, Tyrfing o Dáinsleif (una a la vez), y en la izquierda el dardo, de pie como un tridente y tomado por el medio.</p>
     <div class="stage" id="stage"></div>
     <div class="controls" id="toggles"></div>
   </section>
@@ -453,7 +453,36 @@ function heldIcon(id, arm, kind = "generated") {
 groups.gram = heldIcon("gram", "right_arm", "handheld");
 groups.tyrfing = heldIcon("tyrfing", "right_arm", "handheld");
 groups.dainsleif = heldIcon("dainsleif", "right_arm", "handheld");
-groups.mistletoe_dart = heldIcon("mistletoe_dart", "left_arm", "handheld");
+/* El dardo se lleva como el tridente de vanilla: de pie en la mano izquierda, tomado por el medio y con la punta hacia
+   arriba (el ícono va en diagonal, así que se gira 45°). */
+function dartHeld(id) {
+  const holder = new THREE.Group(); holder.matrixAutoUpdate = false;
+  holder.matrix.copy(new THREE.Matrix4().makeTranslation(6 / 16, 13 / 16, 2.6 / 16)
+    .multiply(new THREE.Matrix4().makeRotationX(-0.15))
+    .multiply(new THREE.Matrix4().makeRotationZ(Math.PI / 4))
+    .multiply(new THREE.Matrix4().makeScale(0.85, 0.85, 1))
+    .multiply(new THREE.Matrix4().makeTranslation(-0.5, -0.5, -0.5)));
+  player.add(holder);
+  const img = sprites[id].img;
+  const build = () => {
+    const c = document.createElement("canvas"); c.width = 16; c.height = 16;
+    const g = c.getContext("2d"); g.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16);
+    const data = g.getImageData(0, 0, 16, 16).data;
+    const cells = [];
+    for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (data[(y * 16 + x) * 4 + 3] > 25) cells.push([x, y]);
+    const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1 / 16, 1 / 16, 1 / 16), new THREE.MeshLambertMaterial(), cells.length);
+    const m = new THREE.Matrix4(), col = new THREE.Color();
+    cells.forEach(([x, y], i) => {
+      m.makeTranslation((x + 0.5) / 16, (15 - y + 0.5) / 16, 0.5); mesh.setMatrixAt(i, m);
+      const k = (y * 16 + x) * 4;
+      col.setRGB(data[k] / 255, data[k + 1] / 255, data[k + 2] / 255).convertSRGBToLinear(); mesh.setColorAt(i, col);
+    });
+    holder.add(mesh);
+  };
+  if (img.complete && img.naturalWidth) build(); else img.addEventListener("load", build);
+  return [holder];
+}
+groups.mistletoe_dart = dartHeld("mistletoe_dart");
 const ORDER = ["falcon_cloak", "freyr_sword", "gram", "tyrfing", "dainsleif", "mistletoe_dart"];
 const on = new Set(["falcon_cloak", "freyr_sword", "gram"]);
 const toggles = document.getElementById("toggles");
