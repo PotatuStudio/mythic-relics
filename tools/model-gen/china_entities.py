@@ -483,12 +483,15 @@ JAVA_OUT = os.path.join(ROOT, "common", "src", "main", "java", "io", "github", "
 ROOT_OFFSET = {"monkey": (0, 0, 0), "dragon": (0, 16, -16), "dog": (0, 0, 0), "qilin": (0, 0, 0), "kitsune": (0, 0, 0),
                "turtle": (0, 0, 0), "orochi": (0, 0, 0),
                "raven": (0, 0, 0), "skidbladnir": (0, 0, 0), "falcon": (0, 0, 0),
-               "pegasus": (0, 0, 0), "talos": (0, 0, 0)}
+               "pegasus": (0, 0, 0), "talos": (0, 0, 0),
+               "freyr_sword": (0, 0, 0), "mjolnir": (0, 0, 0), "gungnir": (0, 0, 0), "mistletoe_dart": (0, 0, 0)}
 NAMES = {"monkey": ("monkeyWarrior", "monkey_warrior"), "dragon": ("longDragon", "long_dragon"),
          "dog": ("celestialDog", "celestial_dog"), "qilin": ("qilin", "qilin"), "kitsune": ("kitsune", "kitsune"),
          "turtle": ("urashimaTurtle", "urashima_turtle"), "orochi": ("orochiShadow", "orochi_shadow"),
          "raven": ("odinRaven", "odin_raven"), "skidbladnir": ("skidbladnir", "boat/skidbladnir"),
-         "falcon": ("freyjaFalcon", "freyja_falcon"), "pegasus": ("pegasus", "pegasus"), "talos": ("talos", "talos")}
+         "falcon": ("freyjaFalcon", "freyja_falcon"), "pegasus": ("pegasus", "pegasus"), "talos": ("talos", "talos"),
+         "freyr_sword": ("freyrSword", "weapon/freyr_sword"), "mjolnir": ("mjolnir", "weapon/mjolnir"),
+         "gungnir": ("gungnir", "weapon/gungnir"), "mistletoe_dart": ("mistletoeDart", "weapon/mistletoe_dart")}
 
 
 def jf(v):
@@ -557,7 +560,11 @@ if __name__ == "__main__":
         import greece_entities as GE  # noqa: E402  (Grecia 3: Pegaso y Talos)
         for key in GE.MODELS:
             baked[key] = GE.bake_one(key)
+        import weapon_entities as WE  # noqa: E402  (armas en vuelo: espada de Freyr, Mjölnir, Gungnir, dardo)
+        for key in WE.MODELS:
+            baked[key] = WE.bake_one(key)
         os.makedirs(os.path.join(ENTITY_TEX, "boat"), exist_ok=True)
+        os.makedirs(os.path.join(ENTITY_TEX, "weapon"), exist_ok=True)
         write_mod(baked)
         print("ok: texturas en", ENTITY_TEX, "y", JAVA_OUT)
         sys.exit(0)

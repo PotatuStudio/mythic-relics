@@ -90,6 +90,14 @@ if __name__ == "__main__":
                               "scale": GE.SCALE[key],
                               "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
                               "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
+    # Armas que vuelan (weapon_entities.py): el modelo 3D que se ve en el aire en lugar del ícono.
+    import weapon_entities as WE  # noqa: E402
+    data["weapons"] = {}
+    for key in WE.MODELS:
+        parts, _img, _glow, tex_w, tex_h = WE.bake_one(key)
+        data["weapons"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "scale": WE.SCALE[key],
+                                "tex": b64(os.path.join(ASSETS, "textures", "entity", "weapon", key + ".png")),
+                                "glow": b64(os.path.join(ASSETS, "textures", "entity", "weapon", key + "_glow.png"))}
     template = read(os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer_template.html"))
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(template.replace("__DATA__", json.dumps(data, ensure_ascii=False)))

@@ -843,4 +843,74 @@ public final class MythicModelLayers {
 				PartPose.offset(3.0f, 12.0f, 0.0f));
 		return LayerDefinition.create(mesh, 64, 128);
 	}
+
+	public static LayerDefinition freyrSword() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p_sword = root.addOrReplaceChild("sword", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-1.5f, -13.0f, -0.5f, 3.0f, 17.0f, 1.0f)
+				.texOffs(0, 23).addBox(-1.0f, -15.0f, -0.5f, 2.0f, 2.0f, 1.0f)
+				.texOffs(6, 23).addBox(-0.5f, -16.0f, -0.5f, 1.0f, 1.0f, 1.0f)
+				.texOffs(12, 18).addBox(-4.0f, 4.0f, -1.0f, 8.0f, 2.0f, 2.0f)
+				.texOffs(16, 0).addBox(-5.0f, 2.0f, -1.0f, 1.0f, 3.0f, 2.0f)
+				.texOffs(22, 0).addBox(4.0f, 2.0f, -1.0f, 1.0f, 3.0f, 2.0f)
+				.texOffs(8, 0).addBox(-1.0f, 6.0f, -1.0f, 2.0f, 5.0f, 2.0f)
+				.texOffs(0, 18).addBox(-1.5f, 11.0f, -1.5f, 3.0f, 2.0f, 3.0f),
+				PartPose.offset(0.0f, 0.0f, 0.0f));
+		return LayerDefinition.create(mesh, 32, 32);
+	}
+
+	public static LayerDefinition mjolnir() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p_hammer = root.addOrReplaceChild("hammer", CubeListBuilder.create()
+				.texOffs(8, 0).addBox(-4.5f, -9.0f, -2.5f, 9.0f, 5.0f, 5.0f)
+				.texOffs(0, 0).addBox(-1.0f, -4.0f, -1.0f, 2.0f, 9.0f, 2.0f)
+				.texOffs(36, 0).addBox(-1.5f, 5.0f, -1.5f, 3.0f, 2.0f, 3.0f),
+				PartPose.offset(0.0f, 0.0f, 0.0f));
+		return LayerDefinition.create(mesh, 64, 16);
+	}
+
+	public static LayerDefinition gungnir() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p_spear = root.addOrReplaceChild("spear", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-0.5f, -8.0f, -0.5f, 1.0f, 24.0f, 1.0f)
+				.texOffs(18, 0).addBox(-1.0f, -10.0f, -1.0f, 2.0f, 2.0f, 2.0f)
+				.texOffs(4, 0).addBox(-1.5f, -16.0f, -0.5f, 3.0f, 6.0f, 1.0f)
+				.texOffs(26, 0).addBox(-2.5f, -14.0f, -0.5f, 1.0f, 3.0f, 1.0f)
+				.texOffs(0, 25).addBox(1.5f, -14.0f, -0.5f, 1.0f, 3.0f, 1.0f)
+				.texOffs(12, 0).addBox(-1.0f, -20.0f, -0.5f, 2.0f, 4.0f, 1.0f)
+				.texOffs(12, 25).addBox(-0.5f, -22.0f, -0.5f, 1.0f, 2.0f, 1.0f)
+				.texOffs(4, 25).addBox(-1.0f, 16.0f, -1.0f, 2.0f, 2.0f, 2.0f),
+				PartPose.offset(0.0f, 0.0f, 0.0f));
+		return LayerDefinition.create(mesh, 32, 32);
+	}
+
+	public static LayerDefinition mistletoeDart() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p_dart = root.addOrReplaceChild("dart", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-0.5f, -8.0f, -0.5f, 1.0f, 15.0f, 1.0f)
+				.texOffs(12, 0).addBox(-0.5f, -11.0f, -0.5f, 1.0f, 3.0f, 1.0f)
+				.texOffs(4, 0).addBox(-1.0f, 5.0f, -1.0f, 2.0f, 3.0f, 2.0f),
+				PartPose.offset(0.0f, 0.0f, 0.0f));
+		PartDefinition p_leaf_r0 = p_dart.addOrReplaceChild("leaf_r0", CubeListBuilder.create()
+				.texOffs(16, 0).addBox(-3.0f, -0.5f, -1.0f, 3.0f, 1.0f, 2.0f),
+				PartPose.offsetAndRotation(-0.5f, -1.0f, 0.0f, 0.0f, 0.0f, -0.9f));
+		PartDefinition p_leaf_l0 = p_dart.addOrReplaceChild("leaf_l0", CubeListBuilder.create()
+				.texOffs(0, 16).addBox(0.0f, -0.5f, -1.0f, 3.0f, 1.0f, 2.0f),
+				PartPose.offsetAndRotation(0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 0.9f));
+		PartDefinition p_leaf_r1 = p_dart.addOrReplaceChild("leaf_r1", CubeListBuilder.create()
+				.texOffs(10, 16).addBox(-3.0f, -0.5f, -1.0f, 3.0f, 1.0f, 2.0f),
+				PartPose.offsetAndRotation(-0.5f, 3.0f, 0.0f, 0.0f, 0.0f, -0.9f));
+		PartDefinition p_leaf_l1 = p_dart.addOrReplaceChild("leaf_l1", CubeListBuilder.create()
+				.texOffs(20, 16).addBox(0.0f, -0.5f, -1.0f, 3.0f, 1.0f, 2.0f),
+				PartPose.offsetAndRotation(0.5f, 3.0f, 0.0f, 0.0f, 0.0f, 0.9f));
+		PartDefinition p_berries = p_dart.addOrReplaceChild("berries", CubeListBuilder.create()
+				.texOffs(0, 19).addBox(-1.0f, -2.0f, -1.0f, 1.0f, 1.0f, 1.0f)
+				.texOffs(4, 19).addBox(0.0f, 2.0f, 0.0f, 1.0f, 1.0f, 1.0f),
+				PartPose.offset(0.0f, 0.0f, 0.0f));
+		return LayerDefinition.create(mesh, 32, 32);
+	}
 }

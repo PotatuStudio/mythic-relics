@@ -146,6 +146,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button data-subject="zeus" aria-pressed="false" data-i18n="subjZeus">Rayo de Zeus</button>
       <button data-subject="freyr" aria-pressed="false" data-i18n="subjFreyr">Espada de Freyr</button>
       <button data-subject="thrown" aria-pressed="false" data-i18n="subjThrown">Armas en vuelo</button>
+      <button data-subject="arsenal" aria-pressed="false" data-i18n="subjArsenal">Armas 3D</button>
       <button data-subject="monkey" aria-pressed="false" data-i18n="subjMonkey">Mono guerrero</button>
       <button data-subject="dragon" aria-pressed="false" data-i18n="subjDragon">Long</button>
       <button data-subject="dog" aria-pressed="false" data-i18n="subjDog">Perro Celestial</button>
@@ -177,7 +178,7 @@ const UI = {
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
     stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
-    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Halcón de Freyja", subjPegasus: "Pegaso", subjTalos: "Talos", subjZeus: "Rayo de Zeus", subjFreyr: "Espada de Freyr", subjThrown: "Armas en vuelo", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Halcón de Freyja", subjPegasus: "Pegaso", subjTalos: "Talos", subjZeus: "Rayo de Zeus", subjFreyr: "Espada de Freyr", subjArsenal: "Armas 3D", subjThrown: "Armas en vuelo", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
     footKitsune: "El kitsune de nueve colas de la Esfera estelar: zorro blanco de Inari con marcas rojas y babero rojo, ojos dorados, nueve colas alzadas con la punta de llama celeste y dos kitsunebi que giran a su alrededor (brillan).",
     footOrochi: "La sombra de Yamata no Orochi que llama su escama: no se mueve; ocho cabezas de ojos rojos sobre cuellos largos que muerden a los hostiles cercanos, cuerpo de escamas con musgo y cipreses en el lomo, ocho colas por el suelo y el brillo de Kusanagi en una de ellas. Se dibuja al doble.",
     footTurtle: "La tortuga gigante de Urashima, que llama su caña: caparazón de escudos con borde ámbar, aletas que reman y las algas de la minogame, la tortuga de mil años. El jinete va sobre el caparazón.",
@@ -191,6 +192,7 @@ const UI = {
     footPegasus: "Pegaso, que llama la brida de oro de Atenea: caballo blanco con grandes alas de plumas, crin y cola plateadas, la brida de oro (brilla un poco) y una manta roja con greca. Vuela con el salto, planea al soltarlo y embiste en picada.",
     footZeus: "El rayo de Zeus: se carga un instante y cae un rayo limpio (sin fuego) sobre el enemigo al que apuntas; después salta a los hostiles cercanos (a 3, a 5 con tormenta).",
     footFreyr: "La espada de Freyr pelea sola: envainada en la cadera, sale con un destello cuando hay combate, embiste con estela dorada, da tajos en arco y estocadas, vuelve a tu lado y se envaina a los 5 s sin combate. El movimiento es suavizado: cada paso parte de donde terminó el anterior.",
+    footArsenal: "Los modelos 3D que se ven en el aire (el ícono queda solo para el inventario): la espada de Freyr con su canal dorado que brilla, Mjölnir con su mango corto, Gungnir con las runas en la punta y el dardo de muérdago con sus hojas y bayas. Gira la vista para mirarlos por todos lados.",
     footThrown: "Armas que se lanzan y vuelven: Mjölnir gira de punta a punta, Gungnir vuela de punta y busca a su blanco, y el dardo de muérdago (que ignora armadura) vuelve a la mano.",
     footTalos: "Talos, que llama su clavo de bronce: hombre de bronce de unos 3 bloques con pelo y barba de rizos, ojos de horno, pátina verde, la vena de ícor dorada que baja al tobillo y el clavo en el tobillo. Da vueltas a tu alrededor, lanza rocas y abraza al rojo.",
     footRavens: "Huginn y Muninn, los cuervos de Odín: salen con clic derecho, se posan cerca de ti con las alas plegadas y te miran; de vez en cuando uno levanta el vuelo y vuelve a posarse. Sus ojos dorados brillan y, mientras están afuera, los hostiles cercanos brillan.",
@@ -207,7 +209,7 @@ const UI = {
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
     stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
-    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Freyja's falcon", subjPegasus: "Pegasus", subjTalos: "Talos", subjZeus: "Zeus' thunderbolt", subjFreyr: "Sword of Freyr", subjThrown: "Thrown weapons", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Freyja's falcon", subjPegasus: "Pegasus", subjTalos: "Talos", subjZeus: "Zeus' thunderbolt", subjFreyr: "Sword of Freyr", subjArsenal: "3D weapons", subjThrown: "Thrown weapons", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
     footKitsune: "The nine-tailed kitsune of the Star Ball: a white Inari fox with red markings and a red bib, golden eyes, nine raised tails tipped with pale blue flame and two kitsunebi circling it (they glow).",
     footOrochi: "The shadow of Yamata no Orochi called by its scale: it does not move; eight red-eyed heads on long necks bite nearby hostiles, a scaly body with moss and cypresses on its back, eight tails across the ground and the gleam of Kusanagi in one of them. Drawn at double size.",
     footTurtle: "Urashima's giant turtle, called by his rod: a shell of amber-rimmed scutes, rowing flippers and the trailing seaweed of the minogame, the thousand-year turtle. The rider sits on the shell.",
@@ -221,6 +223,7 @@ const UI = {
     footPegasus: "Pegasus, called by Athena's golden bridle: a white horse with great feathered wings, silver mane and tail, the golden bridle (it glows a little) and a red cloth with a meander border. It flies with jump, glides when released and rams in a dive.",
     footZeus: "Zeus' thunderbolt: charge for an instant and clean lightning (no fire) strikes the enemy you aim at, then jumps to nearby hostiles (3, or 5 in a storm).",
     footFreyr: "The sword of Freyr fights on its own: sheathed at your hip, it flies out with a flash when combat starts, rams with a golden trail, slashes in arcs and thrusts, returns to your side and sheathes itself after 5 s out of combat. Motion is smoothed: each move starts where the last one ended.",
+    footArsenal: "The 3D models seen in flight (the icon stays in the inventory only): the sword of Freyr with its glowing golden fuller, Mjölnir with its short handle, Gungnir with the runes on its point and the mistletoe dart with its leaves and berries. Drag the view to look at them from every side.",
     footThrown: "Weapons that are thrown and come back: Mjölnir tumbles end over end, Gungnir flies point first and seeks its target, and the mistletoe dart (which ignores armour) returns to your hand.",
     footTalos: "Talos, called by his bronze nail: a bronze man about 3 blocks tall with curly hair and beard, furnace eyes, green patina, the golden vein of ichor running down to the ankle and the nail in it. He circles you, throws rocks and hugs red-hot.",
     footRavens: "Huginn and Muninn, Odin's ravens: right-click to send them out; they perch near you with folded wings and watch you, and now and then one takes off and lands again. Their golden eyes glow and, while they are out, nearby hostiles glow.",
@@ -241,7 +244,7 @@ const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma",
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
   greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"],
   china: ["wind_fire_wheels", "five_color_stone", "erlang_eye", "pixiu_bracelet"], japan: ["yasakani_magatama", "raijin_drum", "tengu_mask", "kappa_dish"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus", "pegasus", "talos", "zeus"], rome: ["player"], norse: ["player", "sleipnir", "ravens", "ship", "falcon", "freyr", "thrown"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus", "pegasus", "talos", "zeus"], rome: ["player"], norse: ["player", "sleipnir", "ravens", "ship", "falcon", "freyr", "thrown", "arsenal"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -1005,6 +1008,7 @@ const VIEWS = {
   zeus: { cam: [4.6, 3.4, 5.4], target: [0, 1.0, -1.5] },
   freyr: { cam: [-3.6, 2.3, 4.6], target: [0, 1.0, -1.2] },
   thrown: { cam: [4.8, 2.6, 2.4], target: [0, 1.3, -2.2] },
+  arsenal: { cam: [0, 1.5, 3.3], target: [0, 1.2, 0] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
 function setSubject(s) {
@@ -1047,7 +1051,7 @@ function setSubject(s) {
   renderStageText();
 }
 function renderStageText() {
-  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", ravens: "footRavens", ship: "footShip", falcon: "footFalcon", pegasus: "footPegasus", talos: "footTalos", zeus: "footZeus", freyr: "footFreyr", thrown: "footThrown", player: "footPlayer" }[subject];
+  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", ravens: "footRavens", ship: "footShip", falcon: "footFalcon", pegasus: "footPegasus", talos: "footTalos", zeus: "footZeus", freyr: "footFreyr", thrown: "footThrown", arsenal: "footArsenal", player: "footPlayer" }[subject];
   document.getElementById("stageFoot").textContent = UI[lang][foot];
   document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
   buildWornControls();
@@ -1117,6 +1121,20 @@ function burst3(p, n, speed, colors) {
 }
 const ease3 = u => u * u * (3 - 2 * u), easeOut3 = u => 1 - Math.pow(1 - u, 3);
 const SPECIAL = {};
+/** Modelo 3D de un arma en vuelo (weapon_entities.py, el mismo que dibuja el juego). Devuelve un grupo con la punta
+    hacia +y y el origen a media pieza; .model es la raíz en píxeles del modelo (para ubicar la punta con localToWorld) y
+    .setSize(k) cambia el tamaño. */
+function weaponModel(key, size = 1) {
+  const e = DATA.weapons[key];
+  const mat = new THREE.MeshLambertMaterial({ map: texFromB64(e.tex), side: THREE.DoubleSide, alphaTest: 0.1,
+    emissiveMap: texFromB64(e.glow), emissive: new THREE.Color(0xffffff) });
+  const g = new THREE.Group(), inner = new THREE.Group(), root = new THREE.Group();
+  root.scale.set(-1 / 16, -1 / 16, 1 / 16); inner.add(root); g.add(inner);
+  const parts = {};
+  for (const p of e.parts) parts[p.name] = part(p.parent ? parts[p.parent] : root, mat, p.offset, p.rot, p.cubes.map(c => [...c, false]), e.texH, e.texW);
+  g.model = root; g.setSize = k => inner.scale.setScalar(k * e.scale); g.setSize(size);
+  return g;
+}
 /** Piso amplio para las escenas de habilidad (la plataforma de 5×5 no alcanza para los enemigos). */
 function arenaFloor(parent, x0, x1, z0, z1) {
   const w = x1 - x0, d = z1 - z0, tex = sandTexture();
@@ -1136,7 +1154,7 @@ try { (function freyrScene() {
   const HILT_LOCAL = new THREE.Vector3(3 / 16, 13.8 / 16, 2.9 / 16);
   const zs = [[-1.6, -6.5], [0.6, -7.2], [2.2, -6.0]].map(() => dummyZombie(group));
   const SPAWN = [[-1.6, -6.5], [0.6, -7.2], [2.2, -6.0]];
-  const target = new THREE.Object3D(), view = iconMesh("freyr_sword", 1.5, true); group.add(view);
+  const target = new THREE.Object3D(), view = weaponModel("freyr_sword", 1.5 * 0.55); group.add(view);
   const glowLight = new THREE.PointLight(0xffd36a, 0, 3); view.add(glowLight); glowLight.position.y = 0.4;
   const RIB = 24, ribPts = [], ribGeo = new THREE.BufferGeometry();
   ribGeo.setAttribute("position", new THREE.Float32BufferAttribute(new Float32Array(RIB * 6), 3));
@@ -1146,12 +1164,12 @@ try { (function freyrScene() {
   ribbon.frustumCulled = false; group.add(ribbon);
   let ribOn = 0, ribWant = 0, snap = true, hitStop = 0, steps = [], si = 0, st = 0;
   const hilt = () => me.localToWorld(HILT_LOCAL.clone());
-  const tip = () => view.localToWorld(new THREE.Vector3(0, 0.6 * view.children[0].scale.x / 1.5, 0));
-  const mid = () => view.localToWorld(new THREE.Vector3(0, 0.25 * view.children[0].scale.x / 1.5, 0));
+  const tip = () => view.model.localToWorld(new THREE.Vector3(0, -16, 0));
+  const mid = () => view.model.localToWorld(new THREE.Vector3(0, -4, 0));
   const guard = () => new THREE.Vector3(-0.9, 1.6, 0.8);
   const zpos = i => zs[i].g.position.clone().add(new THREE.Vector3(0, 1.1, 0));
   const aim = (from, to) => target.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), to.clone().sub(from).normalize());
-  const size = k => view.children[0].scale.setScalar(k);
+  const size = k => view.setSize(k * 0.55);
   const hit = (i, big) => { const z = zs[i]; if (z.dead >= 0) return; z.hp--; z.flash = 0.35; z.recoil = big ? 1 : 0.7;
     z.kb.copy(z.g.position).normalize().multiplyScalar(big ? 1.6 : 0.9); z.kb.y = 0;
     burst3(tip().lerp(zpos(i), 0.5), big ? 20 : 14, 1.1, [0xffd36a, 0xffffff]); hitStop = big ? 0.09 : 0.06; if (z.hp <= 0) z.dead = 0; };
@@ -1219,7 +1237,7 @@ try { (function thrownScene() {
   arenaFloor(group, -3, 3, -7, 3);
   const me = dummyPlayer(group); me.rotation.y = Math.PI; me.position.set(0, 0, 1.0);
   const z = dummyZombie(group); z.g.position.set(0, 0, -5.5);
-  const weapons = [["mjolnir", "spin"], ["gungnir", "point"], ["mistletoe_dart", "point"]].map(([n, k]) => { const m = iconMesh(n, 1.6, true); group.add(m); return { m, k }; });
+  const weapons = [["mjolnir", "spin"], ["gungnir", "point"], ["mistletoe_dart", "point"]].map(([n, k]) => { const m = weaponModel(n, n === "gungnir" ? 0.8 : 1); group.add(m); return { m, k }; });
   let t = 0;
   function reset() { t = 0; }
   function update(dt) {
@@ -1307,6 +1325,18 @@ try { (function zeusScene() {
   }
   SPECIAL.zeus = { group, reset, update };
 })(); } catch (e) { console.error("escena zeus", e); }
+
+/* Vitrina de las armas 3D: cada una flotando de pie y girando despacio. */
+try { (function arsenalScene() {
+  const group = new THREE.Group(); scene.add(group); group.visible = false;
+  const items = [["freyr_sword", 0.85], ["mjolnir", 1.2], ["gungnir", 0.8], ["mistletoe_dart", 1.3]].map(([k, sz], i) => {
+    const w = weaponModel(k, sz); w.position.set(-1.8 + i * 1.2, 1.25, 0); group.add(w); return w;
+  });
+  let t = 0;
+  function reset() { t = 0; }
+  function update(dt) { t += dt; items.forEach((w, i) => { w.rotation.y = t * 0.8 + i * 0.6; w.position.y = 1.25 + Math.sin(t * 1.6 + i) * 0.05; }); }
+  SPECIAL.arsenal = { group, reset, update };
+})(); } catch (e) { console.error("escena arsenal", e); }
 
 let specialLast = performance.now();
 function updateSpecial(now) {
