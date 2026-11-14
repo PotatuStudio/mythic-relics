@@ -4,6 +4,7 @@ import dev.architectury.event.events.client.ClientTooltipEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.relic.RelicCultures;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,15 +81,25 @@ public final class RelicTooltips {
 	}
 
 	/**
-	 * Tooltip corto (sin Shift): solo el efecto principal (la línea dorada), la recarga si corre, una línea del set (cuántas
-	 * piezas y si está activo) y el aviso de que Shift muestra el detalle. Se quitan las demás líneas del efecto y
-	 * «Se encuentra en».
+	 * Tooltip corto (sin Shift): el resumen ({@code item.mythicrelics.<id>.summary}: lo importante y la recarga, en
+	 * dorado), la recarga si corre, una línea del set (cuántas piezas y si está activo) y el aviso de que Shift muestra el
+	 * detalle. Se quitan las líneas del efecto y «Se encuentra en». Sin resumen, queda la primera frase del efecto.
 	 */
 	private static void compact(List<Component> lines, String id, RelicSets set, Player player) {
 		String prefix = "item.mythicrelics." + id + ".tooltip.";
-		// La primera frase completa: la línea 1 y las que la continúan (empiezan en minúscula).
-		int keep = 1;
-		while (true) {
+		String summaryKey = "item.mythicrelics." + id + ".summary";
+		boolean summary = Language.getInstance().has(summaryKey);
+		if (summary) {
+			for (int i = 0; i < lines.size(); i++) {
+				if (key(lines.get(i)).equals(prefix + 1)) {
+					lines.set(i, Component.translatable(summaryKey, TooltipArgs.of(id)).withStyle(ChatFormatting.GOLD));
+					break;
+				}
+			}
+		}
+		// La primera frase completa: la línea 1 y las que la continúan (empiezan en minúscula). Con resumen, ninguna.
+		int keep = summary ? 0 : 1;
+		while (!summary) {
 			int n = keep + 1;
 			Component next = lines.stream().filter(l -> key(l).equals(prefix + n)).findFirst().orElse(null);
 			String text = next == null ? "" : next.getString();

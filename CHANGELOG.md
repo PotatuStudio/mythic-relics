@@ -10,7 +10,8 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
   libro (Modonomicon), página de JEI, una pestaña creativa por mitología y modelos 3D puestos con textura pintada.
 
 ### Changed
-- Tooltips cortos: el efecto principal, la recarga y el set; con Shift, el detalle completo por secciones.
+- Tooltips cortos: un resumen propio de cada reliquia (lo importante y la recarga) y el set; con Shift, el detalle
+  completo por secciones.
 - Rayo de Zeus con ataque fuerte (mantener 2 s: tres rayos con salto, recarga 10 s).
 - Cabeza de Medusa sostenida como escudo, Mímir se pregunta, halcón con tecla V, harpe pasiva, saco de xirang pasivo.
 - Refactor interno sin cambios de juego: ayudantes comunes en `relic/` (aliados, jefes por tag, brújula, sonidos y

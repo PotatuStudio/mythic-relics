@@ -372,6 +372,7 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
    - Tras el refactor del 2026-11-14 (no debería cambiar nada del juego): tooltip de sets con ✔ / ◐ / ✘ (por ejemplo la
      alabarda de Erlang en el inventario sale ◐ «en la mano principal»); recargas largas (Kusanagi, abanico, sake,
      joyas de la marea…) que siguen en el ícono al salir y volver a entrar; un vistazo general a avisos y sonidos.
+   - Tooltip corto con el resumen nuevo de cada reliquia (lo importante y la recarga); con Shift, el detalle.
    Después, probar también en Fabric (Trinkets).
 2. **Cuando el usuario apruebe las pruebas: Chile/mapuche** como tanda especial (los celtas se descartaron el
    2026-11-10). Flujo: enseñar el mito, proponer reliquias (fiel / licencia / pop), página de diseño, preguntas con
@@ -384,7 +385,8 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
 - No abrir el juego en este PC: solo `./gradlew build` (con conexión la primera vez que cambia una dependencia).
 - Push con la cuenta Friedpotatu (ver memoria «push-friedpotatu»).
 - Modelos y texturas se generan con `tools/model-gen/*.py` (no editar los JSON ni `client/entity/geometry/*Geometry.java` a mano);
-  textos con `feedback4_lang.py`; libro y wiki con `make_codex.py` (también genera `relic/RelicCultures.java`).
+  textos con `feedback4_lang.py` (los resúmenes del tooltip corto, `item.mythicrelics.<id>.summary`, con
+  `summaries_lang.py`: una reliquia nueva necesita el suyo); libro y wiki con `make_codex.py` (también genera `relic/RelicCultures.java`).
 - Visor global: `python tools/model-gen/make_viewer.py tools/design-page/viewer_check.html` y publicarlo en
   https://claude.ai/artifact/KmBKXReYGwHWo2DGQRyHgh al cerrar cada tanda.
 - Revisiones visuales: Chrome sin ventana sobre una copia del HTML con la escena a pantalla completa (ver memoria
