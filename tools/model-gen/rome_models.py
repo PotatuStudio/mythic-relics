@@ -90,8 +90,17 @@ def ancile_elements():
     return e
 
 
-def shield_display(blocking):
-    """Los "display" del escudo vanilla (models/item/shield.json y shield_blocking.json)."""
+def shield_display(blocking, raise_first_person=0.0):
+    """Los "display" del escudo vanilla (models/item/shield.json y shield_blocking.json). Un escudo más bajo que el
+    vanilla (placa de 22 px) se sube en primera persona {raise_first_person} px para que se vea igual de alto."""
+    d = _shield_display(blocking)
+    for k in ("firstperson_righthand", "firstperson_lefthand"):
+        if raise_first_person:
+            d[k]["translation"][1] += raise_first_person
+    return d
+
+
+def _shield_display(blocking):
     if blocking:
         return {
             "thirdperson_righthand": {"rotation": [45, 155, 0], "translation": [-3.49, 11, -2], "scale": [1, 1, 1]},

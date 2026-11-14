@@ -21,6 +21,8 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
   llevas en otro lugar.
 
 ### Fixed
+- Escudo de Aquiles y Ancile en primera persona: al bloquear ya no desaparecen de la pantalla, y el de Aquiles se
+  ve a la misma altura que el escudo vanilla.
 - Las recargas de 10 s o más se guardan con el mundo: ya no se pierden al salir y volver a entrar.
 - El estado en memoria se limpia al desconectarse un jugador y al cerrar el mundo (vuelo del halcón, fogatas de Vesta…).
 - Caché por tick de las reliquias puestas y búsquedas escalonadas (aliados, espada de Freyr, Sibila).

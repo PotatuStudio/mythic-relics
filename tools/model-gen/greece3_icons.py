@@ -103,9 +103,9 @@ if __name__ == "__main__":
     models = os.path.join(ASSETS, "models", "item")
     write(os.path.join(models, "achilles_shield_3d.json"), {
         "gui_light": "front", "textures": {"p": f"{NS}:item/greece3_palette", "particle": f"{NS}:item/greece3_palette"},
-        "elements": shield_elements(), "display": shield_display(False)})
+        "elements": shield_elements(), "display": shield_display(False, 3.75)})
     write(os.path.join(models, "achilles_shield_blocking.json"), {
-        "parent": f"{NS}:item/achilles_shield_3d", "display": shield_display(True)})
+        "parent": f"{NS}:item/achilles_shield_3d", "display": shield_display(True, 3.75)})
     icon = {"type": "minecraft:model", "model": f"{NS}:item/achilles_shield"}
     write(os.path.join(ASSETS, "items", "achilles_shield.json"), {"model": {
         "type": "minecraft:select", "property": "minecraft:display_context",

@@ -57,6 +57,7 @@ import io.github.potatustudio.mythicrelics.norse.SleipnirHorseshoeItem;
 import io.github.potatustudio.mythicrelics.norse.ThrownRelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCultures;
 import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicShieldItem;
 import io.github.potatustudio.mythicrelics.rome.AugurLituusItem;
 import io.github.potatustudio.mythicrelics.rome.JanusKeyItem;
 import io.github.potatustudio.mythicrelics.rome.PalladiumItem;
@@ -135,7 +136,7 @@ public final class ModItems {
 	// Roma, primera tanda.
 	public static final RegistrySupplier<Item> WOLF_BULLA = relic("wolf_bulla", p -> p.rarity(Rarity.RARE));
 	// Escudo: bloquea como el vanilla (90°, 0,25 s) pero sin durabilidad, así que nunca se rompe.
-	public static final RegistrySupplier<Item> ANCILE = relic("ancile", p -> p.rarity(Rarity.EPIC)
+	public static final RegistrySupplier<Item> ANCILE = register("ancile", RelicShieldItem::new, p -> p.rarity(Rarity.EPIC)
 			.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(0.25f, 1.0f,
 					List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0.0f, 1.0f)),
 					new BlocksAttacks.ItemDamageFunction(3.0f, 1.0f, 1.0f), Optional.empty(),
@@ -233,7 +234,7 @@ public final class ModItems {
 			ZeusThunderboltItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> NEMEAN_LION_SKIN = relic("nemean_lion_skin", p -> p.rarity(Rarity.EPIC));
 	// Escudo como el Ancile: bloquea como el vanilla y nunca se rompe; la cólera la suma GreeceLegends.
-	public static final RegistrySupplier<Item> ACHILLES_SHIELD = relic("achilles_shield", p -> p.rarity(Rarity.EPIC)
+	public static final RegistrySupplier<Item> ACHILLES_SHIELD = register("achilles_shield", RelicShieldItem::new, p -> p.rarity(Rarity.EPIC)
 			.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(0.25f, 1.0f,
 					List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0.0f, 1.0f)),
 					new BlocksAttacks.ItemDamageFunction(3.0f, 1.0f, 1.0f), Optional.empty(),

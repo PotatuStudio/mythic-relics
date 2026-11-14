@@ -64,13 +64,30 @@ public class RelicClientGameTest implements FabricClientGameTest {
 
 			List<Item> relics = relics();
 			log("reliquias: " + relics.size());
-			tooltips(ctx, relics);
-			hands(ctx, srv, relics);
-			worn(ctx, srv, relics);
-			entities(ctx, srv, sp);
-			vanillaShield(ctx, srv);
-			setTooltip(ctx, srv);
-			abilities(ctx, srv, relics);
+			// MYTHIC_FASES (variable de entorno, separada por comas) corre solo esas fases; sin ella, todas.
+			String only = System.getenv().getOrDefault("MYTHIC_FASES", "");
+			java.util.function.Predicate<String> run = f -> only.isBlank() || List.of(only.split(",")).contains(f);
+			if (run.test("tooltips")) {
+				tooltips(ctx, relics);
+			}
+			if (run.test("manos")) {
+				hands(ctx, srv, relics);
+			}
+			if (run.test("puestas")) {
+				worn(ctx, srv, relics);
+			}
+			if (run.test("entidades")) {
+				entities(ctx, srv, sp);
+			}
+			if (run.test("escudos")) {
+				vanillaShield(ctx, srv);
+			}
+			if (run.test("sets")) {
+				setTooltip(ctx, srv);
+			}
+			if (run.test("habilidades")) {
+				abilities(ctx, srv, relics);
+			}
 			log("FIN");
 		} catch (Throwable t) {
 			log("FALLO GENERAL: " + t);
