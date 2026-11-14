@@ -277,8 +277,10 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 - **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC
   después de subir a `main`.
 - `tools/model-gen/egypt_icons.py`: genera los íconos 16x16 de Egipto (con brillo animado).
-- `tools/model-gen/mod_icon.py`: ícono del mod (`icon.png` y `mythicrelics_icon.png` de los dos loaders): el escudo
-  del emblema con las seis culturas, cada una con el ícono de su pestaña. Agregar la cultura nueva al cerrar cada tanda.
+- `tools/model-gen/mod_icon.py`: ícono del mod (`icon.png` y `mythicrelics_icon.png` de los dos loaders, 128 px) y
+  emblema de la pestaña creativa (`textures/item/emblem.png`, 16 px): la reliquia en su altar sobre un disco de cielo
+  con borde de oro (dibujo en `emblem_relic.py`, elegido el 2026-11-14). Es un símbolo propio del mod, no uno por
+  cultura: no hay que tocarlo al sumar culturas.
 - `tools/model-gen/scarab_texture.py`: textura del escarabajo aliado (requiere Pillow).
 - `tools/model-gen/make_codex.py`: genera el libro de Modonomicon (`data/mythicrelics/modonomicon/books/relics/`),
   sus textos con los números ya puestos (claves `book.mythicrelics.relics.entry.*` en los lang) y la wiki
@@ -347,7 +349,6 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
 3. Pendientes posibles: las Cuatro Bestias Celestiales chinas como set; luego India, aztecas, eslavos, Mesopotamia
    (`docs/ideas.md`).
 4. Pendientes menores:
-   - el emblema de la pestaña creativa (16x16) sigue con cuatro culturas (sin China ni Japón);
    - el rescate del xirang al vacío usa el último suelo firme (o el punto de aparición).
 5. Portar Misfit Relics a Architectury (mismo esquema de módulos).
 

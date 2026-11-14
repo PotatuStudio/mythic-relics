@@ -1,4 +1,4 @@
-"""Íconos 16x16 nórdicos (tandas 1 y 2) y el emblema del mod (ícono de la pestaña creativa: escudo con una cultura por cuarto), con
+"""Íconos 16x16 nórdicos (tandas 1 y 2), con
 la paleta y el contorno por material de greece_icons.py.
 
 Uso: python norse_icons.py <carpeta_texturas_item>
@@ -324,7 +324,7 @@ ODRERIR = grid([
 
 ICONS = {"mjolnir": mjolnir, "jarngreipr": lambda: outline(JARNGREIPR), "megingjord": lambda: outline(MEGINGJORD),
          "gungnir": gungnir, "draupnir": draupnir, "gjallarhorn": gjallarhorn, "gleipnir": gleipnir,
-         "idunn_apples": lambda: outline(IDUNN), "emblem": emblem,
+         "idunn_apples": lambda: outline(IDUNN),
          "sleipnir_horseshoe": horseshoe, "odin_ravens": lambda: outline(RAVENS), "brisingamen": brisingamen,
          "skidbladnir": lambda: outline(SHIP), "mimir_head": lambda: outline(MIMIR), "andvaranaut": andvaranaut,
          "odrerir": lambda: outline(ODRERIR)}
