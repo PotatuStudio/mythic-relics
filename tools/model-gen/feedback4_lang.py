@@ -19,6 +19,8 @@ ES = {
     "item.mythicrelics.mimir_head.tooltip.3": "Recarga: %4$s s",
     "message.mythicrelics.mimir_arrived": "Mímir: aquí está",
     "tooltip.mythicrelics.more": "Shift: ver detalles",
+    "item.mythicrelics.zeus_thunderbolt.tooltip.4": "Ataque fuerte: mantén %7$s s (caen mini rayos a tu alrededor) y suelta: %8$s rayos, cada uno con su daño y su salto",
+    "item.mythicrelics.zeus_thunderbolt.tooltip.5": "Recarga: %6$s s (ataque fuerte: %9$s s)",
     "lore.mythicrelics.erlang_set": "Erlang Shen, el dios del tercer ojo, cazaba demonios con su alabarda de tres puntas y tres filos, siempre con su fiel Perro Celestial a su lado.",
     "lore.mythicrelics.regalia_set": "Los Tres Tesoros Sagrados de Japón: la espada Kusanagi, el espejo Yata y la joya Yasakani. Amaterasu se los entregó a su nieto Ninigi al enviarlo a gobernar la tierra.",
     "lore.mythicrelics.fujin_raijin_set": "Fūjin, el dios del viento, carga su saco de vientos; Raijin, el dios del trueno, golpea sus tambores. Hermanos y rivales, juntos desatan la tormenta.",
@@ -51,6 +53,8 @@ EN = {
     "item.mythicrelics.mimir_head.tooltip.3": "Cooldown: %4$s s",
     "message.mythicrelics.mimir_arrived": "Mímir: here it is",
     "tooltip.mythicrelics.more": "Shift: details",
+    "item.mythicrelics.zeus_thunderbolt.tooltip.4": "Strong attack: hold %7$s s (mini bolts fall around you) and release: %8$s bolts, each with its own damage and jump",
+    "item.mythicrelics.zeus_thunderbolt.tooltip.5": "Cooldown: %6$s s (strong attack: %9$s s)",
     "lore.mythicrelics.erlang_set": "Erlang Shen, the god with the third eye, hunted demons with his three-pointed, double-edged halberd, his faithful Celestial Hound always at his side.",
     "lore.mythicrelics.regalia_set": "The Three Sacred Treasures of Japan: the sword Kusanagi, the mirror Yata and the jewel Yasakani. Amaterasu gave them to her grandson Ninigi when she sent him to rule the earth.",
     "lore.mythicrelics.fujin_raijin_set": "Fūjin, god of the wind, carries his bag of winds; Raijin, god of thunder, beats his drums. Brothers and rivals, together they unleash the storm.",
@@ -86,6 +90,11 @@ MODDATA = [
      '"xirang_sack": [int(c["XIRANG_RESCUE_COOLDOWN"] // 20 // 60)],'),
     ('"mimir_head": [int(c["MIMIR_RADIUS"]), int(c["MIMIR_INTERVAL"] // 20), int(c["GUIDE_RADIUS"])],',
      '"mimir_head": [int(c["MIMIR_RADIUS"]), int(c["GUIDE_TICKS"] // 20), int(c["GUIDE_RADIUS"]), int(c["ASK_COOLDOWN"] // 20)],'),
+    ('"zeus_thunderbolt": [int(c["ZEUS_RANGE"]), int(c["ZEUS_DAMAGE"]), int(c["ZEUS_CHAIN_TARGETS"]), int(c["ZEUS_CHAIN_DAMAGE"]),\n'
+     '                             int(c["ZEUS_STORM_CHAIN_TARGETS"]), int(c["ZEUS_COOLDOWN"] // 20)],',
+     '"zeus_thunderbolt": [int(c["ZEUS_RANGE"]), int(c["ZEUS_DAMAGE"]), int(c["ZEUS_CHAIN_TARGETS"]), int(c["ZEUS_CHAIN_DAMAGE"]),\n'
+     '                             int(c["ZEUS_STORM_CHAIN_TARGETS"]), int(c["ZEUS_COOLDOWN"] // 20),\n'
+     '                           int(c["ZEUS_STRONG_TICKS"] // 20), int(c["ZEUS_STRONG_BOLTS"]), int(c["ZEUS_STRONG_COOLDOWN"] // 20)],'),
     ('"medusa_head": [int(c["MEDUSA_TICKS"] // 20), int(c["MEDUSA_RADIUS"]), int(c["MEDUSA_COOLDOWN"] // 20)],',
      '"medusa_head": [int(c["MEDUSA_TICKS"] // 20), int(c["MEDUSA_RADIUS"]), int(c["MEDUSA_GAZE_TICKS"] * 50)],'),
 ]

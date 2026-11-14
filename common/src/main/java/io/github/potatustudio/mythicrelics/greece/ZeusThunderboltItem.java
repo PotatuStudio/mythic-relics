@@ -29,6 +29,9 @@ import org.jspecify.annotations.Nullable;
  * Rayo de Zeus: arma a distancia de uso continuo. Se carga un instante (mantener clic derecho y soltar) y cae un rayo
  * limpio, sin fuego, donde apuntas; después salta a los hostiles cercanos. El rayo es solo el efecto visual del vanilla
  * (no quema) y el daño se aplica aparte; el propio rayo no te daña. Con tormenta salta a más enemigos.
+ * <p>Ataque fuerte: si se sigue manteniendo hasta {@link GreeceLegends#ZEUS_STRONG_TICKS}, empiezan a caer mini rayos
+ * alrededor y suena un trueno; al soltar caen {@link GreeceLegends#ZEUS_STRONG_BOLTS} rayos sobre los enemigos más
+ * cercanos a donde apuntas, cada uno con su daño y su salto (recarga mayor).
  */
 public class ZeusThunderboltItem extends RelicItem {
 	public ZeusThunderboltItem(Properties properties) {
@@ -60,10 +63,77 @@ public class ZeusThunderboltItem extends RelicItem {
 			return false;
 		}
 		if (level instanceof ServerLevel server) {
-			strike(server, player);
-			player.getCooldowns().addCooldown(stack, GreeceLegends.ZEUS_COOLDOWN);
+			boolean strong = getUseDuration(stack, entity) - timeLeft >= GreeceLegends.ZEUS_STRONG_TICKS;
+			if (strong) {
+				strongStrike(server, player);
+			} else {
+				strike(server, player);
+			}
+			player.getCooldowns().addCooldown(stack, strong ? GreeceLegends.ZEUS_STRONG_COOLDOWN : GreeceLegends.ZEUS_COOLDOWN);
 		}
 		return true;
+	}
+
+	/** Mientras se mantiene pasada la carga débil: mini rayos alrededor, y un trueno al quedar listo el ataque fuerte. */
+	@Override
+	public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remaining) {
+		if (!(level instanceof ServerLevel server)) {
+			return;
+		}
+		int held = getUseDuration(stack, entity) - remaining;
+		if (held < GreeceLegends.ZEUS_CHARGE_TICKS) {
+			return;
+		}
+		if (held == GreeceLegends.ZEUS_STRONG_TICKS) {
+			server.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 0.6f, 1.8f);
+			server.sendParticles(ParticleTypes.ELECTRIC_SPARK, entity.getX(), entity.getY() + 1.2, entity.getZ(), 40, 1.0, 0.8, 1.0, 0.4);
+		}
+		// Los mini rayos crecen con la carga y siguen cayendo una vez listo el ataque fuerte.
+		int every = held >= GreeceLegends.ZEUS_STRONG_TICKS ? 3 : 6;
+		if (held % every == 0) {
+			var rng = server.getRandom();
+			double a = rng.nextDouble() * Math.PI * 2, r = 1.2 + rng.nextDouble() * 1.4;
+			Vec3 ground = entity.position().add(Math.cos(a) * r, 0.1, Math.sin(a) * r);
+			arc(server, ground.add((rng.nextDouble() - 0.5) * 0.6, 2.6 + rng.nextDouble(), (rng.nextDouble() - 0.5) * 0.6), ground);
+			if (held >= GreeceLegends.ZEUS_STRONG_TICKS && rng.nextFloat() < 0.3f) {
+				server.playSound(null, ground.x, ground.y, ground.z, SoundEvents.TRIDENT_THUNDER.value(), SoundSource.PLAYERS, 0.25f, 2.0f);
+			}
+		}
+	}
+
+	/** Ataque fuerte: un rayo por cada enemigo más cercano a donde apuntas (si son menos, los que falten caen de nuevo). */
+	private static void strongStrike(ServerLevel level, Player player) {
+		Vec3 point = aim(level, player);
+		List<LivingEntity> targets = new ArrayList<>(level.getEntitiesOfClass(LivingEntity.class,
+				new net.minecraft.world.phys.AABB(point, point).inflate(GreeceLegends.ZEUS_CHAIN_RADIUS),
+				e -> e != player && e.isAlive() && !ChinaRelics.isFriend(player, e)));
+		targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(point)));
+		for (int i = 0; i < GreeceLegends.ZEUS_STRONG_BOLTS; i++) {
+			if (targets.isEmpty()) {
+				Vec3 spot = point.add((i - 1) * 1.5, 0, 0);
+				bolt(level, spot, player);
+				continue;
+			}
+			LivingEntity t = targets.get(i % targets.size());
+			hit(level, player, t.position(), t);
+		}
+		level.playSound(null, point.x, point.y, point.z, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1.6f, 1.0f);
+	}
+
+	/** Dónde cae el rayo: lo que tocas con la mirada hasta el alcance. */
+	private static Vec3 aim(ServerLevel level, Player player) {
+		Vec3 eyes = player.getEyePosition();
+		Vec3 end = eyes.add(player.getLookAngle().scale(GreeceLegends.ZEUS_RANGE));
+		var block = level.clip(new ClipContext(eyes, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+		return block.getType() != HitResult.Type.MISS ? block.getLocation() : end;
+	}
+
+	/** Un rayo sobre un enemigo: el visual, su daño y su salto a los cercanos. */
+	private static void hit(ServerLevel level, Player player, Vec3 point, LivingEntity target) {
+		bolt(level, point, player);
+		target.setInvulnerableTime(0);   // cada rayo cuenta, aunque caiga sobre el mismo enemigo
+		target.hurtServer(level, level.damageSources().playerAttack(player), GreeceLegends.ZEUS_DAMAGE);
+		chain(level, player, target);
 	}
 
 	private static void strike(ServerLevel level, Player player) {
@@ -111,6 +181,7 @@ public class ZeusThunderboltItem extends RelicItem {
 		for (LivingEntity e : near.subList(0, Math.min(count, near.size()))) {
 			Vec3 to = e.position().add(0, e.getBbHeight() * 0.6, 0);
 			arc(level, last, to);
+			e.setInvulnerableTime(0);
 			e.hurtServer(level, level.damageSources().playerAttack(player), GreeceLegends.ZEUS_CHAIN_DAMAGE);
 			last = to;
 		}

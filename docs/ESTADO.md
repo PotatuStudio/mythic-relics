@@ -3,6 +3,7 @@
 Última sesión: 2026-11-14 (cuarta ronda de arreglos: Medusa como escudo sin recarga, halcón con tecla V, Mímir se pregunta, tooltips cortos con Shift, cabezas y armas en 3D, reliquias puestas con textura pintada, auditoría de memoria, rendimiento y limpieza). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
 programadas). El usuario ya empezó a probar en NeoForge (con `runClient` en su PC) y se hicieron cuatro rondas de
 arreglos con lo que reportó; ver «Arreglos tras…» y «Después». Para retomar: leer «Después», punto 1.
+**Próxima sesión: el paquete de refactors**, con el plan por etapas y las lecciones de la sesión en `docs/REFACTOR.md`.
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
@@ -311,7 +312,8 @@ Diseño aprobado en las páginas de diseño de la tanda (no van a git; fichas en
 (constantes, daño, cólera de Aquiles, aviso de la harpe, manzana, Talos) y `norse/NorseSagas` (Gram, Tyrfing,
 Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (JapanGods → GreeceLegends → NorseSagas) y
 `modifyIncomingDamage` en `LivingEntityMixin`, que además cancela `heal` mientras dura la herida de Dáinsleif.
-- Ítems: `ZeusThunderboltItem` (carga 0,5 s, rayo visual del vanilla + daño aparte, salta a 3/5 hostiles), `HarpeItem`
+- Ítems: `ZeusThunderboltItem` (carga 0,5 s, rayo visual del vanilla + daño aparte, salta a 3/5 hostiles; ataque
+  fuerte: mantener 2 s, con mini rayos alrededor, suelta 3 rayos con su daño y su salto y recarga 10 s), `HarpeItem`
   (pasiva: decapita al golpear bajo el 25 %, 1 s de recarga, cabeza 75 %; en `GreeceLegends.onDeath`), `GoldenBridleItem`,
   `AppleOfDiscordItem`, `TalosNailItem`, `GramItem` (estocada cargada 1 s); Tyrfing, Dáinsleif, la piel, el escudo
   (`BLOCKS_ATTACKS` como el Ancile), la espada de Freyr y el manto son `relic(...)`; el dardo es un `ThrownRelicItem`
@@ -356,13 +358,18 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
      saco de xirang solo pasiva (5 min); harpe pasiva (bajo 25 %, 1 s, cabeza 75 %); cetro de Anubis avisa a quién
      puede juzgar; estatua de Medusa sin crash; halcón con la tecla V (se encoge, se ve como el ave, sin capa ni
      manos; la misma tecla vuelve); carga visible del rayo, Gram, Mjölnir, Gungnir y el dardo; piel de Nemea nueva.
+   - Rayo de Zeus fuerte: mantener 2 s (mini rayos a tu alrededor y trueno al estar listo), soltar 3 rayos con su daño
+     y salto, recarga 10 s; el débil sigue igual.
+   - Pendientes de arte: subir el detalle geométrico de las reliquias puestas de Egipto, Roma, nórdicos, China y
+     Japón al nivel de las griegas (mostrar en el visor antes de aplicar); rehacer las alas de Ícaro (parecen persianas).
    Después, probar también en Fabric (Trinkets).
 2. **Cuando el usuario apruebe las pruebas: Chile/mapuche** como tanda especial (los celtas se descartaron el
    2026-11-10). Flujo: enseñar el mito, proponer reliquias (fiel / licencia / pop), página de diseño, preguntas con
    opciones, entidades 3D, íconos, programar, commit y push, visor global, lista de pruebas.
 3. Pendientes posibles: las Cuatro Bestias Celestiales chinas como set; luego India, aztecas, eslavos, Mesopotamia
    (`docs/ideas.md`).
-4. Refactors pendientes (de la auditoría del 2026-11-14, sin cambiar el juego):
+4. **Refactors pendientes (siguiente sesión, el usuario aprobó todos)**: plan detallado por etapas en
+   `docs/REFACTOR.md`. Resumen:
    - Ayudantes comunes: `WornRelics.isWearing(entity, RegistrySupplier)` en lugar de `EgyptRelics.isWearing` (59 usos),
      `relic/Allies.isFriend` y `enemiesAround` (hoy en `ChinaRelics`, con una copia distinta en `EgyptGods`), un solo
      `isBoss` con tag `mythicrelics:bosses`, `relic/Compass` (brújula copiada en Mímir, cuervos y Sibila),

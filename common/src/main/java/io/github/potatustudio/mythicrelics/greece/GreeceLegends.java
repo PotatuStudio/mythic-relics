@@ -59,6 +59,10 @@ public final class GreeceLegends {
 	public static final int ZEUS_STORM_CHAIN_TARGETS = 5;
 	public static final int ZEUS_CHAIN_RADIUS = 6;
 	public static final int ZEUS_COOLDOWN = 100;
+	/** Ataque fuerte: mantener la carga hasta acá (2 s) suelta varios rayos, cada uno con su daño y su salto. */
+	public static final int ZEUS_STRONG_TICKS = 40;
+	public static final int ZEUS_STRONG_BOLTS = 3;
+	public static final int ZEUS_STRONG_COOLDOWN = 200;
 	// Piel del león de Nemea
 	public static final float NEMEA_REDUCTION = 0.5f;
 	public static final float NEMEA_FIST_DAMAGE = 3.0f;
@@ -299,7 +303,7 @@ public final class GreeceLegends {
 	public static Object[] tooltipArgs(String id) {
 		return switch (id) {
 			case "zeus_thunderbolt" -> new Object[] {ZEUS_RANGE, (int) ZEUS_DAMAGE, ZEUS_CHAIN_TARGETS, (int) ZEUS_CHAIN_DAMAGE,
-					ZEUS_STORM_CHAIN_TARGETS, ZEUS_COOLDOWN / 20};
+					ZEUS_STORM_CHAIN_TARGETS, ZEUS_COOLDOWN / 20, ZEUS_STRONG_TICKS / 20, ZEUS_STRONG_BOLTS, ZEUS_STRONG_COOLDOWN / 20};
 			case "nemean_lion_skin" -> new Object[] {Math.round(NEMEA_REDUCTION * 100), (int) NEMEA_FIST_DAMAGE};
 			case "achilles_shield" -> new Object[] {WRATH_MAX, WRATH_TICKS / 20, Math.round(WRATH_BONUS * 100)};
 			case "harpe" -> new Object[] {Math.round(HARPE_HEAD_CHANCE * 100), Math.round(HARPE_WITHER_SKULL_CHANCE * 100),

@@ -11,6 +11,7 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
 
 ### Changed
 - Tooltips cortos: el efecto principal, la recarga y el set; con Shift, el detalle completo por secciones.
+- Rayo de Zeus con ataque fuerte (mantener 2 s: tres rayos con salto, recarga 10 s).
 - Cabeza de Medusa sostenida como escudo, Mímir se pregunta, halcón con tecla V, harpe pasiva, saco de xirang pasivo.
 
 ### Fixed

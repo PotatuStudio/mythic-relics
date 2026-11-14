@@ -246,7 +246,8 @@ Zeus lo encadenó a una roca, donde un águila le comía el hígado cada día.
 - Mantén clic derecho y suelta: cae un rayo donde apuntas (hasta 32 bloques)
 - 14 de daño al blanco; salta a 3 hostiles cercanos (7 de daño cada uno)
 - Con tormenta salta a 5. Es un rayo limpio: no quema y no te daña
-- Recarga: 5 s
+- Ataque fuerte: mantén 2 s (caen mini rayos a tu alrededor) y suelta: 3 rayos, cada uno con su daño y su salto
+- Recarga: 5 s (ataque fuerte: 10 s)
 
 **Mito.** El keraunos: lo forjaron los cíclopes Brontes, Estéropes y Arges cuando Zeus los liberó del Tártaro.  
 Con él Zeus venció a los titanes y luego a Tifón.

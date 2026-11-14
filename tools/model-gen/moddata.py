@@ -237,7 +237,8 @@ def tooltip_args(c):
                          int(c["OROCHI_COOLDOWN"] // 20 // 60)],
         # Grecia 3 (GreeceLegends.tooltipArgs)
         "zeus_thunderbolt": [int(c["ZEUS_RANGE"]), int(c["ZEUS_DAMAGE"]), int(c["ZEUS_CHAIN_TARGETS"]), int(c["ZEUS_CHAIN_DAMAGE"]),
-                             int(c["ZEUS_STORM_CHAIN_TARGETS"]), int(c["ZEUS_COOLDOWN"] // 20)],
+                             int(c["ZEUS_STORM_CHAIN_TARGETS"]), int(c["ZEUS_COOLDOWN"] // 20),
+                           int(c["ZEUS_STRONG_TICKS"] // 20), int(c["ZEUS_STRONG_BOLTS"]), int(c["ZEUS_STRONG_COOLDOWN"] // 20)],
         "nemean_lion_skin": [round(c["NEMEA_REDUCTION"] * 100), int(c["NEMEA_FIST_DAMAGE"])],
         "achilles_shield": [int(c["WRATH_MAX"]), int(c["WRATH_TICKS"] // 20), round(c["WRATH_BONUS"] * 100)],
         "harpe": [round(c["HARPE_HEAD_CHANCE"] * 100), round(c["HARPE_WITHER_SKULL_CHANCE"] * 100),
