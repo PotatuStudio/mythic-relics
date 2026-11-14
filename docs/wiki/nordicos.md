@@ -329,8 +329,8 @@ Se la dio a Skírnir para pedir la mano de Gerðr; por eso en el Ragnarök enfre
 
 **Espacio:** espalda · **Rareza:** épica
 
-- Toca el salto en el aire (después del doble salto, si lo tienes): te vuelves halcón 20 s
-- Solo vuelas: no atacas, no usas, no rompes, no pones ni recoges nada. Clic derecho: vuelves a ser humano; si te golpean, también (y caes lento)
+- Tecla del manto (V por defecto, en Controles): te vuelves halcón 20 s, con su tamaño y su forma
+- Solo vuelas: no atacas, no usas, no rompes, no pones ni recoges nada. La misma tecla te vuelve humano; si te golpean, también (y caes lento)
 - Recarga: 90 s
 
 **Mito.** Freyja tenía un manto de plumas de halcón que convertía en halcón a quien se lo ponía.  

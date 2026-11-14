@@ -28,10 +28,9 @@ public final class GreeceClient {
 
 	private static boolean jumpWasDown;
 	private static boolean doubleJumpUsed;
-	/** Manto de halcón: ya se pidió la forma de halcón en este salto. */
-	private static boolean falconAsked;
-	/** Siendo halcón: el clic derecho ya estaba apretado (para pedir volver a ser humano una sola vez por pulsación). */
-	private static boolean useWasDown;
+	/** Manto de halcón: la tecla (V por defecto, se cambia en Controles) te vuelve halcón y de nuevo humano. */
+	public static final net.minecraft.client.KeyMapping FALCON_KEY = new net.minecraft.client.KeyMapping("key.mythicrelics.falcon_form",
+			com.mojang.blaze3d.platform.InputConstants.KEY_V, net.minecraft.client.KeyMapping.Category.GAMEPLAY);
 	/** Se soltó el salto ya en el aire: el doble salto pide una segunda pulsación, no mantener la del primer salto. */
 	private static boolean releasedInAir;
 	private static int icarusFlaps;
@@ -45,6 +44,7 @@ public final class GreeceClient {
 	}
 
 	public static void init() {
+		dev.architectury.registry.client.keymappings.KeyMappingRegistry.register(FALCON_KEY);
 		ClientTickEvent.CLIENT_POST.register(GreeceClient::tick);
 	}
 
@@ -58,21 +58,10 @@ public final class GreeceClient {
 		boolean grounded = player.onGround() || player.isInWater() || player.getAbilities().flying || player.isPassenger();
 		if (grounded) {
 			doubleJumpUsed = false;
-			falconAsked = false;
 			releasedInAir = false;
 			icarusFlaps = GreeceHeroes.ICARUS_FLAPS;
 		} else if (!jumpDown) {
 			releasedInAir = true;
-		} else if (pressed && releasedInAir && !falconAsked && (doubleJumpUsed || !(WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())
-				|| WornRelics.isWearing(player, ModItems.TENGU_MASK.get())))
-				&& WornRelics.isWearing(player, ModItems.FALCON_CLOAK.get())
-				&& !player.getCooldowns().isOnCooldown(new net.minecraft.world.item.ItemStack(ModItems.FALCON_CLOAK.get()))) {
-			// Manto de halcón: un toque de salto en el aire (después del doble salto, si lo hay) y te vuelves halcón.
-			falconAsked = true;
-			pressed = false;
-			if (NetworkManager.canServerReceive(io.github.potatustudio.mythicrelics.network.FalconPayload.TYPE)) {
-				NetworkManager.sendToServer(io.github.potatustudio.mythicrelics.network.FalconPayload.INSTANCE);
-			}
 		} else if (pressed && releasedInAir && !doubleJumpUsed && (WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())
 				|| WornRelics.isWearing(player, ModItems.TENGU_MASK.get()))) {
 			Vec3 motion = player.getDeltaMovement();
@@ -88,13 +77,14 @@ public final class GreeceClient {
 			icarus(player, pressed, jumpDown);
 		}
 		jumpWasDown = jumpDown;
-		// Siendo halcón, lo único que se puede hacer (además de volar) es volver a ser humano con clic derecho.
-		boolean useDown = client.options.keyUse.isDown();
-		if (useDown && !useWasDown && io.github.potatustudio.mythicrelics.norse.NorseSagas.isFalconForm(player)
-				&& NetworkManager.canServerReceive(io.github.potatustudio.mythicrelics.network.FalconPayload.TYPE)) {
-			NetworkManager.sendToServer(io.github.potatustudio.mythicrelics.network.FalconPayload.INSTANCE);
+		// Manto de halcón: la tecla te vuelve halcón (con el manto puesto) y, siendo halcón, de nuevo humano.
+		while (FALCON_KEY.consumeClick()) {
+			boolean falcon = io.github.potatustudio.mythicrelics.norse.NorseSagas.isFalconForm(player);
+			if ((falcon || WornRelics.isWearing(player, ModItems.FALCON_CLOAK.get()))
+					&& NetworkManager.canServerReceive(io.github.potatustudio.mythicrelics.network.FalconPayload.TYPE)) {
+				NetworkManager.sendToServer(io.github.potatustudio.mythicrelics.network.FalconPayload.INSTANCE);
+			}
 		}
-		useWasDown = useDown;
 		skidbladnirWind(player);
 
 		if (player.tickCount % 2 == 0) {

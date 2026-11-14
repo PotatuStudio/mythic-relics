@@ -9,7 +9,6 @@ import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
-import io.github.potatustudio.mythicrelics.entity.FreyjaFalcon;
 import io.github.potatustudio.mythicrelics.entity.FreyrSword;
 import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.network.FalconPayload;
@@ -96,7 +95,12 @@ public final class NorseSagas {
 	private static final Map<UUID, Long> COMBAT_UNTIL = new HashMap<>();
 	private static final Map<UUID, FreyrSword> SWORDS = new HashMap<>();
 	private static final Map<UUID, Long> FALCON_UNTIL = new HashMap<>();
-	private static final Map<UUID, FreyjaFalcon> FALCONS = new HashMap<>();
+	/**
+	 * La forma de halcón encoge al jugador con el atributo vanilla {@code scale} (caja de golpe, cámara y pasos), y ese
+	 * modificador es también la marca que ve el cliente para dibujar el halcón en lugar del jugador.
+	 */
+	public static final net.minecraft.resources.Identifier FALCON_SCALE_ID = io.github.potatustudio.mythicrelics.MythicRelics.id("falcon_form");
+	public static final double FALCON_SCALE = -0.65;
 	private static final Map<UUID, UUID> GRAM_WARNED = new HashMap<>();
 
 	private NorseSagas() {
@@ -110,7 +114,7 @@ public final class NorseSagas {
 				(payload, context) -> context.queue(() -> {
 					if (context.getPlayer() instanceof ServerPlayer player) {
 						if (isFalcon(player)) {
-							endFalcon(player, false);   // clic derecho siendo halcón: vuelves a ser humano
+							endFalcon(player, false);   // la misma tecla te devuelve a la forma humana
 						} else {
 							startFalcon(player);
 						}
@@ -133,15 +137,15 @@ public final class NorseSagas {
 	}
 
 	/**
-	 * Transformado en halcón, en los dos lados. El servidor lo sabe por su registro; el cliente lo deduce (lleva el manto,
-	 * es invisible y puede volar sin estar en creativo), lo que basta para no intentar acciones bloqueadas.
+	 * Transformado en halcón, en los dos lados. El servidor lo sabe por su registro; el cliente, por el modificador de
+	 * tamaño (los atributos se sincronizan solos), con el que también dibuja el halcón en lugar del jugador.
 	 */
 	public static boolean isFalconForm(Player player) {
 		if (!player.level().isClientSide()) {
 			return isFalcon(player);
 		}
-		return player.isInvisible() && player.getAbilities().mayfly && !player.isCreative() && !player.isSpectator()
-				&& io.github.potatustudio.mythicrelics.relic.WornRelics.isWearing(player, ModItems.FALCON_CLOAK.get());
+		var scale = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+		return scale != null && scale.hasModifier(FALCON_SCALE_ID);
 	}
 
 	// ---- Daño ---------------------------------------------------------------------------------------------------------
@@ -267,7 +271,7 @@ public final class NorseSagas {
 	}
 
 	private static void startFalcon(ServerPlayer player) {
-		if (isFalcon(player) || !EgyptRelics.isWearing(player, ModItems.FALCON_CLOAK) || player.onGround() || player.isPassenger()
+		if (isFalcon(player) || !EgyptRelics.isWearing(player, ModItems.FALCON_CLOAK) || player.isPassenger()
 				|| player.isSpectator() || !RelicCooldowns.tryStart(player, "falcon_cloak", FALCON_COOLDOWN,
 				BuiltInRegistries.ITEM.getKey(ModItems.FALCON_CLOAK.get()))) {
 			return;
@@ -278,12 +282,7 @@ public final class NorseSagas {
 		player.getAbilities().flying = true;
 		player.getAbilities().setFlyingSpeed(FALCON_FLY_SPEED);
 		player.onUpdateAbilities();
-		FreyjaFalcon falcon = ModEntities.FREYJA_FALCON.get().create(level, EntitySpawnReason.TRIGGERED);
-		if (falcon != null) {
-			falcon.follow(player);
-			level.addFreshEntity(falcon);
-			FALCONS.put(player.getUUID(), falcon);
-		}
+		setFalconScale(player, true);
 		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 1, player.getZ(), 30, 0.5, 0.6, 0.5, 0.05);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_FLY, SoundSource.PLAYERS, 1.5f, 0.7f);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 0.6f, 1.6f);
@@ -300,12 +299,8 @@ public final class NorseSagas {
 		}
 		player.getAbilities().setFlyingSpeed(0.05f);
 		player.onUpdateAbilities();
-		player.removeEffect(MobEffects.INVISIBILITY);
+		setFalconScale(player, false);
 		player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, FALCON_SLOW_FALL_TICKS, 0, false, true));
-		FreyjaFalcon falcon = FALCONS.remove(player.getUUID());
-		if (falcon != null && !falcon.isRemoved()) {
-			falcon.discard();
-		}
 		ServerLevel level = player.level();
 		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 1, player.getZ(), 30, 0.5, 0.6, 0.5, 0.05);
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PARROT_HURT, SoundSource.PLAYERS, 1.0f, 0.6f);
@@ -322,8 +317,8 @@ public final class NorseSagas {
 			endFalcon(player, false);
 			return;
 		}
-		// Es un halcón: no se ve al jugador, no usa objetos (los eventos bloquean el resto) y siempre puede volar.
-		player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 10, 0, false, false));
+		// Es un halcón (tamaño y modelo de halcón): no usa objetos (los eventos bloquean el resto) y siempre puede volar.
+		setFalconScale(player, true);
 		if (player.isUsingItem()) {
 			player.stopUsingItem();
 		}
@@ -332,14 +327,19 @@ public final class NorseSagas {
 			player.onUpdateAbilities();
 		}
 		player.resetFallDistance();
-		FreyjaFalcon falcon = FALCONS.get(player.getUUID());
-		if (falcon == null || falcon.isRemoved()) {
-			falcon = ModEntities.FREYJA_FALCON.get().create(player.level(), EntitySpawnReason.TRIGGERED);
-			if (falcon != null) {
-				falcon.follow(player);
-				player.level().addFreshEntity(falcon);
-				FALCONS.put(player.getUUID(), falcon);
-			}
+	}
+
+	/** Pone o quita el tamaño de halcón (el modificador es transitorio: no se guarda con el jugador). */
+	private static void setFalconScale(ServerPlayer player, boolean on) {
+		var scale = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+		if (scale == null) {
+			return;
+		}
+		if (on && !scale.hasModifier(FALCON_SCALE_ID)) {
+			scale.addTransientModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(FALCON_SCALE_ID, FALCON_SCALE,
+					net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		} else if (!on && scale.hasModifier(FALCON_SCALE_ID)) {
+			scale.removeModifier(FALCON_SCALE_ID);
 		}
 	}
 

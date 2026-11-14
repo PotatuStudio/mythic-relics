@@ -1,4 +1,4 @@
-"""Traducciones de la cuarta ronda de arreglos (2026-11-14): saco de xirang solo con la pasiva (5 min), harpe pasiva, Mímir como guía, aviso del cetro de Anubis.
+"""Traducciones de la cuarta ronda de arreglos (2026-11-14): saco de xirang solo con la pasiva (5 min), harpe pasiva, Mímir como guía, aviso del cetro de Anubis, halcón con tecla y forma real.
 También ajusta los números de moddata (tooltip_args) que cambiaron. Uso: python feedback4_lang.py"""
 import io
 import json
@@ -20,6 +20,10 @@ ES = {
     "message.mythicrelics.mimir_silent": "Mímir calla",
     "message.mythicrelics.mimir_chest_name": "un cofre sin abrir",
     "message.mythicrelics.anubis_ready": "Anubis puede juzgar a ese no-muerto",
+    "item.mythicrelics.falcon_cloak.tooltip.1": "Tecla del manto (V por defecto, en Controles): te vuelves halcón %1$s s, con su tamaño y su forma",
+    "item.mythicrelics.falcon_cloak.tooltip.2": "Solo vuelas: no atacas, no usas, no rompes, no pones ni recoges nada. La misma tecla te vuelve humano; si te golpean, también (y caes lento)",
+    "message.mythicrelics.falcon_start": "Eres un halcón (%1$s s). La tecla del manto te vuelve humano",
+    "key.mythicrelics.falcon_form": "Forma de halcón (manto de Freyja)",
 }
 EN = {
     "item.mythicrelics.xirang_sack.tooltip.1": "If you fall into lava or the void, the earth grows under your feet and saves you (cooldown %1$s min)",
@@ -33,6 +37,10 @@ EN = {
     "message.mythicrelics.mimir_silent": "Mímir falls silent",
     "message.mythicrelics.mimir_chest_name": "an unopened chest",
     "message.mythicrelics.anubis_ready": "Anubis can judge that undead",
+    "item.mythicrelics.falcon_cloak.tooltip.1": "Cloak key (V by default, in Controls): you become a falcon for %1$s s, with its size and shape",
+    "item.mythicrelics.falcon_cloak.tooltip.2": "You only fly: no attacking, using, breaking, placing or picking up anything. The same key turns you back; being hit does too (and you fall slowly)",
+    "message.mythicrelics.falcon_start": "You are a falcon (%1$s s). The cloak key turns you back",
+    "key.mythicrelics.falcon_form": "Falcon form (Freyja's cloak)",
 }
 
 REMOVE = ["item.mythicrelics.xirang_sack.tooltip.3", "tooltip.mythicrelics.xirang_charges",
