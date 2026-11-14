@@ -76,7 +76,7 @@ public final class WornRelics {
 
 	/** Si el jugador tiene el ítem en la mano principal o en la otra. */
 	public static boolean holding(Player player, Item item) {
-		return WornRelics.holding(player, item);
+		return player.getMainHandItem().is(item) || player.getOffhandItem().is(item);
 	}
 
 	static {
