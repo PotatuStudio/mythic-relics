@@ -7,7 +7,6 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import java.util.Collections;
 import java.util.Set;
-import java.util.WeakHashMap;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 
@@ -18,7 +17,11 @@ import net.minecraft.world.entity.Entity;
 public final class PetrifiedClient {
 	public static final Identifier STONE = Identifier.withDefaultNamespace("textures/block/stone.png");
 	private static final IntSet PETRIFIED = new IntOpenHashSet();
-	private static final Set<Entity> STATUE_MODELS = Collections.newSetFromMap(new WeakHashMap<>());
+	/**
+	 * Modelos de las estatuas: entidades que nunca entran al mundo y no tienen ID (Entity.hashCode lo pide y se cae), así
+	 * que se guardan por identidad, con referencias débiles.
+	 */
+	private static final Set<Entity> STATUE_MODELS = Collections.newSetFromMap(new com.google.common.collect.MapMaker().weakKeys().makeMap());
 
 	private PetrifiedClient() {
 	}
@@ -40,6 +43,7 @@ public final class PetrifiedClient {
 	}
 
 	public static boolean isStone(Entity entity) {
-		return PETRIFIED.contains(entity.getId()) || STATUE_MODELS.contains(entity);
+		// Primero los modelos de estatua: no tienen ID.
+		return STATUE_MODELS.contains(entity) || PETRIFIED.contains(entity.getId());
 	}
 }

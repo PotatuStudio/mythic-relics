@@ -291,10 +291,10 @@ La Ilíada empieza con «Canta, oh diosa, la cólera de Aquiles».
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Trofeo: 15% de que el mob suelte su cabeza (esqueleto del Wither: 5%)
-- Clic derecho a un mob con menos del 25% de vida: lo decapita al instante (no jefes)
-- Cuando hay uno así y está lista, el mob brilla y suena un aviso
-- Recarga: 15 s. Es parte del set de Perseo
+- Pasiva: golpear a un mob con menos del 25% de vida le corta la cabeza al instante (no jefes)
+- La cabeza cae el 75% de las veces (esqueleto del Wither: 25%)
+- Con la hoz lista, los mobs que ya se pueden decapitar brillan
+- Recarga: 1 s. Es parte del set de Perseo
 
 *Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
 

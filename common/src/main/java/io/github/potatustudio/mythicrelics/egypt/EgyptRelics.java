@@ -269,6 +269,15 @@ public final class EgyptRelics {
 	}
 
 	private static void tick(MinecraftServer server) {
+		// Cetro de Anubis: los no-muertos que ya se pueden juzgar (menos del 25 % de vida) brillan y suena un aviso.
+		if (server.getTickCount() % 10 == 0) {
+			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+				io.github.potatustudio.mythicrelics.relic.ExecuteWarning.tick(player, "anubis_scepter",
+						player.getMainHandItem().is(ModItems.ANUBIS_SCEPTER.get()), 12,
+						m -> m.typeHolder().is(EntityTypeTags.UNDEAD) && m.getHealth() <= m.getMaxHealth() * SCEPTER_JUDGMENT_HEALTH,
+						"message.mythicrelics.anubis_ready");
+			}
+		}
 		Iterator<Map.Entry<UUID, Healing>> healing = EYE_HEALING.entrySet().iterator();
 		while (healing.hasNext()) {
 			Map.Entry<UUID, Healing> e = healing.next();

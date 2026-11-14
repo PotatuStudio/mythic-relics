@@ -41,6 +41,8 @@ public class StoneStatueRenderer extends EntityRenderer<StoneStatue, StoneStatue
 		return new State();
 	}
 
+	private static int nextModelId = -100_000;
+
 	private @Nullable Entity model(StoneStatue statue) {
 		EntityType<?> type = statue.getMob();
 		if (type == null) {
@@ -53,6 +55,8 @@ public class StoneStatueRenderer extends EntityRenderer<StoneStatue, StoneStatue
 		return models.computeIfAbsent(type, t -> {
 			Entity e = t.create(statue.level(), EntitySpawnReason.LOAD);
 			if (e != null) {
+				// No entra al mundo, así que no tiene ID y el render vanilla lo pide: uno negativo propio, sin choques.
+				e.setId(nextModelId--);
 				PetrifiedClient.markStatueModel(e);
 			}
 			return e;

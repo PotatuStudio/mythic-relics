@@ -9,19 +9,18 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Harpe: la hoz de adamante de Cronos y de Perseo. Además del golpe y de las cabezas de trofeo
- * ({@link GreeceLegends}), con clic derecho decapita al instante a un mob malherido (menos del 25 % de vida, no jefes);
- * cuando hay uno así y la recarga está lista, brilla y suena un aviso, y decapitarlo siempre deja su cabeza.
+ * Harpe: la hoz de adamante de Cronos y de Perseo. Pasiva: al golpear con ella a un mob malherido (menos del 25 % de
+ * vida, no jefes) le corta la cabeza al instante, con {@link GreeceLegends#HARPE_COOLDOWN} ticks de recarga; la cabeza
+ * cae el 75 % de las veces. Cuando la recarga está lista, los mobs que ya se pueden decapitar brillan
+ * ({@link GreeceLegends}).
  */
 public class HarpeItem extends RelicItem {
-	/** Mobs que se están decapitando (para que suelten la cabeza siempre). */
+	/** Mobs que se están decapitando (para la probabilidad de la cabeza al morir). */
 	private static final Set<LivingEntity> BEHEADING = Collections.newSetFromMap(new WeakHashMap<>());
 
 	public HarpeItem(Properties properties) {
@@ -32,22 +31,23 @@ public class HarpeItem extends RelicItem {
 		return BEHEADING.contains(e);
 	}
 
-	@Override
-	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
-		if (player.getCooldowns().isOnCooldown(stack) || !GreeceLegends.canBehead(target) || ChinaRelics.isFriend(player, target)) {
-			return InteractionResult.PASS;
-		}
-		if (!(player.level() instanceof ServerLevel level)) {
-			return InteractionResult.SUCCESS;
+	/**
+	 * Golpe cuerpo a cuerpo de {@code attacker} a {@code target}: si lleva la harpe en la mano, la recarga está lista y
+	 * el mob está malherido, el golpe lo decapita (daño de sobra para matarlo). Devuelve el daño final.
+	 */
+	static float behead(Player attacker, LivingEntity target, float amount) {
+		ItemStack stack = attacker.getMainHandItem();
+		if (!stack.is(io.github.potatustudio.mythicrelics.registry.ModItems.HARPE.get()) || attacker.getCooldowns().isOnCooldown(stack)
+				|| !GreeceLegends.canBehead(target) || ChinaRelics.isFriend(attacker, target)
+				|| !(attacker.level() instanceof ServerLevel level)) {
+			return amount;
 		}
 		BEHEADING.add(target);
-		target.hurtServer(level, level.damageSources().playerAttack(player), target.getHealth() + 100.0f);
-		BEHEADING.remove(target);
+		attacker.getCooldowns().addCooldown(stack, GreeceLegends.HARPE_COOLDOWN);
 		level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY(0.8), target.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.8), target.getZ(), 20, 0.3, 0.3, 0.3, 0.4);
 		level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.2f, 0.6f);
 		level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 1.0f, 0.5f);
-		player.getCooldowns().addCooldown(stack, GreeceLegends.HARPE_COOLDOWN);
-		return InteractionResult.SUCCESS;
+		return Math.max(amount, target.getHealth() + 100.0f);
 	}
 }

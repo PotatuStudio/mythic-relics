@@ -71,10 +71,13 @@ public final class GreeceLegends {
 	public static final int WRATH_TICKS = 200;
 	public static final float WRATH_KNOCKBACK = 1.6f;
 	// Harpe
-	public static final float HARPE_HEAD_CHANCE = 0.15f;
-	public static final float HARPE_WITHER_SKULL_CHANCE = 0.05f;
+	/** Pasiva: el golpe a un mob malherido le corta la cabeza; la cabeza cae el 75 % de las veces (cráneo de wither 25 %). */
+	public static final float HARPE_HEAD_CHANCE = 0.75f;
+	public static final float HARPE_WITHER_SKULL_CHANCE = 0.25f;
+	/** Muertes con la harpe sin decapitar (golpes que no cumplían el umbral). */
+	public static final float HARPE_KILL_HEAD_CHANCE = 0.15f;
 	public static final float HARPE_EXECUTE_HEALTH = 0.25f;
-	public static final int HARPE_COOLDOWN = 300;
+	public static final int HARPE_COOLDOWN = 20;
 	public static final int HARPE_WARN_RADIUS = 12;
 	// Pegaso
 	public static final int PEGASUS_LEAVE_TICKS = 60;
@@ -106,7 +109,6 @@ public final class GreeceLegends {
 	/** Manzana de la Discordia: mob marcado y hasta cuándo. */
 	private static final Map<Mob, Long> FAIREST = new WeakHashMap<>();
 	/** Harpe: mobs que ya avisaron (para que el aviso suene una vez por mob). */
-	private static final Map<UUID, Set<UUID>> HARPE_WARNED = new HashMap<>();
 
 	private GreeceLegends() {
 	}
@@ -139,6 +141,8 @@ public final class GreeceLegends {
 				amount += NEMEA_FIST_DAMAGE;
 			}
 			amount = releaseWrath(attacker, self, amount);
+			// Harpe (pasiva): el golpe a un mob malherido le corta la cabeza.
+			amount = HarpeItem.behead(attacker, self, amount);
 		}
 		// Talos: por la espalda (el tobillo) recibe el doble.
 		if (self instanceof io.github.potatustudio.mythicrelics.entity.Talos && source.getSourcePosition() != null) {
@@ -225,8 +229,9 @@ public final class GreeceLegends {
 			return EventResult.pass();
 		}
 		ItemStack head = headOf(victim);
-		float chance = head.is(Items.WITHER_SKELETON_SKULL) ? HARPE_WITHER_SKULL_CHANCE : HARPE_HEAD_CHANCE;
-		if (!head.isEmpty() && (HarpeItem.isBeheading(victim) || level.getRandom().nextFloat() < chance)) {
+		float chance = !HarpeItem.isBeheading(victim) ? HARPE_KILL_HEAD_CHANCE
+				: head.is(Items.WITHER_SKELETON_SKULL) ? HARPE_WITHER_SKULL_CHANCE : HARPE_HEAD_CHANCE;
+		if (!head.isEmpty() && level.getRandom().nextFloat() < chance) {
 			victim.spawnAtLocation(level, head);
 		}
 		return EventResult.pass();
@@ -235,25 +240,9 @@ public final class GreeceLegends {
 	/** Aviso de la harpe: con la recarga lista, los mobs que ya se pueden decapitar brillan y suena un aviso una vez. */
 	private static void harpeWarning(ServerPlayer player) {
 		ItemStack held = player.getMainHandItem();
-		Set<UUID> warned = HARPE_WARNED.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
-		if (!held.is(ModItems.HARPE.get()) || player.getCooldowns().isOnCooldown(held)) {
-			warned.clear();
-			return;
-		}
-		ServerLevel level = player.level();
-		Set<UUID> now = new HashSet<>();
-		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(HARPE_WARN_RADIUS),
-				m -> canBehead(m) && !ChinaRelics.isFriend(player, m))) {
-			now.add(mob.getUUID());
-			mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, 15, 0, false, false));
-			level.sendParticles(ParticleTypes.CRIT, mob.getX(), mob.getY() + mob.getBbHeight() + 0.3, mob.getZ(), 3, 0.2, 0.1, 0.2, 0.0);
-			if (!warned.contains(mob.getUUID())) {
-				player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.6f, 0.6f);
-				player.sendOverlayMessage(Component.translatable("message.mythicrelics.harpe_ready").withStyle(ChatFormatting.GOLD));
-			}
-		}
-		warned.retainAll(now);
-		warned.addAll(now);
+		io.github.potatustudio.mythicrelics.relic.ExecuteWarning.tick(player, "harpe",
+				held.is(ModItems.HARPE.get()) && !player.getCooldowns().isOnCooldown(held), HARPE_WARN_RADIUS,
+				GreeceLegends::canBehead, "message.mythicrelics.harpe_ready");
 	}
 
 	// ---- Manzana de la Discordia --------------------------------------------------------------------------------------

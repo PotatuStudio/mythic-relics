@@ -1,4 +1,4 @@
-"""Traducciones de la cuarta ronda de arreglos (2026-11-14): saco de xirang solo con la pasiva (5 min).
+"""Traducciones de la cuarta ronda de arreglos (2026-11-14): saco de xirang solo con la pasiva (5 min), harpe pasiva, Mímir como guía, aviso del cetro de Anubis.
 También ajusta los números de moddata (tooltip_args) que cambiaron. Uso: python feedback4_lang.py"""
 import io
 import json
@@ -11,18 +11,40 @@ from moddata import ASSETS  # noqa: E402
 ES = {
     "item.mythicrelics.xirang_sack.tooltip.1": "Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga %1$s min)",
     "item.mythicrelics.xirang_sack.tooltip.2": "Basta con llevarlo en el inventario",
+    "item.mythicrelics.harpe.tooltip.1": "Pasiva: golpear a un mob con menos del %3$s%% de vida le corta la cabeza al instante (no jefes)",
+    "item.mythicrelics.harpe.tooltip.2": "La cabeza cae el %1$s%% de las veces (esqueleto del Wither: %2$s%%)",
+    "item.mythicrelics.harpe.tooltip.3": "Con la hoz lista, los mobs que ya se pueden decapitar brillan",
+    "item.mythicrelics.mimir_head.tooltip.3": "Te guía con una estela de luz al tesoro más valioso a %3$s bloques (debris, diamante, cofre sin abrir…)",
+    "message.mythicrelics.mimir_guide": "Mímir: %s a %s bloques, %s",
+    "message.mythicrelics.mimir_nothing": "Mímir: no siento ningún tesoro cerca",
+    "message.mythicrelics.mimir_silent": "Mímir calla",
+    "message.mythicrelics.mimir_chest_name": "un cofre sin abrir",
+    "message.mythicrelics.anubis_ready": "Anubis puede juzgar a ese no-muerto",
 }
 EN = {
     "item.mythicrelics.xirang_sack.tooltip.1": "If you fall into lava or the void, the earth grows under your feet and saves you (cooldown %1$s min)",
     "item.mythicrelics.xirang_sack.tooltip.2": "Just keep it in your inventory",
+    "item.mythicrelics.harpe.tooltip.1": "Passive: hitting a mob below %3$s%% health cuts its head off instantly (not bosses)",
+    "item.mythicrelics.harpe.tooltip.2": "The head drops %1$s%% of the time (Wither skeleton: %2$s%%)",
+    "item.mythicrelics.harpe.tooltip.3": "With the sickle ready, mobs that can be beheaded glow",
+    "item.mythicrelics.mimir_head.tooltip.3": "Guides you with a trail of light to the most valuable treasure within %3$s blocks (debris, diamond, unopened chest…)",
+    "message.mythicrelics.mimir_guide": "Mímir: %s, %s blocks, %s",
+    "message.mythicrelics.mimir_nothing": "Mímir: I sense no treasure nearby",
+    "message.mythicrelics.mimir_silent": "Mímir falls silent",
+    "message.mythicrelics.mimir_chest_name": "an unopened chest",
+    "message.mythicrelics.anubis_ready": "Anubis can judge that undead",
 }
 
-REMOVE = ["item.mythicrelics.xirang_sack.tooltip.3", "tooltip.mythicrelics.xirang_charges"]
+REMOVE = ["item.mythicrelics.xirang_sack.tooltip.3", "tooltip.mythicrelics.xirang_charges",
+          "message.mythicrelics.mimir_chest", "message.mythicrelics.mimir_danger", "message.mythicrelics.mimir_ore",
+          "message.mythicrelics.mimir_spawner", "message.mythicrelics.mimir_whisper"]
 
 MODDATA = [
     ('"xirang_sack": [int(c["XIRANG_WIDTH"]), int(c["XIRANG_HEIGHT"]), int(c["XIRANG_CHARGES"]), int(c["XIRANG_RECHARGE_TICKS"] // 20),\n'
      '                        int(c["XIRANG_RESCUE_COOLDOWN"] // 20 // 60)],',
      '"xirang_sack": [int(c["XIRANG_RESCUE_COOLDOWN"] // 20 // 60)],'),
+    ('"mimir_head": [int(c["MIMIR_RADIUS"]), int(c["MIMIR_INTERVAL"] // 20)],',
+     '"mimir_head": [int(c["MIMIR_RADIUS"]), int(c["MIMIR_INTERVAL"] // 20), int(c["GUIDE_RADIUS"])],'),
 ]
 
 if __name__ == "__main__":

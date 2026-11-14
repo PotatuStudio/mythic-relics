@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.FloatTag;
@@ -26,27 +27,26 @@ import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Cabeza de Mímir en la mano secundaria:
  * <ul>
  *   <li>Cada {@link NorseGods#MIMIR_INTERVAL} ticks, los minerales valiosos cercanos se marcan unos segundos con un
  *       contorno brillante (una copia del bloque que brilla y se ve a través de las paredes), del color del mineral.</li>
- *   <li>Cada {@link #WHISPER_INTERVAL} ticks, Mímir susurra una pista: el mineral valioso más cercano y su dirección,
- *       un cofre sin abrir o un generador de monstruos cerca, o cuántos hostiles te rodean.</li>
+ *   <li>Te guía: al tomarlo dice en una línea fugaz qué siente cerca y, mientras lo llevas, una estela de luz sale de ti
+ *       hacia el tesoro más valioso (debris, diamante o cofre sin abrir, esmeralda, oro, lapislázuli); al llegar pasa al
+ *       siguiente. Nada va al chat.</li>
  * </ul>
  */
 public final class MimirHead {
-	public static final int WHISPER_INTERVAL = 600;
 	private static final int OUTLINE_TICKS = 100;
 	private static final int MAX_OUTLINES = 24;
 	private static final int WHISPER_RADIUS = 20;
@@ -153,25 +153,116 @@ public final class MimirHead {
 		return list;
 	}
 
-	/** Mímir susurra una pista útil (si tiene algo que decir). */
-	static void whisper(ServerLevel level, ServerPlayer player) {
-		BlockPos center = player.blockPosition();
-		List<Component> hints = new ArrayList<>();
-		// El mineral valioso más cercano.
-		BlockPos ore = null;
-		int r = WHISPER_RADIUS;
-		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-r, -r / 2, -r), center.offset(r, r / 2, r))) {
-			if (valuable(level.getBlockState(pos)) && (ore == null || pos.distSqr(center) < ore.distSqr(center))) {
-				ore = pos.immutable();
+	// ---- Guía: Mímir te lleva al tesoro más valioso cercano ------------------------------------------------------------
+
+	/** Radio en que Mímir busca tesoros (horizontal; la mitad hacia arriba y abajo). */
+	public static final int GUIDE_RADIUS = 24;
+	/** Cada cuánto se dibuja la estela y se actualiza el aviso sobre la barra. */
+	private static final int TRAIL_INTERVAL = 30;
+	/** Cada cuánto vuelve a buscar el mejor tesoro (antes, si el actual desaparece o llegas). */
+	private static final int SCAN_INTERVAL = 100;
+	private static final double ARRIVED = 2.5;
+	/** Un cofre sin abrir vale como un diamante. */
+	private static final int CHEST_VALUE = 5;
+
+	/** Lo que busca cada jugador con Mímir en la mano. */
+	private static final class Guide {
+		BlockPos target;
+		Component name;
+		long nextScan;
+	}
+
+	private static final Map<java.util.UUID, Guide> GUIDES = new java.util.HashMap<>();
+
+	/** Cuánto vale cada mineral (más alto, más prioridad; empate: el más cercano). 0 = no es tesoro. */
+	private static int value(BlockState state) {
+		Block b = state.getBlock();
+		if (b == Blocks.ANCIENT_DEBRIS) {
+			return 6;
+		}
+		if (b == Blocks.DIAMOND_ORE || b == Blocks.DEEPSLATE_DIAMOND_ORE) {
+			return 5;
+		}
+		if (b == Blocks.EMERALD_ORE || b == Blocks.DEEPSLATE_EMERALD_ORE) {
+			return 3;
+		}
+		if (state.is(BlockTags.GOLD_ORES)) {
+			return 2;
+		}
+		if (b == Blocks.LAPIS_ORE || b == Blocks.DEEPSLATE_LAPIS_ORE) {
+			return 1;
+		}
+		return 0;
+	}
+
+	/**
+	 * Llamado cada tick por jugador. Al tomar a Mímir en la mano secundaria dice en una línea (sobre la barra) qué siente
+	 * cerca; mientras lo llevas, una estela de luz sale de ti hacia el tesoro más valioso y el aviso se renueva; al llegar
+	 * (o si el tesoro desaparece) pasa al siguiente. Al guardarlo, calla. Nada va al chat.
+	 */
+	static void guide(ServerLevel level, ServerPlayer player, boolean holding) {
+		Guide g = GUIDES.get(player.getUUID());
+		if (!holding) {
+			if (g != null) {
+				GUIDES.remove(player.getUUID());
+				player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_silent")
+						.withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
+			}
+			return;
+		}
+		long now = level.getGameTime();
+		boolean fresh = g == null;
+		if (fresh) {
+			g = new Guide();
+			GUIDES.put(player.getUUID(), g);
+			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 0.6f, 0.6f);
+		}
+		boolean lost = g.target != null && (value(level.getBlockState(g.target)) == 0 && !isChest(level, g.target)
+				|| player.getEyePosition().distanceTo(Vec3.atCenterOf(g.target)) < ARRIVED);
+		if (fresh || lost || now >= g.nextScan) {
+			BlockPos before = g.target;
+			scan(level, player, g);
+			g.nextScan = now + SCAN_INTERVAL;
+			if (lost && g.target != null && !g.target.equals(before)) {
+				level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8f, 0.8f);
 			}
 		}
-		if (ore != null) {
-			hints.add(Component.translatable("message.mythicrelics.mimir_ore", level.getBlockState(ore).getBlock().getName(),
-					(int) Math.sqrt(ore.distSqr(center)), where(center, ore)));
+		if (fresh || lost || player.tickCount % TRAIL_INTERVAL == 0) {
+			if (g.target == null) {
+				player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_nothing")
+						.withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
+				return;
+			}
+			BlockPos here = player.blockPosition();
+			player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_guide", g.name,
+					(int) Math.round(Math.sqrt(g.target.distSqr(here))), where(here, g.target)).withStyle(ChatFormatting.DARK_AQUA));
+			trail(level, player, g.target);
 		}
-		// Cofres sin abrir y generadores de monstruos en los chunks cercanos.
-		BlockPos chest = null;
-		BlockPos spawner = null;
+	}
+
+	private static boolean isChest(ServerLevel level, BlockPos pos) {
+		return level.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity box && box.getLootTable() != null;
+	}
+
+	/** Busca el mejor tesoro: minerales valiosos y cofres sin abrir. */
+	private static void scan(ServerLevel level, ServerPlayer player, Guide g) {
+		BlockPos center = player.blockPosition();
+		int r = GUIDE_RADIUS;
+		BlockPos best = null;
+		int bestValue = 0;
+		double bestDist = Double.MAX_VALUE;
+		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-r, -r / 2, -r), center.offset(r, r / 2, r))) {
+			int v = value(level.getBlockState(pos));
+			if (v == 0) {
+				continue;
+			}
+			double d = pos.distSqr(center);
+			if (v > bestValue || v == bestValue && d < bestDist) {
+				best = pos.immutable();
+				bestValue = v;
+				bestDist = d;
+			}
+		}
 		for (int cx = -1; cx <= 1; cx++) {
 			for (int cz = -1; cz <= 1; cz++) {
 				LevelChunk chunk = level.getChunkSource().getChunkNow((center.getX() >> 4) + cx, (center.getZ() >> 4) + cz);
@@ -179,35 +270,34 @@ public final class MimirHead {
 					continue;
 				}
 				for (BlockEntity be : chunk.getBlockEntities().values()) {
-					BlockPos p = be.getBlockPos();
-					if (be instanceof RandomizableContainerBlockEntity box && box.getLootTable() != null
-							&& (chest == null || p.distSqr(center) < chest.distSqr(center))) {
-						chest = p;
-					} else if (be instanceof SpawnerBlockEntity && (spawner == null || p.distSqr(center) < spawner.distSqr(center))) {
-						spawner = p;
+					if (be instanceof RandomizableContainerBlockEntity box && box.getLootTable() != null) {
+						double d = be.getBlockPos().distSqr(center);
+						if (CHEST_VALUE > bestValue || CHEST_VALUE == bestValue && d < bestDist) {
+							best = be.getBlockPos().immutable();
+							bestValue = CHEST_VALUE;
+							bestDist = d;
+						}
 					}
 				}
 			}
 		}
-		if (chest != null) {
-			hints.add(Component.translatable("message.mythicrelics.mimir_chest", (int) Math.sqrt(chest.distSqr(center)), where(center, chest)));
+		g.target = best;
+		g.name = best == null ? null : isChest(level, best) ? Component.translatable("message.mythicrelics.mimir_chest_name")
+				: level.getBlockState(best).getBlock().getName();
+	}
+
+	/** Estela de luz, solo para el que lleva a Mímir: unos 8 bloques desde el pecho hacia el tesoro. */
+	private static void trail(ServerLevel level, ServerPlayer player, BlockPos target) {
+		Vec3 from = player.position().add(0, 1.2, 0);
+		Vec3 dir = Vec3.atCenterOf(target).subtract(from);
+		double len = Math.min(8.0, dir.length());
+		dir = dir.normalize();
+		for (double d = 0.8; d < len; d += 0.35) {
+			Vec3 p = from.add(dir.scale(d));
+			level.sendParticles(player, ParticleTypes.SOUL_FIRE_FLAME, true, false, p.x, p.y, p.z, 1, 0.02, 0.02, 0.02, 0.0);
 		}
-		if (spawner != null) {
-			hints.add(Component.translatable("message.mythicrelics.mimir_spawner", (int) Math.sqrt(spawner.distSqr(center)),
-					where(center, spawner)));
-		}
-		int hostiles = level.getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class, player.getBoundingBox().inflate(24),
-				e -> e instanceof Enemy && e.isAlive()).size();
-		if (hostiles >= 4) {
-			hints.add(Component.translatable("message.mythicrelics.mimir_danger", hostiles));
-		}
-		if (hints.isEmpty()) {
-			return;
-		}
-		Component hint = hints.get(level.getRandom().nextInt(hints.size()));
-		player.sendSystemMessage(Component.translatable("message.mythicrelics.mimir_whisper", hint)
-				.withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SOUL_ESCAPE.value(), SoundSource.PLAYERS, 0.5f, 0.6f);
+		Vec3 end = from.add(dir.scale(len));
+		level.sendParticles(player, ParticleTypes.END_ROD, true, false, end.x, end.y, end.z, 4, 0.1, 0.1, 0.1, 0.01);
 	}
 
 	/** «arriba, al noreste», «abajo, al sur»… */
