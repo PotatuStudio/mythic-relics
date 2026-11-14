@@ -70,4 +70,16 @@ public class VestaLampItem extends RelicItem {
 			it.remove();
 		}
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.onStopping(server -> {
+			for (Hearth h : HEARTHS) {
+				if (h.level().getBlockState(h.pos()).is(Blocks.CAMPFIRE)) {
+					h.level().removeBlock(h.pos(), false);
+				}
+			}
+			HEARTHS.clear();
+		});
+	}
 }

@@ -35,6 +35,11 @@ public final class TargetVeto {
 	}
 
 	public static void lull(Mob mob, long until) {
+		// Se poda de vez en cuando: los mobs que mueren o se descargan no vuelven a consultar y dejaban su entrada.
+		if (LULLED.size() > 256) {
+			long now = mob.level().getGameTime();
+			LULLED.values().removeIf(u -> u <= now);
+		}
 		LULLED.put(mob.getUUID(), until);
 	}
 
@@ -69,5 +74,10 @@ public final class TargetVeto {
 		}
 		return mob.typeHolder().is(EntityTypeTags.UNDEAD) && EgyptRelics.hasAnubisSet(player)
 				&& !(mob.getLastHurtByMob() == player && mob.tickCount - mob.getLastHurtByMobTimestamp() < ANUBIS_PROVOKED_TICKS);
+	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(LULLED);
 	}
 }

@@ -184,4 +184,9 @@ public final class CharonStash extends SavedData {
 		player.totalExperience = entry.total();
 		player.sendOverlayMessage(Component.translatable("message.mythicrelics.charon_paid").withStyle(ChatFormatting.AQUA));
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(PAID);
+	}
 }

@@ -231,6 +231,7 @@ public final class GreeceLegends {
 		ItemStack head = headOf(victim);
 		float chance = !HarpeItem.isBeheading(victim) ? HARPE_KILL_HEAD_CHANCE
 				: head.is(Items.WITHER_SKELETON_SKULL) ? HARPE_WITHER_SKULL_CHANCE : HARPE_HEAD_CHANCE;
+		HarpeItem.forget(victim);
 		if (!head.isEmpty() && level.getRandom().nextFloat() < chance) {
 			victim.spawnAtLocation(level, head);
 		}
@@ -312,5 +313,11 @@ public final class GreeceLegends {
 					(int) TALOS_HUG_DAMAGE, TALOS_HUG_FIRE_SECONDS, TALOS_COOLDOWN / 20 / 60};
 			default -> NorseSagas.tooltipArgs(id);
 		};
+	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(WRATH, WRATH_UNTIL);
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(FAIREST);
 	}
 }

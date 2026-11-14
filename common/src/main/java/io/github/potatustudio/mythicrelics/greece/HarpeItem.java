@@ -31,6 +31,10 @@ public class HarpeItem extends RelicItem {
 		return BEHEADING.contains(e);
 	}
 
+	static void forget(LivingEntity e) {
+		BEHEADING.remove(e);
+	}
+
 	/**
 	 * Golpe cuerpo a cuerpo de {@code attacker} a {@code target}: si lleva la harpe en la mano, la recarga está lista y
 	 * el mob está malherido, el golpe lo decapita (daño de sobra para matarlo). Devuelve el daño final.

@@ -271,4 +271,11 @@ public final class JapanGods {
 			default -> io.github.potatustudio.mythicrelics.greece.GreeceLegends.tooltipArgs(id);
 		};
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(DRYING, DISGUISED);
+		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> DRY.remove(p.getUUID()));
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(DRY, DRUNK);
+	}
 }

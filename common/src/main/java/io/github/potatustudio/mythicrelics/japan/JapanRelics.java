@@ -343,4 +343,10 @@ public final class JapanRelics {
 	private static String fmt(double v) {
 		return v == Math.floor(v) ? Integer.toString((int) v) : Double.toString(Math.round(v * 10) / 10.0);
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(DRUM, GROWN, BUBBLES);
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(CORRIDORS);
+	}
 }

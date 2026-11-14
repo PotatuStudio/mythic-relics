@@ -242,4 +242,10 @@ public final class NorseGods {
 			default -> io.github.potatustudio.mythicrelics.china.ChinaRelics.tooltipArgs(id);
 		};
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(CREEPER_WARNED);
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(SHIPS);
+	}
 }

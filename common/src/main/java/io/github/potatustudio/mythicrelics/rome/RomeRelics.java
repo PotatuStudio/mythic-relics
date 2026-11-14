@@ -303,4 +303,9 @@ public final class RomeRelics {
 			default -> io.github.potatustudio.mythicrelics.norse.NorseRelics.tooltipArgs(id);
 		};
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(REFLECT);
+	}
 }

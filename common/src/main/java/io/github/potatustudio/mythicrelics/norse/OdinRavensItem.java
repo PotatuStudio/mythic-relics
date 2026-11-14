@@ -130,4 +130,16 @@ public class OdinRavensItem extends RelicItem {
 		return Component.translatable("message.mythicrelics." + key, Component.translatable("direction.mythicrelics." + DIRECTIONS[sector]),
 				distance).withStyle(ChatFormatting.GRAY);
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> {
+			ACTIVE.remove(p.getUUID());
+			java.util.List<OdinRaven> out = OUT.remove(p.getUUID());
+			if (out != null) {
+				out.forEach(net.minecraft.world.entity.Entity::discard);
+			}
+		});
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(OUT, ACTIVE);
+	}
 }

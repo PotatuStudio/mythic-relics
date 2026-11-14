@@ -404,4 +404,10 @@ public final class GreeceRelics {
 			default -> GreeceHeroes.tooltipArgs(id);
 		};
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(HADES_STILL, HADES_INVISIBLE);
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(PETRIFIED, GAZE);
+	}
 }

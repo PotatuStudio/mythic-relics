@@ -38,6 +38,7 @@ public final class MythicRelics {
 		ModItems.init();
 		ModEntities.init();
 		ModLoot.init();
+		io.github.potatustudio.mythicrelics.relic.ServerState.init();
 		Minions.init();
 		RelicCooldowns.init();
 		io.github.potatustudio.mythicrelics.relic.RelicSets.init();

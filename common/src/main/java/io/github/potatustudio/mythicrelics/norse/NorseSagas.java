@@ -439,4 +439,18 @@ public final class NorseSagas {
 	static boolean isBoss(LivingEntity e) {
 		return GreeceLegends.isBoss(e);
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		// El vuelo del halcón se guarda con el jugador: se deshace antes de que salga (si no, quedaría volando).
+		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> endFalcon(p, false));
+		io.github.potatustudio.mythicrelics.relic.ServerState.onStopping(server -> server.getPlayerList().getPlayers().forEach(p -> endFalcon(p, false)));
+		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> {
+			FreyrSword sword = SWORDS.get(p.getUUID());
+			if (sword != null && !sword.isRemoved()) {
+				sword.discard();
+			}
+		});
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(TYRFING_HELD, COMBAT_UNTIL, SWORDS, GRAM_WARNED, FALCON_UNTIL);
+	}
 }

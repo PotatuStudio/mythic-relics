@@ -187,4 +187,9 @@ public final class Minions {
 		return t != null && t.isAlive() && t != mob && t != owner && owner.tickCount - timestamp < TARGET_MEMORY
 				&& ownerOf(t) == null && !isAlly(t, owner.getUUID()) && mob.distanceToSqr(t) < SEARCH_RANGE * SEARCH_RANGE;
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(MINIONS);
+	}
 }

@@ -338,4 +338,13 @@ public final class MimirHead {
 		String level = dy > 3 ? "up" : dy < -3 ? "down" : "level";
 		return Component.translatable("message.mythicrelics.mimir_where." + level, dir);
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.onStopping(server -> {
+			OUTLINES.forEach(o -> o.display().discard());
+			OUTLINES.clear();
+		});
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(GUIDES);
+	}
 }

@@ -402,4 +402,10 @@ public final class ChinaRelics {
 	private static String fmt(double value) {
 		return value == Math.floor(value) ? Integer.toString((int) value) : Double.toString(value);
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(LUNAR, DASHING, DASH_HIT, FLAPS);
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(CLOUDS);
+	}
 }

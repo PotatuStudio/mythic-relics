@@ -151,4 +151,9 @@ public class SibyllineBooksItem extends RelicItem {
 			});
 		});
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(GUIDES);
+	}
 }

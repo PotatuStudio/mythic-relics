@@ -28,8 +28,19 @@ public class StoneStatueRenderer extends EntityRenderer<StoneStatue, StoneStatue
 		@Nullable EntityRenderState mob;
 	}
 
-	private final Map<EntityType<?>, Entity> models = new HashMap<>();
-	private @Nullable Level modelsLevel;
+	/**
+	 * Un modelo por tipo de mob, compartido por todas las estatuas (y por los renderers que se crean al recargar los
+	 * recursos). Se vacía al desconectarse, para no retener el mundo del cliente que se cerró.
+	 */
+	private static final Map<EntityType<?>, Entity> models = new HashMap<>();
+	private static @Nullable Level modelsLevel;
+
+	static {
+		dev.architectury.event.events.client.ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(player -> {
+			models.clear();
+			modelsLevel = null;
+		});
+	}
 
 	public StoneStatueRenderer(EntityRendererProvider.Context context) {
 		super(context);

@@ -373,4 +373,9 @@ public final class EgyptGods {
 	public static int rebirthMinutes() {
 		return OSIRIS_REBIRTH_COOLDOWN / 20 / 60;
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(FRENZY);
+	}
 }

@@ -203,4 +203,9 @@ public final class NorseRelics {
 			default -> NorseGods.tooltipArgs(id);
 		};
 	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(BOUND);
+	}
 }

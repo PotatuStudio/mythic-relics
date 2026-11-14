@@ -183,7 +183,7 @@ public final class ChinaGods {
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------
 
 	/** Último suelo firme de cada jugador (a donde lo devuelve el xirang si cae al vacío). */
-	private static final Map<UUID, BlockPos> SAFE_GROUND = new HashMap<>();
+	private static final Map<UUID, net.minecraft.core.GlobalPos> SAFE_GROUND = new HashMap<>();
 
 	/** Saco de xirang: la tierra crece bajo tus pies y te saca de la lava o del vacío. */
 	private static void xirangRescue(ServerPlayer player) {
@@ -200,7 +200,8 @@ public final class ChinaGods {
 				feet = feet.above();
 			}
 		} else {
-			feet = SAFE_GROUND.getOrDefault(player.getUUID(), level.getRespawnData().pos()).above();
+			net.minecraft.core.GlobalPos safe = SAFE_GROUND.get(player.getUUID());
+			feet = (safe != null && safe.dimension() == level.dimension() ? safe.pos() : level.getRespawnData().pos()).above();
 		}
 		for (BlockPos p : BlockPos.betweenClosed(feet.offset(-1, -1, -1), feet.offset(1, -1, 1))) {
 			if (level.getBlockState(p).canBeReplaced() || level.getFluidState(p).is(net.minecraft.tags.FluidTags.LAVA)) {
@@ -248,7 +249,7 @@ public final class ChinaGods {
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			if (player.onGround() && !player.isInLava()) {
-				SAFE_GROUND.put(player.getUUID(), player.blockPosition());
+				SAFE_GROUND.put(player.getUUID(), net.minecraft.core.GlobalPos.of(player.level().dimension(), player.blockPosition()));
 			}
 			if ((player.isInLava() || player.getY() < player.level().getMinY() - 8) && !player.isSpectator()
 					&& player.getInventory().contains(s -> s.is(ModItems.XIRANG_SACK.get()))) {
@@ -300,5 +301,11 @@ public final class ChinaGods {
 			case "immortal_peach_branch" -> new Object[] {PEACH_GROW_TICKS / 24000, PEACH_ABSORPTION_TICKS / 20 / 60, PEACH_REGEN_TICKS / 20};
 			default -> io.github.potatustudio.mythicrelics.japan.JapanRelics.tooltipArgs(id);
 		};
+	}
+
+	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
+	static {
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(SAFE_GROUND);
+		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(SEALED);
 	}
 }
