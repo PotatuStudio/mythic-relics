@@ -1,0 +1,474 @@
+<title>Nórdicos · Tanda 3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;600&display=swap">
+<style>
+/* Misma atmósfera que el visor de la tanda 1 (cámara de tumba de noche). Documento de diseño: vista 3D arriba,
+   fichas de cada reliquia y al final las decisiones abiertas. */
+:root {
+  --night: #0d1014; --stone: #171c22; --stone-2: #1e252d; --line: #333d48;
+  --sand: #e6e9ee; --muted: #9aa5b2; --gold: #e9b949; --lapis: #8ab4f0; --sun: #f08a5a; --green: #8ad874;
+  --font-display: "Marcellus", Georgia, serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--night); color: var(--sand); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px; }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 28px; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: 2.1rem; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; margin: 0; color: var(--gold); text-wrap: balance; }
+h3 { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+p { margin: 0; }
+.lead { color: var(--muted); max-width: 70ch; }
+.intro { display: grid; gap: 10px; max-width: 75ch; }
+.intro ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+section.stagebox { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 12px; }
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #0b0e12; }
+.stage canvas { display: block; width: 100%; height: 100%; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); border-radius: 6px; padding: 6px 12px;
+  font: 600 13px var(--font-body); cursor: pointer; }
+.btn[aria-pressed="false"] { opacity: .5; }
+.btn:focus-visible { outline: 2px solid var(--lapis); outline-offset: 2px; }
+.note { color: var(--muted); font-size: 13px; }
+.cards { display: grid; gap: 18px; }
+.card { background: var(--stone); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid;
+  grid-template-columns: 112px minmax(0, 1fr); gap: 20px; }
+@media (max-width: 640px) { .card { grid-template-columns: minmax(0, 1fr); } }
+.icon { width: 112px; height: 112px; image-rendering: pixelated; background: #8b8b8b;
+  box-shadow: inset 4px 4px 0 #373737, inset -4px -4px 0 #fff; padding: 8px; }
+.icon canvas { width: 96px; height: 96px; image-rendering: pixelated; display: block; }
+.body { display: grid; gap: 14px; min-width: 0; }
+.head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12px; border: 1px solid var(--line); background: var(--stone-2); border-radius: 999px; padding: 2px 10px; color: var(--sand); }
+.chip.epic { border-color: #c070e0; color: #e6a8ff; }
+.chip.rare { border-color: #4ab8c8; color: #8ae8f4; }
+.chip.warn { border-color: #c8902a; color: var(--gold); }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 760px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.effects { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.effects b { color: var(--gold); font-weight: 600; }
+.fid { margin: 12px 0 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 12px; font-size: 13px; }
+.fid dt { font-weight: 600; white-space: nowrap; }
+.fid dd { margin: 0; color: var(--muted); }
+.fid-fiel { color: var(--green); } .fid-lic { color: var(--gold); } .fid-pop { color: var(--sun); }
+@media (max-width: 480px) { .fid { grid-template-columns: minmax(0, 1fr); } .fid dd { margin-bottom: 6px; } }
+.where { font-size: 14px; }
+.where span { color: var(--muted); }
+.set { background: var(--stone-2); border: 1px dashed #5a4a36; border-radius: 8px; padding: 12px 14px; }
+.decisions { background: var(--stone); border: 1px solid var(--gold); border-radius: 10px; padding: 20px; display: grid; gap: 10px; }
+.decisions ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 80ch; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Nórdicos · Tanda 3</h1>
+    <p class="lead">Seis reliquias más de los nórdicos con los efectos que revisamos en el chat: tres espadas famosas de las sagas, la espada de Freyr que pelea sola, el manto de halcón de Freyja y el dardo que mató a Baldr. Los íconos son borradores; la animación de la espada de Freyr va en una página aparte.</p>
+    <ul>
+      <li><b>Fuentes:</b> la Edda prosaica (Gylfaginning, Skáldskaparmál), la Edda poética (Skírnismál, Þrymskviða), la Saga de los Volsungos y la Saga de Hervör.</li>
+      <li><b>Lo pop que se evita:</b> Stormbreaker y «solo el digno» (Marvel), el Hacha Leviatán y Draupnir como lanza (God of War), los cascos con cuernos.</li>
+      <li><b>Maldición solo en Tyrfing:</b> en el mito Dáinsleif también debía matar al desenvainarse; aquí se diferencia por las heridas que no sanan.</li>
+      <li><b>Avisos:</b> Gram avisa cuando apuntas a un mob grande con la estocada lista.</li>
+      <li><b>Espacios:</b> la espada de Freyr va en el cinturón (compite con el escarabajo y Megingjörð); el manto, en la espalda (con la égida y las alas de Ícaro).</li>
+    </ul>
+  </header>
+
+  <section class="stagebox">
+    <h2>Así se verían</h2>
+    <p class="note">Mismo muñeco que los otros visores. La espada de Freyr cuelga envainada del costado izquierdo y el manto de halcón cae por la espalda; en la mano derecha, Gram, Tyrfing o Dáinsleif (una a la vez), y en la izquierda el dardo.</p>
+    <div class="stage" id="stage"></div>
+    <div class="controls" id="toggles"></div>
+  </section>
+
+  <div class="cards" id="cards"></div>
+
+  <section class="decisions">
+    <h2>Decisiones</h2>
+    <p class="note">Te las pregunto en el chat, con opciones y mi recomendación.</p>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DRAFT = {"icons": {"gram": {"png": "iVBORw0KGgoAAAANSUhEUgAAABAAAACwCAYAAAAG7+6PAAABNUlEQVR42u3aMQrCMBQGYHfd3b1IwSN4hM7iAQTv09EDODl5BIcOTl3cKoroEPsKD0IImJdXaEL/gJv/Iyny8V7jbDbGKsutUYVpRRXhcFUd5QUoUNd16uHDZmFU4edlbbhI1La5iOrMXEQcpmCxmptdsTTucYLC5lH1YSrieyZ/w/RxvyzeQXAg5DeQ9oIHSXvwvZ/gATyAB/CgD7+ve3gAD+ABPBhuXqAmAx7AA3gAD7jJyNWDz03hQReGB5PxoG3b1MM+D0Rh1wPxtu15IfrM3GSM4MHrrPCgC5MJ8GASHjRNk3rY54Eo7Hog3rbtQfSZucnIcV7oTNB54AEFHmBewH3jAPOCfV2Sy/sDDyjwAB7AgwE8sK9L8D4RHsAD/B9J7UFQkwEP4AE8mIQHQU1G/h78ACfn51GwsLpKAAAAAElFTkSuQmCC", "frames": [{"index": 0, "time": 50}, {"index": 1, "time": 1}, {"index": 2, "time": 1}, {"index": 3, "time": 1}, {"index": 4, "time": 1}, {"index": 5, "time": 1}, {"index": 6, "time": 1}, {"index": 7, "time": 1}, {"index": 8, "time": 1}, {"index": 9, "time": 1}, {"index": 10, "time": 1}]}, "tyrfing": {"png": "iVBORw0KGgoAAAANSUhEUgAAABAAAACwCAYAAAAG7+6PAAABY0lEQVR42u2ZvwrCMBDGu+vgpLujL1FwdOyD6C4Izq6+hA+hCE4+gmNddfQPosOZQCOhBJprbdLol6VLv/vaI/31LhdFLhcdRySvs6RNpYNIMV1WxAqinCfLDcmVLhIadDtUylmJVVCr9VXnwptLO0vxbT/8ZJflbArCFueDsMVSGPdbNI57lH8d60xLsQxiykmh2LQ92U9Q+SOJGr/AgyB48DqvwQPwwAEPrltfPMicwQML8eMwBQ/AAwc8OM198SBzBg9c9QuqyAAPwAP0C+CBKjJC5MEzrcADIQYPXPNAJN0TD4SzJx5ozo55YOts7Be44nyR4YEH910FHgixaXuCB3XyQCTdEw+EsyceaM6OeWDrbOQBV5wvMkLsFwzbk12hgAfoFzBvrKFf0McloZwfcP934EETeJANLcCDRvNAH5fgPBE8qI8H2dACPPj9eaNVkQEeoF8AD/6CB1ZFRvg8eAOPVevGJb07oQAAAABJRU5ErkJggg==", "frames": [{"index": 0, "time": 50}, {"index": 1, "time": 1}, {"index": 2, "time": 1}, {"index": 3, "time": 1}, {"index": 4, "time": 1}, {"index": 5, "time": 1}, {"index": 6, "time": 1}, {"index": 7, "time": 1}, {"index": 8, "time": 1}, {"index": 9, "time": 1}, {"index": 10, "time": 1}]}, "dainsleif": {"png": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAwCAYAAAAYX/pXAAAAyUlEQVR42mNgGAjgy8v1nyLNNyy1/5NlCEyziaHNf2lJhf/00wzS0NU+DUVzj6zYf7I1E20ALs14NZCtGVkj2ZphoQ3SRJbNIM2gwIEZQpLm0KB4uGZsYUJQMwiT7F90Q8g2gGjnDhpAcXnwcecW8ssDkGayUyjZmkEarl29RX55gK6ZpPIAm2aiywOSNKOXB2RpHi0PRssDUjQ/LskivzwAaSY7hZKtGaRh7eqt5JcH6JpJKg+waSa6PCBJM3p5QJbm0fJggMoDAONZJAxZ+r+FAAAAAElFTkSuQmCC", "frames": [{"index": 0, "time": 50}, {"index": 1, "time": 1}, {"index": 2, "time": 1}]}, "freyr_sword": {"png": "iVBORw0KGgoAAAANSUhEUgAAABAAAAGQCAYAAACnNOANAAACC0lEQVR42u3cMU7DMBTG8RyAI3AajsAJUGdOgMQZuAYbHICpE+xIwMaKYAIVoXYwMaqjyHlJ/N5r1Yb+I7HlM3Zd/fReGrmqdnHNZufBFY5XZ5DwOQ+l4fB1HS5Pj0InPDRIb7hkBqNh07SlK79BHV7cnzQ3mqadBnGtOQ2iDseb49/D1XHIl1MUjv8xhaXPpHfLU1ia8lBYHKR0yuKXTv1p7/TakgfLN4cH6zAe4AEe/A8PFo8OD9ZhPMADPKBfaLZmoMgY98ATxgM8wIO982CgyBj3wBPGAzzAA54n4gEe4AEe4AEe4AEe7L8Hq/c7PMADPMCDv/DP8wUe4AEe4MHm+oVYZOABHuABHqQiY6oeLF8dHtRhPMADPNhCvxCLDLMHH083Rg++501Y70EdjibgwaQ8yHdM5YGw3ZU7bJq2yoPSsOiBZtodDyxrTkWGOpw8eLk9s/cLKWzrF2oTfB4o1owHm/Ag3zGVB8J2V+6wadoqD0rDogeaaXc8sKy56Re04bxfaP9cMpXnB4o14wH9Au8fKDxo/1zC80Q8wAPeR3J70Fdk4AEe4MHhedBXZOABHuAB7yPhAR7gAR7gAR7gAR7gAR7gAR7gAR7gAR4Ue9A+EkvtgXRoJx7gAR5M1oP2kVhqD6RDO/EAD/DgsPsFqcgo9kA6tBMP8AAPJuuBVGQUeyAd2mn14BeTGTqGzcITSgAAAABJRU5ErkJggg==", "frames": [{"index": 0, "time": 50}, {"index": 1, "time": 1}, {"index": 2, "time": 1}, {"index": 3, "time": 1}, {"index": 4, "time": 1}, {"index": 5, "time": 1}, {"index": 6, "time": 1}, {"index": 7, "time": 1}, {"index": 8, "time": 1}, {"index": 9, "time": 1}, {"index": 10, "time": 1}, {"index": 11, "time": 1}, {"index": 12, "time": 1}, {"index": 13, "time": 1}, {"index": 14, "time": 1}, {"index": 15, "time": 1}, {"index": 16, "time": 1}, {"index": 17, "time": 1}, {"index": 18, "time": 1}, {"index": 19, "time": 1}, {"index": 20, "time": 1}, {"index": 21, "time": 1}, {"index": 22, "time": 1}, {"index": 23, "time": 1}, {"index": 24, "time": 1}]}, "falcon_cloak": {"png": "iVBORw0KGgoAAAANSUhEUgAAABAAAACQCAYAAAABQ+u5AAABLklEQVR42u3asQ7BUBQGYLsHsHsAr9DEc5iN7F7DZjR5CBaT3WI02IilqdBGjpwmTW7bc69zK024/ibXpZzDfxtfotXptLFN5xuShrr4dE3FoWpiNkh2Q6J45dcg6ndpEvVoOR7QfjHKB9/nffycqtgsNBu9bWK+uzScDaTi6idxNrFlV6+Fmd8WwboOtmIpgtikmt8VoRZDKnZFqDWxHXtXhFIMvuEdPPMLNI+LubQGTeb2to89SB5PeAAP4AE8yIsvcSaaoPagKIYH8AAe/LwH/NWVTFB7UBTDA3gAD4LwQDLB6/cCF2fnNTyAB/AgDA+qJnifP7gfZkTpER7AA3gQhgemCc3OJ962fqDAA3gAD779eiOb0Pj6ghco8AAewIPg/3+gBgUewIM/9eAFm5hBKK6QbIMAAAAASUVORK5CYII=", "frames": [{"index": 0, "time": 50}, {"index": 1, "time": 1}, {"index": 2, "time": 1}, {"index": 3, "time": 1}, {"index": 4, "time": 1}, {"index": 5, "time": 1}, {"index": 6, "time": 1}, {"index": 7, "time": 1}, {"index": 8, "time": 1}]}, "mistletoe_dart": {"png": "iVBORw0KGgoAAAANSUhEUgAAABAAAABQCAYAAAAQq/UNAAAAlklEQVR42mNgGAign6LwnyLNZBsA0rjtURV5BoA0xS+0opNmZIUwZxNtALI/kW0mye/YbM2fvPc/CIBoglEEMwBdE0HNIBux2UxyaBPlXEKJhCTN9krc/xel6f0H0SQnEoo0IxvCMKTAaHkwWh6Mlgej5cFoeTBaHoyWB6PlwWh5MFoejJYHo+XBaHkwWh6MlgdDqTwAAPmZqTyRuic4AAAAAElFTkSuQmCC", "frames": [{"index": 0, "time": 50}, {"index": 1, "time": 1}, {"index": 2, "time": 1}, {"index": 3, "time": 1}, {"index": 4, "time": 1}]}}, "worn": {"freyr_sword": {"part": "body", "elements": [{"name": "cintur\u00f3n atr\u00e1s", "from": [3.6, 2.2, 5.6], "to": [12.4, 3.2, 6.2], "faces": {"north": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "south": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "east": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "west": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "up": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "down": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}}}, {"name": "cintur\u00f3n adelante", "from": [3.6, 2.2, 9.8], "to": [12.4, 3.2, 10.4], "faces": {"north": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "south": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "east": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "west": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "up": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "down": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}}}, {"name": "vaina", "from": [10.4, -6.0, 10.4], "to": [11.6, 3.0, 11.4], "faces": {"north": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "south": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "east": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "west": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "up": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "down": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}}}, {"name": "contera", "from": [10.3, -6.6, 10.3], "to": [11.7, -6.0, 11.5], "faces": {"north": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "south": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "east": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "west": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "up": {"uv": [0.5, 0.5, 1.5, 1.5], "texture": "#p"}, "down": {"uv": [4.5, 0.5, 5.5, 1.5], "texture": "#p"}}}, {"name": "guarda", "from": [9.8, 3.0, 10.2], "to": [12.2, 3.6, 11.6], "faces": {"north": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "south": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "east": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "west": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "up": {"uv": [0.5, 0.5, 1.5, 1.5], "texture": "#p"}, "down": {"uv": [4.5, 0.5, 5.5, 1.5], "texture": "#p"}}}, {"name": "pu\u00f1o", "from": [10.6, 3.6, 10.6], "to": [11.4, 5.6, 11.2], "faces": {"north": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "south": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "east": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "west": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "up": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}, "down": {"uv": [12.5, 2.5, 13.5, 3.5], "texture": "#p"}}}, {"name": "pomo", "from": [10.4, 5.6, 10.4], "to": [11.6, 6.4, 11.4], "faces": {"north": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "south": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "east": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "west": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "up": {"uv": [0.5, 0.5, 1.5, 1.5], "texture": "#p"}, "down": {"uv": [4.5, 0.5, 5.5, 1.5], "texture": "#p"}}}]}, "falcon_cloak": {"part": "body", "elements": [{"name": "manto arriba", "from": [3.2, 3.0, 5.0], "to": [12.8, 13.6, 5.6], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "manto abierto abajo", "from": [2.6, 0.4, 4.6], "to": [13.4, 3.0, 5.4], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "barra 0", "from": [3.1, 4.2, 4.9], "to": [12.9, 4.8, 5.0], "faces": {"north": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "south": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "east": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "west": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "up": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "down": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}}}, {"name": "barra 1", "from": [3.1, 6.6, 4.9], "to": [12.9, 7.199999999999999, 5.0], "faces": {"north": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "south": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "east": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "west": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "up": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "down": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}}}, {"name": "barra 2", "from": [3.1, 9.0, 4.9], "to": [12.9, 9.6, 5.0], "faces": {"north": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "south": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "east": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "west": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "up": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "down": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}}}, {"name": "barra 3", "from": [3.1, 11.4, 4.9], "to": [12.9, 12.0, 5.0], "faces": {"north": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "south": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "east": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "west": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "up": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "down": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}}}, {"name": "barra abajo", "from": [2.5, 1.4, 4.5], "to": [13.5, 2.0, 4.6], "faces": {"north": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "south": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "east": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "west": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "up": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}, "down": {"uv": [8.5, 2.5, 9.5, 3.5], "texture": "#p"}}}, {"name": "punta", "from": [2.6, -1.0, 4.7], "to": [3.5, 0.4, 5.3], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "punta", "from": [4.2, -1.0, 4.7], "to": [5.1000000000000005, 0.4, 5.3], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "punta", "from": [5.800000000000001, -1.0, 4.7], "to": [6.700000000000001, 0.4, 5.3], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "punta", "from": [7.4, -1.0, 4.7], "to": [8.3, 0.4, 5.3], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "punta", "from": [9.0, -1.0, 4.7], "to": [9.9, 0.4, 5.3], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "punta", "from": [10.6, -1.0, 4.7], "to": [11.5, 0.4, 5.3], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "punta", "from": [12.2, -1.0, 4.7], "to": [13.1, 0.4, 5.3], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "esclavina", "from": [2.8, 11.4, 4.6], "to": [13.2, 14.4, 10.4], "faces": {"north": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "south": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "east": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "west": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "up": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}, "down": {"uv": [6.5, 2.5, 7.5, 3.5], "texture": "#p"}}}, {"name": "cuello", "from": [2.7, 13.6, 4.5], "to": [13.3, 14.6, 10.5], "faces": {"north": {"uv": [10.5, 2.5, 11.5, 3.5], "texture": "#p"}, "south": {"uv": [10.5, 2.5, 11.5, 3.5], "texture": "#p"}, "east": {"uv": [10.5, 2.5, 11.5, 3.5], "texture": "#p"}, "west": {"uv": [10.5, 2.5, 11.5, 3.5], "texture": "#p"}, "up": {"uv": [10.5, 2.5, 11.5, 3.5], "texture": "#p"}, "down": {"uv": [10.5, 2.5, 11.5, 3.5], "texture": "#p"}}}, {"name": "broche", "from": [7.0, 12.4, 10.4], "to": [9.0, 13.4, 10.8], "faces": {"north": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "south": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "east": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "west": {"uv": [2.5, 0.5, 3.5, 1.5], "texture": "#p"}, "up": {"uv": [0.5, 0.5, 1.5, 1.5], "texture": "#p"}, "down": {"uv": [4.5, 0.5, 5.5, 1.5], "texture": "#p"}}}]}}, "palette": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAbElEQVR42mP4/3nFfxD+esIJjE/2y4Dx/4deEFylBcY3LLXB+IiWAhj7H1wBxgwUG/Dp07v/IKylYQDG/y9ZgXGVvw4YH5kaB8bvn10D4zgrGTC+dvsRGFNuQO+Uef9BmIFcQLEBo2AUDAoAAADruh1u5e8fAAAAAElFTkSuQmCC"};
+const RELICS = [
+ {
+  "id": "gram",
+  "name": "Gram",
+  "rarity": "epic",
+  "slots": [
+   "Mano (arma)"
+  ],
+  "warn": "",
+  "myth": "Odín clavó una espada en el tronco del árbol Barnstokkr, en la sala de los Volsungos, y solo Sigmund pudo sacarla. En su última batalla Odín la partió con su lanza. El herrero Regin juntó los pedazos para Sigurd: la nueva Gram partió el yunque de un golpe y cortó un copo de lana que flotaba en el río. Con ella Sigurd mató al dragón Fáfnir desde un foso, hiriéndolo desde abajo (Saga de los Volsungos).",
+  "fid": {
+   "fiel": "La espada reforjada de Sigurd; el golpe desde el foso contra el dragón.",
+   "lic": "El doble de daño contra los mobs grandes y el aviso de la activa.",
+   "pop": "Nada. Se evita la Balmung de las óperas de Wagner."
+  },
+  "effects": [
+   "9 de daño.",
+   "<b>Desde el foso</b> (mantener clic derecho 1 s y soltar): estocada de 20 de daño; el doble contra mobs de 100 de vida o más (dragón del End, Wither, devastador, gólem, Warden).",
+   "Recarga: 12 s.",
+   "<b>Aviso:</b> cuando apuntas a un mob grande y la estocada está lista, se marca y suena un aviso."
+  ],
+  "where": [
+   [
+    "Cofres del armero de las aldeas (Regin era herrero)",
+    "2 % por cofre"
+   ]
+  ]
+ },
+ {
+  "id": "tyrfing",
+  "name": "Tyrfing",
+  "rarity": "epic",
+  "slots": [
+   "Mano (arma maldita)"
+  ],
+  "warn": "Maldita",
+  "myth": "El rey Svafrlami atrapó a los enanos Dvalinn y Durinn y los obligó a forjarle una espada que no fallara nunca. La hicieron: brillaba como el fuego, cortaba hierro como si fuera tela y jamás erraba un golpe. Pero la maldijeron: cada vez que se desenvainara tendría que matar a un hombre, causaría tres grandes males y sería la muerte de Svafrlami (Saga de Hervör).",
+  "fid": {
+   "fiel": "La espada que brilla como el fuego, no falla y debe matar cada vez que se desenvaina.",
+   "lic": "Que «no fallar» sean golpes críticos y el plazo de 60 s.",
+   "pop": "Nada."
+  },
+  "effects": [
+   "10 de daño, y todos tus golpes son críticos: nunca falla.",
+   "Suelta chispas de fuego (brilla).",
+   "<b>Maldición:</b> si pasa 60 s en tu mano sin matar, te hiere 4 corazones y la cuenta vuelve a empezar."
+  ],
+  "where": [
+   [
+    "Cofres del tesoro de los bastiones",
+    "2 % por cofre"
+   ]
+  ]
+ },
+ {
+  "id": "dainsleif",
+  "name": "Dáinsleif",
+  "rarity": "epic",
+  "slots": [
+   "Mano (arma)"
+  ],
+  "warn": "",
+  "myth": "La espada del rey Högni en la batalla de los Hjaðningar, la batalla que no termina: cada noche la valquiria Hildr revive a los caídos y al amanecer vuelven a pelear. La forjaron los enanos y sus heridas nunca sanaban (Edda prosaica, Skáldskaparmál).",
+  "fid": {
+   "fiel": "La espada de los enanos cuyas heridas nunca sanan.",
+   "lic": "El sangrado. La maldición de «debe matar» queda solo en Tyrfing para que no se repitan.",
+   "pop": "Nada."
+  },
+  "effects": [
+   "8 de daño.",
+   "<b>Heridas que no sanan:</b> el golpeado no se cura ni regenera por 10 s y sangra medio corazón por segundo durante 4 s."
+  ],
+  "where": [
+   [
+    "Cofres de ciudades antiguas",
+    "3 % por cofre"
+   ]
+  ]
+ },
+ {
+  "id": "freyr_sword",
+  "name": "Espada de Freyr",
+  "rarity": "epic",
+  "slots": [
+   "Fabric: cinturón",
+   "NeoForge: belt"
+  ],
+  "warn": "Compite con el escarabajo y Megingjörð",
+  "myth": "Freyr, el señor del sol de verano y de Álfheimr, tenía una espada que peleaba sola contra los gigantes si la llevaba alguien sabio. Enamorado de la giganta Gerðr, se la dio a su sirviente Skírnir para que fuera a pedirla por él. Por eso en el Ragnarök Freyr enfrentará a Surtr sin espada, solo con un asta de ciervo, y caerá (Skírnismál, Gylfaginning).",
+  "fid": {
+   "fiel": "La espada que pelea sola contra los gigantes, mejor si su portador es sabio.",
+   "lic": "Que esté siempre contigo, la «sabiduría» medida en niveles y la estela de luz dorada.",
+   "pop": "Nada."
+  },
+  "effects": [
+   "<b>Pasiva y permanente:</b> va envainada a tu costado.",
+   "<b>En combate</b> (golpeas, te golpean o un hostil te persigue a 12 bloques): sale volando y pelea sola. 5 de daño por tajo, +50 % contra mobs grandes, +50 % si tienes 30 niveles o más.",
+   "No se puede herir. A los 5 s sin combate vuelve girando a la vaina.",
+   "<b>Cómo se mueve:</b> sale de la vaina girando con un destello, da tajos en arco y estocadas, embiste de un enemigo a otro dejando una estela dorada y se envaina con un giro. Míralo en la página de la animación."
+  ],
+  "where": [
+   [
+    "Cofres de mansiones del bosque",
+    "3 % por cofre"
+   ]
+  ]
+ },
+ {
+  "id": "falcon_cloak",
+  "name": "Manto de plumas de halcón de Freyja",
+  "rarity": "epic",
+  "slots": [
+   "Fabric: espalda",
+   "NeoForge: back"
+  ],
+  "warn": "Compite con la égida y las alas de Ícaro",
+  "myth": "Freyja tenía un manto de plumas de halcón que convertía en halcón a quien se lo ponía. Loki se lo pidió prestado dos veces: para buscar el martillo que le robaron a Thor (Þrymskviða) y para rescatar a Iðunn, que llevó de vuelta a Asgard convertida en nuez.",
+  "fid": {
+   "fiel": "El manto que transforma en halcón para volar lejos.",
+   "lic": "La duración, la recarga y que no se pueda atacar en forma de halcón.",
+   "pop": "Nada."
+  },
+  "effects": [
+   "<b>Forma de halcón</b> (doble toque de salto en el aire): vuelas libre 20 s, un poco más rápido que corriendo.",
+   "No puedes atacar ni usar objetos. Si te golpean, vuelves a ser humano y caes lento.",
+   "Recarga: 90 s. Es el vuelo para explorar (Pegaso es el de combate)."
+  ],
+  "where": [
+   [
+    "Cofres de casas de aldeas de taiga",
+    "3 % por cofre"
+   ]
+  ]
+ },
+ {
+  "id": "mistletoe_dart",
+  "name": "Dardo de muérdago",
+  "rarity": "epic",
+  "slots": [
+   "Mano (se lanza)"
+  ],
+  "warn": "",
+  "myth": "Baldr soñaba con su muerte, así que su madre Frigg hizo jurar a todas las cosas que no le harían daño: el fuego, el agua, los metales, las piedras, los árboles, las bestias. Solo dejó fuera al muérdago, que le pareció demasiado joven. Los dioses se divertían lanzándole de todo a Baldr sin herirlo. Loki, disfrazado de anciana, le sacó el secreto a Frigg, hizo un dardo de muérdago y se lo puso en la mano al ciego Höðr, que lo lanzó y mató a Baldr (Gylfaginning).",
+  "fid": {
+   "fiel": "El dardo de muérdago, lo único que no juró proteger a Baldr.",
+   "lic": "Ignorar las defensas («nada juró protegerlo») y el doble contra jefes.",
+   "pop": "Nada."
+  },
+  "effects": [
+   "<b>Lanzar</b> (como un tridente): 12 de daño que ignora armadura, Resistencia y encantamientos de protección.",
+   "El doble contra jefes.",
+   "Se recoge como un tridente. Recarga: 20 s."
+  ],
+  "where": [
+   [
+    "Cofres de mansiones del bosque",
+    "3 % por cofre"
+   ]
+  ]
+ }
+];
+const RARITY = { epic: "Épica", rare: "Rara" };
+
+/* Íconos con su brillo animado (tira de cuadros 16x16, tiempos en ticks). */
+const sprites = {};
+for (const [id, icon] of Object.entries(DRAFT.icons)) {
+  const img = new Image();
+  img.src = "data:image/png;base64," + icon.png;
+  sprites[id] = { img, frames: icon.frames, canvases: [] };
+}
+const t0 = performance.now();
+function drawSprites(now) {
+  const tick = Math.floor((now - t0) / 50);
+  for (const s of Object.values(sprites)) {
+    if (!s.img.complete) continue;
+    let index = 0;
+    if (s.frames) {
+      const total = s.frames.reduce((a, f) => a + f.time, 0);
+      let t = tick % total;
+      for (const f of s.frames) { if (t < f.time) { index = f.index; break; } t -= f.time; }
+    }
+    for (const c of s.canvases) {
+      const g = c.getContext("2d"); g.imageSmoothingEnabled = false;
+      g.clearRect(0, 0, 16, 16); g.drawImage(s.img, 0, index * 16, 16, 16, 0, 0, 16, 16);
+    }
+  }
+  requestAnimationFrame(drawSprites);
+}
+requestAnimationFrame(drawSprites);
+
+function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
+const cards = document.getElementById("cards");
+for (const r of RELICS) {
+  const card = el("article", "card");
+  const icon = el("div", "icon");
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16; sprites[r.id].canvases.push(c);
+  icon.appendChild(c);
+  card.appendChild(icon);
+  const body = el("div", "body");
+  const head = el("div", "head");
+  head.appendChild(el("h2", "", r.name));
+  const chips = el("div", "chips");
+  chips.appendChild(el("span", "chip " + r.rarity, RARITY[r.rarity]));
+  for (const s of r.slots) chips.appendChild(el("span", "chip", s));
+  if (r.warn) chips.appendChild(el("span", "chip warn", r.warn));
+  head.appendChild(chips);
+  body.appendChild(head);
+  const cols = el("div", "cols");
+  const left = el("div");
+  left.appendChild(el("h3", "", "Mito"));
+  left.appendChild(el("p", "", r.myth));
+  const fid = el("dl", "fid");
+  for (const [k, label] of [["fiel", "Fiel al mito"], ["lic", "Licencia de juego"], ["pop", "Cultura pop"]]) {
+    fid.appendChild(el("dt", "fid-" + k, label));
+    fid.appendChild(el("dd", "", r.fid[k]));
+  }
+  left.appendChild(fid);
+  const right = el("div");
+  right.appendChild(el("h3", "", "Efecto propuesto"));
+  const ul = el("ul", "effects");
+  for (const e of r.effects) ul.appendChild(el("li", "", e));
+  right.appendChild(ul);
+  const where = el("div", "where");
+  where.appendChild(el("h3", "", "Dónde se encuentra"));
+  for (const [place, p] of r.where) where.appendChild(el("p", "", place + " <span>· " + p + "</span>"));
+  right.appendChild(where);
+  cols.appendChild(left); cols.appendChild(right);
+  body.appendChild(cols);
+  if (r.set) body.appendChild(el("p", "set", r.set));
+  card.appendChild(body);
+  cards.appendChild(card);
+}
+
+/* ---------- Vista 3D ---------- */
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b0e12);
+const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.01, 100);
+camera.position.set(1.9, 1.8, 2.6);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.1, 0); controls.enableDamping = true; controls.minDistance = 0.4; controls.maxDistance = 7;
+scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+const sun = new THREE.DirectionalLight(0xfff1d6, 0.75); sun.position.set(-2, 4, 3); scene.add(sun);
+const fillL = new THREE.DirectionalLight(0xb8c8ff, 0.25); fillL.position.set(3, 2, -2); scene.add(fillL);
+
+function nearest(t) { t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding; return t; }
+function texFromB64(b64) { const img = new Image(); const t = new THREE.Texture(img); img.onload = () => { t.needsUpdate = true; }; img.src = "data:image/png;base64," + b64; return nearest(t); }
+function sandTexture() {
+  const c = document.createElement("canvas"); c.width = 16; c.height = 16; const g = c.getContext("2d");
+  const tones = ["#eef2f6", "#e2e8ee", "#f6f8fb", "#d8dfe7", "#e8edf2"]; let seed = 11;
+  const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) { g.fillStyle = tones[Math.floor(rnd() * tones.length)]; g.fillRect(x, y, 1, 1); }
+  return nearest(new THREE.CanvasTexture(c));
+}
+const sandMat = new THREE.MeshLambertMaterial({ map: sandTexture() });
+for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++) { const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sandMat); m.position.set(x, -0.5, z); scene.add(m); }
+
+const player = new THREE.Group(); scene.add(player);
+const PARTS = {};
+function pbox(name, color, cx, cy, cz, w, h, d) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w / 16, h / 16, d / 16), new THREE.MeshLambertMaterial({ color }));
+  m.position.set(cx / 16, cy / 16, cz / 16); player.add(m);
+  PARTS[name] = { center: new THREE.Vector3(cx / 16, cy / 16, cz / 16), half: new THREE.Vector3(w / 32, h / 32, d / 32) };
+}
+pbox("head", 0xc69c6d, 0, 28, 0, 8, 8, 8);
+const hair = new THREE.Mesh(new THREE.BoxGeometry(8.4 / 16, 2.4 / 16, 8.4 / 16), new THREE.MeshLambertMaterial({ color: 0x2b2118 }));
+hair.position.set(0, 31.2 / 16, 0); player.add(hair);
+pbox("body", 0xe6dcc0, 0, 18, 0, 8, 12, 4);
+pbox("right_arm", 0xc69c6d, -6, 18, 0, 4, 12, 4);
+pbox("left_arm", 0xc69c6d, 6, 18, 0, 4, 12, 4);
+pbox("left_leg", 0x5a4632, 2, 6, 0, 4, 12, 4);
+pbox("right_leg", 0x5a4632, -2, 6, 0, 4, 12, 4);
+
+const paletteMat = new THREE.MeshLambertMaterial({ map: texFromB64(DRAFT.palette) });
+const FACE_ORDER = ["east", "west", "up", "down", "south", "north"];
+function elementMesh(e) {
+  const [x0, y0, z0] = e.from, [x1, y1, z1] = e.to;
+  const g = new THREE.BoxGeometry((x1 - x0) / 16, (y1 - y0) / 16, (z1 - z0) / 16);
+  const uvA = g.attributes.uv;
+  FACE_ORDER.forEach((face, f) => {
+    const fd = e.faces[face]; if (!fd) return;
+    const [u1, v1, u2, v2] = fd.uv;
+    [[u1, v1], [u2, v1], [u1, v2], [u2, v2]].forEach(([u, v], i) => uvA.setXY(f * 4 + i, u / 16, 1 - v / 16));
+  });
+  uvA.needsUpdate = true;
+  const m = new THREE.Mesh(g, paletteMat);
+  m.position.set(((x0 + x1) / 2 - 8) / 16, ((y0 + y1) / 2 - 8) / 16, ((z0 + z1) / 2 - 8) / 16);
+  return m;
+}
+const groups = {};
+function wornGroup(partName, elements) {
+  const p = PARTS[partName]; const g = new THREE.Group(); g.position.copy(p.center);
+  for (const e of elements) g.add(elementMesh(e));
+  player.add(g); return g;
+}
+for (const [id, w] of Object.entries(DRAFT.worn)) {
+  groups[id] = w.part === "arms" ? [wornGroup("right_arm", w.elements), wornGroup("left_arm", w.elements)] : [wornGroup(w.part, w.elements)];
+}
+/* Ítems en la mano, como los dibuja el juego en tercera persona. El muñeco tiene las medidas del jugador de vanilla, así
+   que se replica la cadena de transformaciones: LivingEntityRenderer (giro de 180°, scale(-1,-1,1), bajar 1,501), el
+   pivote del brazo, ItemInHandLayer (rotar X -90°, Y 180° y mover (±1/16, 0,125, -0,625)), el "display" de tercera
+   persona del modelo (handheld para armas y bastones, generated para el resto; en la mano izquierda se invierten x y
+   los giros en Y y Z) y el ítem extruido de 1 px de grosor en el espacio 0..1 del modelo. */
+const HELD_DISPLAY = {
+  handheld: { r: [0, -90, 55], t: [0, 4, 0.5], s: 0.85 },
+  generated: { r: [0, 0, 0], t: [0, 3, 1], s: 0.55 },
+};
+function heldIcon(id, arm, kind = "generated") {
+  const left = arm === "left_arm", d = HELD_DISPLAY[kind], deg = Math.PI / 180;
+  const M = new THREE.Matrix4();
+  const then = m => M.multiply(m);
+  then(new THREE.Matrix4().makeRotationY(Math.PI));
+  then(new THREE.Matrix4().makeScale(-1, -1, 1));
+  then(new THREE.Matrix4().makeTranslation(0, -1.501, 0));
+  then(new THREE.Matrix4().makeTranslation((left ? 5 : -5) / 16, 2 / 16, 0));
+  then(new THREE.Matrix4().makeRotationX(-90 * deg));
+  then(new THREE.Matrix4().makeRotationY(180 * deg));
+  then(new THREE.Matrix4().makeTranslation((left ? -1 : 1) / 16, 0.125, -0.625));
+  then(new THREE.Matrix4().makeTranslation((left ? -d.t[0] : d.t[0]) / 16, d.t[1] / 16, d.t[2] / 16));
+  then(new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(d.r[0] * deg, (left ? -d.r[1] : d.r[1]) * deg,
+    (left ? -d.r[2] : d.r[2]) * deg, "XYZ")));
+  then(new THREE.Matrix4().makeScale(d.s, d.s, d.s));
+  then(new THREE.Matrix4().makeTranslation(-0.5, -0.5, -0.5));
+  const holder = new THREE.Group();
+  holder.matrixAutoUpdate = false;
+  holder.matrix.copy(M);
+  player.add(holder);
+  // Extrusión de 1 px como ItemModelGenerator: un cubo por píxel opaco, en z 7,5..8,5 del modelo (primer cuadro).
+  const img = sprites[id].img;
+  const build = () => {
+    const c = document.createElement("canvas"); c.width = 16; c.height = 16;
+    const g = c.getContext("2d"); g.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16);
+    const data = g.getImageData(0, 0, 16, 16).data;
+    const cells = [];
+    for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (data[(y * 16 + x) * 4 + 3] > 25) cells.push([x, y]);
+    const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1 / 16, 1 / 16, 1 / 16), new THREE.MeshLambertMaterial(), cells.length);
+    const m = new THREE.Matrix4(), col = new THREE.Color();
+    cells.forEach(([x, y], i) => {
+      m.makeTranslation((x + 0.5) / 16, (15 - y + 0.5) / 16, 0.5);
+      mesh.setMatrixAt(i, m);
+      const k = (y * 16 + x) * 4;
+      col.setRGB(data[k] / 255, data[k + 1] / 255, data[k + 2] / 255).convertSRGBToLinear();
+      mesh.setColorAt(i, col);
+    });
+    holder.add(mesh);
+  };
+  if (img.complete && img.naturalWidth) build(); else img.addEventListener("load", build);
+  return [holder];
+}
+groups.gram = heldIcon("gram", "right_arm", "handheld");
+groups.tyrfing = heldIcon("tyrfing", "right_arm", "handheld");
+groups.dainsleif = heldIcon("dainsleif", "right_arm", "handheld");
+groups.mistletoe_dart = heldIcon("mistletoe_dart", "left_arm", "handheld");
+const ORDER = ["falcon_cloak", "freyr_sword", "gram", "tyrfing", "dainsleif", "mistletoe_dart"];
+const on = new Set(["falcon_cloak", "freyr_sword", "gram"]);
+const toggles = document.getElementById("toggles");
+function apply() {
+  for (const id of ORDER) for (const g of groups[id]) g.visible = on.has(id);
+  toggles.innerHTML = "";
+  for (const id of ORDER) {
+    const r = RELICS.find(x => x.id === id);
+    const b = el("button", "btn", r.name); b.setAttribute("aria-pressed", String(on.has(id)));
+    b.addEventListener("click", () => { on.has(id) ? on.delete(id) : on.add(id); apply(); });
+    toggles.appendChild(b);
+  }
+}
+apply();
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage); resize();
+(function loop() { controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop); })();
+</script>
