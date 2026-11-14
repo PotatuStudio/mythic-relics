@@ -7,15 +7,9 @@ import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
@@ -25,7 +19,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -46,7 +39,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.MoonPhase;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -90,9 +82,6 @@ public final class ChinaRelics {
 	public static final int FAN_DASH_BLOCKS = 10;
 	public static final int FAN_CHARGES = 3;
 	public static final int FAN_RECHARGE_TICKS = 120;
-	public static final int FAN_THIRD_WINDOW = 80;
-	public static final int FAN_RAIN_TICKS = 300;
-	public static final int FAN_RAIN_RADIUS = 10;
 
 	public static final int DRAGON_LEAVE_TICKS = 60;
 	public static final int DRAGON_COOLDOWN = 6000;
@@ -126,14 +115,6 @@ public final class ChinaRelics {
 	private static final Map<UUID, java.util.Set<UUID>> DASH_HIT = new HashMap<>();
 	/** Evita que el barrido del Ruyi se barra a sí mismo. */
 	private static final ThreadLocal<Boolean> RUYI_SWEEPING = ThreadLocal.withInitial(() -> false);
-	/** Últimos aleteos de cada jugador (para el tercer aleteo seguido). */
-	private static final Map<UUID, Deque<Long>> FLAPS = new HashMap<>();
-
-	/** Nube de lluvia del tercer aleteo: apaga el fuego a su alrededor mientras dura. */
-	private record RainCloud(ServerLevel level, Vec3 center, int[] ticksLeft) {
-	}
-
-	private static final List<RainCloud> CLOUDS = new ArrayList<>();
 
 	private ChinaRelics() {
 	}
@@ -238,31 +219,10 @@ public final class ChinaRelics {
 
 	// ---- Abanico ----------------------------------------------------------------------------------------------------
 
-	/** Registra un aleteo: el dash empuja a los mobs que cruza; si son tres en poco tiempo, llueve. */
+	/** Registra un aleteo: el dash empuja a los mobs que cruza. */
 	static void flap(ServerPlayer player, int dashTicks) {
 		DASHING.put(player.getUUID(), dashTicks);
 		DASH_HIT.put(player.getUUID(), new java.util.HashSet<>());
-	}
-
-	private static void rain(RainCloud cloud) {
-		ServerLevel level = cloud.level();
-		Vec3 c = cloud.center();
-		int r = FAN_RAIN_RADIUS;
-		level.sendParticles(ParticleTypes.CLOUD, c.x, c.y + 6, c.z, 12, r * 0.4, 0.4, r * 0.4, 0.0);
-		level.sendParticles(ParticleTypes.FALLING_WATER, c.x, c.y + 5, c.z, 60, r * 0.5, 0.5, r * 0.5, 0.0);
-		if (cloud.ticksLeft()[0] % 20 != 0) {
-			return;
-		}
-		BlockPos center = BlockPos.containing(c);
-		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-r, -4, -r), center.offset(r, 6, r))) {
-			if (level.getBlockState(pos).is(BlockTags.FIRE)) {
-				level.removeBlock(pos, false);
-				level.sendParticles(ParticleTypes.CLOUD, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 3, 0.2, 0.2, 0.2, 0.0);
-			}
-		}
-		for (Entity e : level.getEntities((Entity) null, new AABB(c, c).inflate(r, 6, r), e -> e.isOnFire())) {
-			e.clearFire();
-		}
 	}
 
 	private static void dashPush(ServerPlayer player) {
@@ -297,14 +257,6 @@ public final class ChinaRelics {
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------
 
 	private static void tick(MinecraftServer server) {
-		Iterator<RainCloud> clouds = CLOUDS.iterator();
-		while (clouds.hasNext()) {
-			RainCloud cloud = clouds.next();
-			rain(cloud);
-			if (--cloud.ticksLeft()[0] <= 0) {
-				clouds.remove();
-			}
-		}
 		long now = server.overworld().getGameTime();
 		LUNAR.values().removeIf(until -> until <= now);
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
@@ -405,7 +357,6 @@ public final class ChinaRelics {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(LUNAR, DASHING, DASH_HIT, FLAPS);
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(CLOUDS);
+		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(LUNAR, DASHING, DASH_HIT);
 	}
 }

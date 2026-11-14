@@ -27,7 +27,6 @@ public class RelicItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip,
 			TooltipFlag flag) {
-		String id = BuiltInRegistries.ITEM.getKey(this).getPath();
 		effectLines(this, tooltip);
 		appendExtraLines(stack, tooltip);
 		// El bloque del set (igual para todas las piezas) lo agrega el cliente: client/RelicTooltips.

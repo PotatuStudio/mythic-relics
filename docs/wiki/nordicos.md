@@ -39,7 +39,7 @@ Están donde su mito calza: el frío del norte, las minas de los enanos y las pr
 - Mantén clic derecho y suelta para lanzarlo: vuela hasta 24 bloques, golpea y vuelve a ti
 - En tormenta, donde golpea cae un rayo
 
-*Set de Thor (Mjölnir, Járngreipr y Megingjörð):* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
+*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
 
 **Mito.** El martillo de Thor lo forjaron los enanos Brokkr y Sindri. Loki, convertido en tábano, picó a Brokkr en el párpado y por eso el mango quedó corto.  
 Mjölnir nunca falla y siempre vuelve a la mano de Thor.
@@ -56,7 +56,7 @@ Mjölnir nunca falla y siempre vuelve a la mano de Thor.
 - Puños de hierro: +3 de daño sin arma
 - Los rayos no te hacen daño
 
-*Set de Thor (Mjölnir, Járngreipr y Megingjörð):* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
+*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
 
 **Mito.** Los guantes de hierro de Thor. Los necesitaba para empuñar a Mjölnir, que ardía al rojo cuando volvía de un lanzamiento.
 
@@ -71,7 +71,7 @@ Mjölnir nunca falla y siempre vuelve a la mano de Thor.
 
 - Fuerza divina: +25% de daño cuerpo a cuerpo y 50% menos retroceso al recibir golpes
 
-*Set de Thor (Mjölnir, Járngreipr y Megingjörð):* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
+*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
 
 **Mito.** El cinturón de fuerza de Thor: al ceñírselo, su fuerza divina se duplicaba.
 
@@ -357,6 +357,6 @@ Loki, disfrazado de anciana, le sacó el secreto, hizo un dardo de muérdago y s
 
 ## Set de Thor
 
-Set de Thor (Mjölnir, Járngreipr y Megingjörð): Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
+Set de Thor (Mjölnir, Járngreipr, Megingjörð) Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
 
 **Mito.** Thor no podía empuñar a Mjölnir sin sus guantes de hierro, y con el cinturón de fuerza su poder se duplicaba: los tres juntos son el dios del trueno.

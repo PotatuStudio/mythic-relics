@@ -38,6 +38,8 @@ A eso se suman los dioses del trueno y del mar y el folclore: los kitsune, los o
 - Siega la hierba y apaga el fuego que alcanza
 - Recarga: 5 s
 
+*Los Tres Tesoros (Kusanagi no Tsurugi, Yata no Kagami, Yasakani no Magatama)* Kusanagi en una mano, el espejo en la otra y la magatama puesta. De día: +20 % de daño y Resistencia I
+
 **Mito.** La espada que Susanoo encontró dentro de la cola de Yamata no Orochi, la serpiente de ocho cabezas.  
 Su nombre, «cortadora de hierba», viene de Yamato Takeru: atrapado en un campo en llamas, segó la hierba con ella y el viento volvió el fuego contra sus enemigos.
 
@@ -54,6 +56,8 @@ Su nombre, «cortadora de hierba», viene de Yamato Takeru: atrapado en un campo
 - Clic derecho: un destello de sol ciega a los hostiles a 12 bloques durante 5 s
 - Recarga: 30 s
 
+*Los Tres Tesoros (Kusanagi no Tsurugi, Yata no Kagami, Yasakani no Magatama)* Kusanagi en una mano, el espejo en la otra y la magatama puesta. De día: +20 % de daño y Resistencia I
+
 **Mito.** El espejo de bronce que los dioses colgaron frente a la cueva donde se había encerrado Amaterasu, la diosa del sol.  
 Al asomarse, ella vio su propio brillo reflejado y salió: la luz volvió al mundo.
 
@@ -67,6 +71,8 @@ Al asomarse, ella vio su propio brillo reflejado y salió: la luz volvió al mun
 **Espacio:** collar · **Rareza:** épica
 
 - De día y bajo el cielo recuperas medio corazón cada 5 s
+
+*Los Tres Tesoros (Kusanagi no Tsurugi, Yata no Kagami, Yasakani no Magatama)* Kusanagi en una mano, el espejo en la otra y la magatama puesta. De día: +20 % de daño y Resistencia I
 
 **Mito.** La joya curva de jade que colgaba del árbol frente a la cueva de Amaterasu, junto al espejo.  
 Es la tercera insignia imperial y simboliza el alma y la bondad del linaje del sol.
@@ -83,6 +89,8 @@ Es la tercera insignia imperial y simboliza el alma y la bondad del linaje del s
 - Cada 4 golpes seguidos cae un rayo sobre tu objetivo
 - Entre golpe y golpe no deben pasar más de 3 s
 - Los rayos no te hacen daño
+
+*Set de Fūjin y Raijin (Bolsa de vientos de Fūjin, Tambor de Raijin)* La bolsa en el inventario y el tambor puesto. El rayo cae cada 3 golpes y salta a 2 hostiles cercanos
 
 **Mito.** Raijin, el dios del trueno, flota entre las nubes rodeado de un círculo de tambores taiko. Cada golpe de sus palillos es un trueno.
 
@@ -194,6 +202,8 @@ Agradecida, la tortuga lo llevó sobre su caparazón al Ryūgū-jō, el palacio 
 - Clic derecho: una corriente te eleva y bajas planeando 6 s
 - Agachado: un ventarrón empuja lejos todo lo que hay a 8 bloques
 - Recarga: 20 s
+
+*Set de Fūjin y Raijin (Bolsa de vientos de Fūjin, Tambor de Raijin)* La bolsa en el inventario y el tambor puesto. El rayo cae cada 3 golpes y salta a 2 hostiles cercanos
 
 **Mito.** Fūjin, el dios del viento, carga sobre los hombros un saco con todos los vientos del mundo y los suelta al abrirlo.  
 Siempre aparece junto a Raijin, el dios del trueno, como en el famoso biombo de Tawaraya Sōtatsu.
@@ -325,3 +335,15 @@ Desde el puente flotante del cielo revolvieron con ella el mar, y de las gotas s
 Devoraba cada año a una hija de una familia hasta que Susanoo la emborrachó con sake y la venció.
 
 **Dónde encontrarla.** **Ciudades antiguas**: 2 % por cofre
+
+## Los Tres Tesoros
+
+Los Tres Tesoros (Kusanagi no Tsurugi, Yata no Kagami, Yasakani no Magatama) Kusanagi en una mano, el espejo en la otra y la magatama puesta. De día: +20 % de daño y Resistencia I
+
+**Mito.** Los Tres Tesoros Sagrados de Japón: la espada Kusanagi, el espejo Yata y la joya Yasakani. Amaterasu se los entregó a su nieto Ninigi al enviarlo a gobernar la tierra.
+
+## Set de Fūjin y Raijin
+
+Set de Fūjin y Raijin (Bolsa de vientos de Fūjin, Tambor de Raijin) La bolsa en el inventario y el tambor puesto. El rayo cae cada 3 golpes y salta a 2 hostiles cercanos
+
+**Mito.** Fūjin, el dios del viento, carga su saco de vientos; Raijin, el dios del trueno, golpea sus tambores. Hermanos y rivales, juntos desatan la tormenta.

@@ -1,5 +1,5 @@
 """Tres propuestas desde cero para el ícono del rayo de Zeus (16x16, con un píxel de margen para el contorno).
-Uso: python greece3_bolts.py <vista.png>  (y lo importa greece3_bolt_page.py)"""
+Uso: python greece3_bolts.py <vista.png>"""
 import os
 import sys
 

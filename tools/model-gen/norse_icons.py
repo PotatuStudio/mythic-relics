@@ -162,32 +162,6 @@ IDUNN = grid([
 ])
 
 
-def emblem():
-    """Escudo cuartelado: anj de oro sobre lapislázuli (Egipto), columna sobre mármol (Grecia), águila de alas abiertas
-    sobre rojo (Roma) y Mjölnir sobre hierro (nórdicos), con borde y cruz de oro."""
-    c = [['.'] * 16 for _ in range(16)]
-    rows = {y: (2, 14) for y in range(1, 13)}
-    rows.update({13: (3, 13), 14: (5, 11), 15: (7, 9)})
-    for y, (x0, x1) in rows.items():
-        for x in range(x0, x1 + 1):
-            if x in (x0, x1) or y in (1, 15) or x == 8 or y == 7:
-                c[y][x] = 'g' if (x + y) % 2 else 'd'
-            else:
-                top, left = y < 7, x < 8
-                c[y][x] = ('l' if left else 'M') if top else ('r' if left else 'I')
-    glyphs = [(4, 2, [".g.", "g.g", "ggg", ".g.", ".g."]),       # anj
-              (10, 2, ["aaa", ".a.", ".a.", ".a.", "aaa"]),      # columna
-              (3, 8, ["g.g.g", "ggggg", ".ggg.", "..g.."]),     # águila
-              (9, 8, ["ooooo", "ooooo", "..p..", "..p.."])]     # Mjölnir
-    for gx, gy, rowsg in glyphs:
-        for dy, row in enumerate(rowsg):
-            for dx, ch in enumerate(row):
-                if ch != '.':
-                    c[gy + dy][gx + dx] = ch
-    return outline(c)
-
-
-# --- Segunda tanda (2026-11-09) ---
 def horseshoe():
     """Herradura de Sleipnir: herradura de hierro con clavos de oro y runas que brillan."""
     c = blank()

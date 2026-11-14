@@ -19,7 +19,6 @@ import io.github.potatustudio.mythicrelics.client.entity.JackalRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabModel;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabRenderer;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 
 /** Inicialización común del cliente (la llaman ambos loaders): modelos y renderizadores de las entidades. */
 public final class MythicRelicsClient {
@@ -68,7 +67,6 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.TALOS, ChinaRenderers.TalosRenderer::new);
 		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.FreyjaFalconModel.LAYER,
 				io.github.potatustudio.mythicrelics.client.entity.FreyjaFalconModel::createBodyLayer);
-		EntityRendererRegistry.register(ModEntities.FREYJA_FALCON, ChinaRenderers.FalconRenderer::new);
 		// Armas en vuelo: modelo 3D propio (el ícono queda para el inventario y la mano).
 		EntityModelLayerRegistry.register(io.github.potatustudio.mythicrelics.client.entity.WeaponModel.FREYR_SWORD,
 				io.github.potatustudio.mythicrelics.client.entity.MythicModelLayers::freyrSword);

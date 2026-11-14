@@ -71,12 +71,6 @@ public final class Minions {
 		return minion == null ? null : minion.owner();
 	}
 
-	public static int countOf(Player owner) {
-		synchronized (MINIONS) {
-			return (int) MINIONS.values().stream().filter(m -> m.owner().equals(owner.getUUID())).count();
-		}
-	}
-
 	/** Invoca un aliado del tipo indicado junto a una posición, por la cantidad de ticks indicada. */
 	public static @Nullable Mob summon(ServerLevel level, Player owner, EntityType<? extends Mob> type, double x, double y, double z,
 			int ticks, Component name) {

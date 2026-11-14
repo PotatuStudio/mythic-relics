@@ -365,8 +365,7 @@ function renderTooltip() {
   if (!shiftHeld) {
     effect.slice(0, keep).forEach((t, i) => tip.appendChild(line(t, i === 0 ? "c-gold" : "c-gray")));
     if (setId) {
-      const name = tr("tooltip.mythicrelics." + setId + ".1", DATA.setArgs[setId] || []).split(" (")[0].replace(/:$/, "");
-      tip.appendChild(line("◈ " + name + " · 0/" + DATA.sets[setId].length, "c-purple"));
+      tip.appendChild(line("◈ " + tr("set.mythicrelics." + setId) + " · 0/" + DATA.sets[setId].length, "c-purple"));
     }
     if (effect.length > keep || setId || sources.length) tip.appendChild(line(tr("tooltip.mythicrelics.more"), "c-dgray"));
     return;
@@ -378,7 +377,8 @@ function renderTooltip() {
   if (setId) {
     const sargs = DATA.setArgs[setId] || [];
     tip.appendChild(line(" ", ""));
-    tip.appendChild(line(tr("tooltip.mythicrelics." + setId + ".1", sargs), "c-gray"));
+    tip.appendChild(line("◈ " + tr("set.mythicrelics." + setId) + " · 0/" + DATA.sets[setId].length, "c-purple"));
+    tip.appendChild(line(" " + DATA.sets[setId].map(p => "✘ " + tr("item.mythicrelics." + p)).join(", "), "c-dgray"));
     for (let i = 1; i <= 3; i++) {
       const k = "set.mythicrelics." + setId + ".bonus." + i;
       if (DATA.lang[lang][k] !== undefined) tip.appendChild(line(" " + tr(k, sargs), "c-blue"));

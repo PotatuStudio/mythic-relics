@@ -16,7 +16,6 @@ import net.minecraft.world.entity.Entity;
  * las estatuas ({@code StoneStatueRenderer}). Lo lee {@code LivingEntityRendererMixin} para cambiar la textura por piedra.
  */
 public final class PetrifiedClient {
-	public static final Identifier STONE = Identifier.withDefaultNamespace("textures/block/stone.png");
 	private static final IntSet PETRIFIED = new IntOpenHashSet();
 	/** Mob petrificado -> {tick del cliente en que se petrificó, duración}: con eso se dibuja cada vez más agrietado. */
 	private static final it.unimi.dsi.fastutil.ints.Int2ObjectMap<long[]> TIMES = new it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap<>();

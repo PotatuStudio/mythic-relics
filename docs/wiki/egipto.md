@@ -91,7 +91,7 @@ Los husks del desierto reconocen esas vendas como propias.
 
 - Juicio: el no-muerto con menos del 25% de vida se destruye de un golpe y suelta 2 veces la experiencia
 
-*Set de Anubis (máscara, anillo y cetro):* Los no-muertos no te atacan salvo que los ataques primero
+*Set de Anubis (Máscara de chacal, Anillo de los chacales, Cetro was de Anubis)* Los no-muertos no te atacan salvo que los ataques primero
 
 **Mito.** El cetro *was*, rematado por la cabeza de un animal y con la base en horquilla, lo llevaban los dioses como símbolo de poder.  
 En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la pluma de Maat: ese es su juicio.
@@ -108,7 +108,7 @@ En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la 
 - Los no-muertos que matas sueltan un alma
 - Al tocarla recuperas 1 ❤ (dura 10 s)
 
-*Set de Anubis (máscara, anillo y cetro):* Los no-muertos no te atacan salvo que los ataques primero
+*Set de Anubis (Máscara de chacal, Anillo de los chacales, Cetro was de Anubis)* Los no-muertos no te atacan salvo que los ataques primero
 
 **Mito.** Anubis guiaba a las almas de los muertos hasta el juicio. Los sacerdotes que embalsamaban usaban máscaras de chacal para encarnarlo.
 
@@ -124,7 +124,7 @@ En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la 
 - De noche o bajo tierra, al recibir un golpe acuden 2 chacales aliados por 20 s
 - Recarga: 4 s
 
-*Set de Anubis (máscara, anillo y cetro):* Los no-muertos no te atacan salvo que los ataques primero
+*Set de Anubis (Máscara de chacal, Anillo de los chacales, Cetro was de Anubis)* Los no-muertos no te atacan salvo que los ataques primero
 
 **Mito.** Los chacales rondaban los cementerios del desierto. Por eso los egipcios hicieron de Anubis, el dios con cabeza de chacal, el guardián de las tumbas.
 
@@ -189,7 +189,7 @@ Los escribas escribían con cálamos y tinta roja y negra, que guardaban en su p
 - Clic derecho en una cría: la vuelve adulta
 - Recarga: 30 s
 
-*Insignias de Osiris (cayado y mayal en las manos):* Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft)
+*Insignias de Osiris (Cayado de Osiris, Mayal de Osiris)* Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft)
 
 **Mito.** Osiris, rey de Egipto, fue asesinado por su hermano Set y devuelto a la vida por Isis. Se volvió señor del más allá y dios de la agricultura y de la crecida del Nilo.  
 El cayado, del pastor que guía, es una de las insignias del faraón.
@@ -206,7 +206,7 @@ El cayado, del pastor que guía, es una de las insignias del faraón.
 - Ataque cargado giratorio: golpea a todos a 2.5 bloques con el 60% del daño
 - Golpear un cultivo maduro trilla un 3×3 y lo vuelve a plantar
 
-*Insignias de Osiris (cayado y mayal en las manos):* Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft)
+*Insignias de Osiris (Cayado de Osiris, Mayal de Osiris)* Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft)
 
 **Mito.** El mayal es la otra insignia del faraón. Su origen se discute: herramienta para trillar el grano, espantamoscas de pastor o utensilio para recoger resina.  
 Junto al cayado, simboliza el poder y la abundancia que Osiris traía con el Nilo.
@@ -232,12 +232,12 @@ También era diosa de la sanación, y se decía que su aliento era el viento cal
 
 ## Set de Anubis
 
-Set de Anubis (máscara, anillo y cetro): Los no-muertos no te atacan salvo que los ataques primero
+Set de Anubis (Máscara de chacal, Anillo de los chacales, Cetro was de Anubis) Los no-muertos no te atacan salvo que los ataques primero
 
 **Mito.** Quien lleva la máscara y el anillo y carga el cetro es reconocido como servidor de Anubis: los muertos no lo atacan mientras no los perturbe.
 
 ## Insignias de Osiris
 
-Insignias de Osiris (cayado y mayal en las manos): Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft)
+Insignias de Osiris (Cayado de Osiris, Mayal de Osiris) Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft)
 
 **Mito.** Osiris es el dios que murió y volvió a la vida. Quien lleva sus dos insignias comparte un poco de ese renacer.

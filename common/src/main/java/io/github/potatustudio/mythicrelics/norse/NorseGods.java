@@ -10,7 +10,6 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -42,8 +41,6 @@ import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -81,8 +78,6 @@ public final class NorseGods {
 
 	public static final String SKIDBLADNIR_TAG = MythicRelics.MOD_ID + ".skidbladnir";
 	private static final Identifier CURSE_ID = MythicRelics.id("andvaranaut_curse");
-	private static final List<Block> PRECIOUS = List.of(Blocks.DIAMOND_ORE, Blocks.DEEPSLATE_DIAMOND_ORE, Blocks.EMERALD_ORE,
-			Blocks.DEEPSLATE_EMERALD_ORE, Blocks.ANCIENT_DEBRIS);
 	/** Botes de Skíðblaðnir desplegados (se pliegan al quedar vacíos). */
 	private static final Set<UUID> SHIPS = new HashSet<>();
 	/** Último aviso de creeper por jugador (para no repetirlo cada tick). */

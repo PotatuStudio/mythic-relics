@@ -1,0 +1,33 @@
+{
+  "type": "modonomicon:content",
+  "id": "mythicrelics:china/erlang_set",
+  "category": "mythicrelics:china",
+  "name": "book.mythicrelics.relics.erlang_set.name",
+  "icon": "mythicrelics:erlang_eye",
+  "x": 2,
+  "y": 12,
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "id": "set",
+      "title": "book.mythicrelics.relics.erlang_set.name",
+      "text": "book.mythicrelics.relics.entry.erlang_set.effect",
+      "show_title_separator": true
+    },
+    {
+      "type": "modonomicon:text",
+      "id": "myth",
+      "title": "book.mythicrelics.relics.myth",
+      "text": "lore.mythicrelics.erlang_set",
+      "show_title_separator": true
+    }
+  ],
+  "parents": [
+    {
+      "entry": "mythicrelics:china/erlang_eye"
+    },
+    {
+      "entry": "mythicrelics:china/erlang_halberd"
+    }
+  ]
+}

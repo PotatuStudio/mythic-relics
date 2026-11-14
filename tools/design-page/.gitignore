@@ -25,3 +25,10 @@ japon-orochi.html
 japon-iconos-2.html
 viewer_check.html
 revision-modelos.html
+
+# Páginas de diseño por tanda y sus datos (se regeneran con los *_build.py): no van a git.
+*-tanda-*.html
+*-criaturas.html
+nordicos-espada-freyr.html
+*_draft*.json
+*_entities.json

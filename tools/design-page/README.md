@@ -14,3 +14,8 @@ y en la mano. Las decisiones se preguntan aparte, en el chat.
 Para una tanda nueva: copiar los tres ejemplos, cambiar textos, fichas, íconos y la lista `ORDER` de lo que se ve en
 el muñeco. Antes de publicar, mirar el 3D desde todos los lados (frente, costados, atrás) en un navegador local
 (`python -m http.server` + Playwright).
+
+Las páginas de cada tanda (`*-tanda-*.html`, `*-criaturas.html`) y sus JSON se regeneran con los `*_build.py` y no van a
+git (ver `.gitignore`). Lo definitivo vive en el **visor global** (`viewer_check.html`, generado con
+`python tools/model-gen/make_viewer.py tools/design-page/viewer_check.html` y publicado como Artifact): ahí tienen que
+quedar todas las reliquias, entidades, reliquias puestas y animaciones.

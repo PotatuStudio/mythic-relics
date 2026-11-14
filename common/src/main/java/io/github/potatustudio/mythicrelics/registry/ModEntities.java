@@ -179,15 +179,6 @@ public final class ModEntities {
 					.fireImmune()
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("freyr_sword"))));
-	/** El halcón del manto de Freyja (la figura del jugador transformado; posición cada tick para no quedarse atrás). */
-	public static final RegistrySupplier<EntityType<io.github.potatustudio.mythicrelics.entity.FreyjaFalcon>> FREYJA_FALCON =
-			ENTITIES.register("freyja_falcon", () -> EntityType.Builder.of(io.github.potatustudio.mythicrelics.entity.FreyjaFalcon::new,
-							MobCategory.MISC)
-					.sized(0.6f, 0.5f)
-					.clientTrackingRange(10)
-					.updateInterval(1)
-					.noSave()
-					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("freyja_falcon"))));
 
 	private ModEntities() {
 	}
@@ -209,6 +200,5 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(PEGASUS, io.github.potatustudio.mythicrelics.entity.Pegasus::createAttributes);
 		EntityAttributeRegistry.register(TALOS, io.github.potatustudio.mythicrelics.entity.Talos::createAttributes);
 		EntityAttributeRegistry.register(FREYR_SWORD, io.github.potatustudio.mythicrelics.entity.FreyrSword::createAttributes);
-		EntityAttributeRegistry.register(FREYJA_FALCON, io.github.potatustudio.mythicrelics.entity.FreyjaFalcon::createAttributes);
 	}
 }

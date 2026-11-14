@@ -528,7 +528,8 @@ def write_mod(baked):
     for key, (parts, img, glow, w, h) in baked.items():
         name = NAMES[key][1]
         img.save(os.path.join(ENTITY_TEX, name + ".png"))
-        glow.save(os.path.join(ENTITY_TEX, name + "_glow.png"))
+        if key != "skidbladnir":   # el bote usa el BoatRenderer vanilla, que no dibuja capa de brillo
+            glow.save(os.path.join(ENTITY_TEX, name + "_glow.png"))
         methods.append(java_layer(key, parts, w, h))
     src = ("package io.github.potatustudio.mythicrelics.client.entity;\n\n"
            "import net.minecraft.client.model.geom.PartPose;\n"

@@ -10,7 +10,6 @@ import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.entity.FreyrSword;
-import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.network.FalconPayload;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
@@ -435,10 +434,6 @@ public final class NorseSagas {
 		};
 	}
 
-	/** Para el resto del código: el jefe según la harpe. */
-	static boolean isBoss(LivingEntity e) {
-		return GreeceLegends.isBoss(e);
-	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {

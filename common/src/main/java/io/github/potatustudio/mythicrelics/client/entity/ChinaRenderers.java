@@ -185,18 +185,6 @@ public final class ChinaRenderers {
 		}
 	}
 
-	/** El halcón del manto de Freyja (geometría a 1,6). */
-	public static class FalconRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.FreyjaFalcon, FreyjaFalconModel> {
-		public FalconRenderer(EntityRendererProvider.Context context) {
-			super(context, new FreyjaFalconModel(context.bakeLayer(FreyjaFalconModel.LAYER)), 0.4f, "freyja_falcon");
-		}
-
-		@Override
-		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
-			poseStack.scale(1.6f, 1.6f, 1.6f);
-		}
-	}
-
 	/** Huginn y Muninn: cuervos de Odín (los ojos brillan). */
 	public static class RavenRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.OdinRaven, OdinRavenModel> {
 		public RavenRenderer(EntityRendererProvider.Context context) {

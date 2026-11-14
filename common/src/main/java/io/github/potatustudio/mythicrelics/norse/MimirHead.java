@@ -49,7 +49,6 @@ import net.minecraft.world.phys.Vec3;
 public final class MimirHead {
 	private static final int OUTLINE_TICKS = 100;
 	private static final int MAX_OUTLINES = 24;
-	private static final int WHISPER_RADIUS = 20;
 	private static final String TAG = MythicRelics.MOD_ID + ".mimir";
 	private static final Map<Block, Integer> COLORS = Map.ofEntries(
 			Map.entry(Blocks.DIAMOND_ORE, 0x5FF0FF), Map.entry(Blocks.DEEPSLATE_DIAMOND_ORE, 0x5FF0FF),

@@ -210,6 +210,8 @@ Una de las que sobraron es la piedra de «Sueño en el pabellón rojo».
 - Los invisibles brillan para ti
 - Los hostiles a 16 bloques brillan, también a través de las paredes
 
+*Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas)* Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s)
+
 **Mito.** Erlang Shen, el único dios que venció al Rey Mono, tenía un tercer ojo en la frente que veía a través de cualquier disfraz.  
 Así descubrió a Wukong aunque se transformara en templo, pez o pájaro.
 
@@ -223,6 +225,8 @@ Así descubrió a Wukong aunque se transformara en templo, pez o pájaro.
 **Espacio:** mano (arma) · **Rareza:** épica
 
 - 1 bloque más de alcance; cada golpe barre a los mobs a 2 bloques
+
+*Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas)* Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s)
 
 **Mito.** El arma de Erlang Shen, la sanjian liangren dao: una alabarda de tres puntas y doble filo con la que peleó trescientos asaltos contra el Rey Mono.  
 Su perro, el Xiaotian Quan, le mordió la pierna a Wukong para que Erlang lo atrapara.
@@ -304,3 +308,9 @@ En el folclore, uno pegado en la frente de un jiangshi (el cadáver que salta) l
 El Rey Mono, puesto a cuidarlos, se los comió casi todos.
 
 **Dónde encontrarla.** **Templos de la jungla**: 3 % por cofre
+
+## Set de Erlang Shen
+
+Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas) Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s)
+
+**Mito.** Erlang Shen, el dios del tercer ojo, cazaba demonios con su alabarda de tres puntas y tres filos, siempre con su fiel Perro Celestial a su lado.

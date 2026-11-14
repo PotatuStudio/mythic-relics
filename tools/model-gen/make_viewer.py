@@ -19,6 +19,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from moddata import (ARCHAEOLOGY, ASSETS, CULTURES, FABRIC_ASSETS, ORDER, SETS, SLOTS, LOOT_TABLE_KEYS, b64, constants, icons, lang, loot,  # noqa: E402
                      rarity, read, set_args, tooltip_args)
 
+def glow_b64(name):
+    """La capa que brilla de una entidad; el bote no tiene (usa el renderer vanilla): una imagen vacía de 1x1."""
+    path = os.path.join(ASSETS, "textures", "entity", name + "_glow.png")
+    if os.path.exists(path):
+        return b64(path)
+    return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+
+
 if __name__ == "__main__":
     out = sys.argv[1]
     data = {
@@ -82,7 +90,7 @@ if __name__ == "__main__":
         data["china"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "rootOffset": list(CE.ROOT_OFFSET[key]),
                               "scale": NE.SCALE[key],
                               "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
-                              "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
+                              "glow": glow_b64(name)}
     # Pegaso y Talos (greece_entities.py, Grecia 3).
     import greece_entities as GE  # noqa: E402
     for key in GE.MODELS:

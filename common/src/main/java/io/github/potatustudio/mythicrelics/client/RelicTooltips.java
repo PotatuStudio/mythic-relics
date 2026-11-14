@@ -107,7 +107,6 @@ public final class RelicTooltips {
 				hidden = true;
 			}
 		}
-		int at = lines.size();
 		if (set != null) {
 			int have = 0;
 			for (String piece : set.pieces()) {

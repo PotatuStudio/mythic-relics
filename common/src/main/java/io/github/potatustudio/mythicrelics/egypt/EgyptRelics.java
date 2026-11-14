@@ -36,7 +36,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.zombie.Husk;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -165,10 +164,6 @@ public final class EgyptRelics {
 	public static boolean hasAnubisSet(Player player) {
 		return isWearing(player, ModItems.JACKAL_MASK) && isWearing(player, ModItems.JACKAL_RING)
 				&& player.getInventory().contains(stack -> stack.is(ModItems.ANUBIS_SCEPTER.get()));
-	}
-
-	public static boolean isAnubisSetPiece(String id) {
-		return id.equals("anubis_scepter") || id.equals("jackal_mask") || id.equals("jackal_ring");
 	}
 
 	/** Números que muestra el tooltip de cada reliquia (%1$s, %2$s… de sus líneas de traducción, en este orden). */

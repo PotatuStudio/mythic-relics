@@ -24,9 +24,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -74,7 +71,6 @@ public final class JapanRelics {
 	public static final int KITSUNEBI_BURN_SECONDS = 2;
 
 	public static final int TIDE_LENGTH = 12;
-	public static final int TIDE_WIDTH = 3;
 	public static final int TIDE_TICKS = 400;
 	public static final int TIDE_WAVE_RANGE = 8;
 	public static final int TIDE_COOLDOWN = 1200;

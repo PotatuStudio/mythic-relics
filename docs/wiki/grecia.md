@@ -38,7 +38,7 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 - +20% de velocidad y doble salto
 - La arena y la tierra de almas no te frenan
 
-*Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño
 
 **Mito.** Hermes, mensajero de los dioses, volaba con sus sandalias aladas. También guiaba las almas de los muertos al inframundo.  
 Se las prestó a Perseo para ir a buscar a Medusa.
@@ -55,7 +55,7 @@ Se las prestó a Perseo para ir a buscar a Medusa.
 - Agachado y quieto 2 s: te vuelves invisible y los mobs pierden tu rastro
 - Correr, levantarte o atacar lo rompe
 
-*Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño
 
 **Mito.** Los cíclopes forjaron para Hades un yelmo que vuelve invisible a quien lo lleva.  
 Atenea y Perseo también lo usaron; con él, Perseo escapó de las gorgonas.
@@ -71,7 +71,7 @@ Atenea y Perseo también lo usaron; con él, Perseo escapó de las gorgonas.
 
 - Al bloquear con escudo un golpe cuerpo a cuerpo, el atacante queda aturdido 2 s y retrocede
 
-*Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño
 
 **Mito.** La égida, la piel de cabra de Zeus que llevaba Atenea, tenía el gorgoneion, el rostro de Medusa que aterraba a los enemigos.  
 Atenea le dio a Perseo el escudo pulido para no mirar a Medusa.
@@ -297,7 +297,7 @@ La Ilíada empieza con «Canta, oh diosa, la cólera de Aquiles».
 - Con la hoz lista, los mobs que ya se pueden decapitar brillan
 - Recarga: 1 s. Es parte del set de Perseo
 
-*Set de Perseo (3 de: sandalias, yelmo, égida y harpe):* La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño
 
 **Mito.** La hoz de adamante: Gea se la dio a Cronos para castrar a Urano.  
 Más tarde Hermes se la entregó a Perseo, que con ella cortó la cabeza de Medusa.
@@ -356,6 +356,6 @@ Tenía una sola vena de ícor cerrada con un clavo de bronce en el tobillo; Mede
 
 ## Set de Perseo
 
-Set de Perseo (3 de: sandalias, yelmo, égida y harpe): La cabeza de Medusa recarga a la mitad y lo petrificado recibe +50 % de daño
+Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe) La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño
 
 **Mito.** Con las sandalias de Hermes, el yelmo de Hades y el escudo de Atenea, Perseo pudo acercarse a Medusa sin ser visto, sin mirarla y escapar volando.

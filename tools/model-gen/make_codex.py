@@ -83,6 +83,7 @@ CULTURE_INFO = {
             "banana_leaf_fan": (-3, 5), "dragon_pearl": (-1, 5), "wind_fire_wheels": (1, 5), "hou_yi_bow": (3, 5),
             "change_elixir": (-1, 8), "five_color_stone": (1, 8),
             "fire_tipped_spear": (-3, 11), "universe_ring": (-1, 11), "erlang_eye": (1, 11), "erlang_halberd": (3, 11),
+            "erlang_set": (2, 12),
             "qilin_horn": (-3, 14), "pixiu_bracelet": (-1, 14), "fu_talismans": (1, 14), "xirang_sack": (3, 14),
             "immortal_peach_branch": (0, 16),
         },
@@ -91,7 +92,8 @@ CULTURE_INFO = {
         "wiki": "japon.md", "title": "Japón", "icon": "kusanagi", "intro_icon": "minecraft:cherry_log",
         "positions": {
             "intro": (0, 0),
-            "kusanagi": (-2, 2), "yata_mirror": (0, 2), "yasakani_magatama": (2, 2),
+            "kusanagi": (-2, 2), "yata_mirror": (0, 2), "yasakani_magatama": (2, 2), "regalia_set": (0, 4),
+            "fujin_raijin_set": (-4, 8),
             "raijin_drum": (-3, 5), "oni_kanabo": (-1, 5), "kitsune_star_ball": (1, 5), "tide_jewels": (3, 5),
             "lucky_mallet": (-2, 8), "kibi_dango": (0, 8), "urashima_rod": (2, 8),
             "fujin_wind_bag": (-3, 11), "tengu_mask": (-1, 11), "yashiori_sake": (1, 11), "kappa_dish": (3, 11),
@@ -100,7 +102,8 @@ CULTURE_INFO = {
         },
     },
 }
-SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm", "thor_set": "mjolnir"}
+SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm", "thor_set": "mjolnir",
+             "erlang_set": "erlang_eye", "regalia_set": "kusanagi", "fujin_raijin_set": "raijin_drum"}
 SLOT_NAMES = {
     "es_es": {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes",
               "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria",
@@ -158,12 +161,17 @@ def culture_of(item_or_set):
 
 
 def set_lines(m, set_id, sargs):
-    """Título del bono del set y su efecto en una frase (las líneas 2 y 3 del tooltip juntas)."""
-    title = substitute(m[f"tooltip.mythicrelics.{set_id}.1"], sargs)
-    first, second = (substitute(m[f"tooltip.mythicrelics.{set_id}.{i}"], sargs).strip() for i in (2, 3))
-    # Si la segunda línea empieza con mayúscula es otra frase (Osiris); si no, sigue la misma (Anubis, Perseo).
-    joiner = ". " if second[:1].isupper() and first[-1:] not in ".:!?" else " "
-    return title, first + joiner + second
+    """Título del set (su nombre y sus piezas) y el bono en una frase (las líneas de bono juntas), con las mismas claves
+    que usa el juego (set.mythicrelics.<set> y set.mythicrelics.<set>.bonus.N)."""
+    pieces = ", ".join(m.get(f"item.mythicrelics.{p}", p) for p in SETS[set_id])
+    title = f"{m[f'set.mythicrelics.{set_id}']} ({pieces})"
+    bonus = [substitute(m[k], sargs).strip() for k in (f"set.mythicrelics.{set_id}.bonus.{i}" for i in (1, 2, 3)) if k in m]
+    out = bonus[0] if bonus else ""
+    for nxt in bonus[1:]:
+        # Si la siguiente empieza con mayúscula es otra frase; si no, sigue la misma.
+        joiner = ". " if nxt[:1].isupper() and out[-1:] not in ".:!?" else " "
+        out += joiner + nxt
+    return title, out
 
 
 def generated_keys(langs, args, sources, sargs):
@@ -175,7 +183,7 @@ def generated_keys(langs, args, sources, sargs):
             effect = lines[:]
             set_id = set_of(item)
             if set_id:
-                title, bonus = set_lines(m, set_id, sargs[set_id])
+                title, bonus = set_lines(m, set_id, sargs.get(set_id, []))
                 effect += ["", f"*{title}*", bonus]
             effect.append("")
             effect.append(f"{WORDS[code]['slot']}: {SLOT_NAMES[code][SLOTS[item]]}")
@@ -183,7 +191,7 @@ def generated_keys(langs, args, sources, sargs):
             keys[code][f"{GENERATED_PREFIX}{item}.description"] = lines[0]
             keys[code][f"{GENERATED_PREFIX}{item}.where"] = BREAK.join(where_lines(code, m, sources.get(item, [])))
         for set_id in SETS:
-            keys[code][f"{GENERATED_PREFIX}{set_id}.effect"] = BREAK.join(set_lines(m, set_id, sargs[set_id]))
+            keys[code][f"{GENERATED_PREFIX}{set_id}.effect"] = BREAK.join(set_lines(m, set_id, sargs.get(set_id, [])))
     return keys
 
 
@@ -283,14 +291,14 @@ def wiki_page(culture, items, es, args, sources, rar, sargs):
         out += [f"- {line}" for line in sentences(tooltip_lines(es, item, args[item]))]
         set_id = set_of(item)
         if set_id:
-            title, bonus = set_lines(es, set_id, sargs[set_id])
+            title, bonus = set_lines(es, set_id, sargs.get(set_id, []))
             out += ["", f"*{title}* {bonus}"]
         out += ["", "**Mito.** " + plain(es[f"lore.{NS}.{item}"]), "",
                 "**Dónde encontrarla.** " + "; ".join(plain(x) for x in where_lines("es_es", es, sources.get(item, [])))]
     for set_id in SETS:
         if culture_of(set_id) != culture:
             continue
-        title, bonus = set_lines(es, set_id, sargs[set_id])
+        title, bonus = set_lines(es, set_id, sargs.get(set_id, []))
         out += ["", f"## {es[f'book.{NS}.{BOOK}.{set_id}.name']}", "", f"{title} {bonus}", "",
                 "**Mito.** " + plain(es[f"lore.{NS}.{set_id}"])]
     out.append("")

@@ -36,9 +36,18 @@ ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter
 CULTURES = {"egypt": ORDER[:13], "greece": ORDER[13:33], "rome": ORDER[33:40], "norse": ORDER[40:61], "china": ORDER[61:79],
             "japan": ORDER[79:]}
 # Sets: clave de traducción del bono (tooltip.mythicrelics.<set>.N) -> piezas.
-SETS = {"anubis_set": ["anubis_scepter", "jackal_mask", "jackal_ring"], "osiris_set": ["osiris_crook", "osiris_flail"],
-        "perseus_set": ["hermes_sandals", "hades_helm", "athena_aegis", "harpe"],
-        "thor_set": ["mjolnir", "jarngreipr", "megingjord"]}
+def _sets():
+    """Los sets y sus piezas, leídos de relic/RelicSets.java (la fuente de verdad), para no copiarlos a mano."""
+    import re as _re
+    src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "common", "src", "main", "java", "io",
+                            "github", "potatustudio", "mythicrelics", "relic", "RelicSets.java"), encoding="utf-8").read()
+    out = {}
+    for m in _re.finditer(r'^\s*[A-Z_]+\("(\w+)", [\w:]+, ((?:"\w+"(?:, )?)+)\)[,;]', src, _re.M):
+        out[m.group(1)] = _re.findall(r'"(\w+)"', m.group(2))
+    return out
+
+
+SETS = _sets()
 SET_PIECES = {piece for pieces in SETS.values() for piece in pieces}
 SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "chest/necklace",
          "mummy_wraps": "hand/glove", "anubis_scepter": "mainhand", "jackal_mask": "head/face",

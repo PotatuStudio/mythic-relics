@@ -1,6 +1,6 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-14 (Grecia 3 y nórdicos 3 programadas; recargas más cortas en armas principales). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
+Última sesión: 2026-11-14 (cuarta ronda de arreglos: Medusa como escudo sin recarga, halcón con tecla V, Mímir se pregunta, tooltips cortos con Shift, cabezas y armas en 3D, reliquias puestas con textura pintada, auditoría de memoria, rendimiento y limpieza). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
 programadas). El usuario ya empezó a probar en NeoForge (con `runClient` en su PC) y se hicieron cuatro rondas de
 arreglos con lo que reportó; ver «Arreglos tras…» y «Después». Para retomar: leer «Después», punto 1.
 
@@ -164,7 +164,7 @@ y `ChangeElixirItem` (fase de la luna con `EnvironmentAttributes.MOON_PHASE`). E
 (aliado de `Minions`) y `entity/LongDragon` (montura voladora que se maneja como el ghast feliz). Su geometría y texturas
 salen de `tools/model-gen/china_entities.py --mod` (escribe `client/entity/ChinaModelLayers.java`, generado, y las
 texturas con la capa que brilla), el mismo diseño que el visor de aliados. Íconos: `tools/model-gen/china_icons.py`;
-traducciones: `china_lang.py`. Mixin: `LivingEntityMixin#canStandOnFluid` (las ruedas cruzan lava corriendo).
+Mixin: `LivingEntityMixin#canStandOnFluid` (las ruedas cruzan lava corriendo).
 **Sin probar en el juego**: montar y manejar al long (subir con salto, bajar mirando abajo, nadar), que el jinete no
 quede mal ubicado sobre el lomo ni el cuerpo se vea cortado; los monos (aparición, pelea, que se vayan); capturar,
 soltar y disolver con la calabaza (y que se conserve al salir y volver); el dash del abanico (distancia) y la lluvia del
@@ -177,14 +177,14 @@ que el usuario prefirió). Código en `china/ChinaGods` (constantes; Ojo de Erla
 Shen que trae al Perro Celestial al recibir daño; pixiu: pepitas al matar y los tesoros guardados al morir con
 `CharonStash#keepTreasure`; talismanes que vencen) y los ítems `FireTippedSpearItem` (con las ruedas de Nezha, recarga a
 la mitad), `UniverseRingItem` (el vuelo se muestra como una estela de oro de golpe en golpe; el ítem no sale de la
-mano), `ErlangHalberdItem`, `QilinHornItem`, `FuTalismansItem`, `XirangSackItem` (muro de tierra 5x3; cargas en
-`custom_data`) e `ImmortalPeachBranchItem` (componente `peach_growing`; la definición del ítem cambia el dibujo de la rama
+mano), `ErlangHalberdItem`, `QilinHornItem`, `FuTalismansItem`, el saco de xirang (solo pasiva: te salva de la lava o el vacío,
+recarga 5 min) e `ImmortalPeachBranchItem` (componente `peach_growing`; la definición del ítem cambia el dibujo de la rama
 con o sin melocotón). Entidades: `entity/CelestialDog` (aliado de `Minions`; mordida que inmoviliza) y `entity/Qilin`
 (subclase de `AbstractHorse` como Sleipnir; se dibuja a 1,35 veces). Mixin nuevo: `FarmlandBlockMixin` (el qilin no
 pisotea cultivos). Geometría y texturas desde `tools/model-gen/china2_entities.py` (con `china_entities.py --mod`).
-Íconos: `china2_icons.py`; traducciones: `china2_lang.py`. **Sin probar en el juego**: montar el qilin (altura del
+Íconos: `china2_icons.py`. **Sin probar en el juego**: montar el qilin (altura del
 jinete, tamaño, que no pise cultivos, el aura), que el perro aparezca al recibir daño con el set completo, la llamarada
-de la lanza, el rebote del aro, el brillo del Ojo, el muro de Xirang con agua, los tesoros que guarda el pixiu al morir
+de la lanza, el rebote del aro, el brillo del Ojo, los tesoros que guarda el pixiu al morir
 (también junto al óbolo), el melocotón (dibujo con y sin fruto) y el Ojo y la pulsera puestos en los dos loaders.
 
 ## Primera tanda japonesa (programada el 2026-11-10)
@@ -196,7 +196,7 @@ ticks mientras dura; tamaño del mazo con el atributo `scale`) y los ítems `Kus
 el zorro confía con `FoxAccessor`) y `UrashimaRodItem`. Entidades: `entity/Kitsune` (aliado de `Minions` que lanza
 kitsunebi; se dibuja a 1,5) y `entity/UrashimaTurtle` (montura que nada hacia donde mira el jinete y da el poder del
 conducto; se dibuja a 1,7). Geometría: `tools/model-gen/japan_entities.py`; la clase generada pasó a llamarse
-`client/entity/MythicModelLayers` (China y Japón). Íconos: `japan_icons.py`; traducciones: `japan_lang.py`.
+`client/entity/MythicModelLayers` (China y Japón). Íconos: `japan_icons.py`.
 **Sin probar en el juego**: montar la tortuga bajo el agua (control, velocidad, altura del jinete, que no se hunda ni
 flote mal), el kitsune y sus kitsunebi, el pasillo seco de kanju (que el agua no lo inunde y vuelva al terminar), la ola
 de manju, el reflejo del espejo (flechas y bolas de fuego), el rayo del tambor, el golpe del kanabō contra armadura,
@@ -213,7 +213,7 @@ reutiliza `PalladiumItem`). El set de Fūjin y Raijin cambia el redoble en `Japa
 salta a 2 hostiles). El doble salto del tengu reutiliza el de las sandalias de Hermes (`GreeceClient` y
 `GreeceRelics#hermesJumped`). Entidad: `entity/OrochiShadow` (aliado quieto de `Minions`: cada 1,5 s muerde a hasta 8
 hostiles a 6 bloques; se dibuja al doble con `OrochiModel`). Geometría en `japan_entities.py`; íconos, bloque de la
-muñeca y su paleta en `japan2_icons.py`; máscara y plato puestos en `worn_models.py`; traducciones en `japan2_lang.py`.
+muñeca y su paleta en `japan2_icons.py`; máscara y plato puestos en `worn_models.py`.
 Tablas nuevas de botín: herrerías de herramientas de aldea y mapas de naufragios.
 **Sin probar en el juego**: la altura y el planeo de la bolsa de vientos y el ventarrón; el set con el tambor; el doble
 salto y los críticos del tengu; la borrachera (que los hostiles se peleen entre ellos); el plato del kappa (nado, daño,
@@ -241,7 +241,7 @@ lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y 
   guardan como tipo pero se descartan con `shouldBeSaved() = false`.
 - Impulsos al jugador desde el servidor (`relic/RelicMotion`): hay que mandarle el paquete de movimiento.
 - Libros sibilinos con mapa de la estructura (sin repetir) y rastro de letras; Mímir con contornos (Display de bloque
-  que brilla) y susurros; candado de Jano (Display de ítem `padlock`); fuego del hogar de Vesta.
+  que brilla) de minerales y cofres, se le pregunta con clic derecho y guía 30 s con una estela; candado de Jano (Display de ítem `padlock`); fuego del hogar de Vesta.
 - Cuervos de Odín (`entity/OdinRaven`): mascotas que se posan cerca y miran al dueño; hostiles brillan mientras están.
 - Skíðblaðnir: bote propio (`entity/SkidbladnirBoat`, capa `boat/skidbladnir` con vela y proa de dragón).
 - Mjölnir y Gungnir con modelo 3D en la mano y en vuelo (`norse_models.py`, `ThrownRelicRenderer`); Paladio rehecho.
@@ -249,7 +249,7 @@ lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y 
   kanju en burbuja; mazo con fuerza, salto y paso; xirang rescata de la lava o el vacío.
 - Activas al menos al doble del golpe básico; aliados atacan al hostil más cercano; una pestaña creativa por mitología;
   bloque de set igual en todas las piezas (`set.mythicrelics.<set>.bonus.N`).
-- Página de revisión de modelos: `tools/design-page/revision2_build.py`.
+- Revisión de modelos: el visor global (`make_viewer.py`).
 
 ## Cuarta ronda de arreglos (2026-11-11)
 - Estatua de piedra: en 26.3 `move()` lanza `IllegalStateException` en esta entidad; ya no se mueve nunca y cae como
@@ -264,14 +264,16 @@ lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y 
 - Paladio sin caras coplanares del mismo lado; candado de Jano en el punto exacto del clic; mástil de Skíðblaðnir a popa.
 
 ## Pestaña creativa
-El ícono es `mythicrelics:emblem` (escudo cuartelado: anj, columna griega, águila romana y Mjölnir, de
-`tools/model-gen/norse_icons.py`). Es un ítem solo para el ícono: no está en la pestaña ni tiene botín, y JEI no le pone
-página. Con una cultura nueva hay que pensar si el escudo se rehace.
+Una pestaña por mitología, cada una con una de sus reliquias como ícono (`ModItems`, `itemGroup.mythicrelics.<cultura>`).
+El ícono del mod y el emblema (`mythicrelics:emblem`, la reliquia en su altar) salen de `tools/model-gen/mod_icon.py` con
+`emblem_relic.py`; el ítem del emblema no está en ninguna pestaña ni tiene botín, y JEI no le pone página.
 
 ## Ítems en la mano
 Las armas y bastones usan `minecraft:item/handheld` y se dibujan en diagonal (mango abajo a la izquierda, punta arriba a
 la derecha), como las herramientas vanilla: así quedan bien orientados en la mano. Las páginas de diseño muestran el ítem
-en la mano con la misma cadena de transformaciones del juego (`egypt2/template.html` en el scratchpad).
+en la mano con la misma cadena de transformaciones del juego (`tools/design-page/template.html`). Los ítems 3D que se
+sostienen calcan la geometría de referencia del vanilla (escudos centrados en el origen con la placa en z 1..2; cabezas
+como `template_skull`).
 
 ## Herramientas y pruebas
 - **El juego no se abre en el PC de desarrollo**: aquí solo se compila (`./gradlew build`). El usuario prueba en su PC
@@ -294,29 +296,32 @@ en la mano con la misma cadena de transformaciones del juego (`egypt2/template.h
 - `tools/design-page/`: plantilla y ejemplo de las páginas de diseño de cada tanda (ver su README).
 - `tools/model-gen/coplanar_check.py`: busca caras coplanares entre reliquias del cuerpo que se pueden llevar juntas
   (parpadeo). Correrlo después de `worn_models.py` y agregar las reliquias nuevas a sus grupos.
-- `tools/model-gen/rome_icons.py`, `norse_icons.py` (incluye el emblema de la pestaña), `rome_models.py` (Ancile y
-  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_lang.py`, `china_entities.py`, `china2_icons.py`, `china2_lang.py`, `china2_entities.py`, `japan_icons.py`, `japan_lang.py`, `japan_entities.py`
+- `tools/model-gen/rome_icons.py`, `norse_icons.py`, `rome_models.py` (Ancile y
+  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_entities.py`, `china2_icons.py`, `china2_entities.py`, `japan_icons.py`, `japan_entities.py`
   (visor de aliados y, con `--mod`, la geometría en Java y las texturas del mono y del long).
+- `worn_texture.py`: textura pintada por cara (luz, sombras, ruido y patrón del material) para todas las reliquias
+  puestas, y `paint_models.py` para los modelos 3D hechos con paleta (escudos, Mjölnir, Gungnir, Ruyi, Paladio,
+  Zashiki-warashi); los generadores lo llaman al final. `head_items.py`: cabezas de Medusa y Mímir en 3D.
+  `weapon_entities.py`: armas en vuelo. `petrified_textures.py`: piedra agrietada de lo petrificado.
+- Textos: el único script vigente es `feedback4_lang.py` (los `*_lang.py` de tandas viejas se borraron: revertían textos).
 - JEI es dependencia opcional (maven de BlameJared, API común); en desarrollo corre en ambos loaders.
 
 ## Grecia 3 y nórdicos 3 (programadas el 2026-11-14)
-Diseño aprobado en las páginas `tools/design-page/grecia-tanda-3.html`, `grecia-criaturas.html`,
-`nordicos-tanda-3.html` y `nordicos-espada-freyr.html` (fichas en `docs/ideas.md`). Lógica en `greece/GreeceLegends`
+Diseño aprobado en las páginas de diseño de la tanda (no van a git; fichas en `docs/ideas.md`). Lógica en `greece/GreeceLegends`
 (constantes, daño, cólera de Aquiles, aviso de la harpe, manzana, Talos) y `norse/NorseSagas` (Gram, Tyrfing,
 Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (JapanGods → GreeceLegends → NorseSagas) y
 `modifyIncomingDamage` en `LivingEntityMixin`, que además cancela `heal` mientras dura la herida de Dáinsleif.
 - Ítems: `ZeusThunderboltItem` (carga 0,5 s, rayo visual del vanilla + daño aparte, salta a 3/5 hostiles), `HarpeItem`
-  (decapita con clic derecho bajo el 25 %, cabezas de trofeo en `GreeceLegends.onDeath`), `GoldenBridleItem`,
+  (pasiva: decapita al golpear bajo el 25 %, 1 s de recarga, cabeza 75 %; en `GreeceLegends.onDeath`), `GoldenBridleItem`,
   `AppleOfDiscordItem`, `TalosNailItem`, `GramItem` (estocada cargada 1 s); Tyrfing, Dáinsleif, la piel, el escudo
   (`BLOCKS_ATTACKS` como el Ancile), la espada de Freyr y el manto son `relic(...)`; el dardo es un `ThrownRelicItem`
   con su rama en `ThrownRelic` y el tipo de daño `mythicrelics:mistletoe` (data + tags `bypasses_armor/resistance/
   enchantments`).
 - Entidades: `Pegasus` (vuela con salto, planea, picada de 12, tábano sobre Y 200), `Talos` (aliado de `Minions`, rocas
   = bola de nieve con la etiqueta `mythicrelics.talos_rock`, abrazo con fuego, da vueltas al dueño), `FreyrSword` (Mob
-  sin IA movido con `setPos` y seguimiento amortiguado; posición cada tick) y `FreyjaFalcon` (figura que sigue al jugador
-  invisible). Geometría en `greece_entities.py` y `norse_entities.py` (halcón), exportada por `china_entities.py --mod`.
-- Halcón: el cliente (`GreeceClient`) manda `FalconPayload` con un toque de salto en el aire (después del doble salto
-  si hay sandalias o máscara de tengu); el servidor da vuelo de creativo 20 s, invisibilidad y la figura.
+  sin IA movido con `setPos` y seguimiento amortiguado; posición cada tick). El halcón ya no es entidad: `client/FalconForm` dibuja su modelo en lugar del jugador. Geometría en `greece_entities.py` y `norse_entities.py` (halcón), exportada por `china_entities.py --mod`.
+- Halcón: la tecla V (`GreeceClient.FALCON_KEY`, configurable) manda `FalconPayload`; el servidor da vuelo 20 s y encoge
+  al jugador con el atributo `scale` (modificador `falcon_form`, que también marca al cliente para dibujar el ave).
 - Set de Perseo: ahora 4 piezas (con la harpe en la mano o el inventario), se activa con 3.
 - Íconos: `greece3_icons.py` (incluye el escudo 3D, como el Ancile) y `norse3_icons.py`; puestos en `worn_models.py`
   (piel con la cabeza del león colgando detrás de la nuca, espada envainada al frente de la cadera, manto).
@@ -357,15 +362,22 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
    opciones, entidades 3D, íconos, programar, commit y push, visor global, lista de pruebas.
 3. Pendientes posibles: las Cuatro Bestias Celestiales chinas como set; luego India, aztecas, eslavos, Mesopotamia
    (`docs/ideas.md`).
-4. Pendientes menores:
-   - el rescate del xirang al vacío usa el último suelo firme (o el punto de aparición).
+4. Refactors pendientes (de la auditoría del 2026-11-14, sin cambiar el juego):
+   - Ayudantes comunes: `WornRelics.isWearing(entity, RegistrySupplier)` en lugar de `EgyptRelics.isWearing` (59 usos),
+     `relic/Allies.isFriend` y `enemiesAround` (hoy en `ChinaRelics`, con una copia distinta en `EgyptGods`), un solo
+     `isBoss` con tag `mythicrelics:bosses`, `relic/Compass` (brújula copiada en Mímir, cuervos y Sibila),
+     `TooltipNumbers` (tres `fmt`), `RelicCooldowns.tryStart(player, Item, ticks)`, `RelicFx.sound/notify`.
+   - Recargas: las de 10 s o más deberían pasar por `RelicCooldowns` (las vanilla se pierden al reconectar).
+   - `RelicSets`: declarar por pieza dónde cuenta (puesta, inventario, mano) para que el contador del tooltip coincida.
+   - Mover `egypt/RelicItem` a `relic/`, renombrar `ChinaRenderers` y `GreeceClient` (tienen de todas las culturas),
+     imports en vez de nombres completos (~280), y un registro de `tooltipArgs` en lugar de la cadena de 13 clases.
 5. Portar Misfit Relics a Architectury (mismo esquema de módulos).
 
 ## Cómo trabajar (recordatorio)
 - No abrir el juego en este PC: solo `./gradlew build` (con conexión la primera vez que cambia una dependencia).
 - Push con la cuenta Friedpotatu (ver memoria «push-friedpotatu»).
 - Modelos y texturas se generan con `tools/model-gen/*.py` (no editar los JSON ni `MythicModelLayers.java` a mano);
-  textos con los `*_lang.py`; libro y wiki con `make_codex.py` (también genera `relic/RelicCultures.java`).
+  textos con `feedback4_lang.py`; libro y wiki con `make_codex.py` (también genera `relic/RelicCultures.java`).
 - Visor global: `python tools/model-gen/make_viewer.py tools/design-page/viewer_check.html` y publicarlo en
   https://claude.ai/artifact/KmBKXReYGwHWo2DGQRyHgh al cerrar cada tanda.
 - Revisiones visuales: Chrome sin ventana sobre una copia del HTML con la escena a pantalla completa (ver memoria

@@ -1,5 +1,8 @@
 # Ideas de reliquias por cultura
 
+> Registro del diseño aprobado en su momento. Varias reliquias cambiaron después (Medusa, Mímir, harpe, halcón,
+> saco de xirang…): el comportamiento vigente está en el wiki (`docs/wiki`) y en `docs/ESTADO.md`.
+
 Ideas aprobadas **como punto de partida** ("todas están buenas"): los efectos, números, probabilidades y la relación con
 el mito se revisan con el usuario antes de implementar cada tanda (criterio: fiel al mito, con licencias). Los nombres
 son propuestos; el usuario puede cambiarlos. "Dónde" es la estructura donde se encuentra (botín).
