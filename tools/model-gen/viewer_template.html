@@ -761,7 +761,22 @@ function elementMesh(el, mat = paletteMat) {
   uvAttr.needsUpdate = true;
   const m = new THREE.Mesh(g, mat);
   m.position.set(((x0 + x1) / 2 - 8) / 16, ((y0 + y1) / 2 - 8) / 16, ((z0 + z1) / 2 - 8) / 16);
-  return m;
+  const r = el.rotation;
+  if (!r) return m;
+  // Rotación del elemento como en el juego (CuboidRotation): eje y ángulo, o x, y, z en orden ZYX, alrededor de origin.
+  const o = new THREE.Vector3((r.origin[0] - 8) / 16, (r.origin[1] - 8) / 16, (r.origin[2] - 8) / 16);
+  const pivot = new THREE.Group();
+  pivot.position.copy(o);
+  const d = Math.PI / 180;
+  if (r.axis) {
+    pivot.rotation[r.axis] = r.angle * d;
+  } else {
+    pivot.rotation.order = "ZYX";
+    pivot.rotation.set((r.x || 0) * d, (r.y || 0) * d, (r.z || 0) * d);
+  }
+  m.position.sub(o);
+  pivot.add(m);
+  return pivot;
 }
 const HAND_PART = { ":main_hand": ":main_hand", ":off_hand": ":off_hand", "right_arm": ":main_hand", "left_arm": ":off_hand" };
 /** Material de una reliquia puesta: su textura pintada (textures/item/worn/<nombre>.png) o la paleta de colores planos. */

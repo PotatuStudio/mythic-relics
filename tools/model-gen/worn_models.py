@@ -379,33 +379,109 @@ def aegis_worn():
 
 
 def mirror(e):
-    """Copia un elemento al otro lado del cuerpo (x -> 16 - x)."""
+    """Copia un elemento al otro lado del cuerpo (x -> 16 - x). Si está girado, el giro se refleja también (en un espejo
+    en x, el ángulo alrededor de x se queda y los de y y z cambian de signo)."""
     m = json.loads(json.dumps(e))
     m["from"][0], m["to"][0] = 16 - e["to"][0], 16 - e["from"][0]
+    r = m.get("rotation")
+    if r:
+        r["origin"][0] = round(16 - r["origin"][0], 3)
+        if "axis" in r:
+            if r["axis"] in ("y", "z"):
+                r["angle"] = -r["angle"]
+        else:
+            r["y"], r["z"] = -r["y"], -r["z"]
     return m
 
 
+# ---- Giros de elementos (Minecraft 26.3 acepta cualquier ángulo y "x", "y", "z" en orden ZYX) ----------------------------
+def _rx(a):
+    c, s = math.cos(math.radians(a)), math.sin(math.radians(a))
+    return [[1, 0, 0], [0, c, -s], [0, s, c]]
+
+
+def _ry(a):
+    c, s = math.cos(math.radians(a)), math.sin(math.radians(a))
+    return [[c, 0, s], [0, 1, 0], [-s, 0, c]]
+
+
+def _rz(a):
+    c, s = math.cos(math.radians(a)), math.sin(math.radians(a))
+    return [[c, -s, 0], [s, c, 0], [0, 0, 1]]
+
+
+def _mul(a, b):
+    return [[sum(a[i][k] * b[k][j] for k in range(3)) for j in range(3)] for i in range(3)]
+
+
+def _apply(m, v):
+    return [sum(m[i][k] * v[k] for k in range(3)) for i in range(3)]
+
+
+def _euler_zyx(m):
+    """Ángulos (x, y, z) tales que m = Rz(z)·Ry(y)·Rx(x), como EulerXYZRotation del juego."""
+    y = math.degrees(math.asin(max(-1.0, min(1.0, -m[2][0]))))
+    x = math.degrees(math.atan2(m[2][1], m[2][2]))
+    z = math.degrees(math.atan2(m[1][0], m[0][0]))
+    return round(x, 3), round(y, 3), round(z, 3)
+
+
+def turned(frm, to, color, name, pivot, rot, base=None, local=None):
+    """Caja dibujada en el plano del ala y girada como el ala: primero su propio giro `local` alrededor de `base`, luego
+    el del ala `rot` alrededor de `pivot`. Se escribe como una sola rotación del elemento (origen en la base girada)."""
+    base = base or pivot
+    total = _mul(rot, local) if local else rot
+    moved = [p + d for p, d in zip(pivot, _apply(rot, [b - p for b, p in zip(base, pivot)]))]
+    shift = [m - b for m, b in zip(moved, base)]
+    e = box([f + s for f, s in zip(frm, shift)], [t + s for t, s in zip(to, shift)], color, name)
+    x, y, z = _euler_zyx(total)
+    e["rotation"] = {"origin": [round(v, 3) for v in moved], "x": x, "y": y, "z": z}
+    return e
+
+
 def icarus_wings():
-    """Alas de Ícaro: arnés de cuero cruzado en la espalda con la placa de cera, y dos alas abiertas que suben un poco:
-    hueso de madera, cobertoras cortas, plumas medias y primarias largas (cada hilera más larga que la anterior y
-    escalonada, sin caras coplanares), con goterones de cera en las uniones. Van por detrás del vellocino (z < 5,35)."""
+    """Alas de Ícaro, como las que Dédalo armó con plumas, hilo y cera: un arnés de cuero cruzado en la espalda con la
+    placa de cera, y dos alas de ave que salen de los omóplatos echadas hacia atrás y un poco hacia arriba (giro real, no
+    planchas pegadas a la espalda). Cada ala tiene el hueso de madera en el borde de ataque, una hilera de cobertoras
+    blancas que tapa la base, las plumas secundarias colgando en la parte interna y las primarias largas abiertas en
+    abanico en la punta, de punta oscura; goterones de cera en las uniones. Las hileras se escalonan en z (sin caras
+    coplanares) y todo queda detrás del vellocino (z < 5,35 junto al cuerpo)."""
     e = [box([6.0, 8.5, 4.75], [10.0, 13.0, 5.3], "wax", "cera"),
          box([6.6, 9.2, 4.6], [9.4, 12.2, 4.75], "wax_l", "cera clara")]
     for k, (x0, y0, x1, y1) in enumerate([(4.0, 12.6, 6.0, 13.6), (10.0, 12.6, 12.0, 13.6), (4.4, 6.2, 6.4, 7.2), (9.6, 6.2, 11.6, 7.2)]):
         e.append(box([x0, y0, 4.85], [x1, y1, 5.32], "leather", f"correa {k}"))
-    side = [box([10.0, 12.4, 4.55], [21.0, 13.6, 5.2], "leather_d", "hueso"),
-            box([20.8, 12.0, 4.6], [22.0, 13.4, 5.15], "leather_d", "punta del hueso")]
-    # Cobertoras (cortas, blancas), plumas medias y primarias (largas, de punta azul), escalonadas en z.
-    for i, x in enumerate([10.4, 12.2, 14.0, 15.8, 17.6, 19.4]):
-        side.append(box([x, 10.6, 4.62], [x + 1.6, 12.4, 5.1], "white", f"cobertora {i}"))
-    for i, (x, low) in enumerate([(10.6, 7.6), (12.4, 7.0), (14.2, 6.4), (16.0, 5.8), (17.8, 5.4), (19.6, 5.2)]):
-        side.append(box([x, low, 4.68], [x + 1.6, 10.6, 5.02], "wing_l", f"pluma media {i}"))
-    for i, (x, low) in enumerate([(11.0, 5.4), (12.8, 4.4), (14.6, 3.4), (16.4, 2.6), (18.2, 2.0), (20.0, 1.8)]):
-        side.append(box([x, low, 4.74], [x + 1.4, 7.6 - i * 0.3, 4.96], "wing", f"primaria {i}"))
-        side.append(box([x + 0.2, low - 0.6, 4.76], [x + 1.2, low, 4.94], "wing_d", f"punta de primaria {i}"))
-    for k, x in enumerate([11.6, 15.0, 18.4]):
-        side.append(box([x, 12.0, 4.4], [x + 0.8, 12.6, 4.55], "wax", f"gota de cera {k}"))
-        side.append(box([x + 0.2, 11.4, 4.42], [x + 0.6, 12.0, 4.54], "wax_l", f"chorrito de cera {k}"))
+
+    pivot = [10.6, 12.8, 5.0]          # raíz del ala, en el omóplato izquierdo
+    rot = _mul(_rz(16), _ry(30))      # echada 30° hacia atrás y levantada 16°
+    side = [turned([10.2, 12.3, 4.5], [23.4, 13.4, 5.2], "leather_d", "hueso", pivot, rot),
+            turned([23.0, 11.9, 4.55], [24.4, 13.2, 5.15], "leather_d", "punta del hueso", pivot, rot)]
+    # Cobertoras: cortas y blancas, tapan la base de las demás (las más cercanas a quien mira desde atrás).
+    for i in range(6):
+        x = 10.8 + i * 2.05
+        z0 = 4.36 if i % 2 == 0 else 4.41
+        side.append(turned([x, 10.4 - i * 0.15, z0], [x + 2.2, 12.5, z0 + 0.22],
+                           "white" if i % 2 == 0 else "feather_w", f"cobertora {i}", pivot, rot))
+    # Secundarias: cuelgan de la parte interna del ala, cada una un poco más larga.
+    for i, low in enumerate([6.6, 6.0, 5.5, 5.1]):
+        x = 10.8 + i * 1.5
+        z0 = 4.62 if i % 2 == 0 else 4.66
+        side.append(turned([x, low, z0], [x + 2.0, 10.9, z0 + 0.2], "wing_l", f"secundaria {i}", pivot, rot))
+        side.append(turned([x + 0.2, low - 0.6, z0 + 0.02], [x + 1.8, low, z0 + 0.18], "wing", f"punta de secundaria {i}",
+                           pivot, rot))
+    # Primarias: largas, en la punta, abiertas en abanico (cada una girada sobre su base, más cuanto más afuera). Anchas
+    # y montadas unas sobre otras (z alternado) para que el abanico se vea lleno, sin huecos entre plumas.
+    prim = [(16.6, 7.4, 3), (17.8, 8.0, 9), (19.0, 8.6, 15), (20.2, 9.0, 21), (21.3, 9.3, 28), (22.3, 9.4, 35), (23.2, 9.0, 43)]
+    for i, (xb, length, fan) in enumerate(prim):
+        z0 = 4.72 + (i % 3) * 0.05
+        b = [xb, 11.2, z0 + 0.1]
+        side.append(turned([xb - 1.0, 11.0 - length, z0], [xb + 1.0, 11.6, z0 + 0.2], "wing", f"primaria {i}",
+                           pivot, rot, base=b, local=_rz(fan)))
+        side.append(turned([xb - 0.8, 10.2 - length, z0 + 0.02], [xb + 0.8, 11.0 - length, z0 + 0.18], "wing_d",
+                           f"punta de primaria {i}", pivot, rot, base=b, local=_rz(fan)))
+    # Cera que sujeta las plumas al hueso.
+    for k, x in enumerate([12.4, 16.2, 20.0]):
+        side.append(turned([x, 12.0, 4.3], [x + 0.9, 12.7, 4.5], "wax", f"gota de cera {k}", pivot, rot))
+        side.append(turned([x + 0.25, 11.3, 4.32], [x + 0.65, 12.0, 4.48], "wax_l", f"chorrito de cera {k}", pivot, rot))
     return e + side + [mirror(p) for p in side]
 
 
