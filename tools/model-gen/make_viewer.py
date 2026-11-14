@@ -100,6 +100,11 @@ if __name__ == "__main__":
         data["weapons"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "scale": WE.SCALE[key],
                                 "tex": b64(os.path.join(ASSETS, "textures", "entity", "weapon", key + ".png")),
                                 "glow": b64(os.path.join(ASSETS, "textures", "entity", "weapon", key + "_glow.png"))}
+    # Cabezas de Medusa y de Mímir como objetos 3D (head_items.py).
+    data["heads"] = {}
+    for key in ("medusa_head_3d", "medusa_head_gaze", "mimir_head_3d"):
+        data["heads"][key] = {"model": json.loads(read(os.path.join(ASSETS, "models", "item", key + ".json"))),
+                              "tex": b64(os.path.join(ASSETS, "textures", "item", "head", key + ".png"))}
     template = read(os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer_template.html"))
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(template.replace("__DATA__", json.dumps(data, ensure_ascii=False)))
