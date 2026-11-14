@@ -143,6 +143,9 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button data-subject="falcon" aria-pressed="false" data-i18n="subjFalcon">Halcón de Freyja</button>
       <button data-subject="pegasus" aria-pressed="false" data-i18n="subjPegasus">Pegaso</button>
       <button data-subject="talos" aria-pressed="false" data-i18n="subjTalos">Talos</button>
+      <button data-subject="zeus" aria-pressed="false" data-i18n="subjZeus">Rayo de Zeus</button>
+      <button data-subject="freyr" aria-pressed="false" data-i18n="subjFreyr">Espada de Freyr</button>
+      <button data-subject="thrown" aria-pressed="false" data-i18n="subjThrown">Armas en vuelo</button>
       <button data-subject="monkey" aria-pressed="false" data-i18n="subjMonkey">Mono guerrero</button>
       <button data-subject="dragon" aria-pressed="false" data-i18n="subjDragon">Long</button>
       <button data-subject="dog" aria-pressed="false" data-i18n="subjDog">Perro Celestial</button>
@@ -174,7 +177,7 @@ const UI = {
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
     stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
-    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Halcón de Freyja", subjPegasus: "Pegaso", subjTalos: "Talos", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Halcón de Freyja", subjPegasus: "Pegaso", subjTalos: "Talos", subjZeus: "Rayo de Zeus", subjFreyr: "Espada de Freyr", subjThrown: "Armas en vuelo", subjMonkey: "Mono guerrero", subjDragon: "Long", subjDog: "Perro Celestial", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Tortuga de Urashima", subjOrochi: "Sombra de Orochi", subjPlayer: "Reliquias puestas",
     footKitsune: "El kitsune de nueve colas de la Esfera estelar: zorro blanco de Inari con marcas rojas y babero rojo, ojos dorados, nueve colas alzadas con la punta de llama celeste y dos kitsunebi que giran a su alrededor (brillan).",
     footOrochi: "La sombra de Yamata no Orochi que llama su escama: no se mueve; ocho cabezas de ojos rojos sobre cuellos largos que muerden a los hostiles cercanos, cuerpo de escamas con musgo y cipreses en el lomo, ocho colas por el suelo y el brillo de Kusanagi en una de ellas. Se dibuja al doble.",
     footTurtle: "La tortuga gigante de Urashima, que llama su caña: caparazón de escudos con borde ámbar, aletas que reman y las algas de la minogame, la tortuga de mil años. El jinete va sobre el caparazón.",
@@ -186,6 +189,9 @@ const UI = {
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
     footFalcon: "El halcón en que te convierte el manto de plumas de Freyja: halcón peregrino de lomo pardo con barras, pecho claro moteado, la bigotera oscura de la cara, pico ganchudo y patas amarillas. Aletea rápido y planea entre medio.",
     footPegasus: "Pegaso, que llama la brida de oro de Atenea: caballo blanco con grandes alas de plumas, crin y cola plateadas, la brida de oro (brilla un poco) y una manta roja con greca. Vuela con el salto, planea al soltarlo y embiste en picada.",
+    footZeus: "El rayo de Zeus: se carga un instante y cae un rayo limpio (sin fuego) sobre el enemigo al que apuntas; después salta a los hostiles cercanos (a 3, a 5 con tormenta).",
+    footFreyr: "La espada de Freyr pelea sola: envainada en la cadera, sale con un destello cuando hay combate, embiste con estela dorada, da tajos en arco y estocadas, vuelve a tu lado y se envaina a los 5 s sin combate. El movimiento es suavizado: cada paso parte de donde terminó el anterior.",
+    footThrown: "Armas que se lanzan y vuelven: Mjölnir gira de punta a punta, Gungnir vuela de punta y busca a su blanco, y el dardo de muérdago (que ignora armadura) vuelve a la mano.",
     footTalos: "Talos, que llama su clavo de bronce: hombre de bronce de unos 3 bloques con pelo y barba de rizos, ojos de horno, pátina verde, la vena de ícor dorada que baja al tobillo y el clavo en el tobillo. Da vueltas a tu alrededor, lanza rocas y abraza al rojo.",
     footRavens: "Huginn y Muninn, los cuervos de Odín: salen con clic derecho, se posan cerca de ti con las alas plegadas y te miran; de vez en cuando uno levanta el vuelo y vuelve a posarse. Sus ojos dorados brillan y, mientras están afuera, los hostiles cercanos brillan.",
     footShip: "Skíðblaðnir, el barco de Freyr que se pliega como un pañuelo: clic derecho mirando al agua y se despliega un bote con proa de dragón, escudos en la borda y vela a rayas detrás del jinete. Al bajarte se pliega solo; con viento a favor va más rápido.",
@@ -201,7 +207,7 @@ const UI = {
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
     stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
-    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Freyja's falcon", subjPegasus: "Pegasus", subjTalos: "Talos", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Freyja's falcon", subjPegasus: "Pegasus", subjTalos: "Talos", subjZeus: "Zeus' thunderbolt", subjFreyr: "Sword of Freyr", subjThrown: "Thrown weapons", subjMonkey: "Monkey warrior", subjDragon: "Long", subjDog: "Celestial Hound", subjQilin: "Qilin", subjKitsune: "Kitsune", subjTurtle: "Urashima's Turtle", subjOrochi: "Orochi's Shadow", subjPlayer: "Worn relics",
     footKitsune: "The nine-tailed kitsune of the Star Ball: a white Inari fox with red markings and a red bib, golden eyes, nine raised tails tipped with pale blue flame and two kitsunebi circling it (they glow).",
     footOrochi: "The shadow of Yamata no Orochi called by its scale: it does not move; eight red-eyed heads on long necks bite nearby hostiles, a scaly body with moss and cypresses on its back, eight tails across the ground and the gleam of Kusanagi in one of them. Drawn at double size.",
     footTurtle: "Urashima's giant turtle, called by his rod: a shell of amber-rimmed scutes, rowing flippers and the trailing seaweed of the minogame, the thousand-year turtle. The rider sits on the shell.",
@@ -213,6 +219,9 @@ const UI = {
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
     footFalcon: "The falcon Freyja's feather cloak turns you into: a peregrine with a barred brown back, a pale speckled chest, the dark facial stripe, a hooked beak and yellow feet. It flaps fast and glides in between.",
     footPegasus: "Pegasus, called by Athena's golden bridle: a white horse with great feathered wings, silver mane and tail, the golden bridle (it glows a little) and a red cloth with a meander border. It flies with jump, glides when released and rams in a dive.",
+    footZeus: "Zeus' thunderbolt: charge for an instant and clean lightning (no fire) strikes the enemy you aim at, then jumps to nearby hostiles (3, or 5 in a storm).",
+    footFreyr: "The sword of Freyr fights on its own: sheathed at your hip, it flies out with a flash when combat starts, rams with a golden trail, slashes in arcs and thrusts, returns to your side and sheathes itself after 5 s out of combat. Motion is smoothed: each move starts where the last one ended.",
+    footThrown: "Weapons that are thrown and come back: Mjölnir tumbles end over end, Gungnir flies point first and seeks its target, and the mistletoe dart (which ignores armour) returns to your hand.",
     footTalos: "Talos, called by his bronze nail: a bronze man about 3 blocks tall with curly hair and beard, furnace eyes, green patina, the golden vein of ichor running down to the ankle and the nail in it. He circles you, throws rocks and hugs red-hot.",
     footRavens: "Huginn and Muninn, Odin's ravens: right-click to send them out; they perch near you with folded wings and watch you, and now and then one takes off and lands again. Their golden eyes glow and, while they are out, nearby hostiles glow.",
     footShip: "Skíðblaðnir, Freyr's ship that folds like a cloth: right-click looking at water to unfold a boat with a dragon prow, shields along the gunwale and a striped sail behind the rider. It folds itself when you get off; with a fair wind it goes faster.",
@@ -232,7 +241,7 @@ const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma",
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
   greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"],
   china: ["wind_fire_wheels", "five_color_stone", "erlang_eye", "pixiu_bracelet"], japan: ["yasakani_magatama", "raijin_drum", "tengu_mask", "kappa_dish"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus", "pegasus", "talos"], rome: ["player"], norse: ["player", "sleipnir", "ravens", "ship", "falcon"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus", "pegasus", "talos", "zeus"], rome: ["player"], norse: ["player", "sleipnir", "ravens", "ship", "falcon", "freyr", "thrown"], china: ["player", "monkey", "dragon", "dog", "qilin"], japan: ["player", "kitsune", "turtle", "orochi"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -993,6 +1002,9 @@ const VIEWS = {
   pegasus: { cam: [3.8, 2.6, 4.2], target: [0, 1.2, 0] },
   talos: { cam: [3.8, 2.8, 4.4], target: [0, 1.5, 0] },
   falcon: { cam: [2.8, 2.0, 3.0], target: [0, 1.0, 0] },
+  zeus: { cam: [4.6, 3.4, 5.4], target: [0, 1.0, -1.5] },
+  freyr: { cam: [-3.6, 2.3, 4.6], target: [0, 1.0, -1.2] },
+  thrown: { cam: [4.8, 2.6, 2.4], target: [0, 1.3, -2.2] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
 function setSubject(s) {
@@ -1010,6 +1022,7 @@ function setSubject(s) {
   orochi.entity.visible = s === "orochi";
   ravens.forEach(r => { r.entity.visible = s === "ravens"; });
   pegasus.entity.visible = s === "pegasus"; talos.entity.visible = s === "talos"; falcon.entity.visible = s === "falcon";
+  for (const [k, sc] of Object.entries(SPECIAL)) { sc.group.visible = s === k; if (s === k) sc.reset(); }
   pegasus.entity.position.set(0, 0, 0); talos.entity.position.set(0, 0, 0); falcon.entity.position.set(0, 0.4, 0);
   pegasus.entity.rotation.y = Math.PI * 0.75; talos.entity.rotation.y = Math.PI; falcon.entity.rotation.y = Math.PI * 0.7;
   ship.entity.visible = water.visible = s === "ship";
@@ -1033,7 +1046,7 @@ function setSubject(s) {
   renderStageText();
 }
 function renderStageText() {
-  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", ravens: "footRavens", ship: "footShip", falcon: "footFalcon", pegasus: "footPegasus", talos: "footTalos", player: "footPlayer" }[subject];
+  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", dog: "footDog", qilin: "footQilin", kitsune: "footKitsune", turtle: "footTurtle", orochi: "footOrochi", ravens: "footRavens", ship: "footShip", falcon: "footFalcon", pegasus: "footPegasus", talos: "footTalos", zeus: "footZeus", freyr: "footFreyr", thrown: "footThrown", player: "footPlayer" }[subject];
   document.getElementById("stageFoot").textContent = UI[lang][foot];
   document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
   buildWornControls();
@@ -1051,6 +1064,218 @@ resize();
 
 let last = performance.now(), acc = 0, angle = 0;
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* ---- Escenas de habilidades: la espada de Freyr, las armas en vuelo y el rayo de Zeus. Cada una vive en su grupo y
+   solo se anima cuando está a la vista. ---------------------------------------------------------------------------- */
+/** Ícono de una reliquia extruido 1 px (como un ítem), centrado en el origen; diagonal = gira 45° para que la punta del
+    ícono (arriba a la derecha) quede hacia +y. */
+function iconMesh(name, size, diagonal) {
+  const g = new THREE.Group(), inner = new THREE.Group(); g.add(inner);
+  inner.scale.setScalar(size); if (diagonal) inner.rotation.z = Math.PI / 4;
+  const img = sprites[name].img;
+  const build = () => {
+    const c = document.createElement("canvas"); c.width = 16; c.height = 16;
+    const x2 = c.getContext("2d"); x2.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16);
+    const data = x2.getImageData(0, 0, 16, 16).data, cells = [];
+    for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (data[(y * 16 + x) * 4 + 3] > 25) cells.push([x, y]);
+    const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1 / 16, 1 / 16, 1 / 16), new THREE.MeshLambertMaterial(), cells.length);
+    const m = new THREE.Matrix4(), col = new THREE.Color();
+    cells.forEach(([x, y], i) => {
+      m.makeTranslation((x - 7.5) / 16, (7.5 - y) / 16, 0); mesh.setMatrixAt(i, m);
+      const k = (y * 16 + x) * 4; col.setRGB(data[k] / 255, data[k + 1] / 255, data[k + 2] / 255).convertSRGBToLinear(); mesh.setColorAt(i, col);
+    });
+    inner.add(mesh);
+  };
+  if (img.complete && img.naturalWidth) build(); else img.addEventListener("load", build);
+  return g;
+}
+function boxAt(parent, color, x, y, z, w, h, d) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w / 16, h / 16, d / 16), new THREE.MeshLambertMaterial({ color }));
+  m.position.set(x / 16, y / 16, z / 16); parent.add(m); return m;
+}
+function dummyPlayer(parent) {
+  const g = new THREE.Group(); parent.add(g);
+  boxAt(g, 0xc69c6d, 0, 28, 0, 8, 8, 8); boxAt(g, 0x2b2118, 0, 31.2, 0, 8.4, 2.4, 8.4);
+  boxAt(g, 0x5a7fa8, 0, 18, 0, 8, 12, 4); boxAt(g, 0xc69c6d, -6, 18, 0, 4, 12, 4); boxAt(g, 0xc69c6d, 6, 18, 0, 4, 12, 4);
+  boxAt(g, 0x3d3a4a, -2, 6, 0, 4, 12, 4); boxAt(g, 0x3d3a4a, 2, 6, 0, 4, 12, 4);
+  return g;
+}
+function dummyZombie(parent) {
+  const g = new THREE.Group(); parent.add(g);
+  const meshes = [[0x5f8f4a, 0, 28, 0, 8, 8, 8], [0x2f6f8f, 0, 18, 0, 8, 12, 4], [0x5f8f4a, -6, 22, -4, 4, 4, 12], [0x5f8f4a, 6, 22, -4, 4, 4, 12],
+    [0x3b3a7a, -2, 6, 0, 4, 12, 4], [0x3b3a7a, 2, 6, 0, 4, 12, 4]].map(a => boxAt(g, ...a));
+  return { g, meshes, hp: 3, flash: 0, recoil: 0, dead: -1, kb: new THREE.Vector3() };
+}
+const sparks3 = [];
+function spark3(p, color, v, life = 0.5, size = 0.05) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(size, size, size), new THREE.MeshBasicMaterial({ color, transparent: true, blending: THREE.AdditiveBlending }));
+  m.position.copy(p); m.userData = { life, max: life, v: v || new THREE.Vector3(0, 0.1, 0) }; scene.add(m); sparks3.push(m);
+}
+function burst3(p, n, speed, colors) {
+  for (let i = 0; i < n; i++) spark3(p.clone(), colors[i % colors.length],
+    new THREE.Vector3(Math.random() - .5, Math.random() - .2, Math.random() - .5).normalize().multiplyScalar(speed * (0.5 + Math.random())), 0.55 + Math.random() * 0.3);
+}
+const ease3 = u => u * u * (3 - 2 * u), easeOut3 = u => 1 - Math.pow(1 - u, 3);
+const SPECIAL = {};
+
+/* Espada de Freyr: el mismo guion que la página de la animación (objetivo + seguimiento amortiguado, estela en cinta,
+   pausa de impacto). */
+try { (function freyrScene() {
+  const group = new THREE.Group(); scene.add(group); group.visible = false;
+  const me = dummyPlayer(group); me.rotation.y = Math.PI; me.position.set(0, 0, 1.5);
+  boxAt(me, 0x5e3a1c, 0, 12.7, 0, 8.6, 1, 4.6); boxAt(me, 0x5e3a1c, 3, 7.3, 2.9, 4.6, 13, 2.2); boxAt(me, 0xf5c842, 3, 12.4, 2.9, 4.8, 0.8, 2.4);
+  const HILT_LOCAL = new THREE.Vector3(3 / 16, 13.8 / 16, 2.9 / 16);
+  const zs = [[-1.6, -6.5], [0.6, -7.2], [2.2, -6.0]].map(() => dummyZombie(group));
+  const SPAWN = [[-1.6, -6.5], [0.6, -7.2], [2.2, -6.0]];
+  const target = new THREE.Object3D(), view = iconMesh("freyr_sword", 1.5, true); group.add(view);
+  const glowLight = new THREE.PointLight(0xffd36a, 0, 3); view.add(glowLight); glowLight.position.y = 0.4;
+  const RIB = 24, ribPts = [], ribGeo = new THREE.BufferGeometry();
+  ribGeo.setAttribute("position", new THREE.Float32BufferAttribute(new Float32Array(RIB * 6), 3));
+  ribGeo.setAttribute("color", new THREE.Float32BufferAttribute(new Float32Array(RIB * 6), 3));
+  const idx = []; for (let i = 0; i < RIB - 1; i++) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } ribGeo.setIndex(idx);
+  const ribbon = new THREE.Mesh(ribGeo, new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, depthWrite: false }));
+  ribbon.frustumCulled = false; group.add(ribbon);
+  let ribOn = 0, ribWant = 0, snap = true, hitStop = 0, steps = [], si = 0, st = 0;
+  const hilt = () => me.localToWorld(HILT_LOCAL.clone());
+  const tip = () => view.localToWorld(new THREE.Vector3(0, 0.6 * view.children[0].scale.x / 1.5, 0));
+  const mid = () => view.localToWorld(new THREE.Vector3(0, 0.25 * view.children[0].scale.x / 1.5, 0));
+  const guard = () => new THREE.Vector3(-0.9, 1.6, 0.8);
+  const zpos = i => zs[i].g.position.clone().add(new THREE.Vector3(0, 1.1, 0));
+  const aim = (from, to) => target.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), to.clone().sub(from).normalize());
+  const size = k => view.children[0].scale.setScalar(k);
+  const hit = (i, big) => { const z = zs[i]; if (z.dead >= 0) return; z.hp--; z.flash = 0.35; z.recoil = big ? 1 : 0.7;
+    z.kb.copy(z.g.position).normalize().multiplyScalar(big ? 1.6 : 0.9); z.kb.y = 0;
+    burst3(tip().lerp(zpos(i), 0.5), big ? 20 : 14, 1.1, [0xffd36a, 0xffffff]); hitStop = big ? 0.09 : 0.06; if (z.hp <= 0) z.dead = 0; };
+  const sheathed = () => { snap = true; target.position.copy(hilt()); target.quaternion.setFromEuler(new THREE.Euler(0, 0, Math.PI)); glowLight.intensity = 0; size(1.0); };
+  const trail = () => { ribWant = 1; };
+  function script() {
+    const S = [{ d: 1.4, run() { sheathed(); } },
+      { d: 0.8, start() { snap = false; burst3(hilt(), 24, 1.6, [0xffd36a, 0xffffff]); }, run(u) {
+        const p = hilt().lerp(guard(), u); p.y += Math.sin(u * Math.PI) * 0.6; target.position.copy(p);
+        target.quaternion.setFromEuler(new THREE.Euler(0, u * Math.PI * 4, Math.PI - u * Math.PI)); glowLight.intensity = 1.6; size(1 + 0.5 * u); } }];
+    for (const [i, kind] of [[0, "arc"], [1, "thrust"], [2, "arc"], [0, "thrust"], [1, "arc"], [2, "thrust"], [0, "arc"], [1, "arc"], [2, "arc"]]) {
+      S.push({ d: 0.45, run(u, s) { if (!s.from) s.from = target.position.clone(); const p = s.from.clone().lerp(guard(), ease3(u)); p.y += Math.sin(u * Math.PI) * 0.12; target.position.copy(p); aim(p, zpos(i)); } });
+      S.push({ d: 0.32, run(u, s) { if (!s.from) s.from = target.position.clone(); const to = zpos(i).add(new THREE.Vector3(0, 0.1, 0.9)), k = ease3(u);
+        const c = s.from.clone().lerp(to, 0.5).add(new THREE.Vector3(0, 0.7, 0)); const a = s.from.clone().lerp(c, k), b = c.clone().lerp(to, k);
+        target.position.copy(a.lerp(b, k)); aim(target.position, zpos(i)); trail(); } });
+      if (kind === "arc") S.push({ d: 0.55, end() { hit(i, false); }, run(u) { const c = zpos(i), a = Math.PI / 2 + ease3(u) * Math.PI * 2;
+        target.position.set(c.x + Math.cos(a) * 0.9, c.y + 0.1 + Math.sin(u * Math.PI) * 0.3, c.z + Math.sin(a) * 0.9);
+        target.quaternion.setFromEuler(new THREE.Euler(Math.PI / 2, -a, 0)); trail(); } });
+      else S.push({ d: 0.5, end() { hit(i, true); }, run(u) { const c = zpos(i), back = c.clone().add(new THREE.Vector3(0.6, 0.5, 1.8));
+        const p = u < 0.55 ? zpos(i).add(new THREE.Vector3(0, 0.1, 0.9)).lerp(back, easeOut3(u / 0.55)) : back.clone().lerp(c, ease3((u - 0.55) / 0.45) * 0.9);
+        target.position.copy(p); aim(p, c); if (u > 0.55) trail(); } });
+    }
+    S.push({ d: 1.6, run(u, s) { if (!s.from) s.from = target.position.clone(); const p = s.from.clone().lerp(guard(), ease3(Math.min(1, u * 2))); target.position.copy(p);
+      target.quaternion.setFromEuler(new THREE.Euler(0, u * 2, 0)); glowLight.intensity = 0.5; } });
+    S.push({ d: 0.9, end() { burst3(hilt(), 12, 0.8, [0xffd36a]); }, run(u, s) { if (!s.from) s.from = target.position.clone();
+      const p = s.from.clone().lerp(hilt(), u * u); p.y += Math.sin(u * Math.PI) * 0.5; target.position.copy(p);
+      target.quaternion.setFromEuler(u > 0.85 ? new THREE.Euler(0, 0, Math.PI) : new THREE.Euler(0, (1 - u) * Math.PI * 4, Math.PI * u)); trail(); glowLight.intensity = 1.6 * (1 - u); size(1.5 - 0.5 * u); } });
+    S.push({ d: 1.2, run() { sheathed(); } });
+    return S;
+  }
+  function reset() {
+    steps = script(); si = 0; st = 0; snap = true; ribPts.length = 0;
+    zs.forEach((z, i) => { z.hp = 3; z.dead = -1; z.flash = 0; z.recoil = 0; z.kb.set(0, 0, 0); z.g.visible = true; z.g.rotation.set(0, 0, 0);
+      z.g.position.set(SPAWN[i][0], 0, SPAWN[i][1] - 2.5); });
+  }
+  function update(raw) {
+    hitStop = Math.max(0, hitStop - raw); const dt = hitStop > 0 ? raw * 0.12 : raw;
+    zs.forEach(z => {
+      if (z.dead >= 0) { z.dead += dt; z.g.rotation.x = Math.min(Math.PI / 2, z.dead * 4); if (z.dead > 0.6) z.g.visible = false; return; }
+      const to = me.position.clone().sub(z.g.position).setY(0);
+      if (to.length() > 2.8) z.g.position.addScaledVector(to.normalize(), 0.9 * dt);
+      z.g.position.addScaledVector(z.kb, dt * 3); z.kb.multiplyScalar(Math.exp(-dt * 5));
+      z.g.rotation.y = Math.atan2(me.position.x - z.g.position.x, me.position.z - z.g.position.z);
+      z.recoil *= Math.exp(-dt * 6); z.g.rotation.x = -0.35 * z.recoil; z.flash = Math.max(0, z.flash - dt);
+      const f = z.flash / 0.35; z.meshes.forEach(m => m.material.emissive.setRGB(0.3 * f * f, 0.02 * f, 0.02 * f));
+    });
+    const s = steps[si];
+    if (s) { if (st === 0 && s.start) s.start(); st += dt; const u = Math.min(1, st / s.d); s.run(u, s);
+      if (u >= 1) { if (s.end) s.end(); si++; st = 0; if (si >= steps.length) reset(); } }
+    if (snap) { view.position.copy(target.position); view.quaternion.copy(target.quaternion); }
+    else { view.position.lerp(target.position, 1 - Math.exp(-raw * 16)); view.quaternion.slerp(target.quaternion, 1 - Math.exp(-raw * 12)); }
+    ribOn += (ribWant - ribOn) * (1 - Math.exp(-raw * 10)); ribWant = 0;
+    ribPts.unshift([tip(), mid()]); if (ribPts.length > RIB) ribPts.pop();
+    const pos = ribGeo.attributes.position.array, col = ribGeo.attributes.color.array;
+    for (let i = 0; i < RIB; i++) { const [t, m] = ribPts[Math.min(i, ribPts.length - 1)]; pos.set([t.x, t.y, t.z], i * 6); pos.set([m.x, m.y, m.z], i * 6 + 3);
+      const f = ribOn * Math.pow(1 - i / RIB, 1.6); col.set([f, 0.82 * f, 0.4 * f], i * 6); col.set([0.5 * f, 0.36 * f, 0.1 * f], i * 6 + 3); }
+    ribGeo.attributes.position.needsUpdate = true; ribGeo.attributes.color.needsUpdate = true;
+  }
+  SPECIAL.freyr = { group, reset, update };
+})(); } catch (e) { console.error("escena freyr", e); }
+
+/* Armas en vuelo: Mjölnir gira de punta a punta, Gungnir vuela de punta y el dardo de muérdago vuelve a la mano. */
+try { (function thrownScene() {
+  const group = new THREE.Group(); scene.add(group); group.visible = false;
+  const me = dummyPlayer(group); me.rotation.y = Math.PI; me.position.set(0, 0, 1.0);
+  const z = dummyZombie(group); z.g.position.set(0, 0, -5.5);
+  const weapons = [["mjolnir", "spin"], ["gungnir", "point"], ["mistletoe_dart", "point"]].map(([n, k]) => { const m = iconMesh(n, 1.6, true); group.add(m); return { m, k }; });
+  let t = 0;
+  function reset() { t = 0; }
+  function update(dt) {
+    t += dt; const cycle = 2.6, i = Math.floor(t / cycle) % 3, u = (t % cycle) / cycle;
+    const hand = new THREE.Vector3(-0.35, 1.45, 0.9), hitAt = new THREE.Vector3(0, 1.2, -5.2);
+    weapons.forEach((w, j) => { w.m.visible = j === i; });
+    const w = weapons[i];
+    // 0–0,45: va al blanco; 0,45–0,55: golpea; 0,55–1: vuelve a la mano.
+    const out = u < 0.45, k = out ? easeOut3(u / 0.45) : u < 0.55 ? 1 : 1 - ease3((u - 0.55) / 0.45);
+    const p = hand.clone().lerp(hitAt, k); p.y += Math.sin(k * Math.PI) * (w.k === "spin" ? 0.4 : 0.15);
+    w.m.position.copy(p);
+    if (w.k === "spin") { w.m.rotation.set(-t * 14, Math.PI / 2, 0); }
+    else { const dir = out || u < 0.55 ? hitAt.clone().sub(hand) : hand.clone().sub(hitAt);
+      w.m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize()); }
+    if (u > 0.44 && u < 0.47) { burst3(hitAt, 3, 1.2, w.m === weapons[2].m ? [0x8ad874, 0xffffff] : [0xffffff, 0xffd36a]);
+      z.flash = 0.3; if (w.k === "spin") burst3(hitAt.clone().add(new THREE.Vector3(0, 0.5, 0)), 2, 1.5, [0xcfe8ff]); }
+    z.flash = Math.max(0, z.flash - dt); const f = z.flash / 0.3; z.meshes.forEach(m => m.material.emissive.setRGB(0.3 * f, 0.02 * f, 0.02 * f));
+    z.g.rotation.y = 0;
+  }
+  SPECIAL.thrown = { group, reset, update };
+})(); } catch (e) { console.error("escena thrown", e); }
+
+/* Rayo de Zeus: cae un rayo limpio sobre el primer enemigo y salta a los otros dos (arcos eléctricos). */
+try { (function zeusScene() {
+  const group = new THREE.Group(); scene.add(group); group.visible = false;
+  const me = dummyPlayer(group); me.position.set(0, 0, 2.0); me.rotation.y = Math.PI;
+  const bolt = iconMesh("zeus_thunderbolt", 0.9, true); me.add(bolt); bolt.position.set(-0.4, 1.0, -0.3); bolt.rotation.set(-0.6, 0, 0.3);
+  const zs = [[0, -3.2], [-1.8, -4.2], [1.9, -4.6]].map(([x, zz]) => { const d = dummyZombie(group); d.g.position.set(x, 0, zz); return d; });
+  const lines = [];
+  const lineMat = c => new THREE.LineBasicMaterial({ color: c, transparent: true, blending: THREE.AdditiveBlending });
+  const flash = new THREE.PointLight(0xdfe8ff, 0, 10); group.add(flash);
+  function jag(from, to, segs, spread) {
+    const pts = []; for (let i = 0; i <= segs; i++) { const p = from.clone().lerp(to, i / segs);
+      if (i > 0 && i < segs) p.add(new THREE.Vector3((Math.random() - .5) * spread, (Math.random() - .5) * spread * 0.5, (Math.random() - .5) * spread)); pts.push(p); }
+    return pts;
+  }
+  function strike(from, to, color, segs, spread) {
+    for (const c of [color, 0xffffff]) { const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(jag(from, to, segs, spread)), lineMat(c));
+      l.userData.life = 0.35; group.add(l); lines.push(l); }
+  }
+  let t = 0, fired = [false, false, false];
+  function reset() { t = 0; fired = [false, false, false]; }
+  function update(dt) {
+    t += dt; const c = t % 3.2;
+    if (c < 0.05) fired = [false, false, false];
+    const head = i => zs[i].g.position.clone().add(new THREE.Vector3(0, 1.3, 0));
+    if (c > 0.6 && !fired[0]) { fired[0] = true; strike(head(0).add(new THREE.Vector3(0.4, 9, 0.2)), head(0), 0xfff4b0, 14, 0.9);
+      flash.position.copy(head(0)); flash.intensity = 4; zs[0].flash = 0.4; burst3(head(0), 14, 1.4, [0xffffff, 0xfff4b0, 0x9fd8ff]); }
+    if (c > 0.85 && !fired[1]) { fired[1] = true; strike(head(0), head(1), 0x9fd8ff, 8, 0.35); zs[1].flash = 0.4; burst3(head(1), 8, 1.0, [0x9fd8ff, 0xffffff]); }
+    if (c > 1.05 && !fired[2]) { fired[2] = true; strike(head(1), head(2), 0x9fd8ff, 8, 0.35); zs[2].flash = 0.4; burst3(head(2), 8, 1.0, [0x9fd8ff, 0xffffff]); }
+    flash.intensity = Math.max(0, flash.intensity - dt * 14);
+    for (let i = lines.length - 1; i >= 0; i--) { const l = lines[i]; l.userData.life -= dt; l.material.opacity = Math.max(0, l.userData.life / 0.35);
+      if (l.userData.life <= 0) { group.remove(l); lines.splice(i, 1); } }
+    zs.forEach(z => { z.flash = Math.max(0, z.flash - dt); const f = z.flash / 0.4; z.meshes.forEach(m => m.material.emissive.setRGB(0.35 * f, 0.35 * f, 0.5 * f)); });
+    bolt.rotation.z = 0.3 + Math.sin(t * 3) * 0.05 + (c > 0.4 && c < 0.7 ? -0.6 : 0);
+  }
+  SPECIAL.zeus = { group, reset, update };
+})(); } catch (e) { console.error("escena zeus", e); }
+
+let specialLast = performance.now();
+function updateSpecial(now) {
+  const dt = Math.min(0.05, (now - specialLast) / 1000) * (reduce ? 0.35 : 1); specialLast = now;
+  for (const [k, sc] of Object.entries(SPECIAL)) if (subject === k) { try { sc.update(dt); } catch (e) { console.error("escena " + k, e); delete SPECIAL[k]; } }
+  for (let i = sparks3.length - 1; i >= 0; i--) { const p = sparks3[i]; p.userData.life -= dt; p.position.addScaledVector(p.userData.v, dt); p.userData.v.y -= 1.2 * dt;
+    p.material.opacity = Math.max(0, p.userData.life / p.userData.max); if (p.userData.life <= 0) { scene.remove(p); sparks3.splice(i, 1); } }
+}
+
 function loop(now) {
   acc += Math.min(now - last, 200); last = now;
   while (acc >= 50) {   // un tick de Minecraft
@@ -1075,6 +1300,7 @@ function loop(now) {
     }
   }
   setupAnim();
+  updateSpecial(now);
   controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
