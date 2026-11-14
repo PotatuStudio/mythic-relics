@@ -1,5 +1,12 @@
 # Paquete de refactors (para una sesión limpia)
 
+> **Estado (2026-11-14, segunda sesión): hecho.** Etapas 1 a 5 en `main` (`bdc589e`, `9f14cba`, `9ed0c53`, `e27a606`,
+> `55d15ca`) y, de la 6, la lista de modificadores de daño (`relic/DamageModifiers`). Quedan como opcionales: `createLayer`
+> por modelo (cambio en `china_entities.py`) y claves `.summary` para el tooltip corto (son textos nuevos: revisarlos con
+> el usuario). Diferencias con el plan: `isFriend` unificado considera aliado a cualquier entidad del mismo equipo (antes
+> la versión de China solo a jugadores); `TooltipArgs` guarda arreglos (todo es constante) en vez de `Supplier`; no se
+> agregaron ayudantes de segundos y minutos (los `/ 20` de los tooltips se dejaron como están).
+
 Origen: la auditoría del 2026-11-14 (buenas prácticas, DRY, memoria y rendimiento). Lo de memoria (`relic/ServerState`),
 rendimiento (caché por tick de `WornRelics`) y limpieza ya está en `main` (commits `b0bf054`, `de011b2`, `7e83021`).
 Lo de aquí falta y **no debe cambiar el juego**: mismos números, mismos textos, mismo comportamiento.

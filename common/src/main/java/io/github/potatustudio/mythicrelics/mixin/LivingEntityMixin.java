@@ -3,18 +3,14 @@ package io.github.potatustudio.mythicrelics.mixin;
 import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
-import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
-import io.github.potatustudio.mythicrelics.japan.JapanGods;
-import io.github.potatustudio.mythicrelics.japan.JapanRelics;
-import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.DamageModifiers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -46,18 +42,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class LivingEntityMixin {
 	@ModifyVariable(method = "hurtServer", at = @At("HEAD"), argsOnly = true)
 	private float mythicrelics$relicDamage(float amount, ServerLevel level, DamageSource source) {
-		LivingEntity self = (LivingEntity) (Object) this;
-		if (source.getEntity() instanceof LivingEntity attacker && attacker.typeHolder().is(EntityTypeTags.UNDEAD)
-				&& WornRelics.isWearing(self, ModItems.ANKH)) {
-			amount *= 1.0f - EgyptRelics.ANKH_UNDEAD_REDUCTION;
-		}
-		amount = EgyptGods.modifyIncomingDamage(self, source, amount);
-		amount = GreeceHeroes.modifyIncomingDamage(self, source, GreeceRelics.modifyIncomingDamage(self, source, amount));
-		amount = NorseRelics.modifyIncomingDamage(self, source, RomeRelics.modifyIncomingDamage(self, source, amount));
-		amount = JapanGods.modifyIncomingDamage(self, source,
-				JapanRelics.modifyIncomingDamage(self, source, ChinaRelics.modifyIncomingDamage(self, source, amount)));
-		return NorseSagas.modifyIncomingDamage(self, source,
-				GreeceLegends.modifyIncomingDamage(self, source, amount));
+		return DamageModifiers.incoming((LivingEntity) (Object) this, source, amount);
 	}
 
 	/** Dáinsleif: sus heridas no sanan; el herido no se cura ni regenera mientras dure. */

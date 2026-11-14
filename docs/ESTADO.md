@@ -241,6 +241,13 @@ lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y 
 - Monturas: en 26.3 el servidor no deja montar entidades `noSave`; Sleipnir, qilin, long, tortuga y Skíðblaðnir se
   guardan como tipo pero se descartan con `shouldBeSaved() = false`.
 - Impulsos al jugador desde el servidor (`relic/RelicMotion`): hay que mandarle el paquete de movimiento.
+- Ayudantes comunes en `relic/` (refactor del 2026-11-14): `WornRelics.isWearing` (también con `RegistrySupplier`) y
+  `holding`; `Allies.isFriend`/`enemiesAround` (dueño, mascotas, aliados de `Minions` y mismo equipo); `Bosses.is` (tag
+  `mythicrelics:bosses`, con `#c:bosses` opcional); `Compass.direction`; `TooltipNumbers` (`fmt`, `fmtTenths`, `roman`);
+  `RelicFx.sound`/`notify` (avisos sobre la barra); `RelicCooldowns.start(jugador, ítem, ticks)` guarda con el mundo las
+  recargas de 10 s o más; `RelicSets` declara por pieza dónde cuenta (`worn`, `inventory`, `hand`, `mainHand`,
+  `bearer`) y el tooltip marca ✔ / ◐ (la llevas en otro lugar) / ✘; `TooltipArgs` (cada cultura registra sus números
+  en `registerTooltipArgs()`); `DamageModifiers` (el daño recibido, en orden); `RelicItem`.
 - Libros sibilinos con mapa de la estructura (sin repetir) y rastro de letras; Mímir con contornos (Display de bloque
   que brilla) de minerales y cofres, se le pregunta con clic derecho y guía 30 s con una estela; candado de Jano (Display de ítem `padlock`); fuego del hogar de Vesta.
 - Cuervos de Odín (`entity/OdinRaven`): mascotas que se posan cerca y miran al dueño; hostiles brillan mientras están.
@@ -362,23 +369,16 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
      y salto, recarga 10 s; el débil sigue igual.
    - Pendientes de arte: subir el detalle geométrico de las reliquias puestas de Egipto, Roma, nórdicos, China y
      Japón al nivel de las griegas (mostrar en el visor antes de aplicar); rehacer las alas de Ícaro (parecen persianas).
+   - Tras el refactor del 2026-11-14 (no debería cambiar nada del juego): tooltip de sets con ✔ / ◐ / ✘ (por ejemplo la
+     alabarda de Erlang en el inventario sale ◐ «en la mano principal»); recargas largas (Kusanagi, abanico, sake,
+     joyas de la marea…) que siguen en el ícono al salir y volver a entrar; un vistazo general a avisos y sonidos.
    Después, probar también en Fabric (Trinkets).
 2. **Cuando el usuario apruebe las pruebas: Chile/mapuche** como tanda especial (los celtas se descartaron el
    2026-11-10). Flujo: enseñar el mito, proponer reliquias (fiel / licencia / pop), página de diseño, preguntas con
    opciones, entidades 3D, íconos, programar, commit y push, visor global, lista de pruebas.
 3. Pendientes posibles: las Cuatro Bestias Celestiales chinas como set; luego India, aztecas, eslavos, Mesopotamia
    (`docs/ideas.md`).
-4. **Refactors pendientes (siguiente sesión, el usuario aprobó todos)**: plan detallado por etapas en
-   `docs/REFACTOR.md`. Resumen:
-   - Ayudantes comunes: `WornRelics.isWearing(entity, RegistrySupplier)` en lugar de `EgyptRelics.isWearing` (59 usos),
-     `relic/Allies.isFriend` y `enemiesAround` (hoy en `ChinaRelics`, con una copia distinta en `EgyptGods`), un solo
-     `isBoss` con tag `mythicrelics:bosses`, `relic/Compass` (brújula copiada en Mímir, cuervos y Sibila),
-     `TooltipNumbers` (tres `fmt`), `RelicCooldowns.tryStart(player, Item, ticks)`, `RelicFx.sound/notify`.
-   - Recargas: las de 10 s o más deberían pasar por `RelicCooldowns` (las vanilla se pierden al reconectar).
-   - `RelicSets`: declarar por pieza dónde cuenta (puesta, inventario, mano) para que el contador del tooltip coincida.
-   - Mover `egypt/RelicItem` a `relic/`, renombrar `MythicRenderers` y `RelicClientTicks` (tienen de todas las culturas),
-     imports en vez de nombres completos (~280), y un registro de `tooltipArgs` en lugar de la cadena de 13 clases.
-5. Portar Misfit Relics a Architectury (mismo esquema de módulos).
+4. Portar Misfit Relics a Architectury (mismo esquema de módulos).
 
 ## Cómo trabajar (recordatorio)
 - No abrir el juego en este PC: solo `./gradlew build` (con conexión la primera vez que cambia una dependencia).

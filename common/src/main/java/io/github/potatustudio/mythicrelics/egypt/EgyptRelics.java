@@ -161,6 +161,15 @@ public final class EgyptRelics {
 		TickEvent.SERVER_POST.register(EgyptRelics::tick);
 	}
 
+	/** Daño recibido: el Anj reduce el de los no-muertos. */
+	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
+		if (source.getEntity() instanceof LivingEntity attacker && attacker.typeHolder().is(EntityTypeTags.UNDEAD)
+				&& WornRelics.isWearing(self, ModItems.ANKH)) {
+			return amount * (1.0f - ANKH_UNDEAD_REDUCTION);
+		}
+		return amount;
+	}
+
 	/** Números que muestra el tooltip de cada reliquia (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static void registerTooltipArgs() {
 		TooltipArgs.register("golden_scarab", TooltipNumbers.fmt(SCARAB_THRESHOLD / 2), TooltipNumbers.roman(SCARAB_ABSORPTION + 1), SCARAB_MINION_TICKS / 20,
