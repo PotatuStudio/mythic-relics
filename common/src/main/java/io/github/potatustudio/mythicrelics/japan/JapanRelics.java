@@ -6,6 +6,7 @@ import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
@@ -149,13 +150,6 @@ public final class JapanRelics {
 		return level.isBrightOutside();
 	}
 
-	/** Set de los Tres Tesoros: Kusanagi en una mano, el espejo en la otra y la magatama puesta. */
-	public static boolean hasRegalia(Player player) {
-		boolean sword = WornRelics.holding(player, ModItems.KUSANAGI.get());
-		boolean mirror = WornRelics.holding(player, ModItems.YATA_MIRROR.get());
-		return sword && mirror && WornRelics.isWearing(player, ModItems.YASAKANI_MAGATAMA);
-	}
-
 	// ---- Daño -------------------------------------------------------------------------------------------------------
 
 	/**
@@ -173,7 +167,7 @@ public final class JapanRelics {
 			return 0;
 		}
 		if (source.getEntity() instanceof Player attacker && source.getDirectEntity() == attacker) {
-			if (hasRegalia(attacker) && isDay(attacker.level())) {
+			if (RelicSets.REGALIA.isComplete(attacker) && isDay(attacker.level())) {
 				amount *= 1.0f + SET_DAMAGE;
 			}
 			if (attacker.getMainHandItem().is(ModItems.ONI_KANABO.get())) {
@@ -197,10 +191,10 @@ public final class JapanRelics {
 		drum[1] = now;
 		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.NOTE_BLOCK_BASEDRUM.value(), SoundSource.PLAYERS,
 				0.8f, 0.5f + drum[0] * 0.15f);
-		if (drum[0] >= (JapanGods.hasWindAndThunder(player) ? JapanGods.SET_RAIJIN_HITS : RAIJIN_HITS)) {
+		if (drum[0] >= (RelicSets.FUJIN_RAIJIN.isComplete(player) ? JapanGods.SET_RAIJIN_HITS : RAIJIN_HITS)) {
 			drum[0] = 0;
 			io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, target.getX(), target.getY(), target.getZ(), player);
-			if (JapanGods.hasWindAndThunder(player)) {
+			if (RelicSets.FUJIN_RAIJIN.isComplete(player)) {
 				// Set de Fūjin y Raijin: el viento lleva el rayo a los hostiles más cercanos.
 				level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(8),
 								e -> e != target && e != player && e.isAlive() && e instanceof net.minecraft.world.entity.monster.Enemy
@@ -293,7 +287,7 @@ public final class JapanRelics {
 			if (player.tickCount % MAGATAMA_INTERVAL == 0 && day && WornRelics.isWearing(player, ModItems.YASAKANI_MAGATAMA)) {
 				player.heal(1.0f);
 			}
-			if (player.tickCount % 40 == 0 && isDay(level) && hasRegalia(player)) {
+			if (player.tickCount % 40 == 0 && isDay(level) && RelicSets.REGALIA.isComplete(player)) {
 				player.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 60, 0, true, false));
 			}
 		}

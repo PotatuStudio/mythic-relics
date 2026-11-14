@@ -101,11 +101,6 @@ public final class JapanGods {
 		BlockEvent.BREAK.register(JapanGods::onBreak);
 	}
 
-	/** Set de Fūjin y Raijin: la bolsa en el inventario y el tambor puesto. */
-	public static boolean hasWindAndThunder(Player player) {
-		return WornRelics.isWearing(player, ModItems.RAIJIN_DRUM) && player.getInventory().contains(s -> s.is(ModItems.FUJIN_WIND_BAG.get()));
-	}
-
 	public static boolean kappaWet(Player player) {
 		return WornRelics.isWearing(player, ModItems.KAPPA_DISH) && !DRY.contains(player.getUUID());
 	}

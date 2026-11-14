@@ -41,6 +41,10 @@ ES = {
     "item.mythicrelics.falcon_cloak.tooltip.2": "Solo vuelas: no atacas, no usas, no rompes, no pones ni recoges nada. La misma tecla te vuelve humano; si te golpean, también (y caes lento)",
     "message.mythicrelics.falcon_start": "Eres un halcón (%1$s s). La tecla del manto te vuelve humano",
     "key.mythicrelics.falcon_form": "Forma de halcón (manto de Freyja)",
+    "tooltip.mythicrelics.set_where.worn": "póntela",
+    "tooltip.mythicrelics.set_where.inventory": "en el inventario",
+    "tooltip.mythicrelics.set_where.hand": "en una mano",
+    "tooltip.mythicrelics.set_where.main_hand": "en la mano principal",
 }
 EN = {
     "item.mythicrelics.xirang_sack.tooltip.1": "If you fall into lava or the void, the earth grows under your feet and saves you (cooldown %1$s min)",
@@ -75,6 +79,10 @@ EN = {
     "item.mythicrelics.falcon_cloak.tooltip.2": "You only fly: no attacking, using, breaking, placing or picking up anything. The same key turns you back; being hit does too (and you fall slowly)",
     "message.mythicrelics.falcon_start": "You are a falcon (%1$s s). The cloak key turns you back",
     "key.mythicrelics.falcon_form": "Falcon form (Freyja's cloak)",
+    "tooltip.mythicrelics.set_where.worn": "wear it",
+    "tooltip.mythicrelics.set_where.inventory": "in your inventory",
+    "tooltip.mythicrelics.set_where.hand": "in a hand",
+    "tooltip.mythicrelics.set_where.main_hand": "in your main hand",
 }
 
 REMOVE = ["entity.mythicrelics.freyja_falcon", "itemGroup.mythicrelics.main",

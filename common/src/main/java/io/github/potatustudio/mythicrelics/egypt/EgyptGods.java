@@ -10,6 +10,7 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -232,13 +233,6 @@ public final class EgyptGods {
 
 	// ---- Osiris ------------------------------------------------------------------------------------------------------
 
-	public static boolean hasOsirisSet(Player player) {
-		ItemStack main = player.getMainHandItem();
-		ItemStack off = player.getOffhandItem();
-		return main.is(ModItems.OSIRIS_FLAIL.get()) && off.is(ModItems.OSIRIS_CROOK.get())
-				|| main.is(ModItems.OSIRIS_CROOK.get()) && off.is(ModItems.OSIRIS_FLAIL.get());
-	}
-
 	/** Golpe giratorio del mayal (lo llama el mixin al terminar un ataque del jugador con la carga que tenía). */
 	public static void flailSweep(Player player, net.minecraft.world.entity.Entity target, float strength) {
 		if (strength <= 0.9f || !(player.level() instanceof ServerLevel level) || !player.getMainHandItem().is(ModItems.OSIRIS_FLAIL.get())) {
@@ -273,7 +267,7 @@ public final class EgyptGods {
 
 	/** Renacer de Osiris (lo llama el mixin en la misma comprobación que el tótem). Devuelve true si salvó al jugador. */
 	public static boolean osirisRebirth(LivingEntity self, DamageSource source) {
-		if (!(self instanceof ServerPlayer player) || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || !hasOsirisSet(player)
+		if (!(self instanceof ServerPlayer player) || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || !RelicSets.OSIRIS.isComplete(player)
 				|| !RelicCooldowns.ready(player, "osiris_rebirth")) {
 			return false;
 		}
@@ -359,11 +353,6 @@ public final class EgyptGods {
 					Math.round(SEKHMET_CALM_HEAL / 2)};
 			default -> GreeceRelics.tooltipArgs(id);
 		};
-	}
-
-	/** Recarga de 24000 ticks del renacer en minutos de juego real, para el tooltip del set. */
-	public static int rebirthMinutes() {
-		return OSIRIS_REBIRTH_COOLDOWN / 20 / 60;
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).

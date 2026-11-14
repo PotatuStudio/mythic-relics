@@ -1047,5 +1047,9 @@
   "tooltip.mythicrelics.peach_ripe": "A peach is ripe",
   "tooltip.mythicrelics.set_active": "✔ %s active",
   "tooltip.mythicrelics.set_inactive": "✘ %s incomplete",
+  "tooltip.mythicrelics.set_where.hand": "in a hand",
+  "tooltip.mythicrelics.set_where.inventory": "in your inventory",
+  "tooltip.mythicrelics.set_where.main_hand": "in your main hand",
+  "tooltip.mythicrelics.set_where.worn": "wear it",
   "tooltip.mythicrelics.thoth_palette.written": "Written: %s/%s points"
 }

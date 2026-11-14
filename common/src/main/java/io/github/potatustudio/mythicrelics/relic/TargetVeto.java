@@ -1,6 +1,5 @@
 package io.github.potatustudio.mythicrelics.relic;
 
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.japan.JapanGods;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import java.util.Map;
@@ -72,7 +71,7 @@ public final class TargetVeto {
 		if (mob instanceof Husk && WornRelics.isWearing(player, ModItems.MUMMY_WRAPS)) {
 			return true;
 		}
-		return mob.typeHolder().is(EntityTypeTags.UNDEAD) && EgyptRelics.hasAnubisSet(player)
+		return mob.typeHolder().is(EntityTypeTags.UNDEAD) && RelicSets.ANUBIS.isComplete(player)
 				&& !(mob.getLastHurtByMob() == player && mob.tickCount - mob.getLastHurtByMobTimestamp() < ANUBIS_PROVOKED_TICKS);
 	}
 

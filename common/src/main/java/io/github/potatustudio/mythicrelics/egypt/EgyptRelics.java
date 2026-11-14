@@ -9,6 +9,7 @@ import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
@@ -35,7 +36,6 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.zombie.Husk;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -154,12 +154,6 @@ public final class EgyptRelics {
 			return EventResult.pass();
 		});
 		TickEvent.SERVER_POST.register(EgyptRelics::tick);
-	}
-
-	/** Set de Anubis completo: máscara y anillo puestos y el cetro en cualquier parte del inventario. */
-	public static boolean hasAnubisSet(Player player) {
-		return WornRelics.isWearing(player, ModItems.JACKAL_MASK) && WornRelics.isWearing(player, ModItems.JACKAL_RING)
-				&& player.getInventory().contains(stack -> stack.is(ModItems.ANUBIS_SCEPTER.get()));
 	}
 
 	/** Números que muestra el tooltip de cada reliquia (%1$s, %2$s… de sus líneas de traducción, en este orden). */
@@ -298,7 +292,7 @@ public final class EgyptRelics {
 					husk.setTarget(null);
 				}
 			}
-			if (player.tickCount % 5 == 0 && hasAnubisSet(player)) {
+			if (player.tickCount % 5 == 0 && RelicSets.ANUBIS.isComplete(player)) {
 				// Protector de los muertos: los no-muertos no te atacan salvo que los hayas golpeado hace poco.
 				for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(24),
 						m -> m.getTarget() == player && m.typeHolder().is(EntityTypeTags.UNDEAD)

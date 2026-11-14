@@ -42,7 +42,8 @@ def _sets():
     src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "common", "src", "main", "java", "io",
                             "github", "potatustudio", "mythicrelics", "relic", "RelicSets.java"), encoding="utf-8").read()
     out = {}
-    for m in _re.finditer(r'^\s*[A-Z_]+\("(\w+)", [\w:]+, ((?:"\w+"(?:, )?)+)\)[,;]', src, _re.M):
+    # ANUBIS("anubis_set", worn("jackal_mask"), …) o PERSEUS("perseus_set", NECESARIAS, worn(…), …): cada pieza es dónde("id").
+    for m in _re.finditer(r'^\s*[A-Z_]+\("(\w+)", (?:[\w.]+, )?((?:\w+\("\w+"\)(?:, )?)+)\)[,;]', src, _re.M):
         out[m.group(1)] = _re.findall(r'"(\w+)"', m.group(2))
     return out
 

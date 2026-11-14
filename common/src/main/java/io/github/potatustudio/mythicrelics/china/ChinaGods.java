@@ -10,6 +10,7 @@ import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -112,11 +113,6 @@ public final class ChinaGods {
 		EntityEvent.ADD.register(ChinaGods::onEntityAdded);
 	}
 
-	/** Set de Erlang Shen: el Ojo puesto y la alabarda en la mano. */
-	public static boolean hasErlangSet(Player player) {
-		return WornRelics.isWearing(player, ModItems.ERLANG_EYE) && player.getMainHandItem().is(ModItems.ERLANG_HALBERD.get());
-	}
-
 	/** Nezha completo: la llamarada de la lanza recarga a la mitad con las ruedas puestas. */
 	static int spearCooldown(Player player) {
 		return WornRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS) ? SPEAR_WHEELS_COOLDOWN : SPEAR_COOLDOWN;
@@ -126,7 +122,7 @@ public final class ChinaGods {
 
 	private static EventResult onHurt(LivingEntity target, DamageSource source, float amount) {
 		if (target instanceof ServerPlayer player && source.getEntity() instanceof LivingEntity attacker && attacker != player
-				&& Minions.ownerOf(attacker) == null && hasErlangSet(player)
+				&& Minions.ownerOf(attacker) == null && RelicSets.ERLANG.isComplete(player)
 				&& RelicCooldowns.tryStart(player, "erlang_dog", DOG_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.ERLANG_HALBERD.get()))) {
 			ServerLevel level = player.level();
 			Mob dog = Minions.summon(level, player, ModEntities.CELESTIAL_DOG.get(), player.getX() + 1.0, player.getY(), player.getZ(),

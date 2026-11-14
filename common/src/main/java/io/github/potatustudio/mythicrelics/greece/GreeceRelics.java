@@ -11,6 +11,7 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -120,16 +121,6 @@ public final class GreeceRelics {
 		CharonStash.init();
 	}
 
-	/** Set de Perseo: tres de sus cuatro piezas (sandalias, yelmo y égida puestas; la harpe en la mano o en el inventario). */
-	public static boolean hasPerseusSet(LivingEntity entity) {
-		int pieces = (WornRelics.isWearing(entity, ModItems.HERMES_SANDALS) ? 1 : 0) + (WornRelics.isWearing(entity, ModItems.HADES_HELM) ? 1 : 0)
-				+ (WornRelics.isWearing(entity, ModItems.ATHENA_AEGIS) ? 1 : 0);
-		boolean harpe = entity instanceof net.minecraft.world.entity.player.Player player
-				? player.getInventory().contains(s -> s.is(ModItems.HARPE.get()))
-				: entity.getMainHandItem().is(ModItems.HARPE.get());
-		return pieces + (harpe ? 1 : 0) >= PERSEUS_SET_PIECES;
-	}
-
 	public static final int PERSEUS_SET_PIECES = 3;
 
 	// ---- Hermes ------------------------------------------------------------------------------------------------------
@@ -233,7 +224,7 @@ public final class GreeceRelics {
 		long now = level.getGameTime();
 		Vec3 eyes = player.getEyePosition();
 		Vec3 look = player.getLookAngle();
-		int speed = hasPerseusSet(player) ? 2 : 1;
+		int speed = RelicSets.PERSEUS.isComplete(player) ? 2 : 1;
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(MEDUSA_RADIUS),
 				m -> m.isAlive() && m.distanceToSqr(player) <= MEDUSA_RADIUS * MEDUSA_RADIUS
 						&& look.dot(m.getBoundingBox().getCenter().subtract(eyes).normalize()) >= MEDUSA_CONE
@@ -325,7 +316,7 @@ public final class GreeceRelics {
 
 	/** Daño recibido: lo petrificado recibe +50 % si el atacante lleva el set de Perseo. */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
-		if (self.entityTags().contains(PETRIFIED_TAG) && source.getEntity() instanceof LivingEntity attacker && hasPerseusSet(attacker)) {
+		if (self.entityTags().contains(PETRIFIED_TAG) && source.getEntity() instanceof LivingEntity attacker && RelicSets.PERSEUS.isComplete(attacker)) {
 			return amount * (1.0f + PERSEUS_PETRIFIED_BONUS);
 		}
 		return amount;

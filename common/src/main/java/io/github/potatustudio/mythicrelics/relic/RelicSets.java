@@ -1,72 +1,189 @@
 package io.github.potatustudio.mythicrelics.relic;
 
 import dev.architectury.event.events.common.TickEvent;
-import io.github.potatustudio.mythicrelics.china.ChinaGods;
+import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
-import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
-import io.github.potatustudio.mythicrelics.japan.JapanGods;
-import io.github.potatustudio.mythicrelics.japan.JapanRelics;
-import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Predicate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Los sets de reliquias, con qué piezas llevan y cuándo están completos. Avisan al jugador al completarse (mensaje,
- * sonido y destello) y al romperse; el tooltip de cada pieza dice si el set está activo ({@code client/RelicTooltips}).
+ * Los sets de reliquias: qué piezas llevan, dónde cuenta cada una y cuándo están completos. La misma regla sirve para el
+ * bono y para el tooltip de cada pieza ({@code client/RelicTooltips}). Avisan al jugador al completarse (mensaje, sonido
+ * y destello) y al romperse.
  */
 public enum RelicSets {
-	ANUBIS("anubis_set", EgyptRelics::hasAnubisSet, "jackal_mask", "jackal_ring", "anubis_scepter"),
-	OSIRIS("osiris_set", EgyptGods::hasOsirisSet, "osiris_crook", "osiris_flail"),
-	PERSEUS("perseus_set", GreeceRelics::hasPerseusSet, "hermes_sandals", "hades_helm", "athena_aegis", "harpe"),
-	THOR("thor_set", NorseRelics::hasThorSet, "mjolnir", "jarngreipr", "megingjord"),
-	ERLANG("erlang_set", ChinaGods::hasErlangSet, "erlang_eye", "erlang_halberd"),
-	REGALIA("regalia_set", JapanRelics::hasRegalia, "kusanagi", "yata_mirror", "yasakani_magatama"),
-	FUJIN_RAIJIN("fujin_raijin_set", JapanGods::hasWindAndThunder, "fujin_wind_bag", "raijin_drum");
+	ANUBIS("anubis_set", worn("jackal_mask"), worn("jackal_ring"), inventory("anubis_scepter")),
+	OSIRIS("osiris_set", hand("osiris_crook"), hand("osiris_flail")),
+	PERSEUS("perseus_set", GreeceRelics.PERSEUS_SET_PIECES, worn("hermes_sandals"), worn("hades_helm"), worn("athena_aegis"), inventory("harpe")),
+	THOR("thor_set", bearer("mjolnir"), worn("jarngreipr"), worn("megingjord")),
+	ERLANG("erlang_set", worn("erlang_eye"), mainHand("erlang_halberd")),
+	REGALIA("regalia_set", hand("kusanagi"), hand("yata_mirror"), worn("yasakani_magatama")),
+	FUJIN_RAIJIN("fujin_raijin_set", inventory("fujin_wind_bag"), worn("raijin_drum"));
+
+	/** Dónde tiene que estar una pieza para contar. */
+	public enum Where {
+		/** Puesta en una casilla de accesorio (Trinkets/Curios). */
+		WORN,
+		/** En cualquier parte del inventario. */
+		INVENTORY,
+		/** En la mano principal o en la otra. */
+		HAND,
+		/** En la mano principal. */
+		MAIN_HAND;
+
+		/** Clave del texto que le dice al jugador dónde ponerla («póntela», «en una mano»…). */
+		public String hintKey() {
+			return "tooltip.mythicrelics.set_where." + name().toLowerCase(java.util.Locale.ROOT);
+		}
+	}
+
+	/** Cómo está una pieza para el jugador: donde cuenta, la lleva pero en otro lugar, o le falta. */
+	public enum State {
+		PLACED, ELSEWHERE, MISSING
+	}
+
+	/** Una pieza del set. Las que no son {@code required} reciben el bono pero no hacen falta para activarlo. */
+	public static final class Piece {
+		private final String id;
+		private final Where where;
+		private final boolean required;
+		private @Nullable Item item;
+
+		private Piece(String id, Where where, boolean required) {
+			this.id = id;
+			this.where = where;
+			this.required = required;
+		}
+
+		public String id() {
+			return id;
+		}
+
+		public Where where() {
+			return where;
+		}
+
+		public Item item() {
+			if (item == null) {
+				item = BuiltInRegistries.ITEM.getValue(MythicRelics.id(id));
+			}
+			return item;
+		}
+
+		/** Si la pieza está donde cuenta. Un mob no tiene inventario: para él cuenta lo que lleva en las manos. */
+		public boolean placed(LivingEntity entity) {
+			Item it = item();
+			return switch (where) {
+				case WORN -> WornRelics.isWearing(entity, it);
+				case INVENTORY -> entity instanceof Player player ? player.getInventory().contains(s -> s.is(it))
+						: entity.getMainHandItem().is(it);
+				case HAND -> entity.getMainHandItem().is(it) || entity.getOffhandItem().is(it);
+				case MAIN_HAND -> entity.getMainHandItem().is(it);
+			};
+		}
+
+		public State state(Player player) {
+			if (placed(player)) {
+				return State.PLACED;
+			}
+			Item it = item();
+			return player.getInventory().contains(s -> s.is(it)) || WornRelics.isWearing(player, it) ? State.ELSEWHERE : State.MISSING;
+		}
+	}
+
+	private static Piece worn(String id) {
+		return new Piece(id, Where.WORN, true);
+	}
+
+	private static Piece inventory(String id) {
+		return new Piece(id, Where.INVENTORY, true);
+	}
+
+	private static Piece hand(String id) {
+		return new Piece(id, Where.HAND, true);
+	}
+
+	private static Piece mainHand(String id) {
+		return new Piece(id, Where.MAIN_HAND, true);
+	}
+
+	/** La reliquia que recibe el bono (el martillo de Thor): cuenta en el inventario, pero el set se activa sin ella. */
+	private static Piece bearer(String id) {
+		return new Piece(id, Where.INVENTORY, false);
+	}
 
 	private final String key;
-	private final Predicate<Player> complete;
-	private final List<String> pieces;
+	private final int needed;
+	private final List<Piece> pieces;
 
-	RelicSets(String key, Predicate<Player> complete, String... pieces) {
+	/** Set que se activa con todas sus piezas obligatorias. */
+	RelicSets(String key, Piece... pieces) {
+		this(key, -1, pieces);
+	}
+
+	/** Set que se activa con {@code needed} de sus piezas obligatorias (-1: todas). */
+	RelicSets(String key, int needed, Piece... pieces) {
 		this.key = key;
-		this.complete = complete;
 		this.pieces = List.of(pieces);
+		this.needed = needed < 0 ? (int) this.pieces.stream().filter(p -> p.required).count() : needed;
 	}
 
 	public String key() {
 		return key;
 	}
 
-	public List<String> pieces() {
+	public List<Piece> pieces() {
 		return pieces;
 	}
 
-	public boolean isComplete(Player player) {
-		return complete.test(player);
+	/** Activo: al menos {@code needed} de las piezas obligatorias están donde cuentan. */
+	public boolean isComplete(Entity entity) {
+		if (!(entity instanceof LivingEntity living)) {
+			return false;
+		}
+		int have = 0;
+		for (Piece p : pieces) {
+			if (p.required && p.placed(living) && ++have >= needed) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Component displayName() {
 		return Component.translatable("set.mythicrelics." + key);
 	}
 
+	/** Números del texto del bono ({@code set.mythicrelics.<set>.bonus.N}). */
+	public Object[] bonusArgs() {
+		return switch (this) {
+			case OSIRIS -> new Object[] {EgyptGods.OSIRIS_REBIRTH_COOLDOWN / 20 / 60};
+			default -> new Object[0];
+		};
+	}
+
 	/** Set al que pertenece una reliquia (por su id), o null. */
 	public static @Nullable RelicSets of(String id) {
 		for (RelicSets set : values()) {
-			if (set.pieces.contains(id)) {
-				return set;
+			for (Piece p : set.pieces) {
+				if (p.id.equals(id)) {
+					return set;
+				}
 			}
 		}
 		return null;
@@ -100,15 +217,13 @@ public enum RelicSets {
 				if ((now & bit) != 0 && (before & bit) == 0) {
 					player.sendOverlayMessage(Component.translatable("message.mythicrelics.set_on", set.displayName())
 							.withStyle(ChatFormatting.GOLD));
-					player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_ACTIVATE,
-							SoundSource.PLAYERS, 0.6f, 1.6f);
+					RelicFx.sound(player.level(), player, SoundEvents.BEACON_ACTIVATE, 0.6f, 1.6f);
 					player.level().sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY() + 1, player.getZ(),
 							25, 0.4, 0.6, 0.4, 0.15);
 				} else if ((now & bit) == 0 && (before & bit) != 0) {
 					player.sendOverlayMessage(Component.translatable("message.mythicrelics.set_off", set.displayName())
 							.withStyle(ChatFormatting.GRAY));
-					player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_DEACTIVATE,
-							SoundSource.PLAYERS, 0.4f, 1.6f);
+					RelicFx.sound(player.level(), player, SoundEvents.BEACON_DEACTIVATE, 0.4f, 1.6f);
 				}
 			}
 		}
@@ -116,6 +231,6 @@ public enum RelicSets {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(ACTIVE);
+		ServerState.perPlayer(ACTIVE);
 	}
 }

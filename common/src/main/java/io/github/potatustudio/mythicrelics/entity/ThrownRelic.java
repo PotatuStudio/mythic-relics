@@ -4,6 +4,7 @@ import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
+import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -144,7 +145,7 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 			}
 		}
 		if (level() instanceof ServerLevel level && target.hurtServer(level, source, damage)) {
-			if (isMjolnir() && (level.isThundering() || NorseRelics.hasThorSet(owner))) {
+			if (isMjolnir() && (level.isThundering() || RelicSets.THOR.isComplete(owner))) {
 				// Rayo sin fuego: no quema el terreno.
 				io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, target.getX(), target.getY(), target.getZ(),
 						owner instanceof ServerPlayer player ? player : null);

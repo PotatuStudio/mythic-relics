@@ -109,10 +109,8 @@ public final class RelicTooltips {
 		}
 		if (set != null) {
 			int have = 0;
-			for (String piece : set.pieces()) {
-				net.minecraft.world.item.Item item = BuiltInRegistries.ITEM.getValue(MythicRelics.id(piece));
-				if (player.getInventory().contains(s -> s.is(item))
-						|| io.github.potatustudio.mythicrelics.relic.WornRelics.isWearing(player, item)) {
+			for (RelicSets.Piece piece : set.pieces()) {
+				if (piece.placed(player)) {
 					have++;
 				}
 			}
@@ -128,8 +126,9 @@ public final class RelicTooltips {
 	}
 
 	/**
-	 * Bloque del set, igual en todas sus piezas: el nombre en violeta con cuántas piezas tienes, cada pieza marcada (✔ la
-	 * tienes contigo, ✘ te falta), el bono en azul y si está activo. Va justo antes de «Se encuentra en».
+	 * Bloque del set, igual en todas sus piezas: el nombre en violeta con cuántas piezas están donde cuentan, cada pieza
+	 * marcada (✔ está donde cuenta, ◐ la llevas en otro lugar y se dice dónde ponerla, ✘ te falta), el bono en azul y si
+	 * está activo. Va justo antes de «Se encuentra en».
 	 */
 	private static void setBlock(List<Component> lines, RelicSets set, Player player) {
 		int at = lines.size();
@@ -144,19 +143,23 @@ public final class RelicTooltips {
 		int have = 0;
 		net.minecraft.network.chat.MutableComponent pieces = Component.literal(" ");
 		boolean first = true;
-		for (String id : set.pieces()) {
-			net.minecraft.world.item.Item item = BuiltInRegistries.ITEM.getValue(MythicRelics.id(id));
-			boolean has = player.getInventory().contains(s -> s.is(item))
-					|| io.github.potatustudio.mythicrelics.relic.WornRelics.isWearing(player, item);
-			if (has) {
+		for (RelicSets.Piece piece : set.pieces()) {
+			RelicSets.State state = piece.state(player);
+			if (state == RelicSets.State.PLACED) {
 				have++;
 			}
 			if (!first) {
 				pieces.append(Component.literal(", ").withStyle(ChatFormatting.DARK_GRAY));
 			}
 			first = false;
-			pieces.append(Component.literal(has ? "✔ " : "✘ ").append(new net.minecraft.world.item.ItemStack(item).getHoverName())
-					.withStyle(has ? ChatFormatting.GREEN : ChatFormatting.DARK_GRAY));
+			Component name = new net.minecraft.world.item.ItemStack(piece.item()).getHoverName();
+			pieces.append(switch (state) {
+				case PLACED -> Component.literal("✔ ").append(name).withStyle(ChatFormatting.GREEN);
+				// La llevas, pero no donde cuenta: se dice dónde ponerla.
+				case ELSEWHERE -> Component.literal("◐ ").append(name).append(Component.literal(" (")
+						.append(Component.translatable(piece.where().hintKey())).append(")")).withStyle(ChatFormatting.YELLOW);
+				case MISSING -> Component.literal("✘ ").append(name).withStyle(ChatFormatting.DARK_GRAY);
+			});
 		}
 		block.add(Component.empty());
 		block.add(Component.literal("◈ ").append(set.displayName()).append(Component.literal(" · " + have + "/" + set.pieces().size()))
@@ -165,8 +168,7 @@ public final class RelicTooltips {
 		for (int i = 1; i <= 3; i++) {
 			String k = "set.mythicrelics." + set.key() + ".bonus." + i;
 			if (net.minecraft.locale.Language.getInstance().has(k)) {
-				block.add(Component.literal(" ").append(Component.translatable(k,
-						io.github.potatustudio.mythicrelics.egypt.EgyptGods.rebirthMinutes())).withStyle(ChatFormatting.BLUE));
+				block.add(Component.literal(" ").append(Component.translatable(k, set.bonusArgs())).withStyle(ChatFormatting.BLUE));
 			}
 		}
 		boolean on = set.isComplete(player);

@@ -1047,5 +1047,9 @@
   "tooltip.mythicrelics.peach_ripe": "Hay un melocotón maduro",
   "tooltip.mythicrelics.set_active": "✔ %s activo",
   "tooltip.mythicrelics.set_inactive": "✘ %s incompleto",
+  "tooltip.mythicrelics.set_where.hand": "en una mano",
+  "tooltip.mythicrelics.set_where.inventory": "en el inventario",
+  "tooltip.mythicrelics.set_where.main_hand": "en la mano principal",
+  "tooltip.mythicrelics.set_where.worn": "póntela",
   "tooltip.mythicrelics.thoth_palette.written": "Escrito: %s/%s puntos"
 }

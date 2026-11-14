@@ -87,12 +87,6 @@ public final class NorseRelics {
 		TickEvent.SERVER_POST.register(NorseRelics::tick);
 	}
 
-	/** Set de Thor: guantes y cinturón puestos (el martillo es el que se lanza). */
-	public static boolean hasThorSet(Entity entity) {
-		return entity instanceof LivingEntity living && WornRelics.isWearing(living, ModItems.JARNGREIPR)
-				&& WornRelics.isWearing(living, ModItems.MEGINGJORD);
-	}
-
 	/** Daño recibido: Járngreipr anula los rayos; Megingjörð da más daño cuerpo a cuerpo a quien lo lleva. */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
 		if (source.is(DamageTypeTags.IS_LIGHTNING) && WornRelics.isWearing(self, ModItems.JARNGREIPR)) {
