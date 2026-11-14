@@ -1,9 +1,9 @@
 package io.github.potatustudio.mythicrelics.norse;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;

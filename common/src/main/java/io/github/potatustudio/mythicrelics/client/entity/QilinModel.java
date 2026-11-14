@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 /**
  * El qilin (geometría en {@link MythicModelLayers#qilin}, igual que el visor de diseño): cabeza de dragón con barba y un
  * cuerno, cuerpo de ciervo escamado verde jade y oro, cascos, cola de buey y llamas que brillan. Se dibuja a 1,35 veces
- * ({@link ChinaRenderers.QilinRenderer}), del tamaño de un caballo.
+ * ({@link MythicRenderers.QilinRenderer}), del tamaño de un caballo.
  */
 public class QilinModel extends EntityModel<LivingEntityRenderState> {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(MythicRelics.id("qilin"), "main");

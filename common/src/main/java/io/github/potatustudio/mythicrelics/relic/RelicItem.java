@@ -1,5 +1,6 @@
-package io.github.potatustudio.mythicrelics.egypt;
+package io.github.potatustudio.mythicrelics.relic;
 
+import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;

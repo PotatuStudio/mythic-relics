@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 /**
  * Sombra de Yamata no Orochi (geometría en {@link MythicModelLayers#orochiShadow}, igual que el visor de diseño): cuerpo
  * de escamas con musgo y cipreses en el lomo, ocho cuellos que se mecen con cabezas que muerden y ocho colas por el
- * suelo. Se dibuja al doble ({@link ChinaRenderers.OrochiRenderer}).
+ * suelo. Se dibuja al doble ({@link MythicRenderers.OrochiRenderer}).
  */
 public class OrochiModel extends EntityModel<LivingEntityRenderState> {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(MythicRelics.id("orochi_shadow"), "main");
@@ -48,7 +48,7 @@ public class OrochiModel extends EntityModel<LivingEntityRenderState> {
 		super.setupAnim(state);
 		float t = state.ageInTicks / 20.0f;
 		float[] strike = new float[HEADS];
-		if (state instanceof ChinaRenderers.OrochiRenderer.State s) {
+		if (state instanceof MythicRenderers.OrochiRenderer.State s) {
 			for (int k = 0; k < Math.min(s.bitingHeads, HEADS); k++) {
 				// cada cabeza entra un tick después de la anterior, para que no se vea como un solo bloque
 				strike[BITE_ORDER[k]] = (s.sinceBite - k * 0.7f) / BITE_TICKS;

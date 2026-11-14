@@ -11,6 +11,7 @@ import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -30,6 +32,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -145,7 +148,7 @@ public final class EgyptGods {
 	}
 
 	private static void uraeus(ServerLevel level, ServerPlayer player, LivingEntity attacker) {
-		if (!RelicCooldowns.tryStart(player, "uraeus", URAEUS_COOLDOWN, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(ModItems.RA_DISK.get()))) {
+		if (!RelicCooldowns.tryStart(player, "uraeus", URAEUS_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.RA_DISK.get()))) {
 			return;
 		}
 		attacker.igniteForSeconds(URAEUS_BURN_SECONDS);
@@ -177,7 +180,7 @@ public final class EgyptGods {
 
 	// ---- Bastet ------------------------------------------------------------------------------------------------------
 
-	private static EventResult onEntityAdded(net.minecraft.world.entity.Entity entity, Level level) {
+	private static EventResult onEntityAdded(Entity entity, Level level) {
 		if (level.isClientSide()) {
 			return EventResult.pass();
 		}
@@ -234,7 +237,7 @@ public final class EgyptGods {
 	// ---- Osiris ------------------------------------------------------------------------------------------------------
 
 	/** Golpe giratorio del mayal (lo llama el mixin al terminar un ataque del jugador con la carga que tenía). */
-	public static void flailSweep(Player player, net.minecraft.world.entity.Entity target, float strength) {
+	public static void flailSweep(Player player, Entity target, float strength) {
 		if (strength <= 0.9f || !(player.level() instanceof ServerLevel level) || !player.getMainHandItem().is(ModItems.OSIRIS_FLAIL.get())) {
 			return;
 		}
@@ -357,6 +360,6 @@ public final class EgyptGods {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(FRENZY);
+		ServerState.perPlayer(FRENZY);
 	}
 }

@@ -4,9 +4,12 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
@@ -22,6 +25,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -173,9 +177,9 @@ public final class Minions {
 		}
 		// Si nadie pelea con su dueño, van por el hostil más cercano a la vista: se ordena por distancia y el rayo de vista
 		// (lo caro) se prueba solo hasta encontrar el primero visible.
-		java.util.List<LivingEntity> near = mob.level().getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(SEARCH_RANGE),
-				e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive() && ownerOf(e) == null && !isAlly(e, owner.getUUID()));
-		near.sort(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(mob)));
+		List<LivingEntity> near = mob.level().getEntitiesOfClass(LivingEntity.class, mob.getBoundingBox().inflate(SEARCH_RANGE),
+				e -> e instanceof Enemy && e.isAlive() && ownerOf(e) == null && !isAlly(e, owner.getUUID()));
+		near.sort(Comparator.comparingDouble(e -> e.distanceToSqr(mob)));
 		for (LivingEntity e : near) {
 			if (mob.hasLineOfSight(e)) {
 				return e;
@@ -191,6 +195,6 @@ public final class Minions {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(MINIONS);
+		ServerState.clearOnStop(MINIONS);
 	}
 }

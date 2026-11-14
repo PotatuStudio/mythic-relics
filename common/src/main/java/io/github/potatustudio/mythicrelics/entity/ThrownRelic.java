@@ -1,17 +1,24 @@
 package io.github.potatustudio.mythicrelics.entity;
 
+import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseRelics;
+import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
+import io.github.potatustudio.mythicrelics.relic.RelicLightning;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -74,9 +81,9 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 	}
 
 	/** Muérdago: nada juró protegerlo, así que ignora la armadura, la Resistencia y los encantamientos de protección. */
-	public static final net.minecraft.resources.ResourceKey<net.minecraft.world.damagesource.DamageType> MISTLETOE =
-			net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DAMAGE_TYPE,
-					io.github.potatustudio.mythicrelics.MythicRelics.id("mistletoe"));
+	public static final ResourceKey<DamageType> MISTLETOE =
+			ResourceKey.create(Registries.DAMAGE_TYPE,
+					MythicRelics.id("mistletoe"));
 
 	@Override
 	protected ItemStack getDefaultPickupItem() {
@@ -133,21 +140,21 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 		dealtDamage = true;
 		float damage = isMjolnir() ? NorseRelics.MJOLNIR_DAMAGE : NorseRelics.GUNGNIR_DAMAGE;
 		if (isDart()) {
-			source = new DamageSource(level().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.DAMAGE_TYPE)
+			source = new DamageSource(level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
 					.getOrThrow(MISTLETOE), this, owner == null ? this : owner);
-			damage = io.github.potatustudio.mythicrelics.norse.NorseSagas.DART_DAMAGE;
+			damage = NorseSagas.DART_DAMAGE;
 			if (target instanceof LivingEntity living && Bosses.is(living)) {
-				damage *= io.github.potatustudio.mythicrelics.norse.NorseSagas.DART_BOSS_MULTIPLIER;
+				damage *= NorseSagas.DART_BOSS_MULTIPLIER;
 			}
 			if (level() instanceof ServerLevel level) {
-				level.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, target.getX(), target.getY(0.6), target.getZ(),
+				level.sendParticles(ParticleTypes.HAPPY_VILLAGER, target.getX(), target.getY(0.6), target.getZ(),
 						12, 0.3, 0.3, 0.3, 0.0);
 			}
 		}
 		if (level() instanceof ServerLevel level && target.hurtServer(level, source, damage)) {
 			if (isMjolnir() && (level.isThundering() || RelicSets.THOR.isComplete(owner))) {
 				// Rayo sin fuego: no quema el terreno.
-				io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, target.getX(), target.getY(), target.getZ(),
+				RelicLightning.strike(level, target.getX(), target.getY(), target.getZ(),
 						owner instanceof ServerPlayer player ? player : null);
 			}
 		}

@@ -1,11 +1,13 @@
 package io.github.potatustudio.mythicrelics.rome;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.MinecraftServer;
@@ -40,7 +42,7 @@ public class VestaLampItem extends RelicItem {
 		}
 		BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
 		if (!level.getBlockState(pos).canBeReplaced() || !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(),
-				net.minecraft.core.Direction.UP)) {
+				Direction.UP)) {
 			return InteractionResult.FAIL;
 		}
 		if (!RelicCooldowns.tryStart(player, "vesta_lamp", RomeRelics.VESTA_FIRE_COOLDOWN, BuiltInRegistries.ITEM.getKey(this))) {
@@ -73,7 +75,7 @@ public class VestaLampItem extends RelicItem {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.onStopping(server -> {
+		ServerState.onStopping(server -> {
 			for (Hearth h : HEARTHS) {
 				if (h.level().getBlockState(h.pos()).is(Blocks.CAMPFIRE)) {
 					h.level().removeBlock(h.pos(), false);

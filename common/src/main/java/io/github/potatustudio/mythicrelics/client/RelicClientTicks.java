@@ -1,15 +1,20 @@
 package io.github.potatustudio.mythicrelics.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.networking.NetworkManager;
+import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import io.github.potatustudio.mythicrelics.greece.AriadneThreadItem;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
+import io.github.potatustudio.mythicrelics.network.FalconPayload;
 import io.github.potatustudio.mythicrelics.network.HermesJumpPayload;
 import io.github.potatustudio.mythicrelics.norse.NorseGods;
 import io.github.potatustudio.mythicrelics.network.IcarusPayload;
+import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.GlobalPos;
@@ -18,19 +23,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Cliente de Grecia: el doble salto de las sandalias de Hermes y el planeo y los aleteos de las alas de Ícaro (el
- * movimiento lo decide el cliente, como en vanilla; el servidor solo reinicia la caída y muestra las alas) y el hilo rojo
- * de Ariadna hacia el punto de inicio.
+ * Ticks de cliente de las reliquias de todas las culturas: el doble salto (sandalias de Hermes, máscara de tengu), el
+ * planeo y los aleteos de las alas de Ícaro (el movimiento lo decide el cliente, como en vanilla; el servidor solo
+ * reinicia la caída y muestra las alas), el hilo rojo de Ariadna hacia el punto de inicio y la tecla del manto de Freyja.
  */
-public final class GreeceClient {
+public final class RelicClientTicks {
 	private static final DustParticleOptions THREAD = new DustParticleOptions(0xC8302A, 0.6f);
 	private static final double THREAD_LENGTH = 12.0;
 
 	private static boolean jumpWasDown;
 	private static boolean doubleJumpUsed;
 	/** Manto de halcón: la tecla (V por defecto, se cambia en Controles) te vuelve halcón y de nuevo humano. */
-	public static final net.minecraft.client.KeyMapping FALCON_KEY = new net.minecraft.client.KeyMapping("key.mythicrelics.falcon_form",
-			com.mojang.blaze3d.platform.InputConstants.KEY_V, net.minecraft.client.KeyMapping.Category.GAMEPLAY);
+	public static final KeyMapping FALCON_KEY = new KeyMapping("key.mythicrelics.falcon_form",
+			InputConstants.KEY_V, KeyMapping.Category.GAMEPLAY);
 	/** Se soltó el salto ya en el aire: el doble salto pide una segunda pulsación, no mantener la del primer salto. */
 	private static boolean releasedInAir;
 	private static int icarusFlaps;
@@ -40,12 +45,12 @@ public final class GreeceClient {
 	private static final double GLIDE_FALL = -0.12;
 	private static final double GLIDE_SPEED = 0.55;
 
-	private GreeceClient() {
+	private RelicClientTicks() {
 	}
 
 	public static void init() {
-		dev.architectury.registry.client.keymappings.KeyMappingRegistry.register(FALCON_KEY);
-		ClientTickEvent.CLIENT_POST.register(GreeceClient::tick);
+		KeyMappingRegistry.register(FALCON_KEY);
+		ClientTickEvent.CLIENT_POST.register(RelicClientTicks::tick);
 	}
 
 	private static void tick(Minecraft client) {
@@ -79,10 +84,10 @@ public final class GreeceClient {
 		jumpWasDown = jumpDown;
 		// Manto de halcón: la tecla te vuelve halcón (con el manto puesto) y, siendo halcón, de nuevo humano.
 		while (FALCON_KEY.consumeClick()) {
-			boolean falcon = io.github.potatustudio.mythicrelics.norse.NorseSagas.isFalconForm(player);
+			boolean falcon = NorseSagas.isFalconForm(player);
 			if ((falcon || WornRelics.isWearing(player, ModItems.FALCON_CLOAK.get()))
-					&& NetworkManager.canServerReceive(io.github.potatustudio.mythicrelics.network.FalconPayload.TYPE)) {
-				NetworkManager.sendToServer(io.github.potatustudio.mythicrelics.network.FalconPayload.INSTANCE);
+					&& NetworkManager.canServerReceive(FalconPayload.TYPE)) {
+				NetworkManager.sendToServer(FalconPayload.INSTANCE);
 			}
 		}
 		skidbladnirWind(player);

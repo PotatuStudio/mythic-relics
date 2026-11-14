@@ -1,9 +1,10 @@
 package io.github.potatustudio.mythicrelics.greece;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -42,7 +43,7 @@ public class HarpeItem extends RelicItem {
 	 */
 	static float behead(Player attacker, LivingEntity target, float amount) {
 		ItemStack stack = attacker.getMainHandItem();
-		if (!stack.is(io.github.potatustudio.mythicrelics.registry.ModItems.HARPE.get()) || attacker.getCooldowns().isOnCooldown(stack)
+		if (!stack.is(ModItems.HARPE.get()) || attacker.getCooldowns().isOnCooldown(stack)
 				|| !GreeceLegends.canBehead(target) || Allies.isFriend(attacker, target)
 				|| !(attacker.level() instanceof ServerLevel level)) {
 			return amount;

@@ -1,12 +1,18 @@
 package io.github.potatustudio.mythicrelics.mixin.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.potatustudio.mythicrelics.client.FalconForm;
 import io.github.potatustudio.mythicrelics.client.PetrifiedClient;
 import io.github.potatustudio.mythicrelics.client.StoneLook;
+import io.github.potatustudio.mythicrelics.norse.NorseSagas;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,17 +30,17 @@ public abstract class LivingEntityRendererMixin {
 	private void mythicrelics$extractStone(LivingEntity entity, LivingEntityRenderState state, float partialTick, CallbackInfo ci) {
 		((StoneLook) state).mythicrelics$setStone(PetrifiedClient.isStone(entity));
 		((StoneLook) state).mythicrelics$setStoneStage(PetrifiedClient.stage(entity));
-		((StoneLook) state).mythicrelics$setFalcon(entity instanceof net.minecraft.world.entity.player.Player player
-				&& io.github.potatustudio.mythicrelics.norse.NorseSagas.isFalconForm(player));
+		((StoneLook) state).mythicrelics$setFalcon(entity instanceof Player player
+				&& NorseSagas.isFalconForm(player));
 	}
 
 	/** Manto de halcón: el jugador transformado se dibuja como el halcón (sin capa, armadura ni objetos). */
 	@Inject(method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V",
 			at = @At("HEAD"), cancellable = true)
-	private void mythicrelics$falconForm(LivingEntityRenderState state, com.mojang.blaze3d.vertex.PoseStack poseStack,
-			net.minecraft.client.renderer.SubmitNodeCollector collector, net.minecraft.client.renderer.state.level.CameraRenderState camera,
+	private void mythicrelics$falconForm(LivingEntityRenderState state, PoseStack poseStack,
+			SubmitNodeCollector collector, CameraRenderState camera,
 			CallbackInfo ci) {
-		if (((StoneLook) state).mythicrelics$isFalcon() && io.github.potatustudio.mythicrelics.client.FalconForm.submit(state, poseStack, collector)) {
+		if (((StoneLook) state).mythicrelics$isFalcon() && FalconForm.submit(state, poseStack, collector)) {
 			ci.cancel();
 		}
 	}

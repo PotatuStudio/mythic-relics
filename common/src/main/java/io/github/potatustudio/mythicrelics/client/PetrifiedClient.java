@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import java.util.Collections;
 import java.util.Set;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 
@@ -37,7 +38,7 @@ public final class PetrifiedClient {
 				(payload, context) -> context.queue(() -> {
 					if (payload.on()) {
 						PETRIFIED.add(payload.entityId());
-						var level = net.minecraft.client.Minecraft.getInstance().level;
+						var level = Minecraft.getInstance().level;
 						TIMES.put(payload.entityId(), new long[] {level != null ? level.getGameTime() : 0L, Math.max(1, payload.ticks())});
 					} else {
 						PETRIFIED.remove(payload.entityId());

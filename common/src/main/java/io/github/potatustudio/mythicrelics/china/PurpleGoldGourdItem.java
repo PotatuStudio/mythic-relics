@@ -1,10 +1,10 @@
 package io.github.potatustudio.mythicrelics.china;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;

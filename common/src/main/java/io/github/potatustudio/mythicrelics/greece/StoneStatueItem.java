@@ -6,6 +6,7 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -36,12 +37,12 @@ public class StoneStatueItem extends Item {
 		ItemStack stack = new ItemStack(ModItems.STONE_STATUE.get());
 		CompoundTag tag = new CompoundTag();
 		tag.putString(KEY, BuiltInRegistries.ENTITY_TYPE.getKey(type).toString());
-		stack.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, CustomData.of(tag));
+		stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 		return stack;
 	}
 
 	public static @Nullable EntityType<?> mobOf(ItemStack stack) {
-		CustomData data = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
+		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
 		if (data == null) {
 			return null;
 		}

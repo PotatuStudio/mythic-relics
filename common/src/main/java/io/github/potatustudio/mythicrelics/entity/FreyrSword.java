@@ -95,7 +95,7 @@ public class FreyrSword extends Mob {
 	 * sale y vuelve por ese mismo lado. directionFromRotation(0, yRot - 90) es la izquierda del jugador.
 	 */
 	/** Objetivo en guardia (se recalcula cada 5 ticks). */
-	private @org.jspecify.annotations.Nullable LivingEntity guardTarget;
+	private @Nullable LivingEntity guardTarget;
 
 	private static Vec3 hip(Player player) {
 		Vec3 left = Vec3.directionFromRotation(0, player.getYRot() - 90.0f);

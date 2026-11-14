@@ -5,6 +5,7 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.ChatFormatting;
@@ -53,6 +54,6 @@ public class MythicRelicsJeiPlugin implements IModPlugin {
 	/** 3 -> "3", 2.5 -> "2.5". */
 	private static String formatChance(float chance) {
 		float percent = chance * 100f;
-		return percent == Math.round(percent) ? String.valueOf(Math.round(percent)) : String.format(java.util.Locale.ROOT, "%.1f", percent);
+		return percent == Math.round(percent) ? String.valueOf(Math.round(percent)) : String.format(Locale.ROOT, "%.1f", percent);
 	}
 }

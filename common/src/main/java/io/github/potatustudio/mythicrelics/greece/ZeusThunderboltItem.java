@@ -1,9 +1,9 @@
 package io.github.potatustudio.mythicrelics.greece;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
@@ -107,7 +108,7 @@ public class ZeusThunderboltItem extends RelicItem {
 	private static void strongStrike(ServerLevel level, Player player) {
 		Vec3 point = aim(level, player);
 		List<LivingEntity> targets = new ArrayList<>(level.getEntitiesOfClass(LivingEntity.class,
-				new net.minecraft.world.phys.AABB(point, point).inflate(GreeceLegends.ZEUS_CHAIN_RADIUS),
+				new AABB(point, point).inflate(GreeceLegends.ZEUS_CHAIN_RADIUS),
 				e -> e != player && e.isAlive() && !Allies.isFriend(player, e)));
 		targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(point)));
 		for (int i = 0; i < GreeceLegends.ZEUS_STRONG_BOLTS; i++) {
@@ -158,7 +159,7 @@ public class ZeusThunderboltItem extends RelicItem {
 		Vec3 point = first != null ? first.position() : end;
 		if (first == null) {
 			Vec3 at = point;
-			first = Allies.enemiesAround(player, new net.minecraft.world.phys.AABB(at, at).inflate(1.5)).stream()
+			first = Allies.enemiesAround(player, new AABB(at, at).inflate(1.5)).stream()
 					.min(Comparator.comparingDouble(e -> e.distanceToSqr(at))).orElse(null);
 		}
 		bolt(level, point, player);

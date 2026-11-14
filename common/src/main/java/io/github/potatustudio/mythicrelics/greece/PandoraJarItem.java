@@ -1,8 +1,8 @@
 package io.github.potatustudio.mythicrelics.greece;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;

@@ -1,7 +1,7 @@
 package io.github.potatustudio.mythicrelics.china;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;

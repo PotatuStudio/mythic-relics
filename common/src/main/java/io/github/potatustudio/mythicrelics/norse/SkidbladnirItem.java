@@ -1,7 +1,8 @@
 package io.github.potatustudio.mythicrelics.norse;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -35,7 +36,7 @@ public class SkidbladnirItem extends RelicItem {
 			return InteractionResult.PASS;
 		}
 		if (level instanceof ServerLevel server) {
-			AbstractBoat boat = io.github.potatustudio.mythicrelics.registry.ModEntities.SKIDBLADNIR_BOAT.get().create(server, EntitySpawnReason.SPAWN_ITEM_USE);
+			AbstractBoat boat = ModEntities.SKIDBLADNIR_BOAT.get().create(server, EntitySpawnReason.SPAWN_ITEM_USE);
 			if (boat == null) {
 				return InteractionResult.PASS;
 			}

@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 /**
  * Talos (geometría en {@link MythicModelLayers#talos}): camina pesado como un gólem, balancea los brazos y, al lanzar,
  * levanta la roca por detrás de la cabeza y la arroja (la roca desaparece de la mano un instante y vuelve). Se dibuja a
- * 1,5 ({@link ChinaRenderers.TalosRenderer}).
+ * 1,5 ({@link MythicRenderers.TalosRenderer}).
  */
 public class TalosModel extends EntityModel<LivingEntityRenderState> {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(MythicRelics.id("talos"), "main");
@@ -50,7 +50,7 @@ public class TalosModel extends EntityModel<LivingEntityRenderState> {
 		armR.xRot += swing * 0.8f;
 		head.yRot += state.yRot * Mth.DEG_TO_RAD;
 		head.xRot += state.xRot * Mth.DEG_TO_RAD;
-		float since = state instanceof ChinaRenderers.TalosRenderer.State s ? s.sinceThrow : 100.0f;
+		float since = state instanceof MythicRenderers.TalosRenderer.State s ? s.sinceThrow : 100.0f;
 		float u = since / THROW_TICKS;
 		rock.visible = !(u > 0.45f && u < 1.4f);
 		if (u < 1.0f) {

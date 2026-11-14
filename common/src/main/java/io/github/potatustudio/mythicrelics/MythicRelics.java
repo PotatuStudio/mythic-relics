@@ -5,12 +5,14 @@ import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
+import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.japan.JapanGods;
 import io.github.potatustudio.mythicrelics.japan.JapanRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.norse.NorseGods;
 import io.github.potatustudio.mythicrelics.norse.NorseRelics;
+import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.registry.ModBlocks;
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
 import io.github.potatustudio.mythicrelics.registry.ModEffects;
@@ -18,6 +20,8 @@ import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -38,10 +42,10 @@ public final class MythicRelics {
 		ModItems.init();
 		ModEntities.init();
 		ModLoot.init();
-		io.github.potatustudio.mythicrelics.relic.ServerState.init();
+		ServerState.init();
 		Minions.init();
 		RelicCooldowns.init();
-		io.github.potatustudio.mythicrelics.relic.RelicSets.init();
+		RelicSets.init();
 		EgyptRelics.init();
 		EgyptGods.init();
 		GreeceRelics.init();
@@ -53,8 +57,8 @@ public final class MythicRelics {
 		ChinaGods.init();
 		JapanRelics.init();
 		JapanGods.init();
-		io.github.potatustudio.mythicrelics.greece.GreeceLegends.init();
-		io.github.potatustudio.mythicrelics.norse.NorseSagas.init();
+		GreeceLegends.init();
+		NorseSagas.init();
 		LOGGER.info("Mythic Relics cargado");
 	}
 

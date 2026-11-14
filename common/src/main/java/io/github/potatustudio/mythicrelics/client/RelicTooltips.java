@@ -4,16 +4,22 @@ import dev.architectury.event.events.client.ClientTooltipEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.relic.RelicCultures;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 /**
  * Líneas del tooltip que dependen del jugador o se agregan a todas las reliquias: la mitología de la que viene (bajo el
@@ -30,8 +36,8 @@ public final class RelicTooltips {
 		ClientTooltipEvent.ITEM.register(RelicTooltips::append);
 	}
 
-	private static void append(ItemStack stack, List<Component> lines, net.minecraft.world.item.Item.TooltipContext context,
-			net.minecraft.world.item.TooltipFlag flag) {
+	private static void append(ItemStack stack, List<Component> lines, Item.TooltipContext context,
+			TooltipFlag flag) {
 		Identifier key = BuiltInRegistries.ITEM.getKey(stack.getItem());
 		if (!key.getNamespace().equals(MythicRelics.MOD_ID)) {
 			return;
@@ -70,7 +76,7 @@ public final class RelicTooltips {
 	}
 
 	private static String key(Component line) {
-		return line.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t ? t.getKey() : "";
+		return line.getContents() instanceof TranslatableContents t ? t.getKey() : "";
 	}
 
 	/**
@@ -133,15 +139,15 @@ public final class RelicTooltips {
 	private static void setBlock(List<Component> lines, RelicSets set, Player player) {
 		int at = lines.size();
 		for (int i = lines.size() - 1; i >= 0; i--) {
-			if (lines.get(i).getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t
+			if (lines.get(i).getContents() instanceof TranslatableContents t
 					&& t.getKey().equals("tooltip.mythicrelics.found_in")) {
 				at = i;
 				break;
 			}
 		}
-		List<Component> block = new java.util.ArrayList<>();
+		List<Component> block = new ArrayList<>();
 		int have = 0;
-		net.minecraft.network.chat.MutableComponent pieces = Component.literal(" ");
+		MutableComponent pieces = Component.literal(" ");
 		boolean first = true;
 		for (RelicSets.Piece piece : set.pieces()) {
 			RelicSets.State state = piece.state(player);
@@ -152,7 +158,7 @@ public final class RelicTooltips {
 				pieces.append(Component.literal(", ").withStyle(ChatFormatting.DARK_GRAY));
 			}
 			first = false;
-			Component name = new net.minecraft.world.item.ItemStack(piece.item()).getHoverName();
+			Component name = new ItemStack(piece.item()).getHoverName();
 			pieces.append(switch (state) {
 				case PLACED -> Component.literal("✔ ").append(name).withStyle(ChatFormatting.GREEN);
 				// La llevas, pero no donde cuenta: se dice dónde ponerla.
@@ -167,7 +173,7 @@ public final class RelicTooltips {
 		block.add(pieces);
 		for (int i = 1; i <= 3; i++) {
 			String k = "set.mythicrelics." + set.key() + ".bonus." + i;
-			if (net.minecraft.locale.Language.getInstance().has(k)) {
+			if (Language.getInstance().has(k)) {
 				block.add(Component.literal(" ").append(Component.translatable(k, set.bonusArgs())).withStyle(ChatFormatting.BLUE));
 			}
 		}

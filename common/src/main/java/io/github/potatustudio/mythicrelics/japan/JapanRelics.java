@@ -6,12 +6,17 @@ import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
+import io.github.potatustudio.mythicrelics.relic.RelicLightning;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
@@ -32,6 +37,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
@@ -111,7 +117,7 @@ public final class JapanRelics {
 	private record Corridor(ServerLevel level, BlockPos from, BlockPos to, long until) {
 	}
 
-	private static final java.util.List<Corridor> CORRIDORS = new java.util.ArrayList<>();
+	private static final List<Corridor> CORRIDORS = new ArrayList<>();
 	/** Burbuja de kanju: jugador -> tick en que se acaba. */
 	private static final Map<UUID, Long> BUBBLES = new HashMap<>();
 	public static final int TIDE_BUBBLE_RADIUS = 3;
@@ -193,15 +199,15 @@ public final class JapanRelics {
 				0.8f, 0.5f + drum[0] * 0.15f);
 		if (drum[0] >= (RelicSets.FUJIN_RAIJIN.isComplete(player) ? JapanGods.SET_RAIJIN_HITS : RAIJIN_HITS)) {
 			drum[0] = 0;
-			io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, target.getX(), target.getY(), target.getZ(), player);
+			RelicLightning.strike(level, target.getX(), target.getY(), target.getZ(), player);
 			if (RelicSets.FUJIN_RAIJIN.isComplete(player)) {
 				// Set de Fūjin y Raijin: el viento lleva el rayo a los hostiles más cercanos.
 				level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(8),
-								e -> e != target && e != player && e.isAlive() && e instanceof net.minecraft.world.entity.monster.Enemy
+								e -> e != target && e != player && e.isAlive() && e instanceof Enemy
 										&& !Allies.isFriend(player, e))
-						.stream().sorted(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(target)))
+						.stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(target)))
 						.limit(JapanGods.SET_CHAIN_TARGETS).forEach(e -> {
-							io.github.potatustudio.mythicrelics.relic.RelicLightning.strike(level, e.getX(), e.getY(), e.getZ(), player);
+							RelicLightning.strike(level, e.getX(), e.getY(), e.getZ(), player);
 						});
 			}
 		}
@@ -334,7 +340,7 @@ public final class JapanRelics {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(DRUM, GROWN, BUBBLES);
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(CORRIDORS);
+		ServerState.perPlayer(DRUM, GROWN, BUBBLES);
+		ServerState.clearOnStop(CORRIDORS);
 	}
 }

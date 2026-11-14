@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 /**
  * Kitsune de nueve colas (geometría en {@link MythicModelLayers#kitsune}, igual que el visor de diseño): zorro blanco de
  * Inari con babero rojo, nueve colas alzadas que se mecen y dos kitsunebi que giran a su alrededor. Se dibuja a 1,5
- * veces ({@link ChinaRenderers.KitsuneRenderer}).
+ * veces ({@link MythicRenderers.KitsuneRenderer}).
  */
 public class KitsuneModel extends EntityModel<LivingEntityRenderState> {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(MythicRelics.id("kitsune"), "main");

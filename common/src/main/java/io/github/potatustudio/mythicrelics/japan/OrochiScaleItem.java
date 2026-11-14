@@ -1,9 +1,9 @@
 package io.github.potatustudio.mythicrelics.japan;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;

@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.entity;
 
 import io.github.potatustudio.mythicrelics.greece.StoneStatueItem;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -85,7 +86,7 @@ public class StoneStatue extends Entity {
 		// Nunca se mueve (en 26.3 este tipo de entidad no puede simular movimiento: mover() crashea). Si le quitan el
 		// bloque de abajo, se cae como ítem.
 		if (level() instanceof ServerLevel level && tickCount % 20 == 0) {
-			net.minecraft.core.BlockPos below = net.minecraft.core.BlockPos.containing(getX(), getY() - 0.1, getZ());
+			BlockPos below = BlockPos.containing(getX(), getY() - 0.1, getZ());
 			if (level.getBlockState(below).getCollisionShape(level, below).isEmpty()) {
 				EntityType<?> mob = getMob();
 				if (mob != null) {

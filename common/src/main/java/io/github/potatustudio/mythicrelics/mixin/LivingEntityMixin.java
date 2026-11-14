@@ -4,10 +4,12 @@ import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
+import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.japan.JapanGods;
 import io.github.potatustudio.mythicrelics.japan.JapanRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseRelics;
+import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
@@ -54,14 +56,14 @@ public abstract class LivingEntityMixin {
 		amount = NorseRelics.modifyIncomingDamage(self, source, RomeRelics.modifyIncomingDamage(self, source, amount));
 		amount = JapanGods.modifyIncomingDamage(self, source,
 				JapanRelics.modifyIncomingDamage(self, source, ChinaRelics.modifyIncomingDamage(self, source, amount)));
-		return io.github.potatustudio.mythicrelics.norse.NorseSagas.modifyIncomingDamage(self, source,
-				io.github.potatustudio.mythicrelics.greece.GreeceLegends.modifyIncomingDamage(self, source, amount));
+		return NorseSagas.modifyIncomingDamage(self, source,
+				GreeceLegends.modifyIncomingDamage(self, source, amount));
 	}
 
 	/** Dáinsleif: sus heridas no sanan; el herido no se cura ni regenera mientras dure. */
 	@Inject(method = "heal", at = @At("HEAD"), cancellable = true)
 	private void mythicrelics$dainsleifWound(float amount, CallbackInfo ci) {
-		if (io.github.potatustudio.mythicrelics.norse.NorseSagas.healBlocked((LivingEntity) (Object) this)) {
+		if (NorseSagas.healBlocked((LivingEntity) (Object) this)) {
 			ci.cancel();
 		}
 	}
@@ -85,7 +87,7 @@ public abstract class LivingEntityMixin {
 	@Inject(method = "applyItemBlocking", at = @At("RETURN"))
 	private void mythicrelics$ancile(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Float> cir) {
 		RomeRelics.afterBlocking((LivingEntity) (Object) this, source, cir.getReturnValue());
-		io.github.potatustudio.mythicrelics.greece.GreeceLegends.afterBlocking((LivingEntity) (Object) this, source, cir.getReturnValue());
+		GreeceLegends.afterBlocking((LivingEntity) (Object) this, source, cir.getReturnValue());
 	}
 
 	/** Lámpara de Vesta: el fuego que no se apaga no te deja congelarte. */
@@ -107,7 +109,7 @@ public abstract class LivingEntityMixin {
 	@Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
 	private void mythicrelics$osirisRebirth(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
 		if (EgyptGods.osirisRebirth((LivingEntity) (Object) this, source)
-				|| io.github.potatustudio.mythicrelics.egypt.EgyptRelics.scarabSave((LivingEntity) (Object) this, source)) {
+				|| EgyptRelics.scarabSave((LivingEntity) (Object) this, source)) {
 			cir.setReturnValue(true);
 		}
 	}

@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.entity;
 import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -161,7 +163,7 @@ public class Talos extends PathfinderMob {
 	}
 
 	@Override
-	protected void playStepSound(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 		playSound(SoundEvents.IRON_GOLEM_STEP, 1.0f, 0.8f);
 	}
 }

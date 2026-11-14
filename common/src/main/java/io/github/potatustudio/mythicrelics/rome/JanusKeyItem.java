@@ -1,6 +1,6 @@
 package io.github.potatustudio.mythicrelics.rome;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

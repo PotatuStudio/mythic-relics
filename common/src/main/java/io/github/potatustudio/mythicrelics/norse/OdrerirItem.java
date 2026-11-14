@@ -1,8 +1,9 @@
 package io.github.potatustudio.mythicrelics.norse;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.ConsumeFeedback;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
@@ -42,8 +43,8 @@ public class OdrerirItem extends RelicItem {
 
 	/** Mordiscos (o sorbos) y migas mientras se usa, como la comida vanilla. */
 	@Override
-	public void onUseTick(net.minecraft.world.level.Level level, net.minecraft.world.entity.LivingEntity entity, ItemStack stack, int remaining) {
-		io.github.potatustudio.mythicrelics.relic.ConsumeFeedback.tick(level, entity, stack, remaining, getUseDuration(stack, entity), true);
+	public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remaining) {
+		ConsumeFeedback.tick(level, entity, stack, remaining, getUseDuration(stack, entity), true);
 	}
 
 	@Override

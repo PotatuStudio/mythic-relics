@@ -3,10 +3,13 @@ package io.github.potatustudio.mythicrelics.greece;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
+import io.github.potatustudio.mythicrelics.entity.Talos;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
+import io.github.potatustudio.mythicrelics.relic.ExecuteWarning;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Map;
@@ -148,7 +151,7 @@ public final class GreeceLegends {
 			amount = HarpeItem.behead(attacker, self, amount);
 		}
 		// Talos: por la espalda (el tobillo) recibe el doble.
-		if (self instanceof io.github.potatustudio.mythicrelics.entity.Talos && source.getSourcePosition() != null) {
+		if (self instanceof Talos && source.getSourcePosition() != null) {
 			Vec3 facing = Vec3.directionFromRotation(0, self.getYRot());
 			Vec3 from = source.getSourcePosition().subtract(self.position()).multiply(1, 0, 1).normalize();
 			if (facing.dot(from) < -0.4) {
@@ -239,7 +242,7 @@ public final class GreeceLegends {
 	/** Aviso de la harpe: con la recarga lista, los mobs que ya se pueden decapitar brillan y suena un aviso una vez. */
 	private static void harpeWarning(ServerPlayer player) {
 		ItemStack held = player.getMainHandItem();
-		io.github.potatustudio.mythicrelics.relic.ExecuteWarning.tick(player, "harpe",
+		ExecuteWarning.tick(player, "harpe",
 				held.is(ModItems.HARPE.get()) && !player.getCooldowns().isOnCooldown(held), HARPE_WARN_RADIUS,
 				GreeceLegends::canBehead, "message.mythicrelics.harpe_ready");
 	}
@@ -315,7 +318,7 @@ public final class GreeceLegends {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(WRATH, WRATH_UNTIL);
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(FAIREST);
+		ServerState.perPlayer(WRATH, WRATH_UNTIL);
+		ServerState.clearOnStop(FAIREST);
 	}
 }

@@ -16,6 +16,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
@@ -189,7 +190,7 @@ public class Sleipnir extends AbstractHorse {
 
 	/** El jinete la controla siempre (no depende de que el cliente vea la silla). */
 	@Override
-	public net.minecraft.world.entity.@org.jspecify.annotations.Nullable LivingEntity getControllingPassenger() {
+	public @Nullable LivingEntity getControllingPassenger() {
 		return getFirstPassenger() instanceof Player player ? player : super.getControllingPassenger();
 	}
 

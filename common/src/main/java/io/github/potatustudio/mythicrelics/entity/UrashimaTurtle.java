@@ -21,6 +21,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -140,7 +141,7 @@ public class UrashimaTurtle extends PathfinderMob {
 		if (isInWater() && getControllingPassenger() != null) {
 			setNoGravity(true);
 			moveRelative((float) SWIM_SPEED, travelVector);
-			move(net.minecraft.world.entity.MoverType.SELF, getDeltaMovement());
+			move(MoverType.SELF, getDeltaMovement());
 			setDeltaMovement(getDeltaMovement().scale(0.85));
 			return;
 		}

@@ -97,7 +97,7 @@ falla, el juego se cae al iniciar), la arqueología, el renacer y que los creepe
 Diseño aprobado en `docs/ideas.md`. Código en `greece/`: `GreeceRelics` (constantes y lógica: Hermes, Hades, égida,
 petrificar, set de Perseo), `MedusaHeadItem`, `AriadneThreadItem` (punto de inicio en el componente
 `mythicrelics:ariadne_anchor`), `OrpheusLyreItem` y `CharonStash` (inventario y experiencia guardados con el mundo al
-morir con el óbolo; se devuelven al reaparecer). Cliente: `client/GreeceClient` (doble salto de Hermes con el paquete
+morir con el óbolo; se devuelven al reaparecer). Cliente: `client/RelicClientTicks` (doble salto de Hermes con el paquete
 `mythicrelics:hermes_jump` e hilo rojo de Ariadna). Mixin nuevo: `blockUsingItem` en `LivingEntityMixin` para la égida.
 Los mobs petrificados llevan la etiqueta `mythicrelics.petrified` y se liberan solos aunque el servidor se reinicie.
 Botín: ruinas de los senderos y ruinas oceánicas cálidas (arqueología), fortaleza del Nether, fortaleza (pasillos y
@@ -111,7 +111,7 @@ vellocino, Cerbero y el daño del Estigia), `PandoraJarItem`, `StyxWaterItem` (d
 registrado en `registry/ModEffects`) y `PrometheusFennelItem` (cocina con las recetas de horno). Entidad nueva
 `entity/Cerberus` (aliado de `Minions`, tres mordidas por ataque) con `client/entity/CerberusModel` (tres cabezas y cola de serpiente, como en Apolodoro) y su
 textura de `tools/model-gen/cerberus_texture.py`. Ícaro: el planeo y los aleteos los decide el cliente
-(`client/GreeceClient`) y los avisa con el paquete `mythicrelics:icarus`; la cera derretida es la recarga del ítem de las
+(`client/RelicClientTicks`) y los avisa con el paquete `mythicrelics:icarus`; la cera derretida es la recarga del ítem de las
 alas (el cliente la ve). Si llevas las sandalias de Hermes, el primer salto en el aire es el de Hermes y los siguientes,
 aleteos. Vellocino: Héroe de la aldea renovado cada 2 s; la pepita al esquilar sale de `InteractionEvent.INTERACT_ENTITY`.
 Botín: ruinas oceánicas frías (arqueología), casas de pastor, tesoros de naufragios, bastiones (cuatro tablas), mansiones,
@@ -152,7 +152,7 @@ y camina sobre el agua (`canStandOnFluid`). Su modelo (`client/entity/SleipnirMo
 vanilla con dos pares de patas más, bardas de hierro rúnico (testera, peto, faldones, silla con perilla), crin trenzada y
 cola en dos tramos que se mece; texturas de 128x64 (`tools/model-gen/sleipnir_texture.py`: la normal y `sleipnir_glow`,
 que dibuja una `EyesLayer` para que runas y ojos brillen). Al galopar suelta escarcha y chispas (salpicaduras en el agua). El viento a
-favor de Skíðblañir lo aplica el cliente (`GreeceClient`). Mixin nuevo: `PiglinAiMixin` (trueques dobles con
+favor de Skíðblañir lo aplica el cliente (`RelicClientTicks`). Mixin nuevo: `PiglinAiMixin` (trueques dobles con
 Andvaranaut). **Sin probar en el juego**: montar a Sleipnir y su velocidad sobre el agua, que se vaya al bajarte, el bote
 que se pliega, el doble de oro y de trueques, los avisos de Mímir y el crecimiento con Brísingamen.
 
@@ -211,7 +211,7 @@ tanuki; tala del hacha de Kintarō al romper un tronco agachado; prosperidad de 
 `FujinWindBagItem`, `YashioriSakeItem`, `TanukiLeafItem`, `AmeNoNubokoItem` y `OrochiScaleItem`. La muñeca de
 zashiki-warashi es un bloque (`ZashikiWarashiBlock`, con `ZashikiWarashis` guardando dónde hay, como el Paladio; el ítem
 reutiliza `PalladiumItem`). El set de Fūjin y Raijin cambia el redoble en `JapanRelics#onHurt` (3 golpes y el rayo
-salta a 2 hostiles). El doble salto del tengu reutiliza el de las sandalias de Hermes (`GreeceClient` y
+salta a 2 hostiles). El doble salto del tengu reutiliza el de las sandalias de Hermes (`RelicClientTicks` y
 `GreeceRelics#hermesJumped`). Entidad: `entity/OrochiShadow` (aliado quieto de `Minions`: cada 1,5 s muerde a hasta 8
 hostiles a 6 bloques; se dibuja al doble con `OrochiModel`). Geometría en `japan_entities.py`; íconos, bloque de la
 muñeca y su paleta en `japan2_icons.py`; máscara y plato puestos en `worn_models.py`.
@@ -322,7 +322,7 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
 - Entidades: `Pegasus` (vuela con salto, planea, picada de 12, tábano sobre Y 200), `Talos` (aliado de `Minions`, rocas
   = bola de nieve con la etiqueta `mythicrelics.talos_rock`, abrazo con fuego, da vueltas al dueño), `FreyrSword` (Mob
   sin IA movido con `setPos` y seguimiento amortiguado; posición cada tick). El halcón ya no es entidad: `client/FalconForm` dibuja su modelo en lugar del jugador. Geometría en `greece_entities.py` y `norse_entities.py` (halcón), exportada por `china_entities.py --mod`.
-- Halcón: la tecla V (`GreeceClient.FALCON_KEY`, configurable) manda `FalconPayload`; el servidor da vuelo 20 s y encoge
+- Halcón: la tecla V (`RelicClientTicks.FALCON_KEY`, configurable) manda `FalconPayload`; el servidor da vuelo 20 s y encoge
   al jugador con el atributo `scale` (modificador `falcon_form`, que también marca al cliente para dibujar el ave).
 - Set de Perseo: ahora 4 piezas (con la harpe en la mano o el inventario), se activa con 3.
 - Íconos: `greece3_icons.py` (incluye el escudo 3D, como el Ancile) y `norse3_icons.py`; puestos en `worn_models.py`
@@ -376,7 +376,7 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
      `TooltipNumbers` (tres `fmt`), `RelicCooldowns.tryStart(player, Item, ticks)`, `RelicFx.sound/notify`.
    - Recargas: las de 10 s o más deberían pasar por `RelicCooldowns` (las vanilla se pierden al reconectar).
    - `RelicSets`: declarar por pieza dónde cuenta (puesta, inventario, mano) para que el contador del tooltip coincida.
-   - Mover `egypt/RelicItem` a `relic/`, renombrar `ChinaRenderers` y `GreeceClient` (tienen de todas las culturas),
+   - Mover `egypt/RelicItem` a `relic/`, renombrar `MythicRenderers` y `RelicClientTicks` (tienen de todas las culturas),
      imports en vez de nombres completos (~280), y un registro de `tooltipArgs` en lugar de la cadena de 13 clases.
 5. Portar Misfit Relics a Architectury (mismo esquema de módulos).
 

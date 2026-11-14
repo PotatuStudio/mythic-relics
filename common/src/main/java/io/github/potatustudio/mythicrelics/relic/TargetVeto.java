@@ -77,6 +77,6 @@ public final class TargetVeto {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(LULLED);
+		ServerState.clearOnStop(LULLED);
 	}
 }

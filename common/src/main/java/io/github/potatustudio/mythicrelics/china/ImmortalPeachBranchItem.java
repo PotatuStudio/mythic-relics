@@ -1,8 +1,9 @@
 package io.github.potatustudio.mythicrelics.china;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
+import io.github.potatustudio.mythicrelics.relic.ConsumeFeedback;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -65,8 +66,8 @@ public class ImmortalPeachBranchItem extends RelicItem {
 
 	/** Mordiscos (o sorbos) y migas mientras se usa, como la comida vanilla. */
 	@Override
-	public void onUseTick(net.minecraft.world.level.Level level, net.minecraft.world.entity.LivingEntity entity, ItemStack stack, int remaining) {
-		io.github.potatustudio.mythicrelics.relic.ConsumeFeedback.tick(level, entity, stack, remaining, getUseDuration(stack, entity), false);
+	public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remaining) {
+		ConsumeFeedback.tick(level, entity, stack, remaining, getUseDuration(stack, entity), false);
 	}
 
 	@Override

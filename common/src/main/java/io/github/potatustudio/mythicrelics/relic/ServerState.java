@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.relic;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -67,7 +68,7 @@ public final class ServerState {
 			for (Object c : collections) {
 				if (c instanceof Map<?, ?> m) {
 					m.clear();
-				} else if (c instanceof java.util.Collection<?> col) {
+				} else if (c instanceof Collection<?> col) {
 					col.clear();
 				}
 			}

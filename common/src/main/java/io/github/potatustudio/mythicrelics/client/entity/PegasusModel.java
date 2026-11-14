@@ -54,7 +54,7 @@ public class PegasusModel extends EntityModel<LivingEntityRenderState> {
 	public void setupAnim(LivingEntityRenderState state) {
 		super.setupAnim(state);
 		float t = state.ageInTicks;
-		float air = state instanceof ChinaRenderers.PegasusRenderer.State s ? s.air : 0.0f;
+		float air = state instanceof MythicRenderers.PegasusRenderer.State s ? s.air : 0.0f;
 		float ground = 1.0f - air;
 		// Paso (en el suelo): patas en diagonal, como el caballo vanilla.
 		float pos = state.walkAnimationPos;

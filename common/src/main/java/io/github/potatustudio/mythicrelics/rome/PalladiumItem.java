@@ -1,7 +1,7 @@
 package io.github.potatustudio.mythicrelics.rome;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;

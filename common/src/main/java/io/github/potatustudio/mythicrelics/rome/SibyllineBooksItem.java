@@ -1,12 +1,20 @@
 package io.github.potatustudio.mythicrelics.rome;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.relic.Compass;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,31 +31,36 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Libros sibilinos: consultarlos cuesta experiencia. Los hostiles cercanos brillan y la sibila dice hacia dónde y a
  * cuánto queda la estructura más cercana de una lista corta (solo en el Overworld; buscar estructuras es caro).
  */
 public class SibyllineBooksItem extends RelicItem {
-	private record Sight(TagKey<Structure> tag, String name, net.minecraft.core.Holder<net.minecraft.world.level.saveddata.maps.MapDecorationType> icon) {
+	private record Sight(TagKey<Structure> tag, String name, Holder<MapDecorationType> icon) {
 	}
 
 	/** Rastro de letras hacia la estructura profetizada: destino y tick en que se apaga. */
 	private record Guide(BlockPos target, long until) {
 	}
 
-	private static final java.util.Map<java.util.UUID, Guide> GUIDES = new java.util.concurrent.ConcurrentHashMap<>();
+	private static final Map<UUID, Guide> GUIDES = new ConcurrentHashMap<>();
 	private static final int GUIDE_TICKS = 300;
 
 	private static final List<Sight> SIGHTS = List.of(
-			new Sight(StructureTags.VILLAGE, "village", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.PLAINS_VILLAGE),
-			new Sight(StructureTags.RUINED_PORTAL, "ruined_portal", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.RED_X),
-			new Sight(StructureTags.ON_DESERT_PYRAMID_MAPS, "desert_pyramid", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.DESERT_PYRAMID),
-			new Sight(StructureTags.ON_JUNGLE_PYRAMID_MAPS, "jungle_temple", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.JUNGLE_TEMPLE),
-			new Sight(StructureTags.ON_WOODLAND_MANSION_MAPS, "mansion", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.WOODLAND_MANSION),
-			new Sight(StructureTags.EYE_OF_ENDER_LOCATED, "stronghold", net.minecraft.world.level.saveddata.maps.MapDecorationTypes.TARGET_X));
+			new Sight(StructureTags.VILLAGE, "village", MapDecorationTypes.PLAINS_VILLAGE),
+			new Sight(StructureTags.RUINED_PORTAL, "ruined_portal", MapDecorationTypes.RED_X),
+			new Sight(StructureTags.ON_DESERT_PYRAMID_MAPS, "desert_pyramid", MapDecorationTypes.DESERT_PYRAMID),
+			new Sight(StructureTags.ON_JUNGLE_PYRAMID_MAPS, "jungle_temple", MapDecorationTypes.JUNGLE_TEMPLE),
+			new Sight(StructureTags.ON_WOODLAND_MANSION_MAPS, "mansion", MapDecorationTypes.WOODLAND_MANSION),
+			new Sight(StructureTags.EYE_OF_ENDER_LOCATED, "stronghold", MapDecorationTypes.TARGET_X));
 	/** Radio de búsqueda de estructuras (en chunks): 32 congelaba el servidor con seis búsquedas seguidas. */
 	private static final int SEARCH_CHUNKS = 16;
 
@@ -111,20 +124,20 @@ public class SibyllineBooksItem extends RelicItem {
 				Component.translatable("structure.mythicrelics." + bestSight.name()),
 				Compass.direction(dx, dz), distance).withStyle(ChatFormatting.DARK_PURPLE));
 		// El mapa de la profecía, ya dibujado, con la estructura marcada.
-		ItemStack map = net.minecraft.world.item.MapItem.create(level, best.getX(), best.getZ(), (byte) 2, true, true);
-		net.minecraft.world.item.MapItem.renderBiomePreviewMap(level, map);
-		net.minecraft.world.level.saveddata.maps.MapItemSavedData.addTargetDecoration(map, best, "+", bestSight.icon());
-		map.set(net.minecraft.core.component.DataComponents.ITEM_NAME, Component.translatable("item.mythicrelics.sibyl_map",
+		ItemStack map = MapItem.create(level, best.getX(), best.getZ(), (byte) 2, true, true);
+		MapItem.renderBiomePreviewMap(level, map);
+		MapItemSavedData.addTargetDecoration(map, best, "+", bestSight.icon());
+		map.set(DataComponents.ITEM_NAME, Component.translatable("item.mythicrelics.sibyl_map",
 				Component.translatable("structure.mythicrelics." + bestSight.name())));
 		if (!player.getInventory().add(map)) {
-			player.drop(map, false, net.minecraft.util.Prediction.SERVER_ONLY);
+			player.drop(map, false, Prediction.SERVER_ONLY);
 		}
 		GUIDES.put(player.getUUID(), new Guide(best, level.getGameTime() + GUIDE_TICKS));
 	}
 
 	/** Las letras de la sibila: un rastro de runas encantadas que sale de ti hacia la estructura, solo para ti. */
 	public static void init() {
-		dev.architectury.event.events.common.TickEvent.SERVER_POST.register(server -> {
+		TickEvent.SERVER_POST.register(server -> {
 			if (server.getTickCount() % 4 != 0 || GUIDES.isEmpty()) {
 				return;
 			}
@@ -135,15 +148,15 @@ public class SibyllineBooksItem extends RelicItem {
 				if (player == null || player.level().dimension() != Level.OVERWORLD) {
 					return;
 				}
-				net.minecraft.world.phys.Vec3 from = player.position().add(0, 1.2, 0);
-				net.minecraft.world.phys.Vec3 dir = new net.minecraft.world.phys.Vec3(guide.target().getX() + 0.5 - from.x, 0,
+				Vec3 from = player.position().add(0, 1.2, 0);
+				Vec3 dir = new Vec3(guide.target().getX() + 0.5 - from.x, 0,
 						guide.target().getZ() + 0.5 - from.z);
 				if (dir.lengthSqr() < 16) {
 					return;
 				}
 				dir = dir.normalize();
 				for (int i = 1; i <= 8; i++) {
-					net.minecraft.world.phys.Vec3 p = from.add(dir.scale(i * 1.2)).add(0, Math.sin((now / 4.0 + i) * 0.8) * 0.15, 0);
+					Vec3 p = from.add(dir.scale(i * 1.2)).add(0, Math.sin((now / 4.0 + i) * 0.8) * 0.15, 0);
 					player.level().sendParticles(player, ParticleTypes.ENCHANT, true, false, p.x, p.y, p.z, 2, 0.05, 0.05, 0.05, 0.0);
 				}
 			});
@@ -152,6 +165,6 @@ public class SibyllineBooksItem extends RelicItem {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(GUIDES);
+		ServerState.perPlayer(GUIDES);
 	}
 }

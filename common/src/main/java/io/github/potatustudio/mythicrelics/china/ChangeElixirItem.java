@@ -1,8 +1,8 @@
 package io.github.potatustudio.mythicrelics.china;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -57,7 +57,7 @@ public class ChangeElixirItem extends RelicItem {
 	@Override
 	public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remaining) {
 		if (remaining % 4 == 0) {
-			entity.playSound(net.minecraft.sounds.SoundEvents.GENERIC_DRINK.value(), 0.5f, level.getRandom().nextFloat() * 0.1f + 0.9f);
+			entity.playSound(SoundEvents.GENERIC_DRINK.value(), 0.5f, level.getRandom().nextFloat() * 0.1f + 0.9f);
 		}
 	}
 

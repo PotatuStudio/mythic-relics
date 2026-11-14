@@ -4,13 +4,18 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.entity.LongDragon;
+import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -46,11 +51,11 @@ import net.minecraft.world.phys.Vec3;
  * <ul>
  *   <li><b>Ruyi Jingu Bang</b> ({@link RuyiJinguBangItem}): arma pesada de mucho alcance que se estira en línea.</li>
  *   <li><b>Pelos del Rey Mono</b> ({@link MonkeyHairsItem}): cuatro monos guerreros
- *       ({@link io.github.potatustudio.mythicrelics.entity.MonkeyWarrior}).</li>
+ *       ({@link MonkeyWarrior}).</li>
  *   <li><b>Calabaza roja de oro púrpura</b> ({@link PurpleGoldGourdItem}): atrapa un mob, lo suelta o lo disuelve.</li>
  *   <li><b>Abanico de hoja de plátano</b> ({@link BananaLeafFanItem}): arma de viento con tres aleteos.</li>
  *   <li><b>Perla del dragón</b> ({@link DragonPearlItem}): llama al long que se monta
- *       ({@link io.github.potatustudio.mythicrelics.entity.LongDragon}).</li>
+ *       ({@link LongDragon}).</li>
  *   <li><b>Ruedas de viento y fuego</b> (pies): velocidad, estela de llamas y cruzar la lava corriendo.</li>
  *   <li><b>Arco de Hou Yi</b> ({@link HouYiBowItem}): derriba «soles» (mobs de fuego y voladores).</li>
  *   <li><b>Elixir de Chang'e</b> ({@link ChangeElixirItem}): ascenso lunar según la fase de la luna.</li>
@@ -112,7 +117,7 @@ public final class ChinaRelics {
 	/** Jugador en pleno aleteo del abanico -> ticks que le quedan (empuja a los mobs que cruza y no recibe daño de caída). */
 	private static final Map<UUID, Integer> DASHING = new HashMap<>();
 	/** Mobs ya golpeados por el dash en curso de cada jugador. */
-	private static final Map<UUID, java.util.Set<UUID>> DASH_HIT = new HashMap<>();
+	private static final Map<UUID, Set<UUID>> DASH_HIT = new HashMap<>();
 	/** Evita que el barrido del Ruyi se barra a sí mismo. */
 	private static final ThreadLocal<Boolean> RUYI_SWEEPING = ThreadLocal.withInitial(() -> false);
 
@@ -222,14 +227,14 @@ public final class ChinaRelics {
 	/** Registra un aleteo: el dash empuja a los mobs que cruza. */
 	static void flap(ServerPlayer player, int dashTicks) {
 		DASHING.put(player.getUUID(), dashTicks);
-		DASH_HIT.put(player.getUUID(), new java.util.HashSet<>());
+		DASH_HIT.put(player.getUUID(), new HashSet<>());
 	}
 
 	private static void dashPush(ServerPlayer player) {
 		player.resetFallDistance();
 		ServerLevel level = player.level();
 		Vec3 push = player.getDeltaMovement().multiply(1, 0, 1).normalize().scale(2.2).add(0, 0.7, 0);
-		java.util.Set<UUID> hit = DASH_HIT.computeIfAbsent(player.getUUID(), k -> new java.util.HashSet<>());
+		Set<UUID> hit = DASH_HIT.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
 		for (LivingEntity mob : Allies.enemiesAround(player, player.getBoundingBox().inflate(2.0))) {
 			if (hit.add(mob.getUUID())) {
 				mob.hurtServer(level, level.damageSources().playerAttack(player), FAN_DASH_DAMAGE);
@@ -341,6 +346,6 @@ public final class ChinaRelics {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(LUNAR, DASHING, DASH_HIT);
+		ServerState.perPlayer(LUNAR, DASHING, DASH_HIT);
 	}
 }

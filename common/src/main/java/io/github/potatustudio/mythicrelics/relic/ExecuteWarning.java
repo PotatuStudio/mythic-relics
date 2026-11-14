@@ -57,7 +57,7 @@ public final class ExecuteWarning {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> WARNED.values().forEach(m -> m.remove(p.getUUID())));
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(WARNED);
+		ServerState.onQuit(p -> WARNED.values().forEach(m -> m.remove(p.getUUID())));
+		ServerState.clearOnStop(WARNED);
 	}
 }

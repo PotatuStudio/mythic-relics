@@ -1,7 +1,11 @@
 package io.github.potatustudio.mythicrelics.relic;
 
 import dev.architectury.registry.registries.RegistrySupplier;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -27,12 +31,12 @@ public final class WornRelics {
 	}
 
 	/** Respuestas del tick en curso por entidad (servidor y cliente por separado: cada uno en su hilo). */
-	private static final java.util.Map<java.util.UUID, Tick> SERVER_CACHE = new java.util.HashMap<>();
-	private static final java.util.Map<java.util.UUID, Tick> CLIENT_CACHE = new java.util.HashMap<>();
+	private static final Map<UUID, Tick> SERVER_CACHE = new HashMap<>();
+	private static final Map<UUID, Tick> CLIENT_CACHE = new HashMap<>();
 
 	private static final class Tick {
 		long time;
-		final java.util.Map<Item, Boolean> answers = new java.util.IdentityHashMap<>();
+		final Map<Item, Boolean> answers = new IdentityHashMap<>();
 	}
 
 	/**
@@ -44,7 +48,7 @@ public final class WornRelics {
 		if (provider == null) {
 			throw new IllegalStateException("Mythic Relics: falta instalar el proveedor de accesorios del loader");
 		}
-		java.util.Map<java.util.UUID, Tick> cache = entity.level().isClientSide() ? CLIENT_CACHE : SERVER_CACHE;
+		Map<UUID, Tick> cache = entity.level().isClientSide() ? CLIENT_CACHE : SERVER_CACHE;
 		long now = entity.level().getGameTime();
 		Tick tick = cache.get(entity.getUUID());
 		if (tick == null) {

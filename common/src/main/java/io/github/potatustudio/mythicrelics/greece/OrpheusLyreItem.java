@@ -1,8 +1,9 @@
 package io.github.potatustudio.mythicrelics.greece;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.TargetVeto;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -70,7 +71,7 @@ public class OrpheusLyreItem extends RelicItem {
 				m -> m instanceof Enemy && !Bosses.is(m))) {
 			// Dormido: no se mueve ni ataca mientras suena la lira.
 			// Dormido mientras siga sonando (TargetVeto le niega cualquier objetivo).
-			io.github.potatustudio.mythicrelics.relic.TargetVeto.lull(mob, server.getGameTime() + 25);
+			TargetVeto.lull(mob, server.getGameTime() + 25);
 			mob.setTarget(null);
 			mob.getNavigation().stop();
 			mob.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 9, false, false), user);

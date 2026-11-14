@@ -6,6 +6,7 @@ import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
@@ -48,7 +49,7 @@ public enum RelicSets {
 
 		/** Clave del texto que le dice al jugador dónde ponerla («póntela», «en una mano»…). */
 		public String hintKey() {
-			return "tooltip.mythicrelics.set_where." + name().toLowerCase(java.util.Locale.ROOT);
+			return "tooltip.mythicrelics.set_where." + name().toLowerCase(Locale.ROOT);
 		}
 	}
 

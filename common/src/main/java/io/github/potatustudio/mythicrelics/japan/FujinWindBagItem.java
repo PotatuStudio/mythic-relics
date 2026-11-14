@@ -1,11 +1,13 @@
 package io.github.potatustudio.mythicrelics.japan;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicMotion;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -48,8 +50,8 @@ public class FujinWindBagItem extends RelicItem {
 			server.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.5, player.getZ(), 40, 3.0, 0.5, 3.0, 0.15);
 		} else {
 			Vec3 v = player.getDeltaMovement();
-			if (player instanceof net.minecraft.server.level.ServerPlayer sp) {
-				io.github.potatustudio.mythicrelics.relic.RelicMotion.launch(sp, new Vec3(v.x, JapanGods.WIND_LIFT, v.z));
+			if (player instanceof ServerPlayer sp) {
+				RelicMotion.launch(sp, new Vec3(v.x, JapanGods.WIND_LIFT, v.z));
 			}
 			player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, JapanGods.WIND_GLIDE_TICKS + 40, 0, true, false));
 			server.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY(), player.getZ(), 30, 0.6, 0.2, 0.6, 0.08);

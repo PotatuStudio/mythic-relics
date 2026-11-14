@@ -4,8 +4,10 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
+import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -17,12 +19,14 @@ import java.util.Set;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -260,19 +264,19 @@ public final class JapanGods {
 			case "zashiki_warashi" -> new Object[] {ZASHIKI_RADIUS};
 			case "ame_no_nuboko" -> new Object[] {NUBOKO_RANGE, NUBOKO_RADIUS * 2 + 1, NUBOKO_COOLDOWN / 20};
 			case "orochi_scale" -> new Object[] {OROCHI_TICKS / 20, OROCHI_REACH, (int) OROCHI_BITE, OROCHI_COOLDOWN / 20 / 60};
-			default -> io.github.potatustudio.mythicrelics.greece.GreeceLegends.tooltipArgs(id);
+			default -> GreeceLegends.tooltipArgs(id);
 		};
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(DRYING, DISGUISED);
-		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> DRY.remove(p.getUUID()));
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(DRY, DRUNK);
+		ServerState.perPlayer(DRYING, DISGUISED);
+		ServerState.onQuit(p -> DRY.remove(p.getUUID()));
+		ServerState.clearOnStop(DRY, DRUNK);
 	}
 
 	/** Pone el efecto solo si falta o le quedan menos de 20 ticks (cada addEffect manda un paquete al cliente). */
-	private static void refresh(Player player, net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> effect, int ticks) {
+	private static void refresh(Player player, Holder<MobEffect> effect, int ticks) {
 		MobEffectInstance current = player.getEffect(effect);
 		if (current == null || current.getDuration() < 20) {
 			player.addEffect(new MobEffectInstance(effect, ticks, 0, true, false));

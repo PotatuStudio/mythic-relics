@@ -12,9 +12,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -101,7 +103,7 @@ public final class ChargeFeedback {
 		return LEAF;
 	}
 
-	private static net.minecraft.sounds.SoundEvent ready(ItemStack stack) {
+	private static SoundEvent ready(ItemStack stack) {
 		if (stack.is(ModItems.ZEUS_THUNDERBOLT.get()) || stack.is(ModItems.MJOLNIR.get())) {
 			return SoundEvents.TRIDENT_THUNDER.value();
 		}
@@ -117,7 +119,7 @@ public final class ChargeFeedback {
 	/** Dónde está el arma: sobre el hombro del brazo que la usa (la pose de lanzar del tridente). */
 	private static Vec3 weaponPoint(Player player) {
 		float yaw = player.yBodyRot * ((float) Math.PI / 180.0f);
-		boolean right = (player.getUsedItemHand() == net.minecraft.world.InteractionHand.MAIN_HAND) == (player.getMainArm() == HumanoidArm.RIGHT);
+		boolean right = (player.getUsedItemHand() == InteractionHand.MAIN_HAND) == (player.getMainArm() == HumanoidArm.RIGHT);
 		double side = right ? -0.38 : 0.38;
 		double scale = player.getScale();
 		Vec3 sideways = new Vec3(Math.cos(yaw) * side, 0.0, Math.sin(yaw) * side);

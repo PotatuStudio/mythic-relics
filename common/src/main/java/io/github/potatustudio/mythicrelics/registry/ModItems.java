@@ -18,6 +18,12 @@ import io.github.potatustudio.mythicrelics.china.MonkeyHairsItem;
 import io.github.potatustudio.mythicrelics.china.PurpleGoldGourdItem;
 import io.github.potatustudio.mythicrelics.china.RuyiJinguBangItem;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
+import io.github.potatustudio.mythicrelics.greece.AppleOfDiscordItem;
+import io.github.potatustudio.mythicrelics.greece.GoldenBridleItem;
+import io.github.potatustudio.mythicrelics.greece.HarpeItem;
+import io.github.potatustudio.mythicrelics.greece.StoneStatueItem;
+import io.github.potatustudio.mythicrelics.greece.TalosNailItem;
+import io.github.potatustudio.mythicrelics.greece.ZeusThunderboltItem;
 import io.github.potatustudio.mythicrelics.japan.AmeNoNubokoItem;
 import io.github.potatustudio.mythicrelics.japan.FujinWindBagItem;
 import io.github.potatustudio.mythicrelics.japan.KibiDangoItem;
@@ -32,7 +38,6 @@ import io.github.potatustudio.mythicrelics.japan.UrashimaRodItem;
 import io.github.potatustudio.mythicrelics.japan.YataMirrorItem;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.egypt.OsirisCrookItem;
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.egypt.ThothPaletteItem;
 import io.github.potatustudio.mythicrelics.greece.AriadneThreadItem;
 import io.github.potatustudio.mythicrelics.greece.MedusaHeadItem;
@@ -42,19 +47,25 @@ import io.github.potatustudio.mythicrelics.greece.PrometheusFennelItem;
 import io.github.potatustudio.mythicrelics.greece.StyxWaterItem;
 import io.github.potatustudio.mythicrelics.norse.GjallarhornItem;
 import io.github.potatustudio.mythicrelics.norse.GleipnirItem;
+import io.github.potatustudio.mythicrelics.norse.GramItem;
 import io.github.potatustudio.mythicrelics.norse.IdunnApplesItem;
+import io.github.potatustudio.mythicrelics.norse.MimirHeadItem;
 import io.github.potatustudio.mythicrelics.norse.OdinRavensItem;
 import io.github.potatustudio.mythicrelics.norse.OdrerirItem;
 import io.github.potatustudio.mythicrelics.norse.SkidbladnirItem;
 import io.github.potatustudio.mythicrelics.norse.SleipnirHorseshoeItem;
 import io.github.potatustudio.mythicrelics.norse.ThrownRelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicCultures;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import io.github.potatustudio.mythicrelics.rome.AugurLituusItem;
 import io.github.potatustudio.mythicrelics.rome.JanusKeyItem;
 import io.github.potatustudio.mythicrelics.rome.PalladiumItem;
 import io.github.potatustudio.mythicrelics.rome.SibyllineBooksItem;
+import io.github.potatustudio.mythicrelics.rome.VestaLampItem;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -132,7 +143,7 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> PALLADIUM = register("palladium",
 			p -> new PalladiumItem(ModBlocks.PALLADIUM.get(), p), p -> p.rarity(Rarity.EPIC).useItemDescriptionPrefix());
 	public static final RegistrySupplier<Item> JANUS_KEY = register("janus_key", JanusKeyItem::new, p -> p.rarity(Rarity.RARE));
-	public static final RegistrySupplier<Item> VESTA_LAMP = register("vesta_lamp", io.github.potatustudio.mythicrelics.rome.VestaLampItem::new, p -> p.rarity(Rarity.RARE));
+	public static final RegistrySupplier<Item> VESTA_LAMP = register("vesta_lamp", VestaLampItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> SIBYLLINE_BOOKS = register("sibylline_books", SibyllineBooksItem::new,
 			p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> AUGUR_LITUUS = register("augur_lituus", AugurLituusItem::new, p -> p.rarity(Rarity.RARE));
@@ -155,7 +166,7 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> ODIN_RAVENS = register("odin_ravens", OdinRavensItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> BRISINGAMEN = relic("brisingamen", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> SKIDBLADNIR = register("skidbladnir", SkidbladnirItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> MIMIR_HEAD = register("mimir_head", io.github.potatustudio.mythicrelics.norse.MimirHeadItem::new, p -> p.rarity(Rarity.EPIC));
+	public static final RegistrySupplier<Item> MIMIR_HEAD = register("mimir_head", MimirHeadItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ANDVARANAUT = relic("andvaranaut", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ODRERIR = register("odrerir", OdrerirItem::new, p -> p.rarity(Rarity.RARE));
 
@@ -219,7 +230,7 @@ public final class ModItems {
 
 	// Grecia, tercera tanda.
 	public static final RegistrySupplier<Item> ZEUS_THUNDERBOLT = register("zeus_thunderbolt",
-			io.github.potatustudio.mythicrelics.greece.ZeusThunderboltItem::new, p -> p.rarity(Rarity.EPIC));
+			ZeusThunderboltItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> NEMEAN_LION_SKIN = relic("nemean_lion_skin", p -> p.rarity(Rarity.EPIC));
 	// Escudo como el Ancile: bloquea como el vanilla y nunca se rompe; la cólera la suma GreeceLegends.
 	public static final RegistrySupplier<Item> ACHILLES_SHIELD = relic("achilles_shield", p -> p.rarity(Rarity.EPIC)
@@ -227,17 +238,17 @@ public final class ModItems {
 					List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0.0f, 1.0f)),
 					new BlocksAttacks.ItemDamageFunction(3.0f, 1.0f, 1.0f), Optional.empty(),
 					Optional.of(SoundEvents.SHIELD_BLOCK), Optional.of(SoundEvents.SHIELD_BREAK))));
-	public static final RegistrySupplier<Item> HARPE = register("harpe", io.github.potatustudio.mythicrelics.greece.HarpeItem::new,
+	public static final RegistrySupplier<Item> HARPE = register("harpe", HarpeItem::new,
 			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 4.0f, -2.2f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
 	public static final RegistrySupplier<Item> GOLDEN_BRIDLE = register("golden_bridle",
-			io.github.potatustudio.mythicrelics.greece.GoldenBridleItem::new, p -> p.rarity(Rarity.EPIC));
+			GoldenBridleItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> APPLE_OF_DISCORD = register("apple_of_discord",
-			io.github.potatustudio.mythicrelics.greece.AppleOfDiscordItem::new, p -> p.rarity(Rarity.RARE));
+			AppleOfDiscordItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> TALOS_NAIL = register("talos_nail",
-			io.github.potatustudio.mythicrelics.greece.TalosNailItem::new, p -> p.rarity(Rarity.EPIC));
+			TalosNailItem::new, p -> p.rarity(Rarity.EPIC));
 
 	// Nórdicos, tercera tanda.
-	public static final RegistrySupplier<Item> GRAM = register("gram", io.github.potatustudio.mythicrelics.norse.GramItem::new,
+	public static final RegistrySupplier<Item> GRAM = register("gram", GramItem::new,
 			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -2.5f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
 	public static final RegistrySupplier<Item> TYRFING = relic("tyrfing", p -> p.rarity(Rarity.EPIC)
 			.sword(ToolMaterial.IRON, 7.0f, -2.6f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
@@ -250,7 +261,7 @@ public final class ModItems {
 
 	/** Estatua de piedra de un mob que murió petrificado por la cabeza de Medusa (no es una reliquia). */
 	public static final RegistrySupplier<Item> STONE_STATUE = register("stone_statue",
-			io.github.potatustudio.mythicrelics.greece.StoneStatueItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));
+			StoneStatueItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));
 
 	/** Candado que cuelga de lo cerrado con la llave de Jano (solo se ve en el mundo, no se consigue). */
 	public static final RegistrySupplier<Item> PADLOCK = register("padlock", Item::new, p -> p);
@@ -266,13 +277,13 @@ public final class ModItems {
 	public static final RegistrySupplier<CreativeModeTab> TAB_CHINA = cultureTab("china", () -> RUYI_JINGU_BANG.get());
 	public static final RegistrySupplier<CreativeModeTab> TAB_JAPAN = cultureTab("japan", () -> KUSANAGI.get());
 
-	private static RegistrySupplier<CreativeModeTab> cultureTab(String culture, java.util.function.Supplier<Item> icon) {
+	private static RegistrySupplier<CreativeModeTab> cultureTab(String culture, Supplier<Item> icon) {
 		return TABS.register(culture, () -> CreativeTabRegistry.create(builder -> builder
 				.title(Component.translatable("itemGroup.mythicrelics." + culture))
 				.icon(() -> new ItemStack(icon.get()))
 				.displayItems((parameters, output) -> {
 					for (RegistrySupplier<Item> item : ITEMS) {
-						if (culture.equals(io.github.potatustudio.mythicrelics.relic.RelicCultures.of(item.getId().getPath()))) {
+						if (culture.equals(RelicCultures.of(item.getId().getPath()))) {
 							output.accept(item.get());
 						}
 					}

@@ -1,8 +1,9 @@
 package io.github.potatustudio.mythicrelics.china;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.RelicMotion;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
@@ -93,7 +94,7 @@ public class BananaLeafFanItem extends RelicItem {
 		store(stack, left - 1, now);
 		Vec3 look = player.getLookAngle();
 		Vec3 flat = new Vec3(look.x, 0, look.z).normalize();
-		io.github.potatustudio.mythicrelics.relic.RelicMotion.launch(serverPlayer,
+		RelicMotion.launch(serverPlayer,
 				new Vec3(flat.x * DASH_SPEED, Math.max(0.3, look.y * DASH_SPEED * 0.7), flat.z * DASH_SPEED));
 		ChinaRelics.flap(serverPlayer, DASH_TICKS);
 		server.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.5, player.getZ(), 25, 0.5, 0.3, 0.5, 0.15);

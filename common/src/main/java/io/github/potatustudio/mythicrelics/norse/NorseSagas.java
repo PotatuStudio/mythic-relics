@@ -7,6 +7,7 @@ import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
+import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.FreyrSword;
 import io.github.potatustudio.mythicrelics.network.FalconPayload;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
@@ -14,6 +15,7 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +26,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,6 +38,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -99,7 +104,7 @@ public final class NorseSagas {
 	 * La forma de halcón encoge al jugador con el atributo vanilla {@code scale} (caja de golpe, cámara y pasos), y ese
 	 * modificador es también la marca que ve el cliente para dibujar el halcón en lugar del jugador.
 	 */
-	public static final net.minecraft.resources.Identifier FALCON_SCALE_ID = io.github.potatustudio.mythicrelics.MythicRelics.id("falcon_form");
+	public static final Identifier FALCON_SCALE_ID = MythicRelics.id("falcon_form");
 	public static final double FALCON_SCALE = -0.65;
 	private static final Map<UUID, UUID> GRAM_WARNED = new HashMap<>();
 
@@ -144,7 +149,7 @@ public final class NorseSagas {
 		if (!player.level().isClientSide()) {
 			return isFalcon(player);
 		}
-		var scale = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+		var scale = player.getAttribute(Attributes.SCALE);
 		return scale != null && scale.hasModifier(FALCON_SCALE_ID);
 	}
 
@@ -331,13 +336,13 @@ public final class NorseSagas {
 
 	/** Pone o quita el tamaño de halcón (el modificador es transitorio: no se guarda con el jugador). */
 	private static void setFalconScale(ServerPlayer player, boolean on) {
-		var scale = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+		var scale = player.getAttribute(Attributes.SCALE);
 		if (scale == null) {
 			return;
 		}
 		if (on && !scale.hasModifier(FALCON_SCALE_ID)) {
-			scale.addTransientModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(FALCON_SCALE_ID, FALCON_SCALE,
-					net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+			scale.addTransientModifier(new AttributeModifier(FALCON_SCALE_ID, FALCON_SCALE,
+					AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		} else if (!on && scale.hasModifier(FALCON_SCALE_ID)) {
 			scale.removeModifier(FALCON_SCALE_ID);
 		}
@@ -439,14 +444,14 @@ public final class NorseSagas {
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
 		// El vuelo del halcón se guarda con el jugador: se deshace antes de que salga (si no, quedaría volando).
-		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> endFalcon(p, false));
-		io.github.potatustudio.mythicrelics.relic.ServerState.onStopping(server -> server.getPlayerList().getPlayers().forEach(p -> endFalcon(p, false)));
-		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> {
+		ServerState.onQuit(p -> endFalcon(p, false));
+		ServerState.onStopping(server -> server.getPlayerList().getPlayers().forEach(p -> endFalcon(p, false)));
+		ServerState.onQuit(p -> {
 			FreyrSword sword = SWORDS.get(p.getUUID());
 			if (sword != null && !sword.isRemoved()) {
 				sword.discard();
 			}
 		});
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(TYRFING_HELD, COMBAT_UNTIL, SWORDS, GRAM_WARNED, FALCON_UNTIL);
+		ServerState.perPlayer(TYRFING_HELD, COMBAT_UNTIL, SWORDS, GRAM_WARNED, FALCON_UNTIL);
 	}
 }

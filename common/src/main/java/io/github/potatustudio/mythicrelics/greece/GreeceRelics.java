@@ -4,6 +4,8 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.network.HermesJumpPayload;
 import io.github.potatustudio.mythicrelics.network.PetrifyPayload;
@@ -12,15 +14,20 @@ import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,12 +40,15 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -101,7 +111,7 @@ public final class GreeceRelics {
 						hermesJumped(player);
 					}
 				}));
-		if (dev.architectury.platform.Platform.getEnvironment() == dev.architectury.utils.Env.SERVER) {
+		if (Platform.getEnvironment() == Env.SERVER) {
 			NetworkManager.registerS2CPayloadType(PetrifyPayload.TYPE, PetrifyPayload.CODEC);
 		}
 		EntityEvent.ADD.register(GreeceRelics::onEntityAdded);
@@ -137,7 +147,7 @@ public final class GreeceRelics {
 		RelicFx.sound(level, player, SoundEvents.ENDER_DRAGON_FLAP, 0.3f, 1.8f);
 	}
 
-	private static void setModifier(Player player, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute,
+	private static void setModifier(Player player, Holder<Attribute> attribute,
 			Identifier id, double amount, AttributeModifier.Operation operation) {
 		AttributeInstance instance = player.getAttribute(attribute);
 		if (instance == null) {
@@ -254,8 +264,8 @@ public final class GreeceRelics {
 		}
 	}
 
-	private static final net.minecraft.core.particles.DustParticleOptions GAZE_DUST =
-			new net.minecraft.core.particles.DustParticleOptions(0x9CFF6A, 1.0f);
+	private static final DustParticleOptions GAZE_DUST =
+			new DustParticleOptions(0x9CFF6A, 1.0f);
 
 	/** Petrifica a un mob {@link #MEDUSA_TICKS} ticks: queda quieto y se ve de piedra, que se va agrietando. */
 	private static void petrify(ServerLevel level, Mob mob) {
@@ -286,7 +296,7 @@ public final class GreeceRelics {
 
 	/** Avisa a los jugadores cercanos para que el mob se dibuje de piedra (o vuelva a su color). */
 	private static void sync(ServerLevel level, Mob mob, boolean on) {
-		java.util.List<ServerPlayer> near = level.players().stream().filter(p -> p.distanceToSqr(mob) < 128 * 128).toList();
+		List<ServerPlayer> near = level.players().stream().filter(p -> p.distanceToSqr(mob) < 128 * 128).toList();
 		NetworkManager.sendToPlayers(near, new PetrifyPayload(mob.getId(), on, MEDUSA_TICKS));
 	}
 
@@ -302,13 +312,13 @@ public final class GreeceRelics {
 		level.sendParticles(ParticleTypes.CLOUD, mob.getX(), mob.getY() + 0.2, mob.getZ(), 12, 0.4, 0.1, 0.4, 0.02);
 		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1.4f, 0.6f);
 		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.DEEPSLATE_BRICKS_BREAK, SoundSource.HOSTILE, 1.0f, 0.5f);
-		net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> table =
+		ResourceKey<LootTable> table =
 				mob.getType().getDefaultLootTable().orElse(null);
 		if (table != null) {
 			mob.dropFromLootTable(level, source, true, table);
 		}
 		if (level.getRandom().nextFloat() < MEDUSA_STATUE_CHANCE) {
-			net.minecraft.world.entity.item.ItemEntity drop = new net.minecraft.world.entity.item.ItemEntity(level, mob.getX(),
+			ItemEntity drop = new ItemEntity(level, mob.getX(),
 					mob.getY() + 0.5, mob.getZ(), StoneStatueItem.of(mob.getType()));
 			level.addFreshEntity(drop);
 		}
@@ -393,7 +403,7 @@ public final class GreeceRelics {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(HADES_STILL, HADES_INVISIBLE);
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(PETRIFIED, GAZE);
+		ServerState.perPlayer(HADES_STILL, HADES_INVISIBLE);
+		ServerState.clearOnStop(PETRIFIED, GAZE);
 	}
 }

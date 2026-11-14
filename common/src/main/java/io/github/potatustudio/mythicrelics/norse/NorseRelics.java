@@ -4,8 +4,10 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,7 +40,7 @@ import net.minecraft.world.level.Level;
  * Primera tanda nórdica (diseño aprobado el 2026-11-09), casi todo obra de los enanos:
  * <ul>
  *   <li><b>Mjölnir</b> y <b>Gungnir</b>: armas que se lanzan y vuelven ({@link ThrownRelicItem},
- *       {@link io.github.potatustudio.mythicrelics.entity.ThrownRelic}).</li>
+ *       {@link ThrownRelic}).</li>
  *   <li><b>Járngreipr</b> (guantes): puños de hierro y los rayos no te dañan. <b>Megingjörð</b> (cinturón): más daño
  *       cuerpo a cuerpo y menos retroceso. Con Mjölnir forman el <b>set de Thor</b>: cada lanzamiento llama un rayo.</li>
  *   <li><b>Draupnir</b> (anillo): cada novena noche, ocho lingotes de oro ({@link DraupnirNights}).</li>
@@ -199,6 +201,6 @@ public final class NorseRelics {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(BOUND);
+		ServerState.clearOnStop(BOUND);
 	}
 }

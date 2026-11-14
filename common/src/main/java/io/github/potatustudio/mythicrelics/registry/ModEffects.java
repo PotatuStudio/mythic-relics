@@ -3,13 +3,14 @@ package io.github.potatustudio.mythicrelics.registry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
+import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 
 /**
  * Efectos del mod. El Baño del Estigia no hace nada por sí solo: el daño lo ajusta
- * {@link io.github.potatustudio.mythicrelics.greece.GreeceHeroes#modifyIncomingDamage}. Ser un efecto da el ícono, el
+ * {@link GreeceHeroes#modifyIncomingDamage}. Ser un efecto da el ícono, el
  * tiempo restante en el inventario y que se guarde con el jugador.
  */
 public final class ModEffects {

@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.architectury.event.events.client.ClientPlayerEvent;
 import io.github.potatustudio.mythicrelics.client.PetrifiedClient;
 import io.github.potatustudio.mythicrelics.entity.StoneStatue;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class StoneStatueRenderer extends EntityRenderer<StoneStatue, StoneStatue
 	private static @Nullable Level modelsLevel;
 
 	static {
-		dev.architectury.event.events.client.ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(player -> {
+		ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(player -> {
 			models.clear();
 			modelsLevel = null;
 		});

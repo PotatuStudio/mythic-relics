@@ -7,9 +7,11 @@ import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.ExecuteWarning;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
@@ -29,7 +31,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -176,8 +180,8 @@ public final class EgyptRelics {
 	 * Escarabajo dorado ante un golpe mortal (lo llama el mixin en la misma comprobación que el tótem): si no está en
 	 * recarga, Jepri te deja con {@link #SCARAB_THRESHOLD} de vida y activa lo mismo que al bajar de esa vida.
 	 */
-	public static boolean scarabSave(LivingEntity self, net.minecraft.world.damagesource.DamageSource source) {
-		if (!(self instanceof ServerPlayer player) || source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)
+	public static boolean scarabSave(LivingEntity self, DamageSource source) {
+		if (!(self instanceof ServerPlayer player) || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
 				|| !WornRelics.isWearing(player, ModItems.GOLDEN_SCARAB) || !RelicCooldowns.ready(player, "golden_scarab")) {
 			return false;
 		}
@@ -240,7 +244,7 @@ public final class EgyptRelics {
 		// Cetro de Anubis: los no-muertos que ya se pueden juzgar (menos del 25 % de vida) brillan y suena un aviso.
 		if (server.getTickCount() % 10 == 0) {
 			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-				io.github.potatustudio.mythicrelics.relic.ExecuteWarning.tick(player, "anubis_scepter",
+				ExecuteWarning.tick(player, "anubis_scepter",
 						player.getMainHandItem().is(ModItems.ANUBIS_SCEPTER.get()), 12,
 						m -> m.typeHolder().is(EntityTypeTags.UNDEAD) && m.getHealth() <= m.getMaxHealth() * SCEPTER_JUDGMENT_HEALTH,
 						"message.mythicrelics.anubis_ready");
@@ -306,7 +310,7 @@ public final class EgyptRelics {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(EYE_HEALING);
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(SOULS);
+		ServerState.perPlayer(EYE_HEALING);
+		ServerState.clearOnStop(SOULS);
 	}
 }

@@ -5,15 +5,21 @@ import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.TickEvent;
+import io.github.potatustudio.mythicrelics.minion.Minions;
+import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -25,6 +31,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.golem.IronGolem;
@@ -34,6 +41,7 @@ import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.BaseSpawner;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -145,13 +153,13 @@ public final class RomeRelics {
 	// ---- Llave de Jano: candados ---------------------------------------------------------------------------------
 
 	/** «Cerrado con llave por Fulano» (o «por otro jugador» si no está conectado). */
-	static Component lockedBy(ServerLevel level, java.util.UUID owner) {
-		net.minecraft.server.level.ServerPlayer who = owner == null ? null : level.getServer().getPlayerList().getPlayer(owner);
+	static Component lockedBy(ServerLevel level, UUID owner) {
+		ServerPlayer who = owner == null ? null : level.getServer().getPlayerList().getPlayer(owner);
 		Component name = who != null ? who.getDisplayName() : Component.translatable("message.mythicrelics.janus_someone");
 		return Component.translatable("message.mythicrelics.janus_locked_by", name).withStyle(ChatFormatting.GOLD);
 	}
 
-	private static EventResult onUseBlock(Player player, InteractionHand hand, BlockPos pos, net.minecraft.core.Direction face) {
+	private static EventResult onUseBlock(Player player, InteractionHand hand, BlockPos pos, Direction face) {
 		if (!(player.level() instanceof ServerLevel level) || player.isShiftKeyDown() && player.getItemInHand(hand).is(ModItems.JANUS_KEY.get())) {
 			return EventResult.pass();
 		}
@@ -163,7 +171,7 @@ public final class RomeRelics {
 		return EventResult.pass();
 	}
 
-	private static EventResult onBreak(net.minecraft.world.level.Level level, BlockPos pos, BlockState state, ServerPlayer player) {
+	private static EventResult onBreak(Level level, BlockPos pos, BlockState state, ServerPlayer player) {
 		if (!(level instanceof ServerLevel server)) {
 			return EventResult.pass();
 		}
@@ -236,13 +244,13 @@ public final class RomeRelics {
 			}
 		}
 		if (player.getHealth() <= WOLF_HOWL_HEALTH
-				&& RelicCooldowns.tryStart(player, "wolf_bulla", WOLF_HOWL_COOLDOWN, net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(ModItems.WOLF_BULLA.get()))) {
+				&& RelicCooldowns.tryStart(player, "wolf_bulla", WOLF_HOWL_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.WOLF_BULLA.get()))) {
 			RelicFx.sound(level, player, SoundEvents.FOX_SCREECH, 1.0f, 0.5f);
 			for (int i = 0; i < WOLF_HOWL_WOLVES; i++) {
 				double a = Math.toRadians(player.getYRot() + (i == 0 ? 120 : -120));
 				double x = player.getX() - Math.sin(a) * 2, z = player.getZ() + Math.cos(a) * 2;
-				net.minecraft.world.entity.Mob mob = io.github.potatustudio.mythicrelics.minion.Minions.summon(level, player,
-						net.minecraft.world.entity.EntityTypes.WOLF, x, player.getY(), z, WOLF_HOWL_TICKS,
+				Mob mob = Minions.summon(level, player,
+						EntityTypes.WOLF, x, player.getY(), z, WOLF_HOWL_TICKS,
 						Component.translatable("entity.mythicrelics.howl_wolf"));
 				if (mob instanceof Wolf wolf) {
 					wolf.tame(player);
@@ -297,12 +305,12 @@ public final class RomeRelics {
 			case "sibylline_books" -> new Object[] {SIBYL_LEVELS, SIBYL_RADIUS, SIBYL_GLOW_TICKS / 20, SIBYL_COOLDOWN / 20 / 60};
 			case "augur_lituus" -> new Object[] {LITUUS_FAVOR_TICKS / 20 / 60, LITUUS_BAD_TICKS / 20 / 60, LITUUS_BIRD_RADIUS,
 					LITUUS_COOLDOWN / 20 / 60};
-			default -> io.github.potatustudio.mythicrelics.norse.NorseRelics.tooltipArgs(id);
+			default -> NorseRelics.tooltipArgs(id);
 		};
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(REFLECT);
+		ServerState.clearOnStop(REFLECT);
 	}
 }

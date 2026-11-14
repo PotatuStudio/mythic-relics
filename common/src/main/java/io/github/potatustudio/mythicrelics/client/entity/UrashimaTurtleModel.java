@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 /**
  * Tortuga de Urashima (geometría en {@link MythicModelLayers#urashimaTurtle}, igual que el visor de diseño): caparazón
  * de escudos con borde ámbar, aletas que reman (más rápido al nadar) y algas que flotan detrás. Se dibuja a 1,7 veces
- * ({@link ChinaRenderers.TurtleRenderer}).
+ * ({@link MythicRenderers.TurtleRenderer}).
  */
 public class UrashimaTurtleModel extends EntityModel<LivingEntityRenderState> {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(MythicRelics.id("urashima_turtle"), "main");

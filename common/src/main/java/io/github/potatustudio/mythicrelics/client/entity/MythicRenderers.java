@@ -6,8 +6,11 @@ import io.github.potatustudio.mythicrelics.entity.CelestialDog;
 import io.github.potatustudio.mythicrelics.entity.Kitsune;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
+import io.github.potatustudio.mythicrelics.entity.OdinRaven;
 import io.github.potatustudio.mythicrelics.entity.OrochiShadow;
+import io.github.potatustudio.mythicrelics.entity.Pegasus;
 import io.github.potatustudio.mythicrelics.entity.Qilin;
+import io.github.potatustudio.mythicrelics.entity.Talos;
 import io.github.potatustudio.mythicrelics.entity.UrashimaTurtle;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -18,15 +21,16 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 
 /**
- * Renderizadores de las entidades de China y Japón. Todas tienen una segunda textura que brilla en la oscuridad (como los ojos
- * de la araña): los ojos de fuego del mono; los ojos del long y su perla llameante; los ojos del perro; las llamas del
- * qilin.
+ * Renderizadores de las entidades de todas las culturas (monos, long, perro celestial, qilin, kitsune, tortuga, cuervos,
+ * Orochi, Pegaso, Talos…). Varias tienen una segunda textura que brilla en la oscuridad (como los ojos de la araña): los
+ * ojos de fuego del mono; los ojos del long y su perla llameante; los ojos del perro; las llamas del qilin.
  */
-public final class ChinaRenderers {
-	private ChinaRenderers() {
+public final class MythicRenderers {
+	private MythicRenderers() {
 	}
 
 	private static <M extends EntityModel<LivingEntityRenderState>> EyesLayer<LivingEntityRenderState, M> glow(
@@ -131,7 +135,7 @@ public final class ChinaRenderers {
 	}
 
 	/** Pegaso: la brida de oro brilla un poco; el paso de suelo a vuelo se suaviza. */
-	public static class PegasusRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.Pegasus, PegasusModel> {
+	public static class PegasusRenderer extends Glowing<Pegasus, PegasusModel> {
 		public static class State extends LivingEntityRenderState {
 			public float air;
 		}
@@ -146,16 +150,16 @@ public final class ChinaRenderers {
 		}
 
 		@Override
-		public void extractRenderState(io.github.potatustudio.mythicrelics.entity.Pegasus pegasus, LivingEntityRenderState state, float partialTick) {
+		public void extractRenderState(Pegasus pegasus, LivingEntityRenderState state, float partialTick) {
 			super.extractRenderState(pegasus, state, partialTick);
 			if (state instanceof State s) {
-				s.air = net.minecraft.util.Mth.lerp(partialTick, pegasus.airAnimO, pegasus.airAnim);
+				s.air = Mth.lerp(partialTick, pegasus.airAnimO, pegasus.airAnim);
 			}
 		}
 	}
 
 	/** Talos: hombre de bronce de unos 3 bloques (geometría a 1,5); ojos y vena de ícor que brillan. */
-	public static class TalosRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.Talos, TalosModel> {
+	public static class TalosRenderer extends Glowing<Talos, TalosModel> {
 		public static final float SCALE = 1.5f;
 
 		public static class State extends LivingEntityRenderState {
@@ -172,7 +176,7 @@ public final class ChinaRenderers {
 		}
 
 		@Override
-		public void extractRenderState(io.github.potatustudio.mythicrelics.entity.Talos talos, LivingEntityRenderState state, float partialTick) {
+		public void extractRenderState(Talos talos, LivingEntityRenderState state, float partialTick) {
 			super.extractRenderState(talos, state, partialTick);
 			if (state instanceof State s) {
 				s.sinceThrow = talos.ticksSinceThrow() + partialTick;
@@ -186,13 +190,13 @@ public final class ChinaRenderers {
 	}
 
 	/** Huginn y Muninn: cuervos de Odín (los ojos brillan). */
-	public static class RavenRenderer extends Glowing<io.github.potatustudio.mythicrelics.entity.OdinRaven, OdinRavenModel> {
+	public static class RavenRenderer extends Glowing<OdinRaven, OdinRavenModel> {
 		public RavenRenderer(EntityRendererProvider.Context context) {
 			super(context, new OdinRavenModel(context.bakeLayer(OdinRavenModel.LAYER)), 0.3f, "odin_raven");
 		}
 
 		@Override
-		public void extractRenderState(io.github.potatustudio.mythicrelics.entity.OdinRaven raven, LivingEntityRenderState state, float partialTick) {
+		public void extractRenderState(OdinRaven raven, LivingEntityRenderState state, float partialTick) {
 			super.extractRenderState(raven, state, partialTick);
 			// Posado: alas plegadas (el modelo lo lee de la velocidad de "caminar").
 			state.walkAnimationSpeed = raven.isPerched() ? 0.0f : 1.0f;

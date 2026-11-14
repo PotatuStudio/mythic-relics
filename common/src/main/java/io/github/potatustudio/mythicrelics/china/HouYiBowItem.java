@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.china;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
+import io.github.potatustudio.mythicrelics.registry.ModLoot;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,6 +46,6 @@ public class HouYiBowItem extends BowItem {
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip,
 			TooltipFlag flag) {
 		RelicItem.effectLines(this, tooltip);
-		io.github.potatustudio.mythicrelics.registry.ModLoot.appendWhere(this, tooltip);
+		ModLoot.appendWhere(this, tooltip);
 	}
 }

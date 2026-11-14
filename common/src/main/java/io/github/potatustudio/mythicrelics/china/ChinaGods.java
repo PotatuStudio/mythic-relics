@@ -5,29 +5,36 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.greece.CharonStash;
+import io.github.potatustudio.mythicrelics.japan.JapanRelics;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -45,6 +52,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Segunda tanda china (diseño aprobado el 2026-11-10): Nezha (lanza y aro), Erlang Shen (ojo, alabarda y su Perro
@@ -98,7 +107,7 @@ public final class ChinaGods {
 	public static final String TALISMAN_TAG = MythicRelics.MOD_ID + ".talisman";
 	private static final Identifier HALBERD_REACH_ID = MythicRelics.id("erlang_halberd_reach");
 	/** Lo que el pixiu no deja escapar al morir. */
-	private static final java.util.Set<Item> TREASURE = java.util.Set.of(Items.GOLD_NUGGET, Items.GOLD_INGOT, Items.GOLD_BLOCK, Items.RAW_GOLD,
+	private static final Set<Item> TREASURE = Set.of(Items.GOLD_NUGGET, Items.GOLD_INGOT, Items.GOLD_BLOCK, Items.RAW_GOLD,
 			Items.RAW_GOLD_BLOCK, Items.EMERALD, Items.EMERALD_BLOCK, Items.DIAMOND, Items.DIAMOND_BLOCK);
 	/** No-muerto con un talismán pegado -> tick del juego en que se despega. */
 	private static final Map<UUID, Long> SEALED = new HashMap<>();
@@ -180,12 +189,12 @@ public final class ChinaGods {
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------
 
 	/** Último suelo firme de cada jugador (a donde lo devuelve el xirang si cae al vacío). */
-	private static final Map<UUID, net.minecraft.core.GlobalPos> SAFE_GROUND = new HashMap<>();
+	private static final Map<UUID, GlobalPos> SAFE_GROUND = new HashMap<>();
 
 	/** Saco de xirang: la tierra crece bajo tus pies y te saca de la lava o del vacío. */
 	private static void xirangRescue(ServerPlayer player) {
 		if (!RelicCooldowns.tryStart(player, "xirang_rescue", XIRANG_RESCUE_COOLDOWN,
-				net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(ModItems.XIRANG_SACK.get()))) {
+				BuiltInRegistries.ITEM.getKey(ModItems.XIRANG_SACK.get()))) {
 			return;
 		}
 		ServerLevel level = player.level();
@@ -193,33 +202,33 @@ public final class ChinaGods {
 		if (player.isInLava()) {
 			// Sube hasta la superficie de la lava.
 			feet = player.blockPosition();
-			while (level.getFluidState(feet).is(net.minecraft.tags.FluidTags.LAVA) && feet.getY() < level.getMaxY()) {
+			while (level.getFluidState(feet).is(FluidTags.LAVA) && feet.getY() < level.getMaxY()) {
 				feet = feet.above();
 			}
 		} else {
-			net.minecraft.core.GlobalPos safe = SAFE_GROUND.get(player.getUUID());
+			GlobalPos safe = SAFE_GROUND.get(player.getUUID());
 			feet = (safe != null && safe.dimension() == level.dimension() ? safe.pos() : level.getRespawnData().pos()).above();
 		}
 		for (BlockPos p : BlockPos.betweenClosed(feet.offset(-1, -1, -1), feet.offset(1, -1, 1))) {
-			if (level.getBlockState(p).canBeReplaced() || level.getFluidState(p).is(net.minecraft.tags.FluidTags.LAVA)) {
-				level.setBlockAndUpdate(p, net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState());
+			if (level.getBlockState(p).canBeReplaced() || level.getFluidState(p).is(FluidTags.LAVA)) {
+				level.setBlockAndUpdate(p, Blocks.DIRT.defaultBlockState());
 			}
 		}
 		for (BlockPos p : BlockPos.betweenClosed(feet, feet.above())) {
-			if (level.getFluidState(p).is(net.minecraft.tags.FluidTags.LAVA)) {
-				level.setBlockAndUpdate(p, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
+			if (level.getFluidState(p).is(FluidTags.LAVA)) {
+				level.setBlockAndUpdate(p, Blocks.AIR.defaultBlockState());
 			}
 		}
 		player.teleportTo(feet.getX() + 0.5, feet.getY(), feet.getZ() + 0.5);
-		player.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
-		player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(player));
+		player.setDeltaMovement(Vec3.ZERO);
+		player.connection.send(new ClientboundSetEntityMotionPacket(player));
 		player.resetFallDistance();
 		player.clearFire();
-		player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.FIRE_RESISTANCE, 100, 0));
-		level.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK,
-				net.minecraft.world.level.block.Blocks.DIRT.defaultBlockState()), player.getX(), player.getY(), player.getZ(), 40, 1.0, 0.3, 1.0, 0.1);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), net.minecraft.sounds.SoundEvents.ROOTED_DIRT_PLACE,
-				net.minecraft.sounds.SoundSource.PLAYERS, 1.2f, 0.7f);
+		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0));
+		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK,
+				Blocks.DIRT.defaultBlockState()), player.getX(), player.getY(), player.getZ(), 40, 1.0, 0.3, 1.0, 0.1);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ROOTED_DIRT_PLACE,
+				SoundSource.PLAYERS, 1.2f, 0.7f);
 		RelicFx.notify(player, "xirang_rescue", ChatFormatting.GOLD);
 	}
 
@@ -246,7 +255,7 @@ public final class ChinaGods {
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			if (player.onGround() && !player.isInLava()) {
-				SAFE_GROUND.put(player.getUUID(), net.minecraft.core.GlobalPos.of(player.level().dimension(), player.blockPosition()));
+				SAFE_GROUND.put(player.getUUID(), GlobalPos.of(player.level().dimension(), player.blockPosition()));
 			}
 			if ((player.isInLava() || player.getY() < player.level().getMinY() - 8) && !player.isSpectator()
 					&& player.getInventory().contains(s -> s.is(ModItems.XIRANG_SACK.get()))) {
@@ -296,13 +305,13 @@ public final class ChinaGods {
 			case "fu_talismans" -> new Object[] {TALISMAN_TICKS / 20, TALISMAN_COOLDOWN / 20};
 			case "xirang_sack" -> new Object[] {XIRANG_RESCUE_COOLDOWN / 20 / 60};
 			case "immortal_peach_branch" -> new Object[] {PEACH_GROW_TICKS / 24000, PEACH_ABSORPTION_TICKS / 20 / 60, PEACH_REGEN_TICKS / 20};
-			default -> io.github.potatustudio.mythicrelics.japan.JapanRelics.tooltipArgs(id);
+			default -> JapanRelics.tooltipArgs(id);
 		};
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(SAFE_GROUND);
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(SEALED);
+		ServerState.perPlayer(SAFE_GROUND);
+		ServerState.clearOnStop(SEALED);
 	}
 }

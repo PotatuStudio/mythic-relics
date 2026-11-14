@@ -1,17 +1,25 @@
 package io.github.potatustudio.mythicrelics.norse;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.entity.OdinRaven;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.relic.Compass;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -19,6 +27,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -35,12 +45,12 @@ public class OdinRavensItem extends RelicItem {
 	}
 
 	/** Cuervos afuera por dueño: solo para devolverlos al llamarlos (el efecto no depende de ellos). */
-	private static final java.util.Map<java.util.UUID, java.util.List<OdinRaven>> OUT = new java.util.concurrent.ConcurrentHashMap<>();
+	private static final Map<UUID, List<OdinRaven>> OUT = new ConcurrentHashMap<>();
 	/**
 	 * Dueños con los cuervos enviados: Huginn le cuenta a Odín lo que ve, así que el efecto es alrededor del jugador
 	 * aunque los cuervos se alejen, se posen lejos o desaparezcan. Se apaga al volver a usar el ítem.
 	 */
-	private static final java.util.Set<java.util.UUID> ACTIVE = java.util.concurrent.ConcurrentHashMap.newKeySet();
+	private static final Set<UUID> ACTIVE = ConcurrentHashMap.newKeySet();
 
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
@@ -56,10 +66,10 @@ public class OdinRavensItem extends RelicItem {
 			RelicFx.sound(server, player, SoundEvents.PARROT_AMBIENT, 1.0f, 0.5f);
 			return InteractionResult.SUCCESS;
 		}
-		java.util.List<OdinRaven> out = OUT.remove(player.getUUID());
+		List<OdinRaven> out = OUT.remove(player.getUUID());
 		if (ACTIVE.remove(player.getUUID())) {
 			// Vuelven con Odín.
-			for (OdinRaven r : out != null ? out : java.util.List.<OdinRaven>of()) {
+			for (OdinRaven r : out != null ? out : List.<OdinRaven>of()) {
 				server.sendParticles(ParticleTypes.SMOKE, r.getX(), r.getY() + 0.3, r.getZ(), 10, 0.3, 0.3, 0.3, 0.03);
 				r.discard();
 			}
@@ -67,10 +77,10 @@ public class OdinRavensItem extends RelicItem {
 			RelicFx.sound(server, player, SoundEvents.PARROT_FLY, 1.0f, 0.6f);
 			return InteractionResult.SUCCESS;
 		}
-		java.util.List<OdinRaven> ravens = new java.util.ArrayList<>();
+		List<OdinRaven> ravens = new ArrayList<>();
 		String[] names = {"huginn", "muninn"};
 		for (int i = 0; i < 2; i++) {
-			OdinRaven raven = ModEntities.ODIN_RAVEN.get().create(server, net.minecraft.world.entity.EntitySpawnReason.MOB_SUMMONED);
+			OdinRaven raven = ModEntities.ODIN_RAVEN.get().create(server, EntitySpawnReason.MOB_SUMMONED);
 			if (raven == null) {
 				continue;
 			}
@@ -89,11 +99,11 @@ public class OdinRavensItem extends RelicItem {
 	}
 
 	/** Mientras los cuervos están enviados, los hostiles alrededor del dueño brillan sin parar (estén o no los cuervos cerca). */
-	static void tick(net.minecraft.server.MinecraftServer server) {
+	static void tick(MinecraftServer server) {
 		if (server.getTickCount() % 20 != 0) {
 			return;
 		}
-		OUT.entrySet().removeIf(e -> e.getValue().stream().allMatch(net.minecraft.world.entity.Entity::isRemoved));
+		OUT.entrySet().removeIf(e -> e.getValue().stream().allMatch(Entity::isRemoved));
 		ACTIVE.forEach(id -> {
 			ServerPlayer player = server.getPlayerList().getPlayer(id);
 			if (player == null || !player.isAlive()) {
@@ -130,13 +140,13 @@ public class OdinRavensItem extends RelicItem {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.onQuit(p -> {
+		ServerState.onQuit(p -> {
 			ACTIVE.remove(p.getUUID());
-			java.util.List<OdinRaven> out = OUT.remove(p.getUUID());
+			List<OdinRaven> out = OUT.remove(p.getUUID());
 			if (out != null) {
-				out.forEach(net.minecraft.world.entity.Entity::discard);
+				out.forEach(Entity::discard);
 			}
 		});
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(OUT, ACTIVE);
+		ServerState.clearOnStop(OUT, ACTIVE);
 	}
 }

@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.egypt;
 
 import io.github.potatustudio.mythicrelics.registry.ModComponents;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

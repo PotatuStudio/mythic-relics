@@ -5,11 +5,14 @@ import dev.architectury.event.events.common.EntityEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.relic.Compass;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.BlockPos;
@@ -193,7 +196,7 @@ public final class MimirHead {
 		long nextScan;
 	}
 
-	private static final Map<java.util.UUID, Guide> GUIDES = new java.util.HashMap<>();
+	private static final Map<UUID, Guide> GUIDES = new HashMap<>();
 
 	/** Cuánto vale cada mineral (más alto, más prioridad; empate: el más cercano). 0 = no es tesoro. */
 	private static int value(BlockState state) {
@@ -339,10 +342,10 @@ public final class MimirHead {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.onStopping(server -> {
+		ServerState.onStopping(server -> {
 			OUTLINES.forEach(o -> o.display().discard());
 			OUTLINES.clear();
 		});
-		io.github.potatustudio.mythicrelics.relic.ServerState.perPlayer(GUIDES);
+		ServerState.perPlayer(GUIDES);
 	}
 }

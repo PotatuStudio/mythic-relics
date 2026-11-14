@@ -8,11 +8,15 @@ import dev.architectury.event.events.common.PlayerEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.ServerState;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,6 +25,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Prediction;
 import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gamerules.GameRules;
@@ -58,7 +63,7 @@ public final class CharonStash extends SavedData {
 
 	private final Map<UUID, Entry> stash = new HashMap<>();
 	/** Jugadores que pagaron el pasaje en esta muerte: sus accesorios no se sueltan. */
-	private static final java.util.Set<UUID> PAID = java.util.concurrent.ConcurrentHashMap.newKeySet();
+	private static final Set<UUID> PAID = ConcurrentHashMap.newKeySet();
 
 	private CharonStash() {
 	}
@@ -128,7 +133,7 @@ public final class CharonStash extends SavedData {
 	 * Pulsera del pixiu: guarda los objetos de valor que cumplen {@code keep} (sin la experiencia) para devolverlos al
 	 * reaparecer. Si el óbolo ya pagó el pasaje, el inventario está vacío y no hace nada.
 	 */
-	public static void keepTreasure(ServerPlayer player, java.util.function.Predicate<ItemStack> keep) {
+	public static void keepTreasure(ServerPlayer player, Predicate<ItemStack> keep) {
 		if (player.level().getGameRules().get(GameRules.KEEP_INVENTORY) || player.isSpectator()) {
 			return;
 		}
@@ -155,7 +160,7 @@ public final class CharonStash extends SavedData {
 	}
 
 	/** ¿Pagó el pasaje al morir? Entonces los accesorios puestos se quedan puestos. */
-	public static boolean paidPassage(net.minecraft.world.entity.LivingEntity entity) {
+	public static boolean paidPassage(LivingEntity entity) {
 		return PAID.contains(entity.getUUID());
 	}
 
@@ -187,6 +192,6 @@ public final class CharonStash extends SavedData {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		io.github.potatustudio.mythicrelics.relic.ServerState.clearOnStop(PAID);
+		ServerState.clearOnStop(PAID);
 	}
 }

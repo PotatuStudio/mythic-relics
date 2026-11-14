@@ -1,9 +1,9 @@
 package io.github.potatustudio.mythicrelics.china;
 
-import io.github.potatustudio.mythicrelics.egypt.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,6 +16,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -65,7 +66,7 @@ public class UniverseRingItem extends RelicItem {
 			LivingEntity last = current;
 			current = server.getEntitiesOfClass(LivingEntity.class, last.getBoundingBox().inflate(BOUNCE_RANGE),
 							e -> e != player && e.isAlive() && !hit.contains(e) && !Allies.isFriend(player, e)
-									&& e.getType().getCategory() == net.minecraft.world.entity.MobCategory.MONSTER)
+									&& e.getType().getCategory() == MobCategory.MONSTER)
 					.stream().min(Comparator.comparingDouble(e -> e.distanceToSqr(last))).orElse(null);
 		}
 		// Vuelve a la mano.

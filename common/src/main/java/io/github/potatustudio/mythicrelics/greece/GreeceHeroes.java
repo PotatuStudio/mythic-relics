@@ -14,6 +14,7 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
+import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -218,7 +219,7 @@ public final class GreeceHeroes {
 					PANDORA_HOPE_ABSORPTION_TICKS / 20 / 60};
 			case "styx_water" -> new Object[] {STYX_TICKS / 20 / 60, Math.round(STYX_FRONT_FACTOR * 100), STYX_COOLDOWN / 20 / 60};
 			case "prometheus_fennel" -> new Object[] {PROMETHEUS_BURN_SECONDS, PROMETHEUS_COOLDOWN_PER_ITEM / 20, PROMETHEUS_COOLDOWN_MIN / 20};
-			default -> io.github.potatustudio.mythicrelics.rome.RomeRelics.tooltipArgs(id);
+			default -> RomeRelics.tooltipArgs(id);
 		};
 	}
 }
