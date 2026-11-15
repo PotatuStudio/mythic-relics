@@ -13,6 +13,7 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
+import io.github.potatustudio.mythicrelics.relic.SafeLanding;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
@@ -58,7 +59,7 @@ import net.minecraft.world.phys.Vec3;
  *   <li><b>Sandalias aladas de Hermes</b> (pies): más velocidad, doble salto (lo pide el cliente con
  *       {@link HermesJumpPayload}) y la arena y la tierra de almas no frenan.</li>
  *   <li><b>Yelmo de Hades</b> (sombrero): agachado y quieto te vuelves invisible; moverse rápido o atacar lo rompe.</li>
- *   <li><b>Égida de Atenea</b> (espalda): al bloquear con escudo un golpe cuerpo a cuerpo, el atacante queda aturdido.</li>
+ *   <li><b>Égida de Atenea</b> (escudo): al bloquear con ella un golpe cuerpo a cuerpo, el atacante queda aturdido.</li>
  *   <li><b>Set de Perseo</b>: la mirada de Medusa petrifica el doble de rápido y lo petrificado recibe más daño.</li>
  *   <li><b>Cabeza de Medusa</b>, <b>Hilo de Ariadna</b> y <b>Lira de Orfeo</b>: ítems que se usan
  *       ({@link MedusaHeadItem}, {@link AriadneThreadItem}, {@link OrpheusLyreItem}).</li>
@@ -83,7 +84,9 @@ public final class GreeceRelics {
 	public static final int MEDUSA_TICKS = 200;
 	public static final double MEDUSA_RADIUS = 8.0;
 	/** Ticks dentro de la mirada que hacen falta para petrificar (la mitad con el set de Perseo). */
-	public static final int MEDUSA_GAZE_TICKS = 10;
+	public static final int MEDUSA_GAZE_TICKS = 40;
+	/** Nivel máximo de Lentitud mientras la piedra le sube (justo antes de quedar petrificado). */
+	public static final int MEDUSA_MAX_SLOW = 5;
 	public static final float PERSEUS_PETRIFIED_BONUS = 0.5f;
 	/** Coseno del medio ángulo del cono de la mirada de Medusa (50°). */
 	public static final double MEDUSA_CONE = 0.64;
@@ -91,8 +94,7 @@ public final class GreeceRelics {
 	public static final float MEDUSA_STATUE_CHANCE = 0.15f;
 	public static final String PETRIFIED_TAG = MythicRelics.MOD_ID + ".petrified";
 
-	public static final int ARIADNE_MAX_DISTANCE = 256;
-	public static final int ARIADNE_COOLDOWN = 6000;
+		public static final int ARIADNE_COOLDOWN = 1200;
 
 	public static final double ORPHEUS_ANIMALS = 16.0;
 	public static final double ORPHEUS_HOSTILES = 8.0;
@@ -144,7 +146,7 @@ public final class GreeceRelics {
 		if (!WornRelics.isWearing(player, ModItems.HERMES_SANDALS) || player.onGround()) {
 			return;
 		}
-		player.resetFallDistance();
+		SafeLanding.mark(player);
 		ServerLevel level = player.level();
 		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY(), player.getZ(), 8, 0.3, 0.05, 0.3, 0.02);
 		RelicFx.sound(level, player, SoundEvents.ENDER_DRAGON_FLAP, 0.3f, 1.8f);
@@ -221,7 +223,7 @@ public final class GreeceRelics {
 	// ---- Égida (lo llama el mixin de LivingEntity al bloquear) -----------------------------------------------------
 
 	public static void aegisBlocked(LivingEntity defender, LivingEntity attacker) {
-		if (!(defender.level() instanceof ServerLevel level) || !WornRelics.isWearing(defender, ModItems.ATHENA_AEGIS) || Bosses.is(attacker)) {
+		if (!(defender.level() instanceof ServerLevel level) || !defender.getUseItem().is(ModItems.ATHENA_AEGIS.get()) || Bosses.is(attacker)) {
 			return;
 		}
 		attacker.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, AEGIS_STUN_TICKS, 5), defender);
@@ -258,8 +260,13 @@ public final class GreeceRelics {
 			long[] g = GAZE.computeIfAbsent(mob.getUUID(), k -> new long[2]);
 			g[0] += speed;
 			g[1] = now;
-			// La piedra le va subiendo desde los pies mientras la mirada lo sostiene.
-			double up = mob.getBbHeight() * Math.min(1.0, g[0] / (double) MEDUSA_GAZE_TICKS);
+			// La piedra le va subiendo desde los pies mientras la mirada lo sostiene, y lo va frenando.
+			double progress = Math.min(1.0, g[0] / (double) MEDUSA_GAZE_TICKS);
+			double up = mob.getBbHeight() * progress;
+			int slow = (int) Math.floor(progress * (MEDUSA_MAX_SLOW + 1)) - 1;
+			if (slow >= 0) {
+				mob.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 10, Math.min(slow, MEDUSA_MAX_SLOW - 1), false, false), player);
+			}
 			level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
 					mob.getX(), mob.getY() + up, mob.getZ(), 3, mob.getBbWidth() * 0.4, 0.05, mob.getBbWidth() * 0.4, 0.0);
 			if (g[0] >= MEDUSA_GAZE_TICKS) {
@@ -405,8 +412,8 @@ public final class GreeceRelics {
 		TooltipArgs.register("hermes_sandals", Math.round(HERMES_SPEED * 100));
 		TooltipArgs.register("hades_helm", HADES_STILL_TICKS / 20, (int) Math.round(HADES_SNEAK_SPEED * 100 / 0.3));
 		TooltipArgs.register("athena_aegis", AEGIS_STUN_TICKS / 20);
-		TooltipArgs.register("medusa_head", MEDUSA_TICKS / 20, (int) MEDUSA_RADIUS, MEDUSA_GAZE_TICKS * 50);
-		TooltipArgs.register("ariadne_thread", ARIADNE_MAX_DISTANCE, ARIADNE_COOLDOWN / 20 / 60);
+		TooltipArgs.register("medusa_head", MEDUSA_TICKS / 20, (int) MEDUSA_RADIUS, MEDUSA_GAZE_TICKS / 20);
+		TooltipArgs.register("ariadne_thread", ARIADNE_COOLDOWN / 20 / 60);
 		TooltipArgs.register("orpheus_lyre", (int) ORPHEUS_ANIMALS, (int) ORPHEUS_HOSTILES);
 	}
 

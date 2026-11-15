@@ -170,7 +170,7 @@ Al principio, Bastet era una leona guerrera, como Sekhmet.
 
 - Clic derecho: escribes un nivel de tu experiencia
 - Agachado y clic derecho: lo lees de vuelta
-- Caben 1395 puntos (los niveles 0 a 30) y no se pierden al morir
+- Sin límite de puntos, y no se pierden al morir
 - En la mano secundaria: +20% de experiencia
 
 **Mito.** Thot, el dios ibis de la escritura, la sabiduría y la luna, era el escriba de los dioses: inventó los jeroglíficos y en el juicio de los muertos anota el peso del corazón.  
@@ -187,9 +187,10 @@ Los escribas escribían con cálamos y tinta roja y negra, que guardaban en su p
 
 - Los animales de granja te siguen
 - Clic derecho en una cría: la vuelve adulta
+- Clic derecho en un no-muerto hostil: pelea de tu lado 30 s (no jefes)
 - Recarga: 30 s
 
-*Insignias de Osiris (Cayado de Osiris, Mayal de Osiris)* Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft) +30 % de daño con el mayal
+*Insignias de Osiris (Cayado de Osiris, Mayal de Osiris)* Con las dos insignias en las manos: Regeneración I. Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 10 min +30 % de daño con el mayal
 
 **Mito.** Osiris, rey de Egipto, fue asesinado por su hermano Set y devuelto a la vida por Isis. Se volvió señor del más allá y dios de la agricultura y de la crecida del Nilo.  
 El cayado, del pastor que guía, es una de las insignias del faraón.
@@ -203,10 +204,10 @@ El cayado, del pastor que guía, es una de las insignias del faraón.
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Ataque cargado giratorio: golpea a todos a 2.5 bloques con el 60% del daño
+- Ataque cargado giratorio: golpea a todos a 3 bloques con el 100% del daño
 - Golpear un cultivo maduro trilla un 3×3 y lo vuelve a plantar
 
-*Insignias de Osiris (Cayado de Osiris, Mayal de Osiris)* Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft) +30 % de daño con el mayal
+*Insignias de Osiris (Cayado de Osiris, Mayal de Osiris)* Con las dos insignias en las manos: Regeneración I. Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 10 min +30 % de daño con el mayal
 
 **Mito.** El mayal es la otra insignia del faraón. Su origen se discute: herramienta para trillar el grano, espantamoscas de pastor o utensilio para recoger resina.  
 Junto al cayado, simboliza el poder y la abundancia que Osiris traía con el Nilo.
@@ -238,6 +239,6 @@ Set de Anubis (Máscara de chacal, Anillo de los chacales, Cetro was de Anubis) 
 
 ## Insignias de Osiris
 
-Insignias de Osiris (Cayado de Osiris, Mayal de Osiris) Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 20 min (un día de Minecraft) +30 % de daño con el mayal
+Insignias de Osiris (Cayado de Osiris, Mayal de Osiris) Con las dos insignias en las manos: Regeneración I. Al recibir daño mortal renaces con 4 ❤ y Regeneración II. Recarga: 10 min +30 % de daño con el mayal
 
 **Mito.** Osiris es el dios que murió y volvió a la vida. Quien lleva sus dos insignias comparte un poco de ese renacer.

@@ -373,55 +373,6 @@ def helm():
     return e
 
 
-def aegis_worn():
-    """Égida de Atenea: la piel de cabra dorada de escamas (damero de oro claro y oscuro) que cubre la espalda y los
-    hombros, con un fleco de serpientes verdes con cabeza al borde de abajo y a los costados, y el gorgoneion al centro:
-    cara de piedra con ojos abiertos, la lengua afuera y la cabellera de serpientes alrededor. Va por detrás de la capa
-    (z < 5,35) y apartada de la cadena de los collares."""
-    e = [box([3.5, 5.0, 4.95], [12.5, 14.0, 5.35], "gold", "piel"),
-         box([3.2, 14.0, 4.6], [12.8, 14.7, 10.35], "gold", "hombros")]
-    # Escamas en damero sobre la piel.
-    for row, y in enumerate([5.6, 6.8, 8.0, 9.2, 10.4, 11.6, 12.8]):
-        for col, x in enumerate([3.8, 5.0, 6.2, 7.4, 8.6, 9.8, 11.0]):
-            if (row + col) % 2 == 0 and not (6.0 <= x <= 9.6 and 7.4 <= y <= 12.2):
-                e.append(box([x, y, 4.8], [x + 1.1, y + 1.1, 4.95], "gold_l" if row % 2 else "gold_d", f"escama {row} {col}"))
-    # Fleco de serpientes: cuerpo verde y cabeza más oscura, abajo y en los costados.
-    for k, x in enumerate((3.7, 5.0, 6.3, 7.6, 8.9, 10.2, 11.5)):
-        low = 3.2 if k % 2 == 0 else 3.8
-        e.append(box([x, low, 4.85], [x + 0.6, 5.0, 5.25], "cobra", f"serpiente {k}"))
-        e.append(box([x - 0.1, low - 0.6, 4.75], [x + 0.7, low, 5.3], "cobra_d", f"cabeza de serpiente {k}"))
-    for side, x0, x1 in (("der.", 2.9, 3.5), ("izq.", 12.5, 13.1)):
-        for k, y in enumerate((6.4, 9.0, 11.6)):
-            e.append(box([x0, y, 4.7], [x1, y + 1.6, 5.2], "cobra", f"serpiente del costado {side} {k}"))
-    # Gorgoneion, como en las vasijas: rostro ancho de piedra, ceño fruncido en V, ojos ámbar fijos con la pupila en
-    # ranura, la boca ancha en mueca con colmillos de jabalí arriba y abajo y la lengua apenas afuera, y una cabellera de
-    # serpientes que se retuercen alrededor (con cabeza oscura en la punta).
-    e += [box([5.8, 7.2, 4.3], [10.2, 11.6, 4.75], "stone", "cara de la gorgona"),
-          box([5.5, 8.0, 4.4], [5.8, 10.8, 4.75], "stone_d", "mejilla der."),
-          box([10.2, 8.0, 4.4], [10.5, 10.8, 4.75], "stone_d", "mejilla izq."),
-          box([6.1, 10.7, 4.18], [7.8, 11.05, 4.3], "black", "ceja der."),
-          box([8.2, 10.7, 4.18], [9.9, 11.05, 4.3], "black", "ceja izq."),
-          box([7.6, 10.4, 4.18], [8.4, 10.8, 4.3], "black", "entrecejo"),
-          box([6.3, 9.7, 4.2], [7.6, 10.5, 4.3], "amber", "ojo der."),
-          box([8.4, 9.7, 4.2], [9.7, 10.5, 4.3], "amber", "ojo izq."),
-          box([6.85, 9.75, 4.12], [7.05, 10.45, 4.2], "black", "pupila der."),
-          box([8.95, 9.75, 4.12], [9.15, 10.45, 4.2], "black", "pupila izq."),
-          box([7.65, 8.9, 4.18], [8.35, 9.7, 4.3], "stone_d", "nariz"),
-          box([6.4, 7.7, 4.2], [9.6, 8.7, 4.3], "black", "boca"),
-          box([6.5, 7.5, 4.14], [7.0, 8.9, 4.22], "ivory", "colmillo der."),
-          box([9.0, 7.5, 4.14], [9.5, 8.9, 4.22], "ivory", "colmillo izq."),
-          box([7.2, 8.35, 4.15], [7.5, 8.7, 4.2], "white", "diente 1"),
-          box([8.5, 8.35, 4.15], [8.8, 8.7, 4.2], "white", "diente 2"),
-          box([7.7, 7.3, 4.12], [8.3, 7.9, 4.2], "crest_d", "lengua")]
-    for k, (x0, y0, x1, y1, hx, hy) in enumerate([(5.0, 11.6, 5.6, 13.0, 4.6, 12.8), (6.4, 11.6, 7.0, 13.2, 6.0, 13.0),
-                                                   (9.0, 11.6, 9.6, 13.2, 9.6, 13.0), (10.4, 11.6, 11.0, 13.0, 11.0, 12.8),
-                                                   (4.8, 9.0, 5.5, 11.6, 4.3, 9.0), (10.5, 9.0, 11.2, 11.6, 11.2, 9.0),
-                                                   (4.9, 7.0, 5.5, 8.6, 4.4, 6.8), (10.5, 7.0, 11.1, 8.6, 11.1, 6.8)]):
-        e.append(box([x0, y0, 4.4], [x1, y1, 4.7], "cobra" if k % 2 else "cobra_l", f"serpiente del pelo {k}"))
-        e.append(box([hx, hy, 4.35], [hx + 0.7, hy + 0.5, 4.68], "cobra_d", f"cabeza de serpiente del pelo {k}"))
-    return e
-
-
 def mirror(e):
     """Copia un elemento al otro lado del cuerpo (x -> 16 - x). Si está girado, el giro se refleja también (en un espejo
     en x, el ángulo alrededor de x se queda y los de y y z cambian de signo)."""
@@ -934,7 +885,6 @@ WORN = {
     # Grecia: las sandalias van en las dos piernas.
     "hermes_sandals": (lambda: model(sandal()), [attach("right_leg", "hermes_sandals"), attach("left_leg", "hermes_sandals")]),
     "hades_helm": (lambda: model(helm()), [attach("head", "hades_helm")]),
-    "athena_aegis": (lambda: model(aegis_worn()), [attach("body", "athena_aegis")]),
     # Grecia, tanda 2
     "icarus_wings": (lambda: model(icarus_wings()), [attach("body", "icarus_wings")]),
     "golden_fleece": (lambda: model(golden_fleece()), [attach("body", "golden_fleece")]),

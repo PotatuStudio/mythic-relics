@@ -52,7 +52,8 @@ import org.jspecify.annotations.Nullable;
  * muérdago.
  * <ul>
  *   <li><b>Gram</b> ({@link GramItem}): estocada cargada «desde el foso», el doble contra mobs grandes, con aviso.</li>
- *   <li><b>Tyrfing</b>: todos los golpes son críticos y brilla como el fuego; maldición: debe matar o te hiere.</li>
+ *   <li><b>Tyrfing</b>: todos los golpes son críticos y brilla como el fuego; maldición: cada golpe que no mata te quita
+ *       medio corazón.</li>
  *   <li><b>Dáinsleif</b>: el golpeado no se cura y sangra.</li>
  *   <li><b>Espada de Freyr</b> (espalda): en combate sale de la vaina y pelea sola ({@link FreyrSword}).</li>
  *   <li><b>Manto de plumas de halcón</b> (espalda): doble toque de salto en el aire y vuelas como halcón.</li>
@@ -69,8 +70,8 @@ public final class NorseSagas {
 	public static final float GRAM_BIG_HEALTH = 100.0f;
 	// Tyrfing
 	public static final float TYRFING_CRIT = 0.5f;
-	public static final int TYRFING_CURSE_TICKS = 1200;
-	public static final float TYRFING_CURSE_DAMAGE = 8.0f;
+	/** Lo que te quita cada golpe de Tyrfing que no mata (medio corazón). */
+	public static final float TYRFING_HIT_COST = 1.0f;
 	// Dáinsleif
 	public static final int DAINSLEIF_NO_HEAL_TICKS = 200;
 	public static final int DAINSLEIF_BLEED_TICKS = 80;
@@ -96,7 +97,6 @@ public final class NorseSagas {
 	private record Wound(long noHealUntil, long bleedUntil) {
 	}
 
-	private static final Map<UUID, Integer> TYRFING_HELD = new HashMap<>();
 	private static final Map<LivingEntity, Wound> WOUNDS = new WeakHashMap<>();
 	private static final Map<UUID, Long> COMBAT_UNTIL = new HashMap<>();
 	private static final Map<UUID, FreyrSword> SWORDS = new HashMap<>();
@@ -117,6 +117,7 @@ public final class NorseSagas {
 		TickEvent.SERVER_POST.register(NorseSagas::tick);
 		EntityEvent.LIVING_HURT.register(NorseSagas::onHurt);
 		EntityEvent.LIVING_DEATH.register(NorseSagas::onDeath);
+		EntityEvent.LIVING_DAMAGE_POST.register((entity, source, baseDamage, damageTaken, blocked) -> tyrfingCurse(entity, source, damageTaken));
 		NetworkManager.registerReceiver(NetworkManager.c2s(), FalconPayload.TYPE, FalconPayload.CODEC,
 				(payload, context) -> context.queue(() -> {
 					if (context.getPlayer() instanceof ServerPlayer player) {
@@ -205,9 +206,6 @@ public final class NorseSagas {
 	}
 
 	private static EventResult onDeath(LivingEntity victim, DamageSource source) {
-		if (source.getEntity() instanceof Player killer && killer.getMainHandItem().is(ModItems.TYRFING.get())) {
-			TYRFING_HELD.put(killer.getUUID(), 0);
-		}
 		WOUNDS.remove(victim);
 		return EventResult.pass();
 	}
@@ -368,7 +366,7 @@ public final class NorseSagas {
 		}
 	}
 
-	/** Tyrfing: brilla como el fuego y, si pasa un minuto en tu mano sin matar, te hiere. */
+	/** Tyrfing: brilla como el fuego mientras está en la mano. */
 	private static void tyrfing(ServerPlayer player) {
 		if (!player.getMainHandItem().is(ModItems.TYRFING.get())) {
 			return;
@@ -381,18 +379,28 @@ public final class NorseSagas {
 				level.sendParticles(ParticleTypes.SMALL_FLAME, hand.x, hand.y, hand.z, 1, 0.08, 0.1, 0.08, 0.0);
 			}
 		}
-		int held = TYRFING_HELD.merge(player.getUUID(), 1, Integer::sum);
-		if (held == TYRFING_CURSE_TICKS - 200) {
-			RelicFx.notify(player, "tyrfing_hungers", ChatFormatting.RED);
-			RelicFx.sound(level, player, SoundEvents.WARDEN_HEARTBEAT, 1.0f, 1.0f);
+	}
+
+	/**
+	 * Maldición de Tyrfing: cada golpe que no mata le cuesta medio corazón a quien la empuña. El daño es mágico (lo
+	 * atraviesa todo): se descuenta de la vida sin el golpe de daño, para que no deje al jugador invulnerable y la maldición
+	 * no le sirva de escudo.
+	 */
+	private static void tyrfingCurse(LivingEntity target, DamageSource source, float damageTaken) {
+		if (!(source.getEntity() instanceof ServerPlayer player) || source.getDirectEntity() != player || target == player
+				|| damageTaken <= 0 || !target.isAlive() || !player.getMainHandItem().is(ModItems.TYRFING.get())) {
+			return;
 		}
-		if (held >= TYRFING_CURSE_TICKS) {
-			TYRFING_HELD.put(player.getUUID(), 0);
-			player.hurtServer(level, level.damageSources().magic(), TYRFING_CURSE_DAMAGE);
-			level.sendParticles(ParticleTypes.FLAME, player.getX(), player.getY(0.6), player.getZ(), 30, 0.3, 0.5, 0.3, 0.05);
-			RelicFx.sound(level, player, SoundEvents.FIRECHARGE_USE, 1.0f, 0.5f);
-			RelicFx.notify(player, "tyrfing_curse", ChatFormatting.DARK_RED);
+		ServerLevel level = player.level();
+		if (player.getHealth() > TYRFING_HIT_COST) {
+			player.setHealth(player.getHealth() - TYRFING_HIT_COST);
+		} else {
+			// El último medio corazón: muere por la maldición (con tótem, mensaje de muerte, etc.).
+			player.hurtServer(level, level.damageSources().magic(), Float.MAX_VALUE);
 		}
+		level.sendParticles(ParticleTypes.DAMAGE_INDICATOR, player.getX(), player.getY(0.7), player.getZ(), 2, 0.2, 0.2, 0.2, 0.0);
+		level.sendParticles(ParticleTypes.SMALL_FLAME, player.getX(), player.getY(0.6), player.getZ(), 4, 0.2, 0.3, 0.2, 0.01);
+		RelicFx.sound(level, player, SoundEvents.WARDEN_HEARTBEAT, 0.6f, 1.3f);
 	}
 
 	/**
@@ -438,7 +446,7 @@ public final class NorseSagas {
 	/** Números de los tooltips de la tercera tanda nórdica. */
 	public static void registerTooltipArgs() {
 		TooltipArgs.register("gram", GRAM_HITS_PER_THRUST, Math.round(GRAM_THRUST_BONUS * 100), (int) GRAM_BIG_HEALTH);
-		TooltipArgs.register("tyrfing", Math.round(TYRFING_CRIT * 100), TYRFING_CURSE_TICKS / 20, (int) (TYRFING_CURSE_DAMAGE / 2));
+		TooltipArgs.register("tyrfing", Math.round(TYRFING_CRIT * 100));
 		TooltipArgs.register("dainsleif", DAINSLEIF_NO_HEAL_TICKS / 20, DAINSLEIF_BLEED_TICKS / 20);
 		TooltipArgs.register("freyr_sword", FREYR_RADIUS, (int) FREYR_DAMAGE, Math.round(FREYR_BIG_BONUS * 100), FREYR_WISE_LEVEL,
 				Math.round(FREYR_WISE_BONUS * 100), FREYR_IDLE_TICKS / 20);
@@ -458,6 +466,6 @@ public final class NorseSagas {
 				sword.discard();
 			}
 		});
-		ServerState.perPlayer(TYRFING_HELD, COMBAT_UNTIL, SWORDS, GRAM_HITS, FALCON_UNTIL);
+		ServerState.perPlayer(COMBAT_UNTIL, SWORDS, GRAM_HITS, FALCON_UNTIL);
 	}
 }

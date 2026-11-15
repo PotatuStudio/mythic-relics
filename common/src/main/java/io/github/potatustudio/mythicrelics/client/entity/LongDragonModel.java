@@ -21,7 +21,6 @@ public class LongDragonModel extends EntityModel<LivingEntityRenderState> {
 	private final ModelPart[] segments = new ModelPart[SEGMENTS];
 	private final ModelPart head;
 	private final ModelPart jaw;
-	private final ModelPart pearl;
 	private final ModelPart tuft;
 	private final ModelPart[] whiskers = new ModelPart[2];
 	private final ModelPart[] whiskerTips = new ModelPart[2];
@@ -39,7 +38,6 @@ public class LongDragonModel extends EntityModel<LivingEntityRenderState> {
 		tuft = segments[SEGMENTS - 1].getChild("tuft");
 		head = segments[0].getChild("head");
 		jaw = head.getChild("jaw");
-		pearl = head.getChild("pearl");
 		String[] sides = {"r", "l"};
 		for (int s = 0; s < 2; s++) {
 			whiskers[s] = head.getChild("whisker_" + sides[s]);
@@ -74,6 +72,5 @@ public class LongDragonModel extends EntityModel<LivingEntityRenderState> {
 			hindLegs[s].xRot += Mth.sin(t * 2.0f + (s == 0 ? 1.6f : 0.0f)) * 0.35f * k;
 		}
 		tuft.yRot += Mth.sin(t * 1.3f - 6.6f) * 0.3f * k;
-		pearl.yRot = t * 1.5f;
 	}
 }

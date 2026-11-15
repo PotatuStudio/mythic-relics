@@ -16,8 +16,8 @@ import net.minecraft.world.level.Level;
 /**
  * Paleta de escriba de Thot: clic derecho escribe en la paleta los puntos de un nivel de tu experiencia; agachado y clic
  * derecho los lee de vuelta, de a un nivel. Guarda <b>puntos</b>, no niveles: un nivel alto vale muchos más puntos que uno
- * bajo, y guardar niveles permitiría escribir barato y leer caro. Cabe lo de los niveles 0 a 30 ({@link
- * EgyptGods#THOTH_MAX_POINTS}). Lo escrito queda en el ítem, así que no se pierde al morir: cae con la paleta.
+ * bajo, y guardar niveles permitiría escribir barato y leer caro. No tiene límite. Lo escrito queda en el ítem, así que no
+ * se pierde al morir: cae con la paleta.
  */
 public class ThothPaletteItem extends RelicItem {
 	public ThothPaletteItem(Properties properties) {
@@ -35,7 +35,7 @@ public class ThothPaletteItem extends RelicItem {
 		boolean read = player.isShiftKeyDown();
 		// Escribir: los puntos del último nivel que tienes. Leer: los de un nivel a tu nivel actual (o lo que quede).
 		int points = read ? Math.min(written, EgyptGods.pointsForLevel(player.experienceLevel))
-				: Math.min(EgyptGods.pointsForLevel(Math.max(0, player.experienceLevel - 1)), EgyptGods.THOTH_MAX_POINTS - written);
+				: Math.min(EgyptGods.pointsForLevel(Math.max(0, player.experienceLevel - 1)), Integer.MAX_VALUE - written);
 		if (points <= 0 || !read && player.experienceLevel <= 0) {
 			return InteractionResult.PASS;
 		}
@@ -53,23 +53,9 @@ public class ThothPaletteItem extends RelicItem {
 	}
 
 	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return written(stack) > 0;
-	}
-
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return Math.round(13.0f * written(stack) / EgyptGods.THOTH_MAX_POINTS);
-	}
-
-	@Override
-	public int getBarColor(ItemStack stack) {
-		return 0x7CD8FF;
-	}
-
-	@Override
 	protected void appendExtraLines(ItemStack stack, Consumer<Component> tooltip) {
-		tooltip.accept(Component.translatable("tooltip.mythicrelics.thoth_palette.written", written(stack), EgyptGods.THOTH_MAX_POINTS)
+		int written = written(stack);
+		tooltip.accept(Component.translatable("tooltip.mythicrelics.thoth_palette.written", written, EgyptGods.levelForPoints(written))
 				.withStyle(ChatFormatting.AQUA));
 	}
 }

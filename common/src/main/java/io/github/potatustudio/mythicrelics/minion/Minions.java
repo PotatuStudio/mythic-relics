@@ -44,8 +44,11 @@ public final class Minions {
 	private static final int TARGET_MEMORY = 120;
 	private static final double SEARCH_RANGE = 16.0;
 
-	/** {@code burrows}: sale de la tierra al aparecer y se entierra al acabar su tiempo (escarabajos). */
-	private record Minion(UUID owner, int[] ticksLeft, boolean burrows) {
+	/**
+	 * {@code burrows}: sale de la tierra al aparecer y se entierra al acabar su tiempo (escarabajos). {@code converted}: era
+	 * un mob del mundo que se pasó a tu lado (cayado de Osiris); al acabar su tiempo vuelve a ser lo que era.
+	 */
+	private record Minion(UUID owner, int[] ticksLeft, boolean burrows, boolean converted) {
 	}
 
 	private static final Map<Mob, Minion> MINIONS = Collections.synchronizedMap(new IdentityHashMap<>());
@@ -92,7 +95,7 @@ public final class Minions {
 		mob.addTag(TAG);
 		mob.setCustomName(name);
 		mob.setPersistenceRequired();
-		MINIONS.put(mob, new Minion(owner.getUUID(), new int[] {ticks}, burrows));
+		MINIONS.put(mob, new Minion(owner.getUUID(), new int[] {ticks}, burrows, false));
 		level.addFreshEntity(mob);
 		if (burrows) {
 			dig(level, mob);
@@ -100,6 +103,16 @@ public final class Minions {
 			level.sendParticles(ParticleTypes.SOUL, x, y + 0.5, z, 12, 0.3, 0.5, 0.3, 0.02);
 		}
 		return mob;
+	}
+
+	/**
+	 * Pasa un mob que ya existe al lado del jugador por la cantidad de ticks indicada; luego vuelve a ser como era. No
+	 * lleva {@link #TAG}: si el mundo se guarda mientras tanto, al cargarse es un mob normal otra vez.
+	 */
+	public static void convert(ServerLevel level, Player owner, Mob mob, int ticks) {
+		MINIONS.put(mob, new Minion(owner.getUUID(), new int[] {ticks}, false, true));
+		mob.setTarget(null);
+		level.sendParticles(ParticleTypes.SOUL, mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 16, 0.3, 0.5, 0.3, 0.03);
 	}
 
 	/** Partículas y sonido del bloque que pisa el aliado, como si saliera de la tierra o se enterrara en ella. */
@@ -137,6 +150,13 @@ public final class Minions {
 					continue;
 				}
 				if (--minion.ticksLeft()[0] <= 0) {
+					if (minion.converted()) {
+						// Se le pasa el encantamiento: vuelve a ser hostil, sin el objetivo que tenía como aliado.
+						mob.setTarget(null);
+						level.sendParticles(ParticleTypes.SMOKE, mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 12, 0.3, 0.4, 0.3, 0.02);
+						it.remove();
+						continue;
+					}
 					if (minion.burrows()) {
 						dig(level, mob);
 					} else {

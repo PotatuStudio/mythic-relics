@@ -284,7 +284,7 @@ Con ella Sigurd mató al dragón Fáfnir desde un foso, hiriéndolo desde abajo.
 
 - Nunca falla: todos tus golpes son críticos (+50% de daño)
 - Brilla como el fuego
-- Maldición: si pasa 60 s en tu mano sin matar, te hiere 4 corazones
+- Maldición: cada golpe que no mata te quita medio corazón
 
 **Mito.** El rey Svafrlami obligó a los enanos Dvalinn y Durinn a forjarle una espada que no fallara nunca: brillaba como el fuego y cortaba hierro como tela.  
 Pero la maldijeron: cada vez que se desenvainara tendría que matar a un hombre.

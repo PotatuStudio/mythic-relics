@@ -72,8 +72,8 @@ public final class GreeceLegends {
 	public static final float NEMEA_REDUCTION = 0.5f;
 	public static final float NEMEA_FIST_DAMAGE = 3.0f;
 	// Escudo de Aquiles
-	public static final int WRATH_MAX = 5;
-	public static final float WRATH_BONUS = 0.2f;
+	/** Daño extra del golpe que sigue a un bloqueo con el escudo de Aquiles (una sola carga). */
+	public static final float WRATH_BONUS = 1.0f;
 	public static final int WRATH_TICKS = 200;
 	public static final float WRATH_KNOCKBACK = 1.6f;
 	// Harpe
@@ -109,8 +109,7 @@ public final class GreeceLegends {
 	public static final String TALOS_ROCK_TAG = "mythicrelics.talos_rock";
 	private static final Identifier WRATH_KNOCKBACK_ID = Identifier.fromNamespaceAndPath("mythicrelics", "achilles_wrath");
 
-	/** Cólera de Aquiles por jugador: niveles y hasta cuándo dura. */
-	private static final Map<UUID, int[]> WRATH = new HashMap<>();
+	/** Cólera de Aquiles: jugadores con la carga lista y hasta cuándo dura. */
 	private static final Map<UUID, Long> WRATH_UNTIL = new HashMap<>();
 	/** Manzana de la Discordia: mob marcado y hasta cuándo. */
 	private static final Map<Mob, Long> FAIREST = new WeakHashMap<>();
@@ -163,37 +162,33 @@ public final class GreeceLegends {
 
 	// ---- Escudo de Aquiles: la cólera -------------------------------------------------------------------------------
 
-	/** Después de bloquear con el escudo de Aquiles: cada golpe bloqueado suma un nivel de cólera. */
+	/** Después de bloquear con el escudo de Aquiles: el siguiente golpe queda cargado de cólera (una sola carga). */
 	public static void afterBlocking(LivingEntity self, DamageSource source, float blocked) {
 		if (!(self instanceof ServerPlayer player) || blocked <= 0 || !player.getUseItem().is(ModItems.ACHILLES_SHIELD.get())) {
 			return;
 		}
-		int[] wrath = WRATH.computeIfAbsent(player.getUUID(), k -> new int[1]);
-		wrath[0] = Math.min(WRATH_MAX, wrath[0] + 1);
+		boolean fresh = !WRATH_UNTIL.containsKey(player.getUUID());
 		WRATH_UNTIL.put(player.getUUID(), player.level().getGameTime() + WRATH_TICKS);
+		if (!fresh) {
+			return;
+		}
 		ServerLevel level = player.level();
-		level.sendParticles(ParticleTypes.ANGRY_VILLAGER, player.getX(), player.getY() + 2.1, player.getZ(), 1 + wrath[0] / 2, 0.3, 0.1, 0.3, 0.0);
-		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.25f,
-				0.8f + wrath[0] * 0.1f);
-		player.sendOverlayMessage(Component.translatable("message.mythicrelics.achilles_wrath", wrath[0], WRATH_MAX)
-				.withStyle(wrath[0] == WRATH_MAX ? ChatFormatting.RED : ChatFormatting.GOLD));
+		level.sendParticles(ParticleTypes.ANGRY_VILLAGER, player.getX(), player.getY() + 2.1, player.getZ(), 3, 0.3, 0.1, 0.3, 0.0);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.3f, 1.3f);
+		player.sendOverlayMessage(Component.translatable("message.mythicrelics.achilles_wrath").withStyle(ChatFormatting.RED));
 	}
 
+	/** Si tiene la cólera cargada, el golpe hace +{@link #WRATH_BONUS} y manda lejos al golpeado. */
 	private static float releaseWrath(Player attacker, LivingEntity target, float amount) {
-		int[] wrath = WRATH.get(attacker.getUUID());
-		if (wrath == null || wrath[0] == 0 || !(attacker.level() instanceof ServerLevel level)) {
+		if (WRATH_UNTIL.remove(attacker.getUUID()) == null || !(attacker.level() instanceof ServerLevel level)) {
 			return amount;
 		}
-		int stacks = wrath[0];
-		wrath[0] = 0;
-		WRATH_UNTIL.remove(attacker.getUUID());
-		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.6), target.getZ(), 6 * stacks, 0.4, 0.4, 0.4, 0.3);
-		if (stacks == WRATH_MAX) {
-			Vec3 push = target.position().subtract(attacker.position()).multiply(1, 0, 1).normalize();
-			target.push(push.x * WRATH_KNOCKBACK, 0.45, push.z * WRATH_KNOCKBACK);
-			RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1.2f, 0.7f);
-		}
-		return amount * (1.0f + WRATH_BONUS * stacks);
+		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.6), target.getZ(), 30, 0.4, 0.4, 0.4, 0.3);
+		Vec3 push = target.position().subtract(attacker.position()).multiply(1, 0, 1).normalize();
+		target.push(push.x * WRATH_KNOCKBACK, 0.45, push.z * WRATH_KNOCKBACK);
+		target.needsSync = true;
+		RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1.2f, 0.7f);
+		return amount * (1.0f + WRATH_BONUS);
 	}
 
 	// ---- Harpe ------------------------------------------------------------------------------------------------------
@@ -287,7 +282,6 @@ public final class GreeceLegends {
 			Long until = WRATH_UNTIL.get(player.getUUID());
 			if (until != null && player.level().getGameTime() > until) {
 				WRATH_UNTIL.remove(player.getUUID());
-				WRATH.remove(player.getUUID());
 			}
 			// Bloqueando con el escudo de Aquiles no te empujan.
 			boolean blocking = player.isBlocking() && player.getUseItem().is(ModItems.ACHILLES_SHIELD.get());
@@ -310,7 +304,7 @@ public final class GreeceLegends {
 		TooltipArgs.register("zeus_thunderbolt", ZEUS_RANGE, (int) ZEUS_DAMAGE, ZEUS_CHAIN_TARGETS, (int) ZEUS_CHAIN_DAMAGE,
 				ZEUS_STORM_CHAIN_TARGETS, ZEUS_COOLDOWN / 20, ZEUS_STRONG_TICKS / 20, ZEUS_STRONG_BOLTS, ZEUS_STRONG_COOLDOWN / 20);
 		TooltipArgs.register("nemean_lion_skin", Math.round(NEMEA_REDUCTION * 100), (int) NEMEA_FIST_DAMAGE);
-		TooltipArgs.register("achilles_shield", WRATH_MAX, WRATH_TICKS / 20, Math.round(WRATH_BONUS * 100));
+		TooltipArgs.register("achilles_shield", WRATH_TICKS / 20, Math.round(WRATH_BONUS * 100));
 		TooltipArgs.register("harpe", Math.round(HARPE_HEAD_CHANCE * 100), Math.round(HARPE_WITHER_SKULL_CHANCE * 100),
 				Math.round(HARPE_EXECUTE_HEALTH * 100), HARPE_COOLDOWN / 20);
 		TooltipArgs.register("golden_bridle", (int) PEGASUS_DIVE_DAMAGE, PEGASUS_OLYMPUS_Y, PEGASUS_COOLDOWN / 20 / 60);
@@ -321,7 +315,7 @@ public final class GreeceLegends {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		ServerState.perPlayer(WRATH, WRATH_UNTIL);
+		ServerState.perPlayer(WRATH_UNTIL);
 		ServerState.clearOnStop(FAIREST);
 	}
 }

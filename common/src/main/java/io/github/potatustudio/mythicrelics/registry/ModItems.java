@@ -94,7 +94,7 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> THOTH_PALETTE = register("thoth_palette", ThothPaletteItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> OSIRIS_CROOK = register("osiris_crook", OsirisCrookItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> OSIRIS_FLAIL = relic("osiris_flail", p -> p.rarity(Rarity.EPIC)
-			.sword(ToolMaterial.GOLD, 2.0f, -2.8f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+			.sword(ToolMaterial.GOLD, 6.0f, -2.8f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
 			.component(DataComponents.REPAIRABLE, null).component(DataComponents.ENCHANTABLE, null)
 			// El grupo de enfriamiento hace que el ícono del mayal muestre la recarga del renacer.
 			.component(DataComponents.USE_COOLDOWN, new UseCooldown(0.05f, Optional.of(EgyptGods.OSIRIS_REBIRTH_GROUP))));
@@ -103,7 +103,12 @@ public final class ModItems {
 	// Grecia, primera tanda.
 	public static final RegistrySupplier<Item> HERMES_SANDALS = relic("hermes_sandals", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> HADES_HELM = relic("hades_helm", p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> ATHENA_AEGIS = relic("athena_aegis", p -> p.rarity(Rarity.RARE));
+	// Escudo como el Ancile: bloquea como el vanilla y nunca se rompe; el aturdimiento lo suma GreeceRelics#aegisBlocked.
+	public static final RegistrySupplier<Item> ATHENA_AEGIS = register("athena_aegis", RelicShieldItem::new, p -> p.rarity(Rarity.RARE)
+			.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(0.25f, 1.0f,
+					List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0.0f, 1.0f)),
+					new BlocksAttacks.ItemDamageFunction(3.0f, 1.0f, 1.0f), Optional.empty(),
+					Optional.of(SoundEvents.SHIELD_BLOCK), Optional.of(SoundEvents.SHIELD_BREAK))));
 	public static final RegistrySupplier<Item> MEDUSA_HEAD = register("medusa_head", MedusaHeadItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ARIADNE_THREAD = register("ariadne_thread", AriadneThreadItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> CHARON_OBOL = register("charon_obol", RelicItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));

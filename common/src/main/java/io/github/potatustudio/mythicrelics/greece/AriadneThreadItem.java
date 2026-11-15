@@ -22,7 +22,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Hilo de Ariadna: clic derecho ata el hilo donde estás (lo guarda el ítem); agachado y clic derecho te devuelve ahí,
- * en la misma dimensión y hasta {@link GreeceRelics#ARIADNE_MAX_DISTANCE} bloques. El hilo rojo hacia el inicio lo
+ * desde cualquier distancia, en la misma dimensión. El hilo rojo hacia el inicio lo
  * dibuja el cliente mientras lo llevas en la mano.
  */
 public class AriadneThreadItem extends RelicItem {
@@ -49,10 +49,6 @@ public class AriadneThreadItem extends RelicItem {
 		GlobalPos anchor = anchor(stack);
 		if (anchor == null || anchor.dimension() != level.dimension()) {
 			player.sendOverlayMessage(Component.translatable("message.mythicrelics.ariadne_none"));
-			return InteractionResult.FAIL;
-		}
-		if (anchor.pos().distSqr(player.blockPosition()) > (double) GreeceRelics.ARIADNE_MAX_DISTANCE * GreeceRelics.ARIADNE_MAX_DISTANCE) {
-			player.sendOverlayMessage(Component.translatable("message.mythicrelics.ariadne_far", GreeceRelics.ARIADNE_MAX_DISTANCE));
 			return InteractionResult.FAIL;
 		}
 		if (!RelicCooldowns.tryStart(serverPlayer, "ariadne_thread", GreeceRelics.ARIADNE_COOLDOWN, BuiltInRegistries.ITEM.getKey(this))) {

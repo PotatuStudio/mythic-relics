@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 public enum RelicSets {
 	ANUBIS("anubis_set", worn("jackal_mask"), worn("jackal_ring"), inventory("anubis_scepter")),
 	OSIRIS("osiris_set", hand("osiris_crook"), hand("osiris_flail")),
-	PERSEUS("perseus_set", GreeceRelics.PERSEUS_SET_PIECES, worn("hermes_sandals"), worn("hades_helm"), worn("athena_aegis"), inventory("harpe")),
+	PERSEUS("perseus_set", GreeceRelics.PERSEUS_SET_PIECES, worn("hermes_sandals"), worn("hades_helm"), inventory("athena_aegis"), inventory("harpe")),
 	THOR("thor_set", bearer("mjolnir"), worn("jarngreipr"), worn("megingjord"));
 
 	/** Dónde tiene que estar una pieza para contar. */

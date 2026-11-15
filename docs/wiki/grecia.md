@@ -9,7 +9,7 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 |---|---|---|---|---|
 | ![](img/hermes_sandals.png) | [Sandalias aladas de Hermes](#hermes-sandals) | zapatos | épica | Arena y grava sospechosas de ruinas de los senderos: 2 % por bloque cepillado |
 | ![](img/hades_helm.png) | [Yelmo de Hades](#hades-helm) | sombrero | épica | Fortalezas del Nether: 4 % por cofre |
-| ![](img/athena_aegis.png) | [Égida de Atenea](#athena-aegis) | espalda | rara | Recompensas de cámaras de desafío: 3 % por cofre |
+| ![](img/athena_aegis.png) | [Égida de Atenea](#athena-aegis) | mano secundaria | rara | Recompensas de cámaras de desafío: 3 % por cofre |
 | ![](img/medusa_head.png) | [Cabeza de Medusa](#medusa-head) | mano secundaria | épica | Arena sospechosa de ruinas oceánicas cálidas: 1.5 % por bloque cepillado |
 | ![](img/ariadne_thread.png) | [Hilo de Ariadna](#ariadne-thread) | mano | rara | Pasillos de la fortaleza: 6 % por cofre; Bibliotecas de la fortaleza: 6 % por cofre |
 | ![](img/charon_obol.png) | [Óbolo de Caronte](#charon-obol) | inventario | rara | Fortalezas del Nether: 5 % por cofre; Arena y grava sospechosas de ruinas de los senderos: 3 % por bloque cepillado |
@@ -36,9 +36,10 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 **Espacio:** zapatos · **Rareza:** épica
 
 - +20% de velocidad y doble salto
+- Después del doble salto no recibes daño de caída hasta tocar el suelo
 - La arena y la tierra de almas no te frenan
 
-*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
+*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica en la mitad del tiempo y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
 
 **Mito.** Hermes, mensajero de los dioses, volaba con sus sandalias aladas. También guiaba las almas de los muertos al inframundo.  
 Se las prestó a Perseo para ir a buscar a Medusa.
@@ -56,7 +57,7 @@ Se las prestó a Perseo para ir a buscar a Medusa.
 - Correr, levantarte o atacar lo rompe
 - Con el yelmo puesto, agachado caminas un 50% más rápido
 
-*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
+*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica en la mitad del tiempo y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
 
 **Mito.** Los cíclopes forjaron para Hades un yelmo que vuelve invisible a quien lo lleva.  
 Atenea y Perseo también lo usaron; con él, Perseo escapó de las gorgonas.
@@ -68,11 +69,11 @@ Atenea y Perseo también lo usaron; con él, Perseo escapó de las gorgonas.
 
 <img src="img/athena_aegis.png" width="64" alt="">
 
-**Espacio:** espalda · **Rareza:** rara
+**Espacio:** mano secundaria · **Rareza:** rara
 
-- Al bloquear con escudo un golpe cuerpo a cuerpo, el atacante queda aturdido 2 s y retrocede
+- Escudo que no se rompe. Al bloquear con ella un golpe cuerpo a cuerpo, el atacante queda aturdido 2 s y retrocede (no a los jefes)
 
-*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
+*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica en la mitad del tiempo y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
 
 **Mito.** La égida, la piel de cabra de Zeus que llevaba Atenea, tenía el gorgoneion, el rostro de Medusa que aterraba a los enemigos.  
 Atenea le dio a Perseo el escudo pulido para no mirar a Medusa.
@@ -87,7 +88,7 @@ Atenea le dio a Perseo el escudo pulido para no mirar a Medusa.
 **Espacio:** mano secundaria · **Rareza:** épica
 
 - Mantén clic derecho para alzarla como un escudo: sus ojos abren un cono de mirada de 8 bloques
-- Todo mob que quede 500 ms en la mirada se petrifica 10 s (hostiles, neutros y pasivos; no jefes)
+- Todo mob que quede 2 s en la mirada se va frenando hasta quedar de piedra 10 s (hostiles, neutros y pasivos; no jefes)
 - La piedra se agrieta hasta romperse. Si muere así se derrumba: doble botín y a veces su estatua
 
 **Mito.** Medusa, la gorgona, convertía en piedra a quien la miraba.  
@@ -103,8 +104,8 @@ Perseo la decapitó mirándola en el reflejo del escudo de Atenea, y usó su cab
 **Espacio:** mano · **Rareza:** rara
 
 - Clic derecho: atas el hilo donde estás
-- Agachado y clic derecho: vuelves al inicio
-- Misma dimensión, hasta 256 bloques. Recarga: 5 min
+- Agachado y clic derecho: vuelves al inicio, desde cualquier distancia
+- Solo en la misma dimensión. Recarga: 1 min
 
 **Mito.** Ariadna le dio a Teseo un ovillo de hilo para entrar al laberinto del Minotauro y encontrar la salida.
 
@@ -148,7 +149,7 @@ Bajó al inframundo por Eurídice y con su lira conmovió a Hades y adormeció a
 **Espacio:** espalda · **Rareza:** épica
 
 - En el aire, mantén salto para planear
-- Hasta 3 aleteos por vuelo (se recargan en el suelo)
+- Hasta 3 aleteos por vuelo (se recargan en el suelo); tras planear o aletear no recibes daño de caída
 - Sobre la altura 150, de día y bajo el cielo, la cera se derrite: 30 s sin alas
 
 **Mito.** Dédalo, el arquitecto del laberinto, hizo alas de plumas pegadas con cera para escapar de Creta con su hijo Ícaro.  
@@ -280,8 +281,7 @@ Heracles lo estranguló, lo desolló con sus propias garras y se puso la piel de
 **Espacio:** mano secundaria · **Rareza:** épica
 
 - Escudo que no se rompe; bloqueando no te empujan
-- Cólera: cada golpe que bloqueas suma un nivel (máx. 5, dura 10 s)
-- Tu siguiente golpe hace +20% de daño por nivel; con 5, además lo manda lejos
+- Cólera: al bloquear un golpe, tu siguiente golpe hace +100% de daño y manda lejos al golpeado. Una sola carga; dura 10 s
 
 **Mito.** Hefesto lo forjó en una noche a pedido de Tetis, con el mundo entero grabado: el cielo, una ciudad en paz y otra en guerra, cosechas y danzas, y el río Océano en el borde.  
 La Ilíada empieza con «Canta, oh diosa, la cólera de Aquiles».
@@ -300,7 +300,7 @@ La Ilíada empieza con «Canta, oh diosa, la cólera de Aquiles».
 - Con la hoz lista, los mobs que ya se pueden decapitar brillan
 - Recarga: 1 s. Es parte del set de Perseo
 
-*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
+*Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica en la mitad del tiempo y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
 
 **Mito.** La hoz de adamante: Gea se la dio a Cronos para castrar a Urano.  
 Más tarde Hermes se la entregó a Perseo, que con ella cortó la cabeza de Medusa.
@@ -332,7 +332,7 @@ Juntos mataron a la Quimera, pero cuando quiso subir al Olimpo, Zeus mandó un t
 **Espacio:** mano · **Rareza:** rara
 
 - Clic derecho a un mob (hasta 16 bloques): «para la más bella»
-- Brilla 15 s y los hostiles a 12 bloques lo atacan a él (no sirve con jefes)
+- Brilla 15 s y los hostiles a 12 bloques lo atacan a él (también si es un jefe)
 - Recarga: 60 s
 
 **Mito.** Eris, la diosa de la discordia, no fue invitada a la boda de Peleo y Tetis y lanzó entre los invitados una manzana de oro «para la más bella».  
@@ -359,6 +359,6 @@ Tenía una sola vena de ícor cerrada con un clavo de bronce en el tobillo; Mede
 
 ## Set de Perseo
 
-Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe) La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
+Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe) La mirada de Medusa petrifica en la mitad del tiempo y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
 
 **Mito.** Con las sandalias de Hermes, el yelmo de Hades y el escudo de Atenea, Perseo pudo acercarse a Medusa sin ser visto, sin mirarla y escapar volando.

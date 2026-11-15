@@ -8,6 +8,7 @@ import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.network.IcarusPayload;
+import io.github.potatustudio.mythicrelics.relic.SafeLanding;
 import io.github.potatustudio.mythicrelics.registry.ModEffects;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
@@ -112,7 +113,7 @@ public final class GreeceHeroes {
 		if (!WornRelics.isWearing(player, ModItems.ICARUS_WINGS) || waxMelted(player) || player.onGround()) {
 			return;
 		}
-		player.resetFallDistance();
+		SafeLanding.mark(player);
 		if (flap) {
 			ServerLevel level = player.level();
 			level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 1.0, player.getZ(), 6, 0.5, 0.1, 0.5, 0.02);

@@ -13,6 +13,23 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
 - Espada de Freyr: la de la espalda es la misma que pelea (empuñadura calcada y mismo tamaño, ~1,27 bloques), sin el
   tahalí que la cruzaba; mientras pelea, en la espalda queda la vaina vacía (propiedad `mythicrelics:freyr_drawn`).
 - Harpe y cetro de Anubis: el golpe que mata también cuenta como ejecución (antes solo si el mob ya estaba bajo el 25 %).
+- Sexta ronda de arreglos del usuario (textos en `tools/model-gen/feedback6_lang.py`):
+  - Ruyi Jingu Bang: en la mano es siempre el báculo 3D, chico (nuevo `ruyi_jingu_bang_short`) o estirado; en el
+    inventario, el ícono.
+  - Dragón de la perla sin la perla llameante delante del hocico.
+  - Cabeza de Medusa: 2 s de mirada para petrificar (1 s con el set de Perseo), con Lentitud que sube hasta quedar de
+    piedra.
+  - Manzana de la Discordia: también contra jefes.
+  - Hilo de Ariadna: recarga de 1 min y sin límite de distancia (solo la misma dimensión).
+  - Escudo de Aquiles: una sola carga de cólera, +100 % al siguiente golpe y lo manda lejos.
+  - Égida de Atenea: ahora es un escudo de mano (modelo calcado del vanilla con el gorgoneion) que aturde al bloquear;
+    ya no va en la espalda. En el set de Perseo cuenta en el inventario.
+  - Tyrfing: la maldición es medio corazón por cada golpe que no mata (antes, 4 corazones al minuto sin matar).
+  - Osiris: mayal de 7 de daño con barrido al 100 % en 3 bloques; el cayado pone de tu lado a un no-muerto hostil 30 s;
+    con las dos insignias, Regeneración I y renacer cada 10 min (antes 20).
+  - Sandalias de Hermes y alas de Ícaro: tras el doble salto, aleteo o planeo no hay daño de caída hasta tocar el suelo
+    (`relic/SafeLanding`).
+  - Paleta de Thot: sin límite de experiencia.
 
 ### Removed
 - Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del

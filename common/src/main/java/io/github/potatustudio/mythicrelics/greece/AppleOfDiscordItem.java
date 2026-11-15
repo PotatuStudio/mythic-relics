@@ -1,7 +1,6 @@
 package io.github.potatustudio.mythicrelics.greece;
 
 import io.github.potatustudio.mythicrelics.relic.Allies;
-import io.github.potatustudio.mythicrelics.relic.Bosses;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicItem;
@@ -19,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * Manzana de la Discordia: «para la más bella». Clic derecho apuntando a un mob (hasta 16 bloques): queda marcado y
- * brilla, y los hostiles cercanos se pelean por él y lo atacan (no sirve con jefes).
+ * brilla, y los hostiles cercanos se pelean por él y lo atacan (también si es un jefe).
  */
 public class AppleOfDiscordItem extends RelicItem {
 	public AppleOfDiscordItem(Properties properties) {
@@ -54,7 +53,7 @@ public class AppleOfDiscordItem extends RelicItem {
 		Mob best = null;
 		double bestDist = Double.MAX_VALUE;
 		for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().expandTowards(end.subtract(eyes)).inflate(1.0),
-				m -> m.isAlive() && !Bosses.is(m) && !Allies.isFriend(player, m) && player.hasLineOfSight(m))) {
+				m -> m.isAlive() && !Allies.isFriend(player, m) && player.hasLineOfSight(m))) {
 			var hit = mob.getBoundingBox().inflate(0.5).clip(eyes, end);
 			if (hit.isPresent() && hit.get().distanceToSqr(eyes) < bestDist) {
 				bestDist = hit.get().distanceToSqr(eyes);

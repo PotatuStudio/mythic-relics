@@ -9,7 +9,7 @@ ASSETS = r"C:\dev\mods\mythic-relics\common\src\main\resources\assets\mythicreli
 PARTS = {
     "cuerpo": {"collar": ["ankh", "bastet_amulet", "cerberus_collar", "wolf_bulla", "brisingamen"],
                "cinturón": ["golden_scarab", "megingjord", "five_color_stone"],
-               "espalda": ["athena_aegis", "icarus_wings", "falcon_cloak", "freyr_sword"], "capa": ["golden_fleece", "nemean_lion_skin"]},
+               "espalda": ["icarus_wings", "falcon_cloak", "freyr_sword"], "capa": ["golden_fleece", "nemean_lion_skin"]},
     "cabeza": {"cara": ["eye_of_horus", "jackal_mask"], "sombrero": ["ra_disk", "hades_helm"]},
     "brazo": {"anillo": ["jackal_ring", "draupnir", "andvaranaut"],
               "guantes": ["mummy_wraps", "sekhmet_claws", "jarngreipr"]},

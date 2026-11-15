@@ -57,10 +57,11 @@ import net.minecraft.world.level.block.state.BlockState;
  *   <li><b>Disco solar de Ra</b> (sombrero): bajo el sol, más daño a los no-muertos y los prende; el ureo escupe fuego a
  *       quien te golpea cuerpo a cuerpo. De noche solo queda el ureo.</li>
  *   <li><b>Amuleto de Bastet</b> (collar): creepers y phantoms te evitan; caes de pie.</li>
- *   <li><b>Paleta de escriba de Thot</b> (mano secundaria): guarda experiencia por escrito ({@link ThothPaletteItem}) y
+ *   <li><b>Paleta de escriba de Thot</b> (mano secundaria): guarda experiencia por escrito, sin límite ({@link ThothPaletteItem}), y
  *       da más experiencia.</li>
- *   <li><b>Cayado y mayal de Osiris</b>: los animales siguen el cayado, que hace crecer a las crías
- *       ({@link OsirisCrookItem}); el mayal da un golpe giratorio y trilla. Con los dos en las manos, renaces.</li>
+ *   <li><b>Cayado y mayal de Osiris</b>: los animales siguen el cayado, que hace crecer a las crías y pone de tu lado
+ *       a los no-muertos ({@link OsirisCrookItem}); el mayal da un golpe giratorio y trilla. Con los dos en las manos
+ *       te regeneras y renaces.</li>
  *   <li><b>Garras de Sekhmet</b> (guantes): frenesí que se acumula con cada muerte, fuego al máximo y calma al final.</li>
  * </ul>
  * Lo que los eventos de Architectury no cubren (modificar el daño, la protección del tótem, la carga del ataque, la
@@ -74,17 +75,16 @@ public final class EgyptGods {
 
 	public static final double BASTET_RADIUS = 16.0;
 
-	/** Lo que cabe en la paleta: los puntos de experiencia de los niveles 0 a 30 (1395 puntos). */
-	public static final int THOTH_MAX_LEVELS = 30;
-	public static final int THOTH_MAX_POINTS = pointsUpToLevel(THOTH_MAX_LEVELS);
 	public static final float THOTH_XP_BONUS = 0.20f;
 
 	public static final int CROOK_GROW_COOLDOWN = 600;
-	public static final double FLAIL_SWEEP_RADIUS = 2.5;
-	public static final float FLAIL_SWEEP_DAMAGE = 0.6f;
+	/** Lo que un no-muerto queda de tu lado con el cayado. */
+	public static final int CROOK_RULE_TICKS = 600;
+	public static final double FLAIL_SWEEP_RADIUS = 3.0;
+	public static final float FLAIL_SWEEP_DAMAGE = 1.0f;
 	public static final float OSIRIS_REBIRTH_HEALTH = 8.0f;
 	public static final int OSIRIS_REBIRTH_REGEN_TICKS = 100;
-	public static final int OSIRIS_REBIRTH_COOLDOWN = 24000;
+	public static final int OSIRIS_REBIRTH_COOLDOWN = 12000;
 	public static final Identifier OSIRIS_REBIRTH_GROUP = MythicRelics.id("osiris_rebirth");
 
 	public static final int SEKHMET_WINDOW = 100;
@@ -214,6 +214,16 @@ public final class EgyptGods {
 		return total;
 	}
 
+	/** Nivel al que llegarías desde cero con esos puntos (para mostrar lo escrito en la paleta). */
+	public static int levelForPoints(int points) {
+		int level = 0;
+		while (points >= pointsForLevel(level)) {
+			points -= pointsForLevel(level);
+			level++;
+		}
+		return level;
+	}
+
 	/** Devuelve puntos al jugador sin el bono de la paleta. */
 	public static void giveWithoutThothBonus(Player player, int points) {
 		readingPalette = true;
@@ -334,6 +344,13 @@ public final class EgyptGods {
 			}
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+			// Insignias de Osiris: con el cayado y el mayal en las manos, Regeneración I sin cortes.
+			if (player.tickCount % 10 == 0 && RelicSets.OSIRIS.isComplete(player)) {
+				MobEffectInstance regen = player.getEffect(MobEffects.REGENERATION);
+				if (regen == null || regen.getAmplifier() == 0 && regen.getDuration() <= 10) {
+					player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 110, 0, true, true));
+				}
+			}
 			if (player.tickCount % 10 != 0 || !WornRelics.isWearing(player, ModItems.BASTET_AMULET)) {
 				continue;
 			}
@@ -348,8 +365,8 @@ public final class EgyptGods {
 	/** Números de los tooltips de la tanda 2 (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static void registerTooltipArgs() {
 		TooltipArgs.register("ra_disk", Math.round(RA_UNDEAD_BONUS * 100), RA_BURN_SECONDS, URAEUS_BURN_SECONDS, URAEUS_COOLDOWN / 20);
-		TooltipArgs.register("thoth_palette", THOTH_MAX_LEVELS, Math.round(THOTH_XP_BONUS * 100), THOTH_MAX_POINTS);
-		TooltipArgs.register("osiris_crook", CROOK_GROW_COOLDOWN / 20);
+		TooltipArgs.register("thoth_palette", Math.round(THOTH_XP_BONUS * 100));
+		TooltipArgs.register("osiris_crook", CROOK_GROW_COOLDOWN / 20, CROOK_RULE_TICKS / 20);
 		TooltipArgs.register("osiris_flail", FLAIL_SWEEP_RADIUS, Math.round(FLAIL_SWEEP_DAMAGE * 100));
 		TooltipArgs.register("sekhmet_claws", SEKHMET_WINDOW / 20, SEKHMET_MAX, Math.round(SEKHMET_PER_LEVEL * 100), SEKHMET_BURN_SECONDS,
 				Math.round(SEKHMET_CALM_HEAL / 2));

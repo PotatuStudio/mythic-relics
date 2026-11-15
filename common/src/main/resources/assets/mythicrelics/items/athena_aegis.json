@@ -4,16 +4,29 @@
   "property": "minecraft:display_context",
   "cases": [
    {
-    "when": "none",
+    "when": [
+     "gui",
+     "ground",
+     "fixed",
+     "on_shelf"
+    ],
     "model": {
      "type": "minecraft:model",
-     "model": "mythicrelics:item/athena_aegis_worn"
+     "model": "mythicrelics:item/athena_aegis"
     }
    }
   ],
   "fallback": {
-   "type": "minecraft:model",
-   "model": "mythicrelics:item/athena_aegis"
+   "type": "minecraft:condition",
+   "property": "minecraft:using_item",
+   "on_true": {
+    "type": "minecraft:model",
+    "model": "mythicrelics:item/athena_aegis_blocking"
+   },
+   "on_false": {
+    "type": "minecraft:model",
+    "model": "mythicrelics:item/athena_aegis_3d"
+   }
   }
  }
 }

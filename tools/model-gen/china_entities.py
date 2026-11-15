@@ -6,7 +6,7 @@ ModelPart con cubos y UV de caja de Minecraft, y en Minecraft la y crece hacia a
   oro, cota de malla dorada, faldellín de piel de tigre, botas de nube y su bastón de hierro con aros de oro.
 - Long (Perla del dragón): dragón chino sin alas, largo y serpentino en segmentos encadenados; cabeza de camello con
   cuernos de ciervo, bigotes largos, melena y barba de fuego, escamas de carpa azul verdosas, vientre de placas, garras
-  de águila, cresta dorsal y la perla llameante delante del hocico (brilla).
+  de águila y cresta dorsal (sin perla: la lleva el jugador).
 
 Escribe un JSON con las partes y las texturas (normal y la que brilla) en base64.
 Uso: python china_entities.py <salida.json> [<carpeta_png>]   (visor)
@@ -461,9 +461,7 @@ def dragon():
                     [cube(-0.5, -0.5, 0, 1, 1, 9, whisker)])
         m.part(f"whisker2_{side}", w1, [0, 0, 9], [-0.7, 0, 0], [cube(-0.5, -0.5, 0, 1, 1, 9, whisker)])
         m.part(f"mane_{side}", "head", [sx * 5, -6, -5], [0.15, sx * 0.6, 0], [cube(0, 0, 0, 0, 10, 16, mane)])
-    m.part("pearl", "head", [0, 6, -24], [0, 0, 0], [cube(-2, -2, -2, 4, 4, 4, pearl),
-                                                     cube(0, -5, -5, 0, 10, 10, pearl_flame),
-                                                     cube(-5, -5, 0, 10, 10, 0, pearl_flame)])
+    # Sin la perla llameante delante del hocico (2026-11-15): parecía que iba a escupir fuego.
     return m
 
 
