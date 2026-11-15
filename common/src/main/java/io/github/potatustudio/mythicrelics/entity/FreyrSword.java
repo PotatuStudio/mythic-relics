@@ -38,6 +38,8 @@ public class FreyrSword extends Mob {
 	public static final byte THRUST = 3;
 	public static final byte SHEATHE = 4;
 	private static final EntityDataAccessor<Byte> STATE = SynchedEntityData.defineId(FreyrSword.class, EntityDataSerializers.BYTE);
+	/** Id de entidad del dueño (-1 sin dueño): el cliente lo usa para dejar la vaina vacía en su espalda. */
+	private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(FreyrSword.class, EntityDataSerializers.INT);
 	private static final DustParticleOptions GOLD = new DustParticleOptions(0xFFD36A, 1.0f);
 	private static final DustParticleOptions GOLD_SMALL = new DustParticleOptions(0xFFF0B0, 0.6f);
 	private static final int DASH_TICKS = 7;
@@ -70,15 +72,22 @@ public class FreyrSword extends Mob {
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(STATE, GUARD);
+		builder.define(OWNER_ID, -1);
 	}
 
 	public byte state() {
 		return entityData.get(STATE);
 	}
 
+	/** Id de entidad del dueño, o -1. */
+	public int ownerId() {
+		return entityData.get(OWNER_ID);
+	}
+
 	/** Sale de la vaina, a la altura de la cadera izquierda del dueño. */
 	public void draw(Player player) {
 		owner = player.getUUID();
+		entityData.set(OWNER_ID, player.getId());
 		Vec3 hip = hip(player);
 		snapTo(hip.x, hip.y, hip.z, player.getYRot(), -80.0f);
 		setState(GUARD);

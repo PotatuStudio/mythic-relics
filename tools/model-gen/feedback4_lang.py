@@ -11,7 +11,7 @@ from moddata import ASSETS  # noqa: E402
 ES = {
     "item.mythicrelics.xirang_sack.tooltip.1": "Si caes a la lava o al vacío, la tierra crece bajo tus pies y te salva (recarga %1$s min)",
     "item.mythicrelics.xirang_sack.tooltip.2": "Basta con llevarlo en el inventario",
-    "item.mythicrelics.harpe.tooltip.1": "Pasiva: golpear a un mob con menos del %3$s%% de vida le corta la cabeza al instante (no jefes)",
+    "item.mythicrelics.harpe.tooltip.1": "Pasiva: el golpe que deja a un mob bajo el %3$s%% de vida, o que lo mata, le corta la cabeza (no jefes)",
     "item.mythicrelics.harpe.tooltip.2": "La cabeza cae el %1$s%% de las veces (esqueleto del Wither: %2$s%%)",
     "item.mythicrelics.harpe.tooltip.3": "Con la hoz lista, los mobs que ya se pueden decapitar brillan",
     "item.mythicrelics.mimir_head.tooltip.1": "Clic derecho: le preguntas a Mímir por el tesoro más valioso a %3$s bloques (debris, diamante, cofre sin abrir…)",
@@ -43,7 +43,7 @@ ES = {
 EN = {
     "item.mythicrelics.xirang_sack.tooltip.1": "If you fall into lava or the void, the earth grows under your feet and saves you (cooldown %1$s min)",
     "item.mythicrelics.xirang_sack.tooltip.2": "Just keep it in your inventory",
-    "item.mythicrelics.harpe.tooltip.1": "Passive: hitting a mob below %3$s%% health cuts its head off instantly (not bosses)",
+    "item.mythicrelics.harpe.tooltip.1": "Passive: a hit that leaves a mob below %3$s%% health, or kills it, cuts its head off (not bosses)",
     "item.mythicrelics.harpe.tooltip.2": "The head drops %1$s%% of the time (Wither skeleton: %2$s%%)",
     "item.mythicrelics.harpe.tooltip.3": "With the sickle ready, mobs that can be beheaded glow",
     "item.mythicrelics.mimir_head.tooltip.1": "Right-click: ask Mímir for the most valuable treasure within %3$s blocks (debris, diamond, unopened chest…)",

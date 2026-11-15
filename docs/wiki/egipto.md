@@ -89,7 +89,7 @@ Los husks del desierto reconocen esas vendas como propias.
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Juicio: el no-muerto con menos del 25% de vida se destruye de un golpe y suelta 2 veces la experiencia
+- Juicio: el golpe que deja al no-muerto bajo el 25% de vida, o que lo mata, lo destruye y suelta 2 veces la experiencia
 
 *Set de Anubis (Máscara de chacal, Anillo de los chacales, Cetro was de Anubis)* Los no-muertos no te atacan salvo que los ataques primero +30 % de daño con el cetro de Anubis
 

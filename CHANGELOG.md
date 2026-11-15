@@ -9,6 +9,11 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
 - Reliquias de cinco mitologías: Egipto, Grecia, Roma, nórdicos y China (70 reliquias), con sets, aliados, monturas,
   libro (Modonomicon), página de JEI, una pestaña creativa por mitología y modelos 3D puestos con textura pintada.
 
+### Changed
+- Espada de Freyr: la de la espalda es la misma que pelea (empuñadura calcada y mismo tamaño, ~1,27 bloques), sin el
+  tahalí que la cruzaba; mientras pelea, en la espalda queda la vaina vacía (propiedad `mythicrelics:freyr_drawn`).
+- Harpe y cetro de Anubis: el golpe que mata también cuenta como ejecución (antes solo si el mob ya estaba bajo el 25 %).
+
 ### Removed
 - Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del
   kitsune, joyas de la marea, mazo de la suerte, kibi dango, caña de Urashima, bolsa de Fūjin, máscara de tengu, sake

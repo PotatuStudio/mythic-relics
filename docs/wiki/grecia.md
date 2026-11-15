@@ -295,7 +295,7 @@ La Ilíada empieza con «Canta, oh diosa, la cólera de Aquiles».
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Pasiva: golpear a un mob con menos del 25% de vida le corta la cabeza al instante (no jefes)
+- Pasiva: el golpe que deja a un mob bajo el 25% de vida, o que lo mata, le corta la cabeza (no jefes)
 - La cabeza cae el 75% de las veces (esqueleto del Wither: 25%)
 - Con la hoz lista, los mobs que ya se pueden decapitar brillan
 - Recarga: 1 s. Es parte del set de Perseo

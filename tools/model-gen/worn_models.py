@@ -834,36 +834,48 @@ def nemean_lion_skin():
     return e
 
 
-def freyr_sword():
+# Escala de la espada de Freyr: la de la espalda es la misma que pelea sola (weapon_entities.freyr_sword) dibujada a
+# esta escala, y FreyrSwordRenderer.SCALE la dibuja en el aire con el mismo valor: envainada y desenvainada miden igual.
+FREYR_K = 0.7
+
+
+def freyr_sword(sheathed=True):
     """Espada de Freyr envainada en la espalda (espacio de espalda: no se lleva junto a la égida, las alas de Ícaro ni
-    el manto de halcón). La vaina cruza la espalda en diagonal, de la cadera izquierda al hombro
-    derecho, con la empuñadura asomando sobre el hombro: de ahí sale y ahí vuelve. Vaina de cuero con abrazaderas y runas
-    de oro, la guarda con sus puntas, el puño envuelto y el pomo con la gema verde (la espada del dios de la
-    fertilidad); un tahalí la sujeta a los hombros. Todo detrás del cuerpo (z < 5,3), por fuera de las capas."""
-    pivot = [8.0, 8.8, 4.75]
+    el manto de halcón). La vaina cruza la espalda en diagonal, de la cadera izquierda al hombro derecho, con la
+    empuñadura asomando sobre el hombro: de ahí sale y ahí vuelve. La empuñadura es la de la espada que pelea
+    (weapon_entities.freyr_sword) a la escala FREYR_K: guarda de oro con las puntas hacia la hoja y la gema ámbar, puño de
+    cuero con vueltas de oro y pomo de oro con su gema. La vaina mide lo que la hoja. Con sheathed=False queda la vaina
+    sola (la espada está afuera peleando). Todo detrás del cuerpo (z < 5,3)."""
+    k = FREYR_K
+    pivot = [8.0, 8.8, 4.65]
     rot = _rz(28)
-    parts = [([7.4, 2.4, 4.3], [8.6, 13.4, 5.2], "leather", "vaina"),
-             ([7.3, 1.8, 4.2], [8.7, 2.4, 5.25], "gold", "contera"),
-             ([7.5, 1.3, 4.35], [8.5, 1.8, 5.1], "gold_d", "punta de la contera"),
-             ([7.3, 13.4, 4.2], [8.7, 14.0, 5.25], "gold", "boca de la vaina"),
-             ([7.32, 5.0, 4.22], [8.68, 5.5, 5.23], "gold_d", "abrazadera 1"),
-             ([7.32, 9.6, 4.22], [8.68, 10.1, 5.23], "gold_d", "abrazadera 2"),
-             ([6.7, 14.0, 4.1], [9.3, 14.6, 5.3], "gold", "guarda"),
-             ([6.4, 14.1, 4.3], [6.7, 15.0, 5.1], "gold_l", "punta de la guarda der."),
-             ([9.3, 14.1, 4.3], [9.6, 15.0, 5.1], "gold_l", "punta de la guarda izq."),
-             ([7.6, 14.6, 4.4], [8.4, 16.6, 5.0], "leather_d", "puño"),
-             ([7.55, 15.0, 4.35], [8.45, 15.3, 5.05], "gold_d", "vuelta del puño 1"),
-             ([7.55, 15.8, 4.35], [8.45, 16.1, 5.05], "gold_d", "vuelta del puño 2"),
-             ([7.4, 16.6, 4.2], [8.6, 17.4, 5.2], "gold", "pomo"),
-             ([7.7, 16.8, 4.12], [8.3, 17.2, 4.2], "cobra_l", "gema del pomo")]
-    for k, y in enumerate((3.4, 6.2, 7.6, 11.0, 12.2)):
-        parts.append(([7.8, y, 4.22], [8.2, y + 0.5, 4.3], "gold_l", f"runa {k}"))
-    e = [turned(frm, to, color, name, pivot, rot) for frm, to, color, name in parts]
-    # Tahalí: correa por detrás de la vaina (cruza al revés) y sobre los hombros.
-    e.append(turned([7.6, 2.0, 5.22], [8.4, 15.0, 5.3], "leather_d", "tahalí", pivot, _rz(-35)))
-    e += [box([4.6, 14.02, 5.22], [5.6, 14.32, 10.5], "leather_d", "correa del hombro der."),
-          box([10.4, 14.02, 5.22], [11.4, 14.32, 10.5], "leather_d", "correa del hombro izq.")]
-    return e
+    zc = 4.65
+    y0 = -0.2                       # punta de la contera
+    blade = 20 * k                  # hoja + punta (17 + 3 px en la entidad)
+    sheath_top = y0 + blade + 0.3
+    parts = [([8 - 1.3, y0 + 0.5, zc - 0.55], [8 + 1.3, sheath_top, zc + 0.55], "leather", "vaina"),
+             ([8 - 1.4, y0 + 0.5, zc - 0.62], [8 + 1.4, y0 + 1.2, zc + 0.62], "gold", "contera"),
+             ([8 - 0.9, y0, zc - 0.45], [8 + 0.9, y0 + 0.5, zc + 0.45], "gold_d", "punta de la contera"),
+             ([8 - 1.4, sheath_top - 0.6, zc - 0.62], [8 + 1.4, sheath_top, zc + 0.62], "gold", "boca de la vaina")]
+    for k2, y in enumerate((y0 + blade * 0.35, y0 + blade * 0.68)):
+        parts.append(([8 - 1.38, y, zc - 0.6], [8 + 1.38, y + 0.45, zc + 0.6], "gold_d", f"abrazadera {k2}"))
+    for k2, y in enumerate((y0 + 2.2, y0 + 3.4, y0 + 7.0, y0 + 8.2, y0 + 11.6)):
+        parts.append(([7.8, y, zc - 0.63], [8.2, y + 0.5, zc - 0.55], "gold_l", f"runa {k2}"))
+    if sheathed:
+        g = sheath_top                  # la guarda apoya en la boca de la vaina
+        parts += [
+            ([8 - 4 * k, g, zc - k], [8 + 4 * k, g + 2 * k, zc + k], "gold", "guarda"),
+            ([8 - 5 * k, g - 2 * k, zc - k], [8 - 4 * k, g + k, zc + k], "gold_l", "punta de la guarda der."),
+            ([8 + 4 * k, g - 2 * k, zc - k], [8 + 5 * k, g + k, zc + k], "gold_l", "punta de la guarda izq."),
+            ([8 - k, g + 0.25 * k, zc - k - 0.08], [8 + k, g + 1.75 * k, zc - k], "amber", "gema de la guarda"),
+            ([8 - k, g + 2 * k, zc - k], [8 + k, g + 7 * k, zc + k], "leather_d", "puño"),
+            ([8 - 1.5 * k, g + 7 * k, zc - 1.08], [8 + 1.5 * k, g + 9 * k, zc + 0.7], "gold", "pomo"),
+            ([8 - 0.5 * k, g + 7.5 * k, zc - 1.16], [8 + 0.5 * k, g + 8.5 * k, zc - 1.08], "amber", "gema del pomo")]
+        for k2 in range(3):
+            y = g + (2.6 + k2 * 1.6) * k
+            parts.append(([8 - k - 0.07, y, zc - k - 0.07], [8 + k + 0.07, y + 0.6 * k, zc + k + 0.07], "gold_d",
+                          f"vuelta del puño {k2}"))
+    return [turned(frm, to, color, name, pivot, rot) for frm, to, color, name in parts]
 
 
 def falcon_cloak():
@@ -941,6 +953,8 @@ WORN = {
     "nemean_lion_skin": (lambda: model(nemean_lion_skin()), [attach("body", "nemean_lion_skin")]),
     # Nórdicos, tanda 3
     "freyr_sword": (lambda: model(freyr_sword()), [attach("body", "freyr_sword")]),
+    # Vaina vacía: la muestra items/freyr_sword.json mientras la espada pelea (mythicrelics:freyr_drawn).
+    "freyr_sword_sheath": (lambda: model(freyr_sword(sheathed=False)), None),
     "falcon_cloak": (lambda: model(falcon_cloak()), [attach("body", "falcon_cloak")]),
 }
 
@@ -982,10 +996,19 @@ if __name__ == "__main__":
         for el in m["elements"]:
             el.pop("__color", None)
         write(os.path.join(ASSETS, "models", "item", name + "_worn.json"), m)
+        if render is None:              # solo el modelo (lo usa otra reliquia)
+            print(f"{name}: {len(m['elements'])} elementos")
+            continue
+        worn = {"type": "minecraft:model", "model": f"{NS}:item/{name}_worn"}
+        if name == "freyr_sword":
+            # Mientras la espada pelea sola, en la espalda queda la vaina vacía (propiedad del cliente FreyrDrawn).
+            worn = {"type": "minecraft:condition", "property": f"{NS}:freyr_drawn",
+                    "on_true": {"type": "minecraft:model", "model": f"{NS}:item/freyr_sword_sheath_worn"},
+                    "on_false": worn}
         write(os.path.join(ASSETS, "items", name + ".json"), {"model": {
             "type": "minecraft:select",
             "property": "minecraft:display_context",
-            "cases": [{"when": "none", "model": {"type": "minecraft:model", "model": f"{NS}:item/{name}_worn"}}],
+            "cases": [{"when": "none", "model": worn}],
             "fallback": {"type": "minecraft:model", "model": f"{NS}:item/{name}"},
         }})
         write(os.path.join(FABRIC_ASSETS, "trinkets", name + ".json"), {"target": [f"{NS}:{name}"], "render": render})

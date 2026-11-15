@@ -200,7 +200,13 @@ public final class GreeceLegends {
 
 	/** Se puede decapitar: vivo, no jefe y con menos del 25 % de la vida. */
 	public static boolean canBehead(LivingEntity e) {
-		return e.isAlive() && !(e instanceof Player) && !Bosses.is(e) && e.getHealth() <= e.getMaxHealth() * HARPE_EXECUTE_HEALTH;
+		return canBehead(e, 0.0f);
+	}
+
+	/** Se puede decapitar con un golpe de {@code damage}: la vida que le quedaría está bajo el 25 % (o el golpe lo mata). */
+	public static boolean canBehead(LivingEntity e, float damage) {
+		return e.isAlive() && !(e instanceof Player) && !Bosses.is(e)
+				&& e.getHealth() - damage <= e.getMaxHealth() * HARPE_EXECUTE_HEALTH;
 	}
 
 	/** La cabeza de trofeo de cada mob, o vacío si no tiene. */

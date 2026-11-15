@@ -28,6 +28,8 @@ ES = {
     "set.mythicrelics.anubis_set.bonus.2": "+30 % de daño con el cetro de Anubis",
     "set.mythicrelics.osiris_set.bonus.3": "+30 % de daño con el mayal",
     "set.mythicrelics.perseus_set.bonus.2": "+30 % de daño con la harpe",
+    "item.mythicrelics.anubis_scepter.tooltip.1": "Juicio: el golpe que deja al no-muerto bajo el %1$s%% de vida, o que lo mata,",
+    "item.mythicrelics.anubis_scepter.tooltip.2": "lo destruye y suelta %2$s veces la experiencia",
     "set.mythicrelics.thor_set.bonus.2": "+30 % de daño de Mjölnir lanzado y de sus rayos",
 }
 EN = {
@@ -47,6 +49,8 @@ EN = {
     "set.mythicrelics.anubis_set.bonus.2": "+30% damage with the Scepter of Anubis",
     "set.mythicrelics.osiris_set.bonus.3": "+30% damage with the flail",
     "set.mythicrelics.perseus_set.bonus.2": "+30% damage with the harpe",
+    "item.mythicrelics.anubis_scepter.tooltip.1": "Judgment: a hit that leaves undead below %1$s%% health, or kills them,",
+    "item.mythicrelics.anubis_scepter.tooltip.2": "destroys them and drops %2$sx experience",
     "set.mythicrelics.thor_set.bonus.2": "+30% damage from thrown Mjölnir and its lightning",
 }
 

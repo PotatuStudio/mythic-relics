@@ -1,10 +1,12 @@
 package io.github.potatustudio.mythicrelics.neoforge.client;
 
+import io.github.potatustudio.mythicrelics.client.FreyrDrawn;
 import io.github.potatustudio.mythicrelics.client.MythicRelicsClient;
 import io.github.potatustudio.mythicrelics.neoforge.client.CuriosRelicRenderer.Part;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
 /** Cliente de NeoForge: inicialización común y renderizadores de Curios para las reliquias puestas. */
@@ -15,6 +17,8 @@ public final class MythicRelicsNeoForgeClient {
 	public static void init(IEventBus modBus) {
 		MythicRelicsClient.init();
 		modBus.addListener(FMLClientSetupEvent.class, event -> registerCurioRenderers());
+		modBus.addListener(RegisterConditionalItemModelPropertyEvent.class,
+				event -> event.register(FreyrDrawn.ID, FreyrDrawn.MAP_CODEC));
 	}
 
 	/** Misma ubicación que assets/mythicrelics/trinkets/*.json en Fabric. */

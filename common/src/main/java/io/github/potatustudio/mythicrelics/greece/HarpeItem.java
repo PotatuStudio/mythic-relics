@@ -39,12 +39,13 @@ public class HarpeItem extends RelicItem {
 
 	/**
 	 * Golpe cuerpo a cuerpo de {@code attacker} a {@code target}: si lleva la harpe en la mano, la recarga está lista y
-	 * el mob está malherido, el golpe lo decapita (daño de sobra para matarlo). Devuelve el daño final.
+	 * el golpe deja al mob malherido o lo mata (vida después del golpe bajo el 25 %), lo decapita (daño de sobra para
+	 * matarlo). Así la muerte de un golpe también cuenta como ejecución. Devuelve el daño final.
 	 */
 	static float behead(Player attacker, LivingEntity target, float amount) {
 		ItemStack stack = attacker.getMainHandItem();
 		if (!stack.is(ModItems.HARPE.get()) || attacker.getCooldowns().isOnCooldown(stack)
-				|| !GreeceLegends.canBehead(target) || Allies.isFriend(attacker, target)
+				|| !GreeceLegends.canBehead(target, amount) || Allies.isFriend(attacker, target)
 				|| !(attacker.level() instanceof ServerLevel level)) {
 			return amount;
 		}

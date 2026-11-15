@@ -79,6 +79,9 @@ public class RelicClientGameTest implements FabricClientGameTest {
 			if (run.test("una")) {
 				wornOneByOne(ctx, srv, relics);
 			}
+			if (run.test("freyr")) {
+				freyr(ctx, srv);
+			}
 			if (run.test("entidades")) {
 				entities(ctx, srv, sp);
 			}
@@ -350,6 +353,36 @@ public class RelicClientGameTest implements FabricClientGameTest {
 			ctx.waitTicks(3);
 			shot(ctx, "una_" + id(item) + "_4arriba");
 		}
+		camera(ctx, CameraType.FIRST_PERSON);
+	}
+
+	/** Espada de Freyr: envainada en la espalda y, desenvainada, la vaina vacía con la espada al lado (deben medir igual). */
+	private void freyr(ClientGameTestContext ctx, TestServerContext srv) {
+		reset(ctx, srv);
+		srv.runOnServer(s -> equip(player(s), new ItemStack(io.github.potatustudio.mythicrelics.registry.ModItems.FREYR_SWORD.get())));
+		place(srv, 0.5, 0.5, 0, 10);
+		camera(ctx, CameraType.THIRD_PERSON_BACK);
+		ctx.waitTicks(4);
+		shot(ctx, "freyr_1envainada_espalda");
+		place(srv, 0.5, 0.5, 90, 10);
+		camera(ctx, CameraType.THIRD_PERSON_FRONT);
+		ctx.waitTicks(3);
+		shot(ctx, "freyr_2envainada_lado");
+		place(srv, 0.5, 0.5, 0, 10);
+		srv.runOnServer(s -> {
+			ServerPlayer p = player(s);
+			var sword = io.github.potatustudio.mythicrelics.registry.ModEntities.FREYR_SWORD.get()
+					.create(p.level(), net.minecraft.world.entity.EntitySpawnReason.TRIGGERED);
+			sword.draw(p);
+			p.level().addFreshEntity(sword);
+		});
+		camera(ctx, CameraType.THIRD_PERSON_BACK);
+		ctx.waitTicks(12);
+		shot(ctx, "freyr_3desenvainada_espalda");
+		place(srv, 0.5, 0.5, 90, 10);
+		camera(ctx, CameraType.THIRD_PERSON_FRONT);
+		ctx.waitTicks(3);
+		shot(ctx, "freyr_4desenvainada_lado");
 		camera(ctx, CameraType.FIRST_PERSON);
 	}
 

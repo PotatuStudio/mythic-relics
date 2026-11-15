@@ -6,8 +6,16 @@
    {
     "when": "none",
     "model": {
-     "type": "minecraft:model",
-     "model": "mythicrelics:item/freyr_sword_worn"
+     "type": "minecraft:condition",
+     "property": "mythicrelics:freyr_drawn",
+     "on_true": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/freyr_sword_sheath_worn"
+     },
+     "on_false": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/freyr_sword_worn"
+     }
     }
    }
   ],

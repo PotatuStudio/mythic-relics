@@ -137,9 +137,10 @@ public final class EgyptRelics {
 					entity.addEffect(new MobEffectInstance(MobEffects.HUNGER, WRAPS_HUNGER_TICKS, 1), attacker);
 					entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, WRAPS_SLOW_TICKS, 0), attacker);
 				}
+				// Juicio: el golpe que lo deja bajo el 25 % lo destruye. Si el golpe ya lo mató, cuenta igual (LIVING_DEATH).
 				if (entity.isAlive() && entity.typeHolder().is(EntityTypeTags.UNDEAD)
 						&& attacker.getMainHandItem().is(ModItems.ANUBIS_SCEPTER.get())
-						&& entity.getHealth() + damageTaken <= entity.getMaxHealth() * SCEPTER_JUDGMENT_HEALTH) {
+						&& entity.getHealth() <= entity.getMaxHealth() * SCEPTER_JUDGMENT_HEALTH) {
 					judge(level, attacker, entity);
 				}
 			}
@@ -147,7 +148,13 @@ public final class EgyptRelics {
 		EntityEvent.LIVING_DEATH.register((victim, source) -> {
 			if (source.getEntity() instanceof ServerPlayer player && victim.level() instanceof ServerLevel level
 					&& victim.typeHolder().is(EntityTypeTags.UNDEAD)) {
-				if (victim.entityTags().contains(JUDGED_TAG)) {
+				boolean scepterKill = source.getDirectEntity() == player && player.getMainHandItem().is(ModItems.ANUBIS_SCEPTER.get());
+				if (scepterKill && !victim.entityTags().contains(JUDGED_TAG)) {
+					// Muerto de un golpe del cetro: también es juicio (destello y alma que escapa).
+					level.sendParticles(GOLD, victim.getX(), victim.getY() + victim.getBbHeight() / 2, victim.getZ(), 20, 0.3, 0.5, 0.3, 0);
+					RelicFx.sound(level, victim, SoundEvents.SOUL_ESCAPE.value(), 1.0f, 0.8f);
+				}
+				if (victim.entityTags().contains(JUDGED_TAG) || scepterKill) {
 					// La muerte normal ya da la experiencia una vez; aquí se suma el resto.
 					ExperienceOrb.award(level, victim.position(),
 							victim.getExperienceReward(level, player) * (SCEPTER_XP_MULTIPLIER - 1));

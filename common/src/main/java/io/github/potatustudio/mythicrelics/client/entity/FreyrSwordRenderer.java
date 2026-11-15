@@ -15,8 +15,11 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
  * hoja. Brilla siempre al máximo (es la espada del sol).
  */
 public class FreyrSwordRenderer extends EntityRenderer<FreyrSword, FreyrSwordRenderer.State> {
-	/** Tamaño en el aire: la geometría mide unos 1,8 bloques de punta a pomo; así queda en ~1,45. */
-	private static final float SCALE = 0.8f;
+	/**
+	 * Tamaño en el aire: la geometría mide 29 px de punta a pomo; así queda en ~1,27 bloques, lo mismo que la espada
+	 * envainada en la espalda (tools/model-gen/worn_models.py, FREYR_K): es la misma espada afuera y adentro.
+	 */
+	private static final float SCALE = 0.7f;
 
 	public static class State extends EntityRenderState {
 		float xRot;
