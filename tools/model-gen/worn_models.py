@@ -91,114 +91,143 @@ def model(elements):
 
 
 def ankh_necklace():
-    """Cadena de oro alrededor del cuello que baja en V al pecho, con el Anj colgando en relieve."""
-    e = []
-    # Vuelta de la cadena arriba del torso (bajo la cabeza): atrás y sobre los hombros.
-    e.append(box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "gold_d", "cadena atrás"))
-    e.append(box([3.5, 13.3, 6.0], [4.0, 13.8, 10.5], "gold", "cadena der."))
-    e.append(box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "gold", "cadena izq."))
-    # Las dos hebras del frente bajan escalonadas hasta el colgante.
-    steps = 6
-    for i in range(steps):
-        x_left = 4.0 + i * 0.6
-        y = 13.3 - i * 0.22
-        e.append(box([x_left, y - 0.5, 10.5], [x_left + 0.6, y, 11.0], "gold", f"hebra der. {i}"))
-        e.append(box([12.0 - (i + 1) * 0.6, y - 0.5, 10.5], [12.0 - i * 0.6, y, 11.0], "gold", f"hebra izq. {i}"))
-    # Anj: lazo, travesaño y asta, 1 px de relieve sobre el pecho, con la gema turquesa en el cruce.
+    """Cadena de oro con cuentas de lapislázuli que baja en V al pecho, con el Anj colgando en relieve: marco de oro con
+    incrustaciones de turquesa en el lazo y el asta, y la gema en el cruce."""
+    e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "gold_d", "cadena atrás"),
+         box([3.5, 13.3, 6.0], [4.0, 13.8, 10.5], "gold", "cadena der."),
+         box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "gold", "cadena izq.")]
+    for i in range(6):
+        x_left, y = 4.0 + i * 0.6, 13.3 - i * 0.22
+        tone = "lapis" if i % 2 else "gold"
+        e.append(box([x_left, y - 0.5, 10.5], [x_left + 0.6, y, 11.0 + (0.1 if i % 2 else 0)], tone, f"hebra der. {i}"))
+        e.append(box([12.0 - (i + 1) * 0.6, y - 0.5, 10.5], [12.0 - i * 0.6, y, 11.0 + (0.1 if i % 2 else 0)], tone,
+                     f"hebra izq. {i}"))
     z0, z1 = 10.75, 11.75
-    e += [
-        box([7.0, 11.6, z0], [9.0, 12.1, z1], "gold", "anj lazo arriba"),
-        box([7.0, 10.2, z0], [7.5, 11.6, z1], "gold", "anj lazo der."),
-        box([8.5, 10.2, z0], [9.0, 11.6, z1], "gold", "anj lazo izq."),
-        box([6.6, 9.6, z0], [9.4, 10.2, z1], "gold", "anj travesaño"),
-        box([7.6, 7.4, z0], [8.4, 9.6, z1], "gold", "anj asta"),
-        box([7.7, 9.65, z1], [8.3, 10.15, z1 + 0.2], "turq", "anj gema"),
-    ]
+    e += [box([6.8, 11.6, z0], [9.2, 12.3, z1], "gold", "anj lazo arriba"),
+          box([6.8, 10.2, z0], [7.5, 11.6, z1], "gold", "anj lazo der."),
+          box([8.5, 10.2, z0], [9.2, 11.6, z1], "gold", "anj lazo izq."),
+          box([7.5, 10.4, z0], [8.5, 11.6, z0 + 0.5], "turq", "anj hueco del lazo"),
+          box([6.2, 9.5, z0], [9.8, 10.2, z1], "gold", "anj travesaño"),
+          box([7.5, 7.0, z0], [8.5, 9.5, z1], "gold", "anj asta"),
+          box([7.8, 7.4, z1], [8.2, 9.3, z1 + 0.1], "turq", "anj incrustación del asta"),
+          box([6.5, 9.7, z1], [7.4, 10.0, z1 + 0.1], "turq", "anj incrustación der."),
+          box([8.6, 9.7, z1], [9.5, 10.0, z1 + 0.1], "turq", "anj incrustación izq."),
+          box([7.7, 9.6, z1], [8.3, 10.1, z1 + 0.25], "lapis_l", "anj gema"),
+          box([7.6, 12.3, 10.8], [8.4, 12.9, 11.3], "gold_d", "anilla")]
     return model(e)
 
 
 def scarab_belt():
-    """Faja de lino alrededor de la cintura con tachas de oro y un escarabajo chico como hebilla."""
+    """Faja de lino a franjas de oro y lapislázuli, con el escarabajo alado de Jepri como hebilla: élitros de oro con la
+    línea de lapislázuli, cabeza en pala, patas delanteras sosteniendo el disco solar y las alas abiertas a los lados,
+    con plumas de turquesa y lapislázuli."""
     e = ring(3.5, 12.5, 3.0, 4.5, 5.5, 10.5, 0.5, "linen", "faja")
     e += [box([3.4, 3.35, 7.6], [3.5, 4.15, 8.4], "gold", "tacha der."),
           box([12.5, 3.35, 7.6], [12.6, 4.15, 8.4], "gold", "tacha izq.")]
-    for x in (5.0, 10.4):
-        e.append(box([x, 3.4, 10.5], [x + 0.6, 4.1, 10.7], "gold", "tacha frente"))
-    # Escarabajo: élitros, pronoto y cabeza en pala; línea de lapislázuli entre los élitros.
-    e += [
-        box([7.0, 2.7, 10.5], [9.0, 4.5, 11.4], "gold", "escarabajo élitros"),
-        box([7.85, 2.8, 11.4], [8.15, 4.4, 11.5], "lapis", "escarabajo línea"),
-        box([7.3, 4.5, 10.5], [8.7, 5.0, 11.2], "gold_d", "escarabajo pronoto"),
-        box([7.6, 5.0, 10.5], [8.4, 5.3, 11.0], "gold_dd", "escarabajo cabeza"),
-    ]
+    for k, y in enumerate((3.1, 4.1)):
+        e.append(box([3.6, y, 10.5], [12.4, y + 0.3, 10.6], "gold" if k else "lapis", f"franja {k}"))
+    # Alas abiertas (a cada lado del escarabajo), en tres hileras de plumas.
+    for side, x0, step in (("der.", 6.9, -1), ("izq.", 9.1, 1)):
+        for k, (w, tone) in enumerate(((1.6, "turq"), (1.2, "lapis"), (0.9, "gold"))):
+            xa, xb = sorted((x0, x0 + step * (1.0 + k * 0.8)))
+            e.append(box([xa, 3.5 - k * 0.35, 10.62], [xb, 4.3 - k * 0.2, 10.9 + k * 0.05], tone, f"ala {side} {k}"))
+    e += [box([7.0, 2.7, 10.5], [9.0, 4.5, 11.4], "gold", "escarabajo élitros"),
+          box([7.85, 2.8, 11.4], [8.15, 4.4, 11.5], "lapis", "escarabajo línea"),
+          box([7.3, 4.5, 10.5], [8.7, 5.0, 11.2], "gold_d", "escarabajo pronoto"),
+          box([7.6, 5.0, 10.5], [8.4, 5.3, 11.0], "gold_dd", "escarabajo cabeza"),
+          box([7.3, 5.3, 10.6], [8.7, 6.5, 10.95], "sun", "disco solar"),
+          box([7.6, 5.6, 10.95], [8.4, 6.2, 11.05], "sun_l", "brillo del disco"),
+          box([7.1, 5.0, 10.7], [7.4, 5.6, 10.9], "gold_d", "pata der."),
+          box([8.6, 5.0, 10.7], [8.9, 5.6, 10.9], "gold_d", "pata izq.")]
     return model(e)
 
 
 def eye_diadem():
-    """Diadema de oro alrededor de la cabeza con el wedjat al frente."""
+    """Diadema de oro con franjas de lapislázuli y el wedjat (ojo de Horus) al frente: placa de lapislázuli con la ceja,
+    el contorno del ojo en oro, el blanco, la pupila, la marca vertical del halcón y la espiral."""
     e = ring(3.15, 12.85, 9.5, 10.5, 3.15, 12.85, 0.75, "gold", "diadema")
+    e += [box([3.1, 9.75, 3.1], [12.9, 10.25, 3.15], "lapis", "franja atrás"),
+          box([3.1, 9.75, 3.15], [3.15, 10.25, 12.85], "lapis", "franja der."),
+          box([12.85, 9.75, 3.15], [12.9, 10.25, 12.85], "lapis", "franja izq.")]
     z = 12.85
-    e += [
-        # La placa sobresale hasta 13,3: con la máscara puesta (cara en z 12,5..13,25) no comparten plano.
-        box([6.4, 9.0, z], [9.6, 11.6, z + 0.45], "lapis", "placa"),
-        box([6.7, 9.9, z + 0.45], [9.3, 10.6, z + 0.6], "white", "ojo"),
-        box([7.7, 9.9, z + 0.6], [8.4, 10.6, z + 0.7], "lapis_l", "pupila"),
-        box([6.7, 10.9, z + 0.45], [9.3, 11.25, z + 0.6], "gold", "ceja"),
-        box([6.9, 9.15, z + 0.45], [7.25, 9.9, z + 0.6], "gold", "lágrima"),
-        box([8.8, 9.15, z + 0.45], [9.15, 9.9, z + 0.6], "gold", "espiral"),
-    ]
+    e += [box([6.0, 8.6, z], [10.0, 11.9, z + 0.45], "lapis", "placa"),
+          box([5.8, 8.4, z - 0.05], [10.2, 8.6, z + 0.5], "gold", "borde de abajo"),
+          box([5.8, 11.9, z - 0.05], [10.2, 12.08, z + 0.5], "gold", "borde de arriba"),
+          box([6.5, 11.1, z + 0.45], [9.6, 11.45, z + 0.6], "gold", "ceja"),
+          box([6.4, 9.8, z + 0.45], [9.5, 10.75, z + 0.55], "gold", "contorno del ojo"),
+          box([6.7, 9.95, z + 0.55], [9.2, 10.6, z + 0.62], "white", "ojo"),
+          box([7.7, 9.95, z + 0.62], [8.4, 10.6, z + 0.7], "onyx", "pupila"),
+          box([9.5, 10.1, z + 0.45], [9.85, 10.4, z + 0.6], "gold", "línea del ojo"),
+          box([7.0, 8.8, z + 0.45], [7.35, 9.8, z + 0.6], "gold", "lágrima"),
+          box([8.6, 9.2, z + 0.45], [9.4, 9.5, z + 0.6], "gold", "espiral"),
+          box([9.1, 8.8, z + 0.45], [9.4, 9.2, z + 0.6], "gold", "espiral punta")]
     return model(e)
 
 
 def jackal_mask():
-    """Cabeza de chacal sobre la cara: placa negra, ojos dorados, hocico que sobresale, orejas altas."""
-    e = [
-        box([3.5, 4.0, 12.5], [12.5, 12.0, 13.25], "onyx", "cara"),
-        box([3.25, 4.0, 6.0], [3.5, 12.0, 13.25], "onyx", "costado der."),
-        box([12.5, 4.0, 6.0], [12.75, 12.0, 13.25], "onyx", "costado izq."),
-        box([3.5, 12.0, 6.0], [12.5, 12.25, 13.25], "onyx", "coronilla"),
-        box([4.8, 8.6, 13.25], [6.6, 9.4, 13.4], "gold_l", "ojo der."),
-        box([9.4, 8.6, 13.25], [11.2, 9.4, 13.4], "gold_l", "ojo izq."),
-        box([6.0, 4.5, 13.25], [10.0, 7.5, 16.0], "onyx", "hocico"),
-        box([5.8, 5.4, 14.2], [10.2, 6.1, 14.9], "gold", "banda del hocico"),
-        box([7.2, 6.7, 16.0], [8.8, 7.5, 16.3], "onyx_d", "nariz"),
-        box([4.0, 12.25, 10.5], [6.0, 15.0, 12.25], "onyx", "oreja der."),
-        box([4.5, 15.0, 11.0], [5.5, 16.5, 12.0], "onyx", "punta der."),
-        box([10.0, 12.25, 10.5], [12.0, 15.0, 12.25], "onyx", "oreja izq."),
-        box([10.5, 15.0, 11.0], [11.5, 16.5, 12.0], "onyx", "punta izq."),
-        box([4.5, 12.6, 12.25], [5.5, 14.8, 12.4], "gold", "oreja der. por dentro"),
-        box([10.5, 12.6, 12.25], [11.5, 14.8, 12.4], "gold", "oreja izq. por dentro"),
-    ]
+    """Máscara de Anubis sobre la cara: cabeza de chacal negra con el hocico largo que se afina, ojos dorados delineados
+    con kohl, orejas altas con el interior de oro, los costados del tocado (nemes) a franjas de oro y lapislázuli que caen
+    detrás de las orejas, y la banda de oro del hocico."""
+    e = [box([3.5, 4.0, 12.5], [12.5, 12.0, 13.25], "onyx", "cara"),
+         box([3.25, 4.0, 6.0], [3.5, 12.0, 13.25], "onyx", "costado der."),
+         box([12.5, 4.0, 6.0], [12.75, 12.0, 13.25], "onyx", "costado izq."),
+         box([3.5, 12.0, 6.0], [12.5, 12.25, 13.25], "onyx", "coronilla"),
+         box([4.6, 9.6, 13.25], [7.0, 10.0, 13.35], "onyx_hi", "ceja der."),
+         box([9.0, 9.6, 13.25], [11.4, 10.0, 13.35], "onyx_hi", "ceja izq."),
+         box([4.6, 8.4, 13.25], [7.0, 9.4, 13.32], "gold_dd", "kohl der."),
+         box([9.0, 8.4, 13.25], [11.4, 9.4, 13.32], "gold_dd", "kohl izq."),
+         box([4.9, 8.6, 13.32], [6.6, 9.2, 13.42], "gold_l", "ojo der."),
+         box([9.4, 8.6, 13.32], [11.1, 9.2, 13.42], "gold_l", "ojo izq."),
+         box([5.8, 4.6, 13.25], [10.2, 7.8, 14.6], "onyx", "hocico base"),
+         box([6.3, 4.8, 14.6], [9.7, 7.3, 16.0], "onyx", "hocico"),
+         box([6.8, 5.0, 16.0], [9.2, 6.8, 17.0], "onyx", "punta del hocico"),
+         box([5.7, 5.4, 14.0], [10.3, 6.1, 14.7], "gold", "banda del hocico"),
+         box([7.3, 6.2, 17.0], [8.7, 6.9, 17.25], "onyx_d", "nariz"),
+         box([6.9, 4.9, 15.0], [9.1, 5.1, 16.8], "onyx_d", "boca"),
+         box([4.0, 12.25, 10.5], [6.0, 15.0, 12.25], "onyx", "oreja der."),
+         box([4.5, 15.0, 11.0], [5.5, 16.8, 12.0], "onyx", "punta der."),
+         box([10.0, 12.25, 10.5], [12.0, 15.0, 12.25], "onyx", "oreja izq."),
+         box([10.5, 15.0, 11.0], [11.5, 16.8, 12.0], "onyx", "punta izq."),
+         box([4.5, 12.6, 12.25], [5.5, 14.8, 12.4], "gold", "oreja der. por dentro"),
+         box([10.5, 12.6, 12.25], [11.5, 14.8, 12.4], "gold", "oreja izq. por dentro")]
+    # Nemes: franjas que caen a los costados por detrás de las orejas.
+    for side, x0, x1 in (("der.", 3.0, 3.25), ("izq.", 12.75, 13.0)):
+        for k, y in enumerate((4.6, 6.0, 7.4, 8.85, 10.2)):
+            e.append(box([x0, y, 6.4], [x1, y + 0.7, 10.2], "gold" if k % 2 == 0 else "lapis", f"nemes {side} {k}"))
     return model(e)
 
 
 def mummy_wraps():
-    """Vendaje de lino en la mano y el antebrazo: franjas alternadas y la punta de la mano cubierta."""
+    """Vendaje de lino en la mano y el antebrazo: vueltas alternadas que se corren en diagonal, la punta de la mano
+    cubierta, el nudo y una tira suelta que cuelga, gastada en la punta."""
     e = [box([5.5, 1.75, 5.5], [10.5, 2.25, 10.5], "linen", "punta de la mano")]
     colors = ["linen_l", "linen", "linen_l", "linen_d", "linen_l"]
     for i, c in enumerate(colors):
         y0 = 2.25 + i
-        # Cada vuelta se corre un poco: parece una venda enrollada en diagonal.
         grow = 0.1 if i % 2 else 0.0
         e += ring(5.5 - grow, 10.5 + grow, y0, y0 + 1.0, 5.5 - grow, 10.5 + grow, 0.5, c, f"vuelta {i}")
-    e.append(box([6.2, 6.6, 10.5], [9.8, 7.4, 10.8], "linen_d", "nudo"))
+    for k, y in enumerate((2.9, 4.92)):
+        e.append(box([5.65, y, 10.6], [10.35, y + 0.35, 10.72], "linen_dd", f"borde de la vuelta {k}"))
+    e += [box([6.2, 6.6, 10.5], [9.8, 7.4, 10.8], "linen_d", "nudo"),
+          box([9.2, 3.4, 10.8], [9.9, 6.8, 10.95], "linen", "tira suelta"),
+          box([9.3, 2.6, 10.8], [9.8, 3.4, 10.92], "linen_d", "punta de la tira")]
     return model(e)
 
 
 def jackal_ring():
-    """Aro de oro en el extremo del brazo con el ónix de orejitas al frente.
+    """Aro de oro en el extremo del brazo con el chacal de ónix al frente, en un marco de oro: orejas, hocico y ojos.
 
     Va un poco más afuera (5,15..10,85) que las vendas (5,4..10,6): si los dos se llevan en la misma mano, ninguna cara
     queda en el mismo plano (eso hace parpadear las superficies)."""
     e = ring(5.15, 10.85, 8.6, 9.6, 5.15, 10.85, 0.5, "gold", "aro")
     z = 10.85
-    e += [
-        box([7.3, 8.4, z], [8.7, 9.8, z + 0.7], "onyx", "ónix"),
-        box([7.4, 9.8, z + 0.1], [7.8, 10.3, z + 0.5], "onyx", "oreja der."),
-        box([8.2, 9.8, z + 0.1], [8.6, 10.3, z + 0.5], "onyx", "oreja izq."),
-        box([7.55, 9.2, z + 0.7], [7.8, 9.45, z + 0.8], "gold_l", "ojo der."),
-        box([8.2, 9.2, z + 0.7], [8.45, 9.45, z + 0.8], "gold_l", "ojo izq."),
-    ]
+    e += [box([7.0, 8.25, z], [9.0, 9.95, z + 0.4], "gold", "marco"),
+          box([7.3, 8.4, z + 0.4], [8.7, 9.8, z + 0.8], "onyx", "ónix"),
+          box([7.4, 9.8, z + 0.45], [7.8, 10.4, z + 0.75], "onyx", "oreja der."),
+          box([8.2, 9.8, z + 0.45], [8.6, 10.4, z + 0.75], "onyx", "oreja izq."),
+          box([7.75, 8.45, z + 0.8], [8.25, 8.95, z + 1.1], "onyx", "hocico"),
+          box([7.55, 9.2, z + 0.8], [7.8, 9.45, z + 0.9], "gold_l", "ojo der."),
+          box([8.2, 9.2, z + 0.8], [8.45, 9.45, z + 0.9], "gold_l", "ojo izq.")]
     return model(e)
 
 
@@ -223,7 +252,8 @@ def ra_headdress():
 
 
 def bastet_pendant():
-    """Cadena como la del Anj y una gata sentada de bronce oscuro con collar de oro, en relieve sobre el pecho."""
+    """Cadena como la del Anj y Bastet en relieve sobre el pecho: una gata sentada de bronce oscuro con las patas
+    delanteras juntas, collar de oro con el escarabajo, aro de oro en la oreja, ojos dorados y la cola enroscada."""
     e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "gold_d", "cadena"),
          box([3.5, 13.3, 6.0], [4.0, 13.8, 10.5], "gold", "cadena"),
          box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "gold", "cadena")]
@@ -233,23 +263,37 @@ def bastet_pendant():
         e.append(box([12.0 - (i + 1) * 0.6, y - 0.5, 10.5], [12.0 - i * 0.6, y, 11.0], "gold", "hebra"))
     z0 = 10.75
     e += [box([6.9, 7.6, z0], [9.1, 10.2, z0 + 1.3], "onyx", "cuerpo"),
+          box([7.5, 7.6, z0 + 1.3], [8.5, 9.6, z0 + 1.5], "onyx_hi", "patas delanteras"),
+          box([7.3, 7.4, z0 + 0.6], [8.7, 7.6, z0 + 1.5], "onyx_hi", "patitas"),
           box([7.2, 10.2, z0 + 0.2], [8.8, 11.6, z0 + 1.2], "onyx", "cabeza"),
-          box([7.2, 11.6, z0 + 0.5], [7.6, 12.1, z0 + 0.9], "onyx", "oreja"),
-          box([8.4, 11.6, z0 + 0.5], [8.8, 12.1, z0 + 0.9], "onyx", "oreja"),
+          box([7.55, 10.25, z0 + 1.2], [8.45, 10.75, z0 + 1.45], "onyx_hi", "hocico"),
+          box([7.2, 11.6, z0 + 0.5], [7.6, 12.3, z0 + 0.9], "onyx", "oreja"),
+          box([8.4, 11.6, z0 + 0.5], [8.8, 12.3, z0 + 0.9], "onyx", "oreja"),
+          box([8.75, 11.3, z0 + 0.6], [9.0, 11.6, z0 + 0.85], "gold", "aro de la oreja"),
           box([6.9, 9.9, z0 - 0.05], [9.1, 10.3, z0 + 1.35], "gold", "collar"),
+          box([7.75, 9.45, z0 + 1.35], [8.25, 9.9, z0 + 1.5], "lapis", "escarabajo del collar"),
           box([7.5, 10.9, z0 + 1.2], [7.75, 11.15, z0 + 1.3], "gold_l", "ojo"),
           box([8.25, 10.9, z0 + 1.2], [8.5, 11.15, z0 + 1.3], "gold_l", "ojo"),
-          box([9.1, 7.6, z0 + 0.3], [9.6, 8.1, z0 + 1.0], "onyx", "cola")]
+          box([9.1, 7.6, z0 + 0.3], [9.7, 8.1, z0 + 1.0], "onyx", "cola"),
+          box([9.3, 8.1, z0 + 0.4], [9.7, 8.8, z0 + 0.9], "onyx", "punta de la cola")]
     return e
 
 
 def sekhmet_claws_worn():
-    """Guantelete de piel de leona con muñequera de oro y cuatro garras de marfil que asoman en la punta."""
+    """Zarpa de Sekhmet, la leona: guantelete de piel con la melena que se abre en la muñeca, muñequera de oro con el
+    disco solar al frente, almohadillas oscuras y cuatro garras de marfil curvas y largas."""
     e = ring(5.5, 10.5, 2.0, 6.0, 5.5, 10.5, 0.5, "fur", "piel")
     e += ring(5.35, 10.65, 6.0, 7.0, 5.35, 10.65, 0.5, "gold", "muñequera")
-    e += [box([5.5, 1.5, 5.5], [10.5, 2.0, 10.5], "fur", "punta")]
+    e += ring(5.2, 10.8, 7.0, 8.0, 5.2, 10.8, 0.6, "mane", "melena")
+    e += [box([5.5, 1.5, 5.5], [10.5, 2.0, 10.5], "fur", "punta"),
+          box([7.0, 6.1, 10.65], [9.0, 6.9, 10.85], "sun", "disco solar"),
+          box([7.5, 6.3, 10.85], [8.5, 6.7, 10.97], "sun_l", "brillo del disco")]
+    for k, x in enumerate((5.4, 6.8, 8.2, 9.6)):
+        e.append(box([x, 8.0, 5.4], [x + 1.0, 8.7, 10.6], "mane", f"mechón {k}"))
     for i, x in enumerate((5.9, 7.1, 8.3, 9.5)):
-        e.append(box([x, 0.2, 9.3], [x + 0.6, 1.5, 10.1], "ivory", f"garra {i}"))
+        e += [box([x, 0.4, 9.3], [x + 0.6, 1.5, 10.1], "ivory", f"garra {i}"),
+              box([x + 0.1, -0.3, 9.6], [x + 0.5, 0.4, 10.3], "ivory_d", f"punta de garra {i}"),
+              box([x - 0.1, 1.5, 10.5], [x + 0.7, 2.1, 10.62], "onyx", f"almohadilla {i}")]
     return e
 
 
@@ -626,7 +670,8 @@ def andvaranaut():
 
 
 def wolf_bulla():
-    """Cordón de cuero como la cadena del Anj y el relicario redondo de oro con la loba en relieve sobre el pecho."""
+    """Bula romana: cordón de cuero y el relicario redondo de oro que llevaban los niños libres, con borde, la anilla y
+    la loba capitolina en relieve (cuerpo, cabeza, orejas, cola y las patas)."""
     e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "leather_d", "cordón atrás"),
          box([3.5, 13.3, 6.0], [4.0, 13.8, 10.5], "leather_d", "cordón der."),
          box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "leather_d", "cordón izq.")]
@@ -634,9 +679,17 @@ def wolf_bulla():
         x, y = 4.0 + i * 0.6, 13.3 - i * 0.22
         e.append(box([x, y - 0.5, 10.5], [x + 0.6, y, 11.0], "leather_d", "cordón"))
         e.append(box([12.0 - (i + 1) * 0.6, y - 0.5, 10.5], [12.0 - i * 0.6, y, 11.0], "leather_d", "cordón"))
-    e += [box([6.8, 9.2, 10.75], [9.2, 11.6, 11.6], "gold", "relicario"),
-          box([7.2, 8.8, 10.75], [8.8, 12.0, 11.6], "gold", "relicario"),
-          box([7.4, 9.8, 11.6], [8.6, 10.8, 11.75], "gold_d", "loba")]
+    e += [box([6.4, 8.8, 10.75], [9.6, 11.6, 11.5], "gold", "relicario"),
+          box([6.8, 8.4, 10.75], [9.2, 12.0, 11.5], "gold", "relicario alto"),
+          box([6.3, 9.2, 10.8], [9.7, 11.2, 11.45], "gold_d", "borde"),
+          box([7.6, 12.0, 10.85], [8.4, 12.7, 11.3], "gold_d", "anilla"),
+          box([7.0, 9.7, 11.5], [8.9, 10.4, 11.65], "gold_dd", "loba cuerpo"),
+          box([8.6, 10.2, 11.5], [9.2, 10.9, 11.7], "gold_dd", "loba cabeza"),
+          box([8.7, 10.9, 11.5], [8.9, 11.2, 11.65], "gold_dd", "loba oreja"),
+          box([6.7, 10.2, 11.5], [7.1, 10.6, 11.6], "gold_dd", "loba cola"),
+          box([7.2, 9.2, 11.5], [7.45, 9.7, 11.6], "gold_dd", "loba pata atrás"),
+          box([8.4, 9.2, 11.5], [8.65, 9.7, 11.6], "gold_dd", "loba pata adelante"),
+          box([7.1, 11.1, 11.5], [7.5, 11.4, 11.62], "gold_l", "brillo")]
     return e
 
 

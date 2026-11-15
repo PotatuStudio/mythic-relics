@@ -367,8 +367,9 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
      manos; la misma tecla vuelve); carga visible del rayo, Gram, Mjölnir, Gungnir y el dardo; piel de Nemea nueva.
    - Rayo de Zeus fuerte: mantener 2 s (mini rayos a tu alrededor y trueno al estar listo), soltar 3 rayos con su daño
      y salto, recarga 10 s; el débil sigue igual.
-   - Pendientes de arte: subir el detalle geométrico de las reliquias puestas de Egipto, Roma, nórdicos, China y
-     Japón al nivel de las griegas (mostrar en el visor antes de aplicar); rehacer las alas de Ícaro (parecen persianas).
+   - Arte del 2026-11-14: alas de Ícaro nuevas (en abanico, echadas hacia atrás) y las 25 reliquias puestas no griegas
+     con más detalle (Egipto, Roma, nórdicos, China y Japón): revisarlas en NeoForge (Curios), que la prueba automática
+     solo cubre Fabric.
    - Tras el refactor del 2026-11-14 (no debería cambiar nada del juego): tooltip de sets con ✔ / ◐ / ✘ (por ejemplo la
      alabarda de Erlang en el inventario sale ◐ «en la mano principal»); recargas largas (Kusanagi, abanico, sake,
      joyas de la marea…) que siguen en el ícono al salir y volver a entrar; un vistazo general a avisos y sonidos.

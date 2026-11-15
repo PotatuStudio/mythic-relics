@@ -20,6 +20,8 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
 - Tooltip de los sets: cuenta solo las piezas que están donde el bono las pide y marca ◐ (con dónde ponerla) las que
   llevas en otro lugar.
 
+- Arte: alas de Ícaro nuevas y más detalle en las 25 reliquias puestas de Egipto, Roma, nórdicos, China y Japón.
+
 ### Fixed
 - Escudo de Aquiles y Ancile en primera persona: al bloquear ya no desaparecen de la pantalla, y el de Aquiles se
   ve a la misma altura que el escudo vanilla.
