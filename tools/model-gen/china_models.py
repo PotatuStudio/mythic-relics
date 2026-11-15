@@ -1,6 +1,7 @@
 """Modelo 3D del Ruyi Jingu Bang estirado (clic derecho): un báculo de hierro negro mucho más largo, con aros de oro en las
 puntas y el centro. Se usa mientras dura el estirón (marca 0 de custom_model_data) y fuera del inventario; el resto del
 tiempo, en la mano, va el mismo báculo en chico (ruyi_jingu_bang_short); en el inventario sigue el ícono. Usa la paleta nórdica (norse_palette.png, de norse_models.py).
+Los dos van en la diagonal de la espada vanilla con sus mismas posiciones de mano (handheld3d.py).
 Uso: python china_models.py"""
 import json
 import os
@@ -8,6 +9,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from moddata import ASSETS  # noqa: E402
+from handheld3d import GRIP_Y, diagonal, handheld_display  # noqa: E402
 from norse_models import box, write  # noqa: E402
 
 NS = "mythicrelics"
@@ -27,25 +29,19 @@ def ruyi(bottom, top):
 
 
 def ruyi_extended():
-    return ruyi(-15, 31)
+    """Estirado: 56 px, con el agarre donde va el mango de una espada y casi todo el báculo hacia adelante. Se dibuja a la
+    mitad y el display lo dobla (no cabe en -16..32)."""
+    return diagonal(ruyi(GRIP_Y - 8, GRIP_Y + 48), half=True)
 
 
 def ruyi_short():
-    return ruyi(-3, 19)
+    """Chico: 28 px, agarrado a 5 px de la punta de abajo, como un bastón."""
+    return diagonal(ruyi(GRIP_Y - 5, GRIP_Y + 23))
 
 
-DISPLAY = {
-    "thirdperson_righthand": {"rotation": [0, 90, 35], "translation": [0, 3, 1], "scale": [0.85, 0.85, 0.85]},
-    "thirdperson_lefthand": {"rotation": [0, -90, -35], "translation": [0, 3, 1], "scale": [0.85, 0.85, 0.85]},
-    "firstperson_righthand": {"rotation": [0, 90, 30], "translation": [1, 2, 0], "scale": [0.68, 0.68, 0.68]},
-    "firstperson_lefthand": {"rotation": [0, -90, -30], "translation": [1, 2, 0], "scale": [0.68, 0.68, 0.68]},
-}
-
-# El chico en primera persona se sostiene como una espada vanilla (handheld), inclinado hacia arriba y adelante; con las
-# posiciones del estirado quedaba de punta hacia la cámara y no se veía.
-SHORT_DISPLAY = dict(DISPLAY)
-SHORT_DISPLAY["firstperson_righthand"] = {"rotation": [0, -90, 55], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]}
-SHORT_DISPLAY["firstperson_lefthand"] = {"rotation": [0, 90, -55], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]}
+# Las dos versiones se sostienen como una espada vanilla (handheld3d.py).
+DISPLAY = handheld_display(2)
+SHORT_DISPLAY = handheld_display()
 
 if __name__ == "__main__":
     write(os.path.join(ASSETS, "models", "item", "ruyi_jingu_bang_extended.json"), {

@@ -13,6 +13,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mclib import H, png  # noqa: E402
+from handheld3d import GRIP_Y, diagonal, handheld_display  # noqa: E402
 from moddata import ASSETS  # noqa: E402
 
 NS = "mythicrelics"
@@ -90,13 +91,16 @@ def gungnir():
 
 
 # Cómo se sostienen: el martillo como un hacha; la lanza en alto, como el tridente.
-MJOLNIR_DISPLAY = {
-    "thirdperson_righthand": {"rotation": [0, 90, 0], "translation": [0, 2, 0.5], "scale": [0.85, 0.85, 0.85]},
-    "thirdperson_lefthand": {"rotation": [0, -90, 0], "translation": [0, 2, 0.5], "scale": [0.85, 0.85, 0.85]},
-    "firstperson_righthand": {"rotation": [0, 90, 20], "translation": [1.5, 3, 0], "scale": [0.68, 0.68, 0.68]},
-    "firstperson_lefthand": {"rotation": [0, -90, -20], "translation": [1.5, 3, 0], "scale": [0.68, 0.68, 0.68]},
-    "head": {"translation": [0, 13, 0]},
-}
+def mjolnir_held():
+    """Mjölnir en la mano: el mismo martillo, bajado para que el agarre (justo sobre el pomo) quede en GRIP_Y y girado a
+    la diagonal de la espada vanilla, con sus posiciones de mano (handheld3d.py)."""
+    dy = GRIP_Y - 1.6
+    moved = [{**el, "from": [el["from"][0], el["from"][1] + dy, el["from"][2]], "to": [el["to"][0], el["to"][1] + dy, el["to"][2]]}
+             for el in mjolnir()]
+    return diagonal(moved)
+
+
+MJOLNIR_DISPLAY = handheld_display()
 # Las mismas transformaciones que trident_in_hand y trident_throwing de vanilla, con scale 2 (ver tri()).
 def _x2(d):
     return {k: {**v, "scale": [s * 2 for s in v.get("scale", [1, 1, 1])]} for k, v in d.items()}
@@ -114,7 +118,7 @@ GUNGNIR_THROWING = _x2({
     "firstperson_righthand": {"rotation": [0, -90, 25], "translation": [-3, 17, 1]},
     "firstperson_lefthand": {"rotation": [0, 90, -25], "translation": [13, 17, 1]},
 })
-MODELS = {"mjolnir": (mjolnir, MJOLNIR_DISPLAY), "gungnir": (gungnir, GUNGNIR_DISPLAY)}
+MODELS = {"mjolnir": (mjolnir_held, MJOLNIR_DISPLAY), "gungnir": (gungnir, GUNGNIR_DISPLAY)}
 
 
 def write(path, data):

@@ -6,8 +6,63 @@
    {
     "when": "none",
     "model": {
-     "type": "minecraft:model",
-     "model": "mythicrelics:item/icarus_wings_worn"
+     "type": "minecraft:range_dispatch",
+     "property": "mythicrelics:icarus_pose",
+     "entries": [
+      {
+       "threshold": -0.5,
+       "model": {
+        "type": "minecraft:model",
+        "model": "mythicrelics:item/icarus_wings_folded_worn"
+       }
+      },
+      {
+       "threshold": 0.5,
+       "model": {
+        "type": "minecraft:model",
+        "model": "mythicrelics:item/icarus_wings_flap_0_worn"
+       }
+      },
+      {
+       "threshold": 1.5,
+       "model": {
+        "type": "minecraft:model",
+        "model": "mythicrelics:item/icarus_wings_flap_1_worn"
+       }
+      },
+      {
+       "threshold": 2.5,
+       "model": {
+        "type": "minecraft:model",
+        "model": "mythicrelics:item/icarus_wings_flap_2_worn"
+       }
+      },
+      {
+       "threshold": 3.5,
+       "model": {
+        "type": "minecraft:model",
+        "model": "mythicrelics:item/icarus_wings_flap_3_worn"
+       }
+      },
+      {
+       "threshold": 4.5,
+       "model": {
+        "type": "minecraft:model",
+        "model": "mythicrelics:item/icarus_wings_glide_worn"
+       }
+      },
+      {
+       "threshold": 5.5,
+       "model": {
+        "type": "minecraft:model",
+        "model": "mythicrelics:item/icarus_wings_dive_worn"
+       }
+      }
+     ],
+     "fallback": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/icarus_wings_worn"
+     }
     }
    }
   ],

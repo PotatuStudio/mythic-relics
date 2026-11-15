@@ -21,7 +21,9 @@ import org.jspecify.annotations.Nullable;
 /**
  * Luz en la mano (hinojo de Prometeo): mientras lo sostienes, un bloque de luz invisible (el {@code minecraft:light} de
  * vanilla, nivel 15) te sigue a la altura de los ojos; en el agua va anegado, así que alumbra también sumergido. Solo se
- * pone en aire o en agua quieta, y al moverte, soltarlo, desconectarte o cerrar el mundo se quita y deja lo que había.
+ * pone en aire o en agua quieta: si a la altura de los ojos hay pasto marino, algas u otra cosa, prueba los bloques de al
+ * lado, para no apagarse nunca. Se mueve cada tick y la luz nueva se pone ANTES de quitar la anterior, para que no haya un
+ * instante a oscuras. Al soltarlo, desconectarte o cerrar el mundo se quita y deja lo que había.
  */
 public final class HeldLight {
 	private static final Map<UUID, GlobalPos> PLACED = new HashMap<>();
@@ -43,11 +45,16 @@ public final class HeldLight {
 				&& (player.getMainHandItem().is(ModItems.PROMETHEUS_FENNEL.get()) || player.getOffhandItem().is(ModItems.PROMETHEUS_FENNEL.get()));
 	}
 
+	/** Dónde probar poner la luz, en orden: los ojos, los pies, sobre la cabeza y los costados de los ojos. */
+	private static BlockPos[] candidates(ServerPlayer player) {
+		BlockPos eyes = BlockPos.containing(player.getEyePosition());
+		BlockPos feet = player.blockPosition();
+		return new BlockPos[] {eyes, feet.equals(eyes) ? eyes.below() : feet, eyes.above(), eyes.north(), eyes.south(), eyes.east(),
+				eyes.west(), feet.north(), feet.south(), feet.east(), feet.west()};
+	}
+
 	private static void tick(MinecraftServer server) {
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-			if ((player.tickCount + player.getId()) % 2 != 0) {
-				continue;
-			}
 			GlobalPos last = PLACED.get(player.getUUID());
 			if (!holdsLight(player)) {
 				if (last != null) {
@@ -56,16 +63,17 @@ public final class HeldLight {
 				continue;
 			}
 			ServerLevel level = player.level();
-			BlockPos eyes = BlockPos.containing(player.getEyePosition());
-			if (last != null && last.dimension() == level.dimension() && last.pos().equals(eyes)
-					&& level.getBlockState(eyes).is(Blocks.LIGHT)) {
-				continue;
-			}
-			remove(server, last);
-			PLACED.remove(player.getUUID());
-			for (BlockPos pos : new BlockPos[] {eyes, player.blockPosition()}) {
+			boolean sameLevel = last != null && last.dimension() == level.dimension();
+			for (BlockPos pos : candidates(player)) {
+				// La luz ya está en el mejor lugar posible: no se toca.
+				if (sameLevel && last.pos().equals(pos) && level.getBlockState(pos).is(Blocks.LIGHT)) {
+					break;
+				}
 				if (place(level, pos)) {
 					PLACED.put(player.getUUID(), GlobalPos.of(level.dimension(), pos.immutable()));
+					if (!(sameLevel && last.pos().equals(pos))) {
+						remove(server, last);   // después de poner la nueva: sin parpadeo
+					}
 					break;
 				}
 			}

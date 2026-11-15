@@ -120,7 +120,7 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 				setPosRaw(getX(), getY() + back.y * 0.015 * RETURN_SPEED, getZ());
 				setDeltaMovement(getDeltaMovement().scale(0.95).add(back.normalize().scale(0.05 * RETURN_SPEED)));
 				if (returnTicks++ == 0) {
-					playSound(SoundEvents.TRIDENT_RETURN, 10.0f, isMjolnir() ? 0.7f : 1.0f);
+					playSound(SoundEvents.TRIDENT_RETURN, isMjolnir() ? 1.0f : 10.0f, isMjolnir() ? 0.7f : 1.0f);   // Mjölnir vuelve a cada rato: más bajo
 				}
 			}
 		}

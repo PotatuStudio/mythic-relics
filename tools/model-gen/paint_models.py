@@ -16,7 +16,6 @@ TEX = os.path.join(ASSETS, "textures")
 # modelo (relativo a models/) -> (paleta, textura nueva)
 MODELS = {
     "item/achilles_shield_3d": ("item/greece3_palette", "item/painted/achilles_shield_3d"),
-    "item/athena_aegis_3d": ("item/aegis_palette", "item/painted/athena_aegis_3d"),
     "item/ancile_shield": ("item/rome_palette", "item/painted/ancile_shield"),
     "block/palladium": ("block/palladium", "block/painted/palladium"),
     "item/mjolnir_3d": ("item/norse_palette", "item/painted/mjolnir_3d"),

@@ -3,8 +3,71 @@
   "type": "minecraft:condition",
   "property": "minecraft:using_item",
   "on_true": {
-   "type": "minecraft:model",
-   "model": "mythicrelics:item/medusa_head_gaze"
+   "type": "minecraft:range_dispatch",
+   "property": "minecraft:use_cycle",
+   "period": 16,
+   "entries": [
+    {
+     "threshold": 0,
+     "model": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/medusa_head_gaze_0"
+     }
+    },
+    {
+     "threshold": 2,
+     "model": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/medusa_head_gaze_1"
+     }
+    },
+    {
+     "threshold": 4,
+     "model": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/medusa_head_gaze_2"
+     }
+    },
+    {
+     "threshold": 6,
+     "model": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/medusa_head_gaze_3"
+     }
+    },
+    {
+     "threshold": 8,
+     "model": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/medusa_head_gaze_4"
+     }
+    },
+    {
+     "threshold": 10,
+     "model": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/medusa_head_gaze_5"
+     }
+    },
+    {
+     "threshold": 12,
+     "model": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/medusa_head_gaze_6"
+     }
+    },
+    {
+     "threshold": 14,
+     "model": {
+      "type": "minecraft:model",
+      "model": "mythicrelics:item/medusa_head_gaze_7"
+     }
+    }
+   ],
+   "fallback": {
+    "type": "minecraft:model",
+    "model": "mythicrelics:item/medusa_head_gaze_0"
+   }
   },
   "on_false": {
    "type": "minecraft:model",

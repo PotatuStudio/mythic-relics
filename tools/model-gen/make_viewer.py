@@ -19,6 +19,45 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from moddata import (ARCHAEOLOGY, ASSETS, CULTURES, FABRIC_ASSETS, ORDER, SETS, SLOTS, LOOT_TABLE_KEYS, b64, constants, icons, lang, loot,  # noqa: E402
                      rarity, read, set_args, tooltip_args)
 
+NS = "mythicrelics"
+
+
+def _held_model(node):
+    """Recorre la definición del ítem como el juego para la mano en tercera persona, sin usar el ítem ni datos extra."""
+    t = node.get("type", "minecraft:model")
+    if t == "minecraft:model":
+        return node["model"]
+    if t == "minecraft:select":
+        for case in node.get("cases", []):
+            when = case["when"] if isinstance(case["when"], list) else [case["when"]]
+            if "thirdperson_righthand" in when:
+                return _held_model(case["model"])
+        return _held_model(node["fallback"])
+    if t == "minecraft:condition":
+        return _held_model(node["on_false"])
+    if t == "minecraft:range_dispatch":
+        return _held_model(node.get("fallback") or node["entries"][0]["model"])
+    raise ValueError(t)
+
+
+def held(name):
+    """{"kind": "model", "elements", "tex"} si en la mano es un modelo 3D; si no, {"kind": "icon", "diagonal"}."""
+    item = json.loads(read(os.path.join(ASSETS, "items", name + ".json")))
+    model_id = _held_model(item["model"])
+    while True:
+        path = os.path.join(ASSETS, "models", *model_id.split(":", 1)[1].split("/")) + ".json"
+        if not model_id.startswith(NS + ":") or not os.path.exists(path):
+            return {"kind": "icon", "diagonal": model_id.endswith("handheld")}
+        m = json.loads(read(path))
+        if "elements" in m:
+            tex = next(v for k, v in m["textures"].items() if k != "particle")
+            png_path = os.path.join(ASSETS, "textures", *tex.split(":", 1)[1].split("/")) + ".png"
+            return {"kind": "model", "elements": m["elements"], "tex": b64(png_path)}
+        if "parent" not in m:
+            return {"kind": "icon", "diagonal": False}
+        model_id = m["parent"] if ":" in m["parent"] else "minecraft:" + m["parent"]
+
+
 def glow_b64(name):
     """La capa que brilla de una entidad; el bote no tiene (usa el renderer vanilla): una imagen vacía de 1x1."""
     path = os.path.join(ASSETS, "textures", "entity", name + "_glow.png")
@@ -94,9 +133,16 @@ if __name__ == "__main__":
                                 "glow": b64(os.path.join(ASSETS, "textures", "entity", "weapon", key + "_glow.png"))}
     # Cabezas de Medusa y de Mímir como objetos 3D (head_items.py).
     data["heads"] = {}
-    for key in ("medusa_head_3d", "medusa_head_gaze", "mimir_head_3d"):
+    for key in ["medusa_head_3d", "mimir_head_3d"] + [f"medusa_head_gaze_{i}" for i in range(8)]:
         data["heads"][key] = {"model": json.loads(read(os.path.join(ASSETS, "models", "item", key + ".json"))),
                               "tex": b64(os.path.join(ASSETS, "textures", "item", "head", key + ".png"))}
+    # Cómo se ve cada reliquia en la mano (la misma definición del ítem que usa el juego): modelo 3D o ícono.
+    data["held"] = {name: held(name) for name in ORDER}
+    # Poses de las alas de Ícaro (worn_models.ICARUS_POSES), que el visor alterna como en el juego.
+    for pose in ("folded", "flap_0", "flap_1", "flap_2", "flap_3", "glide", "dive"):
+        key = "icarus_wings_" + pose
+        data["wornModels"][key] = json.loads(read(os.path.join(ASSETS, "models", "item", key + "_worn.json")))
+        data["wornTextures"][key] = b64(os.path.join(ASSETS, "textures", "item", "worn", key + ".png"))
     template = read(os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer_template.html"))
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(template.replace("__DATA__", json.dumps(data, ensure_ascii=False)))

@@ -434,20 +434,22 @@ def turned(frm, to, color, name, pivot, rot, base=None, local=None):
     return e
 
 
-def icarus_wings():
+def icarus_wings(lift=16, back=30):
     """Alas de Ícaro, como las que Dédalo armó con plumas, hilo y cera: un arnés de cuero cruzado en la espalda con la
     placa de cera, y dos alas de ave que salen de los omóplatos echadas hacia atrás y un poco hacia arriba (giro real, no
     planchas pegadas a la espalda). Cada ala tiene el hueso de madera en el borde de ataque, una hilera de cobertoras
     blancas que tapa la base, las plumas secundarias colgando en la parte interna y las primarias largas abiertas en
     abanico en la punta, de punta oscura; goterones de cera en las uniones. Las hileras se escalonan en z (sin caras
-    coplanares) y todo queda detrás del vellocino (z < 5,35 junto al cuerpo)."""
+    coplanares) y todo queda detrás del vellocino (z < 5,35 junto al cuerpo).
+    {lift} y {back} son los grados que el ala sube y se echa hacia atrás: con ellos salen las poses de la animación
+    (ICARUS_POSES: plegadas, planeo, aleteo y picada)."""
     e = [box([6.0, 8.5, 4.75], [10.0, 13.0, 5.3], "wax", "cera"),
          box([6.6, 9.2, 4.6], [9.4, 12.2, 4.75], "wax_l", "cera clara")]
     for k, (x0, y0, x1, y1) in enumerate([(4.0, 12.6, 6.0, 13.6), (10.0, 12.6, 12.0, 13.6), (4.4, 6.2, 6.4, 7.2), (9.6, 6.2, 11.6, 7.2)]):
         e.append(box([x0, y0, 4.85], [x1, y1, 5.32], "leather", f"correa {k}"))
 
     pivot = [10.6, 12.8, 5.0]          # raíz del ala, en el omóplato izquierdo
-    rot = _mul(_rz(16), _ry(30))      # echada 30° hacia atrás y levantada 16°
+    rot = _mul(_rz(lift), _ry(back))  # echada {back}° hacia atrás y levantada {lift}°
     side = [turned([10.2, 12.3, 4.5], [23.4, 13.4, 5.2], "leather_d", "hueso", pivot, rot),
             turned([23.0, 11.9, 4.55], [24.4, 13.2, 5.15], "leather_d", "punta del hueso", pivot, rot)]
     # Cobertoras: cortas y blancas, tapan la base de las demás (las más cercanas a quien mira desde atrás).
@@ -478,6 +480,12 @@ def icarus_wings():
         side.append(turned([x, 12.0, 4.3], [x + 0.9, 12.7, 4.5], "wax", f"gota de cera {k}", pivot, rot))
         side.append(turned([x + 0.25, 11.3, 4.32], [x + 0.65, 12.0, 4.48], "wax_l", f"chorrito de cera {k}", pivot, rot))
     return e + side + [mirror(p) for p in side]
+
+
+# Poses de las alas de Ícaro (lift, back) y el valor de la propiedad mythicrelics:icarus_pose (client/IcarusPose) que
+# las elige: plegadas en el suelo, aleteo en 4 cuadros mientras subes, abiertas al planear y echadas atrás en picada.
+ICARUS_POSES = [("folded", 0, -62, 22), ("flap_0", 1, 46, 14), ("flap_1", 2, 22, 10), ("flap_2", 3, -8, 10),
+                ("flap_3", 4, -28, 16), ("glide", 5, 6, 6), ("dive", 6, 34, 58)]
 
 
 def golden_fleece():
@@ -887,6 +895,8 @@ WORN = {
     "hades_helm": (lambda: model(helm()), [attach("head", "hades_helm")]),
     # Grecia, tanda 2
     "icarus_wings": (lambda: model(icarus_wings()), [attach("body", "icarus_wings")]),
+    **{f"icarus_wings_{pose}": ((lambda lift=lift, back=back: model(icarus_wings(lift, back))), None)
+       for pose, _v, lift, back in ICARUS_POSES},
     "golden_fleece": (lambda: model(golden_fleece()), [attach("body", "golden_fleece")]),
     "cerberus_collar": (lambda: model(cerberus_collar()), [attach("body", "cerberus_collar")]),
     # Roma
@@ -950,6 +960,13 @@ if __name__ == "__main__":
             print(f"{name}: {len(m['elements'])} elementos")
             continue
         worn = {"type": "minecraft:model", "model": f"{NS}:item/{name}_worn"}
+        if name == "icarus_wings":
+            # La pose la elige el cliente según cómo se mueve quien las lleva (propiedad IcarusPose).
+            worn = {"type": "minecraft:range_dispatch", "property": f"{NS}:icarus_pose",
+                    "entries": [{"threshold": v - 0.5, "model": {"type": "minecraft:model",
+                                                                 "model": f"{NS}:item/icarus_wings_{pose}_worn"}}
+                                for pose, v, _l, _b in ICARUS_POSES],
+                    "fallback": worn}
         if name == "freyr_sword":
             # Mientras la espada pelea sola, en la espalda queda la vaina vacía (propiedad del cliente FreyrDrawn).
             worn = {"type": "minecraft:condition", "property": f"{NS}:freyr_drawn",

@@ -146,6 +146,7 @@ label.range { display: inline-flex; gap: 8px; align-items: center; color: var(--
       <button data-subject="zeus" aria-pressed="false" data-i18n="subjZeus">Rayo de Zeus</button>
       <button data-subject="freyr" aria-pressed="false" data-i18n="subjFreyr">Espada de Freyr</button>
       <button data-subject="thrown" aria-pressed="false" data-i18n="subjThrown">Armas en vuelo</button>
+      <button data-subject="held" aria-pressed="false" data-i18n="subjHeld">En la mano</button>
       <button data-subject="arsenal" aria-pressed="false" data-i18n="subjArsenal">Armas 3D</button>
       <button data-subject="heads" aria-pressed="false" data-i18n="subjHeads">Cabezas</button>
       <button data-subject="monkey" aria-pressed="false" data-i18n="subjMonkey">Mono guerrero</button>
@@ -174,9 +175,9 @@ const UI = {
     invNote: "Toca o pasa el mouse por una reliquia. El tooltip usa los colores, las líneas y los números del juego; la letra es una aproximación de la fuente de Minecraft.",
     stageTitle: "En el mundo",
     stageNote: "Modelos y texturas del mod a escala real junto a un bloque de arena (1 m). Arrastra para girar, rueda para acercar.",
-    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Halcón de Freyja", subjPegasus: "Pegaso", subjTalos: "Talos", subjZeus: "Rayo de Zeus", subjFreyr: "Espada de Freyr", subjArsenal: "Armas 3D", subjHeads: "Cabezas", subjThrown: "Armas en vuelo", subjMonkey: "Mono guerrero", subjDragon: "Long", subjPlayer: "Reliquias puestas",
+    subjScarab: "Escarabajo", subjJackal: "Chacal", subjCerberus: "Cerbero", subjSleipnir: "Sleipnir", subjRavens: "Huginn y Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Halcón de Freyja", subjPegasus: "Pegaso", subjTalos: "Talos", subjZeus: "Rayo de Zeus", subjFreyr: "Espada de Freyr", subjArsenal: "Armas 3D", subjHeld: "En la mano", subjHeads: "Cabezas", subjThrown: "Armas en vuelo", subjMonkey: "Mono guerrero", subjDragon: "Long", subjPlayer: "Reliquias puestas",
     footMonkey: "Mono guerrero de los Pelos del Rey Mono: el traje de Sun Wukong en Viaje al Oeste (gorro de alas de fénix con plumas de faisán, diadema de oro, cota de malla dorada, faldellín de tigre y botas de nube) y su bastón de hierro con aros de oro. Los ojos de fuego brillan en la oscuridad.",
-    footDragon: "El long de la Perla del dragón: dragón chino sin alas, de diez segmentos que ondulan al volar, con cuernos de ciervo, bigotes, melena y barba de llamas, garras de águila y la perla llameante delante del hocico (los ojos y la perla brillan). Se monta: el jinete va sobre el segundo segmento.",
+    footDragon: "El long de la Perla del dragón: dragón chino sin alas, de diez segmentos que ondulan al volar, con cuernos de ciervo, bigotes, melena y barba de llamas, garras de águila (los ojos brillan). Se monta: el jinete va sobre el segundo segmento.",
     walk: "Caminar", stop: "Detener", digScarab: "Salir de la arena", digJackal: "Aparecer", speed: "Velocidad de marcha",
     footScarab: "En el juego el escarabajo aparece con las partículas y el sonido del bloque que pisa; al acabar su tiempo suelta las mismas partículas y desaparece.",
     footFalcon: "El halcón en que te convierte el manto de plumas de Freyja: halcón peregrino de lomo pardo con barras, pecho claro moteado, la bigotera oscura de la cara, pico ganchudo y patas amarillas. Aletea rápido y planea entre medio.",
@@ -184,6 +185,7 @@ const UI = {
     footZeus: "El rayo de Zeus: se carga un instante y cae un rayo limpio (sin fuego) sobre el enemigo al que apuntas; después salta a los hostiles cercanos (a 3, a 5 con tormenta).",
     footFreyr: "La espada de Freyr pelea sola: envainada en la cadera, sale con un destello cuando hay combate, embiste con estela dorada, da tajos en arco y estocadas, vuelve a tu lado y se envaina a los 5 s sin combate. El movimiento es suavizado: cada paso parte de donde terminó el anterior.",
     footHeads: "La cabeza de Medusa y la de Mímir como objetos 3D (en la mano, el inventario y el suelo), con la misma forma de cráneo que las cabezas de mob. Medusa alterna con su mirada: al alzarla, los ojos se encienden. Gira la vista para mirarlas por todos lados.",
+    footHeld: "Cada reliquia de la cultura como se ve en la mano, con la misma definición del ítem que usa el juego: los modelos 3D (armas, escudos, cabezas) y el resto, el ícono con volumen. Giran despacio.",
     footArsenal: "Los modelos 3D que se ven en el aire (el ícono queda solo para el inventario): la espada de Freyr con su canal dorado que brilla, Mjölnir con su mango corto, Gungnir con las runas en la punta y el dardo de muérdago con sus hojas y bayas. Gira la vista para mirarlos por todos lados.",
     footThrown: "Armas que se lanzan: Mjölnir gira de punta a punta y vuelve, Gungnir vuela de punta, busca a su blanco y vuelve, y el dardo de muérdago (que ignora armadura) queda clavado donde cae hasta que lo recojas.",
     footTalos: "Talos, que llama su clavo de bronce: hombre de bronce de unos 3 bloques con pelo y barba de rizos, ojos de horno, pátina verde, la vena de ícor dorada que baja al tobillo y el clavo en el tobillo. Da vueltas a tu alrededor, lanza rocas y abraza al rojo.",
@@ -201,9 +203,9 @@ const UI = {
     invNote: "Tap or hover a relic. The tooltip uses the game's colors, lines and numbers; the typeface approximates Minecraft's font.",
     stageTitle: "In the world",
     stageNote: "The mod's models and textures at real scale next to a sand block (1 m). Drag to orbit, scroll to zoom.",
-    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Freyja's falcon", subjPegasus: "Pegasus", subjTalos: "Talos", subjZeus: "Zeus' thunderbolt", subjFreyr: "Sword of Freyr", subjArsenal: "3D weapons", subjHeads: "Heads", subjThrown: "Thrown weapons", subjMonkey: "Monkey warrior", subjDragon: "Long", subjPlayer: "Worn relics",
+    subjScarab: "Scarab", subjJackal: "Jackal", subjCerberus: "Cerberus", subjSleipnir: "Sleipnir", subjRavens: "Huginn and Muninn", subjShip: "Skíðblaðnir", subjFalcon: "Freyja's falcon", subjPegasus: "Pegasus", subjTalos: "Talos", subjZeus: "Zeus' thunderbolt", subjFreyr: "Sword of Freyr", subjArsenal: "3D weapons", subjHeld: "In hand", subjHeads: "Heads", subjThrown: "Thrown weapons", subjMonkey: "Monkey warrior", subjDragon: "Long", subjPlayer: "Worn relics",
     footMonkey: "Monkey warrior from the Hairs of the Monkey King: Sun Wukong's outfit in Journey to the West (phoenix-feather cap with pheasant plumes, golden fillet, golden chain mail, tiger-skin kilt and cloud-walking boots) and his iron staff with gold bands. His fiery eyes glow in the dark.",
-    footDragon: "The long of the Dragon Pearl: a wingless Chinese dragon of ten segments that undulate as it flies, with stag antlers, whiskers, a mane and beard of flames, eagle claws and the flaming pearl before its snout (eyes and pearl glow). It can be ridden: the rider sits on the second segment.",
+    footDragon: "The long of the Dragon Pearl: a wingless Chinese dragon of ten segments that undulate as it flies, with stag antlers, whiskers, a mane and beard of flames, eagle claws (its eyes glow). It can be ridden: the rider sits on the second segment.",
     walk: "Walk", stop: "Stop", digScarab: "Burrow out", digJackal: "Appear", speed: "Walk speed",
     footScarab: "In game the scarab appears with the particles and sound of the block it stands on; when its time is up it releases the same particles and vanishes.",
     footFalcon: "The falcon Freyja's feather cloak turns you into: a peregrine with a barred brown back, a pale speckled chest, the dark facial stripe, a hooked beak and yellow feet. It flaps fast and glides in between.",
@@ -211,6 +213,7 @@ const UI = {
     footZeus: "Zeus' thunderbolt: charge for an instant and clean lightning (no fire) strikes the enemy you aim at, then jumps to nearby hostiles (3, or 5 in a storm).",
     footFreyr: "The sword of Freyr fights on its own: sheathed at your hip, it flies out with a flash when combat starts, rams with a golden trail, slashes in arcs and thrusts, returns to your side and sheathes itself after 5 s out of combat. Motion is smoothed: each move starts where the last one ended.",
     footHeads: "Medusa's head and Mímir's head as 3D objects (in hand, inventory and on the ground), with the same skull shape as mob heads. Medusa alternates with her gaze: when raised, her eyes light up. Drag the view to see them from every side.",
+    footHeld: "Every relic of this culture as it looks in hand, from the same item definition the game uses: the 3D models (weapons, shields, heads) and, for the rest, the icon with volume. They turn slowly.",
     footArsenal: "The 3D models seen in flight (the icon stays in the inventory only): the sword of Freyr with its glowing golden fuller, Mjölnir with its short handle, Gungnir with the runes on its point and the mistletoe dart with its leaves and berries. Drag the view to look at them from every side.",
     footThrown: "Thrown weapons: Mjölnir tumbles end over end and comes back, Gungnir flies point first, seeks its target and comes back, and the mistletoe dart (which ignores armour) stays where it lands until you pick it up.",
     footTalos: "Talos, called by his bronze nail: a bronze man about 3 blocks tall with curly hair and beard, furnace eyes, green patina, the golden vein of ichor running down to the ankle and the nail in it. He circles you, throws rocks and hugs red-hot.",
@@ -230,9 +233,9 @@ let lang = "es_es";
 const CULTURE_HASH = { egypt: "egipto", greece: "grecia", rome: "roma", norse: "nordicos", china: "china" };
 const CULTURE_NAME = { es_es: { egypt: "Egipto", greece: "Grecia", rome: "Roma", norse: "Nórdicos", china: "China" }, en_us: { egypt: "Egypt", greece: "Greece", rome: "Rome", norse: "Norse", china: "China" } };
 const CULTURE_WORN = { egypt: ["ankh", "golden_scarab", "eye_of_horus", "mummy_wraps", "jackal_ring"],
-  greece: ["hermes_sandals", "hades_helm", "athena_aegis", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"],
+  greece: ["hermes_sandals", "hades_helm", "icarus_wings", "golden_fleece", "cerberus_collar"], rome: ["wolf_bulla"], norse: ["jarngreipr", "megingjord", "draupnir", "brisingamen"],
   china: ["five_color_stone"] };
-const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player"], greece: ["player", "cerberus", "pegasus", "talos", "zeus", "heads"], rome: ["player"], norse: ["player", "sleipnir", "ravens", "ship", "falcon", "freyr", "thrown", "arsenal", "heads"], china: ["player", "monkey", "dragon"] };
+const CULTURE_SUBJECTS = { egypt: ["scarab", "jackal", "player", "held"], greece: ["player", "held", "cerberus", "pegasus", "talos", "zeus", "heads"], rome: ["player", "held"], norse: ["player", "held", "sleipnir", "ravens", "ship", "falcon", "freyr", "thrown", "arsenal", "heads"], china: ["player", "held", "monkey", "dragon"] };
 function cultureFromHash() {
   const h = location.hash.replace("#", "");
   return Object.keys(CULTURE_HASH).find(c => CULTURE_HASH[c] === h);
@@ -763,9 +766,9 @@ function wornMat(name) {
   if (!WORN_MATS[name]) WORN_MATS[name] = new THREE.MeshLambertMaterial({ map: texFromB64(b64), alphaTest: 0.1 });
   return WORN_MATS[name];
 }
-function wornMeshes(name) {
+function wornMeshes(name, cfgName = name) {
   const out = [];
-  const cfg = DATA.trinkets[name];
+  const cfg = DATA.trinkets[cfgName];
   const modelJson = DATA.wornModels[name];
   if (!cfg || !modelJson) return out;
   for (const r of cfg.render) {
@@ -784,8 +787,27 @@ const TRINKETS = Object.keys(DATA.trinkets);
 const worn = {};
 const wearing = new Set(CULTURE_WORN[culture]);
 for (const name of TRINKETS) worn[name] = wornMeshes(name);
+/* Alas de Ícaro: como en el juego (client/IcarusPose), plegadas en el suelo, aleteo al subir, abiertas al planear y
+   echadas atrás en picada. Aquí pasan en ciclo: suelo, salto aleteando, planeo y picada. */
+const ICARUS_POSES = ["folded", "flap_0", "flap_1", "flap_2", "flap_3", "glide", "dive"];
+const icarusPose = {};
+for (const p of ICARUS_POSES) if (DATA.wornModels["icarus_wings_" + p]) icarusPose[p] = wornMeshes("icarus_wings_" + p, "icarus_wings");
+function icarusPoseAt(t) {
+  const c = t % 7;
+  if (c < 1.5) return "folded";
+  if (c < 3.3) return "flap_" + (Math.floor(c * 10) % 4);
+  if (c < 6.0) return "glide";
+  return "dive";
+}
+function applyIcarus(now) {
+  const on = wearing.has("icarus_wings") && Object.keys(icarusPose).length > 0;
+  if (worn.icarus_wings) for (const m of worn.icarus_wings) m.visible = wearing.has("icarus_wings") && !on;
+  const pose = icarusPoseAt(now / 1000);
+  for (const [p, ms] of Object.entries(icarusPose)) for (const m of ms) m.visible = on && p === pose;
+}
 function applyWorn() {
   for (const name of TRINKETS) for (const m of worn[name]) m.visible = wearing.has(name);
+  applyIcarus(performance.now());
 }
 function buildWornControls() {
   const box = document.getElementById("wornControls");
@@ -880,7 +902,6 @@ function setupAnim() {
     addRot(D["seg4_leg_" + s], Math.sin(t * 2 + (s === "r" ? 1.6 : 0)) * 0.35 * k);
   }
   addRot(D.tuft, 0, Math.sin(t * 1.3 - 6.6) * 0.3 * k);
-  D.pearl.rotation.y = t * 1.5;
   dragon.entity.position.y = 1.2 + Math.sin(t * 1.2) * 0.12;
   const kt = age / 20;
   // Cuervos: posados mirando a la cámara; cada 8 s uno de los dos da una vuelta volando y se vuelve a posar.
@@ -982,6 +1003,7 @@ const VIEWS = {
   freyr: { cam: [-3.6, 2.3, 4.6], target: [0, 1.0, -1.2] },
   thrown: { cam: [4.8, 2.6, 2.4], target: [0, 1.3, -2.2] },
   arsenal: { cam: [0, 1.5, 3.3], target: [0, 1.2, 0] },
+  held: { cam: [0, 1.4, 7.2], target: [0, 1.25, 0] },
   heads: { cam: [0, 1.4, 2.2], target: [0, 1.2, 0] },
   player: { cam: [1.2, 1.6, 2.6], target: [0, 1.05, 0] },
 };
@@ -1015,7 +1037,7 @@ function setSubject(s) {
   renderStageText();
 }
 function renderStageText() {
-  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", ravens: "footRavens", ship: "footShip", falcon: "footFalcon", pegasus: "footPegasus", talos: "footTalos", zeus: "footZeus", freyr: "footFreyr", thrown: "footThrown", arsenal: "footArsenal", heads: "footHeads", player: "footPlayer" }[subject];
+  const foot = { scarab: "footScarab", jackal: "footJackal", cerberus: "footCerberus", sleipnir: "footSleipnir", monkey: "footMonkey", dragon: "footDragon", ravens: "footRavens", ship: "footShip", falcon: "footFalcon", pegasus: "footPegasus", talos: "footTalos", zeus: "footZeus", freyr: "footFreyr", thrown: "footThrown", arsenal: "footArsenal", held: "footHeld", heads: "footHeads", player: "footPlayer" }[subject];
   document.getElementById("stageFoot").textContent = UI[lang][foot];
   document.getElementById("btnDig").textContent = UI[lang][subject === "scarab" ? "digScarab" : "digJackal"];
   buildWornControls();
@@ -1308,7 +1330,43 @@ try { (function arsenalScene() {
   SPECIAL.arsenal = { group, reset, update };
 })(); } catch (e) { console.error("escena arsenal", e); }
 
-/* Cabezas de Medusa y de Mímir (modelos de ítem 3D): giran despacio; Medusa alterna con su mirada encendida. */
+/* En la mano: cada reliquia de la cultura con el modelo que el juego usa en la mano (DATA.held), en filas, girando. */
+try { (function heldScene() {
+  const group = new THREE.Group(); scene.add(group); group.visible = false;
+  const MATS = {};
+  let shown = [], builtFor = null, t = 0;
+  function heldObject(name) {
+    const h = DATA.held[name], g = new THREE.Group();
+    if (!h || h.kind === "icon") { g.add(iconMesh(name, 0.8, h && h.diagonal)); return g; }
+    if (!MATS[name]) MATS[name] = new THREE.MeshLambertMaterial({ map: texFromB64(h.tex), alphaTest: 0.1 });
+    const inner = new THREE.Group(); g.add(inner);
+    for (const el of h.elements) inner.add(elementMesh(el, MATS[name]));
+    // Los modelos van de -16 a 32 px: se encogen para que todos quepan en su lugar de la vitrina.
+    const box = new THREE.Box3().setFromObject(inner), size = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3());
+    inner.position.sub(c); g.scale.setScalar(0.85 / Math.max(size.x, size.y, size.z, 0.01));
+    return g;
+  }
+  function build() {
+    for (const o of shown) group.remove(o);
+    shown = [];
+    const names = items(), cols = Math.min(7, names.length), rows = Math.ceil(names.length / cols);
+    names.forEach((n, i) => {
+      const o = heldObject(n), col = i % cols, row = Math.floor(i / cols);
+      o.position.set((col - (cols - 1) / 2) * 1.0, 1.25 + ((rows - 1) / 2 - row) * 1.0, 0);
+      group.add(o); shown.push(o);
+    });
+    builtFor = culture;
+  }
+  function reset() { t = 0; if (builtFor !== culture) build(); }
+  function update(dt) {
+    if (builtFor !== culture) build();
+    t += dt; shown.forEach((o, i) => { o.rotation.y = t * 0.7 + i * 0.4; });
+  }
+  SPECIAL.held = { group, reset, update };
+})(); } catch (e) { console.error("escena held", e); }
+
+/* Cabezas de Medusa y de Mímir (modelos de ítem 3D): giran despacio; Medusa alterna con su mirada encendida, con las
+   serpientes retorciéndose (los 8 cuadros de use_cycle, 2 ticks cada uno, como en el juego). */
 try { (function headsScene() {
   const group = new THREE.Group(); scene.add(group); group.visible = false;
   function headModel(key) {
@@ -1319,14 +1377,16 @@ try { (function headsScene() {
     inner.position.set(0, 0.25, 0);   // el cráneo va de y 0 a 8: se centra a media altura
     g.scale.setScalar(1.3); group.add(g); return g;
   }
-  const medusa = headModel("medusa_head_3d"), gaze = headModel("medusa_head_gaze"), mimir = headModel("mimir_head_3d");
-  medusa.position.set(-0.55, 1.0, 0); gaze.position.copy(medusa.position); mimir.position.set(0.55, 1.0, 0);
+  const medusa = headModel("medusa_head_3d"), mimir = headModel("mimir_head_3d");
+  const frames = []; for (let i = 0; i < 8; i++) frames.push(headModel("medusa_head_gaze_" + i));
+  medusa.position.set(-0.55, 1.0, 0); for (const f of frames) f.position.copy(medusa.position); mimir.position.set(0.55, 1.0, 0);
   let t = 0;
   function reset() { t = 0; }
   function update(dt) {
     t += dt; const r = Math.sin(t * 0.6) * 0.9;
-    for (const h of [medusa, gaze, mimir]) h.rotation.y = r;
-    const on = Math.floor(t / 2) % 2 === 1; medusa.visible = !on; gaze.visible = on;
+    for (const h of [medusa, mimir, ...frames]) h.rotation.y = r;
+    const on = Math.floor(t / 3) % 2 === 1, frame = Math.floor(t * 10) % 8;
+    medusa.visible = !on; frames.forEach((f, i) => { f.visible = on && i === frame; });
   }
   SPECIAL.heads = { group, reset, update };
 })(); } catch (e) { console.error("escena heads", e); }
@@ -1363,6 +1423,7 @@ function loop(now) {
     }
   }
   setupAnim();
+  applyIcarus(now);
   updateSpecial(now);
   controls.update();
   renderer.render(scene, camera);

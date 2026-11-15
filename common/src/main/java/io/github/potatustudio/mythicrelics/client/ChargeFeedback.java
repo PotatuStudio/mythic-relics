@@ -68,7 +68,10 @@ public final class ChargeFeedback {
 							(r.nextDouble() - 0.5) * 0.4);
 				}
 				client.level.addParticle(ParticleTypes.END_ROD, at.x, at.y, at.z, 0, 0.05, 0);
-				client.level.playLocalSound(at.x, at.y, at.z, ready(stack), SoundSource.PLAYERS, 0.8f, 1.4f, false);
+				// Mjölnir se carga a cada rato: su aviso es un chasquido eléctrico suave, no un trueno.
+				boolean mjolnir = stack.is(ModItems.MJOLNIR.get());
+				client.level.playLocalSound(at.x, at.y, at.z, ready(stack), SoundSource.PLAYERS, mjolnir ? 0.45f : 0.8f,
+						mjolnir ? 1.2f : 1.4f, false);
 			}
 		}
 	}
@@ -101,7 +104,10 @@ public final class ChargeFeedback {
 	}
 
 	private static SoundEvent ready(ItemStack stack) {
-		if (stack.is(ModItems.ZEUS_THUNDERBOLT.get()) || stack.is(ModItems.MJOLNIR.get())) {
+		if (stack.is(ModItems.MJOLNIR.get())) {
+			return SoundEvents.COPPER_BULB_TURN_ON;
+		}
+		if (stack.is(ModItems.ZEUS_THUNDERBOLT.get())) {
 			return SoundEvents.TRIDENT_THUNDER.value();
 		}
 		return SoundEvents.AMETHYST_BLOCK_CHIME;

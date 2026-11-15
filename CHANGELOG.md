@@ -35,6 +35,17 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
   - Disco solar de Ra rediseñado: Ra renace (cada amanecer te cura del todo y te quita los efectos negativos) y Ojo de
     Ra (con 6 corazones o menos estalla: 12 de daño, fuego y ceguera a los hostiles a 8 bloques; recarga 90 s). Se quitan
     el +30 % a no-muertos bajo el sol y el ureo.
+- Séptima ronda (2026-11-15):
+  - Armas 3D en la mano con la referencia de la espada vanilla: el Ruyi (chico y estirado) y Mjölnir van en la misma
+    diagonal, con el agarre en el mango y las posiciones de mano de `item/handheld` (`tools/model-gen/handheld3d.py`).
+  - Hinojo de Prometeo: la luz se mueve cada tick, la nueva se pone antes de quitar la anterior (sin parpadeo) y, si a
+    la altura de los ojos hay algas o pasto marino, prueba los bloques de al lado (no se apaga).
+  - Égida de Atenea: el gorgoneion es la misma cabeza de Medusa de la reliquia, en relieve sobre la placa.
+  - Cabeza de Medusa: al alzarla, las serpientes se retuercen y sacan la lengua (8 cuadros con `use_cycle`).
+  - Alas de Ícaro: plegadas en el suelo, aletean al subir, se abren al planear y se echan atrás en picada (propiedad
+    de cliente `mythicrelics:icarus_pose`).
+  - Mjölnir: la carga suena con un chasquido eléctrico suave (antes, trueno) y la vuelta a la mano suena más bajo.
+  - Visor: arreglado el error que lo dejaba sin 3D (la perla del dragón) y nueva vitrina «En la mano» por cultura.
 
 ### Removed
 - Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del
