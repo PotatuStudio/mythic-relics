@@ -123,7 +123,7 @@ public class PegasusModel extends EntityModel<LivingEntityRenderState> {
 		// Aleteo (en el aire): brazo, antebrazo y mano con la misma onda, cada tramo más atrasado, así la mano llega
 		// tarde y el ala se curva como un látigo. El brazo baja más de lo que sube para que las puntas no se crucen
 		// sobre el lomo.
-		float beat = t * 0.55f;
+		float beat = t * 0.36f;   // unos 1,15 aletazos por segundo (el usuario lo vio muy rápido a 0,55)
 		float arm = (-0.1f + 0.6f * Mth.sin(beat)) * air;
 		float forearm = 0.35f * Mth.sin(beat - 0.6f) * air;
 		float hand = 0.3f * Mth.sin(beat - 1.2f) * air;

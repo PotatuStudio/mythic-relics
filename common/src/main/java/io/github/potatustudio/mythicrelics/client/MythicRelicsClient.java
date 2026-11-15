@@ -37,6 +37,7 @@ public final class MythicRelicsClient {
 	}
 
 	public static void init() {
+		HeldLightClient.init();
 		EntityModelLayerRegistry.register(ScarabModel.LAYER, ScarabModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.SCARAB, ScarabRenderer::new);
 		EntityModelLayerRegistry.register(JackalModel.LAYER, JackalModel::createBodyLayer);

@@ -318,7 +318,7 @@ Más tarde Hermes se la entregó a Perseo, que con ella cortó la cabeza de Medu
 - Clic derecho: llama a Pegaso, caballo alado propio, y te monta
 - Mantén el salto para subir y suéltalo para planear; mirando hacia abajo, en picada embiste (12 de daño)
 - Sobre la altura 200, el tábano de Zeus lo pica y te tira (caes lento)
-- Se va al bajarte. Si muere, vuelve en 5 min
+- Se va al bajarte o al tocar el agua (te desmonta). Si muere, vuelve en 5 min
 
 **Mito.** Belerofonte durmió en el templo de Atenea y la diosa le dio en sueños una brida de oro; con ella montó a Pegaso, el caballo alado nacido del cuello de Medusa.  
 Juntos mataron a la Quimera, pero cuando quiso subir al Olimpo, Zeus mandó un tábano que hizo caer a Belerofonte.

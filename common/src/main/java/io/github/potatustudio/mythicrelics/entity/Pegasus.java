@@ -55,6 +55,9 @@ public class Pegasus extends PathfinderMob {
 	private final Map<UUID, Long> diveHits = new HashMap<>();
 	/** Solo en el cliente: cuánto está «en el aire» el modelo (0 suelo, 1 vuelo), suavizado para que no cambie de golpe. */
 	public float airAnim;
+	/** Ticks seguidos en el aire (solo en el servidor) y los que hacen falta para contar como vuelo. */
+	private int airTicks;
+	private static final int AIR_TICKS_TO_FLY = 6;
 	public float airAnimO;
 
 	public Pegasus(EntityType<? extends Pegasus> type, Level level) {
@@ -178,7 +181,16 @@ public class Pegasus extends PathfinderMob {
 			}
 			return;
 		}
-		entityData.set(FLYING, !onGround() && !isInWater());
+		// Cuenta como vuelo solo si lleva unos ticks en el aire: al caminar, un escalón o un saltito lo despegan un tick
+		// del suelo y las alas se abrían y cerraban a medias (parecía que nadaba). Al tocar el suelo aterriza al instante.
+		// Pegaso no entra al agua: al tocarla desmonta al jinete y vuelve al cielo (no se puede volar ni planear en el agua).
+		if (isInWater()) {
+			ejectPassengers();
+			vanish(level);
+			return;
+		}
+		airTicks = onGround() ? 0 : airTicks + 1;
+		entityData.set(FLYING, airTicks > AIR_TICKS_TO_FLY);
 		if (getFirstPassenger() instanceof Player rider) {
 			riderless = 0;
 			rider.resetFallDistance();
@@ -190,11 +202,16 @@ public class Pegasus extends PathfinderMob {
 			return;
 		}
 		if (++riderless >= GreeceLegends.PEGASUS_LEAVE_TICKS) {
-			level.sendParticles(ParticleTypes.CLOUD, getX(), getY() + 1.0, getZ(), 50, 1.0, 0.8, 1.0, 0.03);
-			level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 1.0, getZ(), 20, 0.8, 0.6, 0.8, 0.05);
-			level.playSound(null, getX(), getY(), getZ(), SoundEvents.PHANTOM_FLAP, getSoundSource(), 1.5f, 1.4f);
-			discard();
+			vanish(level);
 		}
+	}
+
+	/** Vuelve al cielo: nube, destellos y un aletazo. */
+	private void vanish(ServerLevel level) {
+		level.sendParticles(ParticleTypes.CLOUD, getX(), getY() + 1.0, getZ(), 50, 1.0, 0.8, 1.0, 0.03);
+		level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 1.0, getZ(), 20, 0.8, 0.6, 0.8, 0.05);
+		level.playSound(null, getX(), getY(), getZ(), SoundEvents.PHANTOM_FLAP, getSoundSource(), 1.5f, 1.4f);
+		discard();
 	}
 
 	/** En picada (bajando rápido), embiste a los mobs que toca. */

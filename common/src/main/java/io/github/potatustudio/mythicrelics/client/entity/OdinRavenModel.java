@@ -3,6 +3,7 @@ package io.github.potatustudio.mythicrelics.client.entity;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.client.entity.geometry.OdinRavenGeometry;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -50,7 +51,8 @@ public class OdinRavenModel extends EntityModel<LivingEntityRenderState> {
 	private final float[] tailRest = new float[5];
 
 	public OdinRavenModel(ModelPart root) {
-		super(root);
+		// Con descarte de caras traseras: las plumas son planos de grosor 0 y sin él sus dos caras parpadean.
+		super(root, RenderTypes::entityCutout);
 		head = root.getChild("head");
 		ModelPart body = root.getChild("body");
 		for (int s = 0; s < 2; s++) {

@@ -41,6 +41,12 @@ SKULL_DISPLAY = {
 }
 
 
+# Alzada (mirada): se sostiene al frente como un escudo, con la cara hacia donde mira el jugador. Con la de reposo, la
+# cara quedaba de costado en tercera persona.
+GAZE_DISPLAY = {**SKULL_DISPLAY,
+                "thirdperson_righthand": {"rotation": [10, 135, 0], "translation": [0, 3, 1], "scale": [0.6, 0.6, 0.6]}}
+
+
 def box(frm, to, color, name="", light=0):
     e = {"name": name, "from": [round(v, 3) for v in frm], "to": [round(v, 3) for v in to],
          "faces": {f: {} for f in ("north", "south", "east", "west", "up", "down")}, "__color": color}
@@ -171,14 +177,14 @@ def write(path, data):
         f.write("\n")
 
 
-def build(name, elements):
+def build(name, elements, display=None):
     m, img = worn_texture.texture(name, elements, PAL, NS)
     for el in m["elements"]:
         el.pop("__color", None)
         for face in el["faces"].values():
             face["texture"] = "#t"
     m["textures"] = {"t": f"{NS}:item/head/{name}", "particle": f"{NS}:item/head/{name}"}
-    m["display"] = SKULL_DISPLAY
+    m["display"] = display or SKULL_DISPLAY
     m["gui_light"] = "front"
     img.save(os.path.join(ASSETS, "textures", "item", "head", name + ".png"))
     write(os.path.join(ASSETS, "models", "item", name + ".json"), m)
@@ -190,7 +196,7 @@ if __name__ == "__main__":
     build("medusa_head_3d", medusa())
     # Alzada: los ojos se encienden y las serpientes se retuercen, en GAZE_FRAMES cuadros que pasan con use_cycle.
     for i in range(GAZE_FRAMES):
-        build(f"medusa_head_gaze_{i}", medusa(gaze=True, phase=2 * math.pi * i / GAZE_FRAMES))
+        build(f"medusa_head_gaze_{i}", medusa(gaze=True, phase=2 * math.pi * i / GAZE_FRAMES), GAZE_DISPLAY)
     old = os.path.join(ASSETS, "models", "item", "medusa_head_gaze.json")
     for f in (old, os.path.join(ASSETS, "textures", "item", "head", "medusa_head_gaze.png")):
         if os.path.exists(f):

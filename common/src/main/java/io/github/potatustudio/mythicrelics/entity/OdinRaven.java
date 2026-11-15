@@ -28,8 +28,14 @@ import org.jspecify.annotations.Nullable;
  */
 public class OdinRaven extends Mob {
 	private static final EntityDataAccessor<Boolean> PERCHED = SynchedEntityData.defineId(OdinRaven.class, EntityDataSerializers.BOOLEAN);
-	private static final double LEAVE_DISTANCE = 11.0;
+	/** Se posan lejos, a la vista pero sin estar encima del dueño, y cambian de percha cuando él se aleja. */
+	private static final double PERCH_MIN = 8.0;
+	private static final double PERCH_SPREAD = 6.0;
+	private static final double LEAVE_DISTANCE = 18.0;
 	private static final double FLY_SPEED = 0.45;
+	/** Si se quedan muy atrás, vuelan más rápido; si se pierden (más de 40 bloques), reaparecen cerca del dueño. */
+	private static final double CATCH_UP_DISTANCE = 14.0;
+	private static final double LOST_DISTANCE = 40.0;
 
 	private @Nullable UUID owner;
 	private int index;
@@ -64,7 +70,7 @@ public class OdinRaven extends Mob {
 	/** Un lugar donde posarse cerca del dueño: lo más alto que haya en esa columna (copa de árbol, muro o suelo). */
 	private Vec3 findPerch(ServerLevel level, Player player) {
 		double a = random.nextDouble() * Math.PI * 2 + index * Math.PI;
-		double r = 4 + random.nextDouble() * 3;
+		double r = PERCH_MIN + random.nextDouble() * PERCH_SPREAD;
 		int x = Mth.floor(player.getX() + Math.cos(a) * r);
 		int z = Mth.floor(player.getZ() + Math.sin(a) * r);
 		int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
@@ -87,9 +93,16 @@ public class OdinRaven extends Mob {
 			return;
 		}
 		Player player = owner == null ? null : level.getPlayerByUUID(owner);
-		if (player == null || !player.isAlive() || player.level() != level || player.distanceToSqr(this) > 64 * 64) {
+		if (player == null || !player.isAlive() || player.level() != level) {
 			discard();
 			return;
+		}
+		// Se perdieron (el dueño corrió, voló o se teletransportó): vuelven a aparecer a su alrededor, en una percha nueva.
+		if (player.distanceToSqr(this) > LOST_DISTANCE * LOST_DISTANCE) {
+			perch = findPerch(level, player);
+			level.sendParticles(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.3, getZ(), 6, 0.2, 0.2, 0.2, 0.01);
+			setPos(perch.x, perch.y + 3.0, perch.z);
+			level.sendParticles(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.3, getZ(), 6, 0.2, 0.2, 0.2, 0.01);
 		}
 		if (perch == null || perch.distanceToSqr(player.position()) > LEAVE_DISTANCE * LEAVE_DISTANCE) {
 			perch = findPerch(level, player);
@@ -99,7 +112,8 @@ public class OdinRaven extends Mob {
 		double dist = to.length();
 		if (dist > 0.15) {
 			// Vuela en arco: sube un poco a mitad de camino.
-			Vec3 step = to.normalize().scale(Math.min(FLY_SPEED, dist)).add(0, dist > 2 ? 0.08 : 0, 0);
+			double speed = dist > CATCH_UP_DISTANCE ? FLY_SPEED * 2.2 : FLY_SPEED;
+			Vec3 step = to.normalize().scale(Math.min(speed, dist)).add(0, dist > 2 ? 0.08 : 0, 0);
 			setDeltaMovement(Vec3.ZERO);
 			setPos(getX() + step.x, getY() + step.y, getZ() + step.z);
 			face(step.x, step.z);

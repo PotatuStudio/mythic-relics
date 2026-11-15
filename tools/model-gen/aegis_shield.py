@@ -24,7 +24,7 @@ NAME = "athena_aegis_3d"
 # Medusa sobre la placa: escala de la cara y profundidad del relieve; el cráneo (x 4..12, y 0..8, z 4..12) se centra en
 # el escudo y su nuca queda apoyada en el frente de la placa.
 FACE_SCALE = 0.6
-DEPTH_SCALE = 0.3
+DEPTH_SCALE = 0.1
 HEAD_CENTER = (8.0, 4.6)
 PLATE_FRONT = 2.2
 

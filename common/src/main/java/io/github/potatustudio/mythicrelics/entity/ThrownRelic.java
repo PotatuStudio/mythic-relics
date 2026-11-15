@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
@@ -39,6 +40,12 @@ import org.jspecify.annotations.Nullable;
  * rayo en tormenta o con el set de Thor. Gungnir persigue al mob al que se apuntó (lo elige {@code ThrownRelicItem}).
  */
 public class ThrownRelic extends AbstractArrow implements ItemSupplier {
+	/** Al pegar en un bloque: Mjölnir golpea como una maza pesada; las lanzas, como el tridente (nunca como una flecha). */
+	@Override
+	protected SoundEvent getDefaultHitGroundSoundEvent() {
+		return isMjolnir() ? SoundEvents.MACE_SMASH_GROUND : SoundEvents.TRIDENT_HIT_GROUND;
+	}
+
 	private static final EntityDataAccessor<ItemStack> ITEM = SynchedEntityData.defineId(ThrownRelic.class, EntityDataSerializers.ITEM_STACK);
 	private static final int RETURN_SPEED = 3;
 

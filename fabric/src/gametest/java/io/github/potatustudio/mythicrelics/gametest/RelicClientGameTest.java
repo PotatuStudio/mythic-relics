@@ -434,7 +434,7 @@ public class RelicClientGameTest implements FabricClientGameTest {
 	private void vanillaShield(ClientGameTestContext ctx, TestServerContext srv) {
 		reset(ctx, srv);
 		place(srv, 0.5, 0.5, 0, 6);
-		for (String id : List.of("minecraft:shield", "mythicrelics:achilles_shield", "mythicrelics:ancile", "mythicrelics:athena_aegis")) {
+		for (String id : List.of("minecraft:shield", "mythicrelics:achilles_shield", "mythicrelics:ancile", "mythicrelics:athena_aegis", "mythicrelics:medusa_head")) {
 			srv.runOnServer(s -> player(s).setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
 					new ItemStack(BuiltInRegistries.ITEM.getValue(net.minecraft.resources.Identifier.parse(id)))));
 			String n = id.substring(id.indexOf(':') + 1);

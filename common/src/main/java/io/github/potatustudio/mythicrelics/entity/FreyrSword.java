@@ -46,6 +46,8 @@ public class FreyrSword extends Mob {
 	private static final int SLASH_TICKS = 11;
 	private static final int THRUST_TICKS = 10;
 	private static final int GUARD_TICKS = 8;
+	/** Guardia después de un golpe: con ella pega cada ~52 ticks (2,6 s) en lugar de cada ~26. */
+	private static final int GUARD_REST_TICKS = 34;
 	private static final int SHEATHE_TICKS = 14;
 
 	private @Nullable UUID owner;
@@ -230,7 +232,7 @@ public class FreyrSword extends Mob {
 				} else {
 					idle = 0;
 				}
-				if (next != null && stateTicks >= GUARD_TICKS) {
+				if (next != null && stateTicks >= (attacks > 0 ? GUARD_REST_TICKS : GUARD_TICKS)) {
 					target = next;
 					setState(DASH);
 				}
