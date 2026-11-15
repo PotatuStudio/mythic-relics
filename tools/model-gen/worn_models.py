@@ -616,49 +616,100 @@ def cerberus_collar():
 
 
 def wind_fire_wheels():
-    """En cada pierna, a la altura del tobillo (el pie llega a y 2): un aro de oro con cuatro rayos hacia afuera y
-    lenguas de fuego detrás (hacia atrás es z bajo)."""
-    y0, y1 = 2.2, 3.2
-    e = ring(4.6, 11.4, y0, y1, 4.6, 11.4, 0.8, "gold", "aro")
-    e += [box([5.6, y0 - 0.2, 4.0], [7.2, y1 + 0.2, 4.6], "gold_d", "rayo atrás der."),
-          box([8.8, y0 - 0.2, 4.0], [10.4, y1 + 0.2, 4.6], "gold_d", "rayo atrás izq."),
-          box([4.0, y0 - 0.2, 7.4], [4.6, y1 + 0.2, 8.6], "gold_d", "rayo der."),
-          box([11.4, y0 - 0.2, 7.4], [12.0, y1 + 0.2, 8.6], "gold_d", "rayo izq.")]
-    for i, (x0, h) in enumerate([(5.0, 2.4), (6.6, 3.4), (8.2, 2.8), (9.8, 3.6)]):
-        e.append(box([x0, y1, 3.5], [x0 + 1.2, y1 + h, 4.3], "sun" if i % 2 else "ember", "llama"))
-        e.append(box([x0 + 0.3, y1 + h, 3.6], [x0 + 0.9, y1 + h + 0.8, 4.2], "amber", "punta de llama"))
+    """Ruedas de viento y fuego de Nezha, en cada tobillo (el pie llega a y 2): una rueda octogonal de oro que rodea el
+    tobillo, con aro interior rojo, ocho rayos hacia el pie y lenguas de fuego que salen del borde echadas hacia afuera
+    y hacia atrás (más altas atrás, como si giraran a toda velocidad)."""
+    e = []
+    cx, cz, r, y0, y1 = 8.0, 8.0, 4.0, 2.1, 3.0
+    for i in range(8):
+        a = i * 45
+        rad = math.radians(a)
+        mx, mz = cx + r * math.cos(rad), cz + r * math.sin(rad)
+        # Llanta: tramo tangente; aro rojo por dentro; rayo hacia el centro.
+        e.append(turned([mx - 1.75, y0, mz - 0.4], [mx + 1.75, y1, mz + 0.4], "gold", f"llanta {i}", [mx, (y0 + y1) / 2, mz],
+                        _ry(-a + 90)))
+        ix, iz = cx + (r - 0.8) * math.cos(rad), cz + (r - 0.8) * math.sin(rad)
+        e.append(turned([ix - 1.3, y0 + 0.2, iz - 0.2], [ix + 1.3, y1 - 0.2, iz + 0.2], "sun_d", f"aro rojo {i}",
+                        [ix, (y0 + y1) / 2, iz], _ry(-a + 90)))
+        # Llama: más alta atrás (z bajo), inclinada hacia afuera del borde.
+        back = 0.5 - 0.5 * math.sin(rad)          # 1 atrás, 0 adelante
+        h = 1.6 + 2.2 * back
+        fx, fz = cx + (r + 0.2) * math.cos(rad), cz + (r + 0.2) * math.sin(rad)
+        out = _mul(_ry(-a), _rz(-20))
+        e.append(turned([fx - 0.45, y1, fz - 0.45], [fx + 0.45, y1 + h, fz + 0.45], "ember" if i % 2 else "sun",
+                        f"llama {i}", [fx, y1, fz], out))
+        e.append(turned([fx - 0.3, y1 + h, fz - 0.3], [fx + 0.3, y1 + h + 0.7, fz + 0.3], "amber", f"punta de llama {i}",
+                        [fx, y1, fz], out))
     return e
 
 
 def five_color_stone():
-    """Cordón de seda roja a la cintura con la piedra de Nüwa al frente: verde azulada con vetas de los otros cuatro
-    colores (amarillo, blanco, rojo y negro)."""
-    e = ring(3.45, 12.55, 2.6, 3.4, 5.45, 10.55, 0.5, "crest", "cordón")
-    e += [box([6.8, 1.0, 10.55], [9.2, 3.6, 11.35], "turq", "piedra"),
-          box([7.1, 1.4, 11.35], [7.8, 2.2, 11.55], "amber", "veta amarilla"),
-          box([8.1, 2.4, 11.35], [8.9, 3.2, 11.55], "white", "veta blanca"),
-          box([7.2, 2.6, 11.35], [7.8, 3.2, 11.55], "ruby", "veta roja"),
-          box([8.2, 1.4, 11.35], [8.9, 2.0, 11.55], "onyx", "veta negra"),
-          box([7.6, 3.6, 10.6], [8.4, 4.2, 11.1], "gold", "engarce")]
+    """La piedra de cinco colores de Nüwa, con la que remendó el cielo: un cordón grueso de seda roja a la cintura,
+    anudado al frente con dos borlas que cuelgan, y la piedra engastada en oro debajo del nudo: verde azulada, con vetas
+    de los otros cuatro colores (amarillo, blanco, rojo y negro) en relieve."""
+    e = ring(3.45, 12.55, 2.4, 3.5, 5.45, 10.55, 0.55, "crest", "cordón")
+    e += [box([3.4, 2.75, 5.4], [12.6, 3.15, 10.6], "crest_d", "trenzado"),
+          box([6.9, 2.2, 10.55], [9.1, 3.8, 11.2], "crest", "nudo"),
+          box([7.4, 2.5, 11.2], [8.6, 3.5, 11.4], "crest_d", "centro del nudo")]
+    for side, x in (("der.", 6.2), ("izq.", 9.2)):
+        e += [box([x, 0.4, 10.6], [x + 0.6, 2.2, 11.0], "crest", f"cordón de la borla {side}"),
+              box([x - 0.15, -0.8, 10.55], [x + 0.75, 0.4, 11.05], "gold", f"borla {side}"),
+              box([x - 0.05, -1.6, 10.6], [x + 0.65, -0.8, 11.0], "sun", f"flecos {side}")]
+    # Piedra en su engaste de oro, bajo el nudo.
+    e += [box([7.0, -0.4, 10.6], [9.0, 2.2, 11.5], "turq", "piedra"),
+          box([6.8, -0.1, 10.65], [9.2, 1.9, 11.4], "turq", "piedra ancha"),
+          box([6.7, 0.9, 10.62], [9.3, 1.2, 11.45], "gold", "engaste"),
+          box([7.6, 2.0, 10.62], [8.4, 2.4, 11.2], "gold", "garra del engaste"),
+          box([7.2, 1.3, 11.5], [7.9, 1.9, 11.65], "amber", "veta amarilla"),
+          box([8.1, 1.4, 11.5], [8.8, 1.8, 11.62], "white", "veta blanca"),
+          box([7.3, 0.0, 11.5], [7.9, 0.7, 11.62], "ruby", "veta roja"),
+          box([8.2, -0.1, 11.5], [8.8, 0.6, 11.6], "onyx", "veta negra"),
+          box([7.9, 0.6, 11.5], [8.3, 1.1, 11.66], "turq_l", "brillo")]
     return e
 
 
 def erlang_eye():
-    """Cabeza (4..12, frente en z 12): diadema de oro alrededor de la frente y el tercer ojo vertical al frente, con iris
-    de oro y pupila oscura (Erlang Shen)."""
+    """El tercer ojo de Erlang Shen: diadema de oro con una placa labrada al centro, dos alas de oro que se levantan a
+    los lados (como su tocado) y, en la frente, el ojo vertical en forma de almendra con borde rojo, pestañas oscuras,
+    iris de oro y pupila. Cabeza 4..12, frente en z 12."""
     e = ring(3.25, 12.75, 9.65, 10.65, 3.25, 12.75, 0.6, "gold", "diadema")
-    e += [box([7.3, 9.05, 12.75], [8.7, 11.85, 12.95], "white", "ojo"),
-          box([7.6, 9.65, 12.95], [8.4, 11.25, 13.1], "gold_l", "iris"),
-          box([7.85, 10.05, 13.1], [8.15, 10.85, 13.2], "onyx", "pupila")]
+    e += [box([3.15, 10.65, 3.15], [12.85, 10.95, 12.85], "gold_d", "filo de arriba"),
+          box([6.4, 9.4, 12.75], [9.6, 12.4, 12.95], "gold_d", "placa"),
+          box([6.8, 12.4, 12.8], [9.2, 13.0, 12.95], "gold", "remate"),
+          box([7.6, 13.0, 12.82], [8.4, 13.6, 12.95], "gold_l", "punta del remate")]
+    # Ojo en almendra (vertical): borde rojo, blanco, iris y pupila, pestañas arriba y abajo.
+    e += [box([7.2, 9.6, 12.95], [8.8, 12.2, 13.11], "crest", "borde del ojo"),
+          box([7.0, 10.2, 12.95], [9.0, 11.6, 13.08], "crest", "borde ancho"),
+          box([7.4, 9.9, 13.1], [8.6, 11.9, 13.2], "white", "ojo"),
+          box([7.55, 10.3, 13.2], [8.45, 11.5, 13.28], "gold_l", "iris"),
+          box([7.85, 10.6, 13.28], [8.15, 11.2, 13.34], "onyx", "pupila"),
+          box([7.6, 12.2, 12.95], [8.4, 12.5, 13.15], "onyx", "pestañas arriba"),
+          box([7.6, 9.3, 12.95], [8.4, 9.6, 13.15], "onyx", "pestañas abajo")]
+    # Alas del tocado a los lados, subiendo hacia atrás.
+    for side, x0, x1 in (("der.", 2.6, 3.25), ("izq.", 12.75, 13.4)):
+        e += [box([x0, 10.0, 7.05], [x1, 11.95, 10.0], "gold", f"ala {side}"),
+              box([x0, 11.95, 6.0], [x1, 13.4, 8.6], "gold", f"ala alta {side}"),
+              box([x0 + 0.1, 13.4, 5.2], [x1 - 0.1, 14.4, 7.2], "gold_l", f"punta del ala {side}")]
     return e
 
 
 def pixiu_bracelet():
-    """Muñeca (la mano llega a y 2): cuentas de jade alrededor del brazo y el pixiu de oro arriba. Más afuera y más
-    arriba que los guantes, para no compartir planos con ellos."""
+    """Pulsera de pixiu: cuentas de obsidiana y jade alternadas alrededor de la muñeca (cada una en relieve) y el pixiu de
+    oro arriba: cuerpo echado, cabeza con su cuerno, alitas y la cola. Más afuera y más arriba que los guantes, para no
+    compartir planos con ellos (la mano llega a y 2)."""
     y0, y1 = 3.6, 4.6
-    e = ring(5.35, 10.65, y0, y1, 5.35, 10.65, 0.6, "turq", "cuentas")
-    e.append(box([7.0, y0 - 0.2, 10.65], [9.0, y1 + 0.4, 11.35], "gold", "pixiu"))
+    e = ring(5.48, 10.52, y0 + 0.15, y1 - 0.15, 5.48, 10.52, 0.4, "onyx_d", "hilo")
+    beads = [(5.4, 6.4), (5.4, 8.0), (5.4, 9.6), (6.6, 5.4), (9.4, 5.4), (10.6, 6.4), (10.6, 8.0), (10.6, 9.6), (6.6, 10.6)]
+    for i, (x, z) in enumerate(beads):
+        tone = "onyx" if i % 2 == 0 else "turq"
+        e.append(box([x - 0.55, y0, z - 0.55], [x + 0.55, y1, z + 0.55], tone, f"cuenta {i}"))
+    # Pixiu al frente (z 10,6..): cuerpo, cabeza, cuerno, alas y cola.
+    e += [box([7.0, y0 - 0.1, 10.62], [9.4, y1 + 0.3, 11.5], "gold", "pixiu cuerpo"),
+          box([6.2, y0 + 0.4, 10.7], [7.2, y1 + 0.7, 11.6], "gold", "pixiu cabeza"),
+          box([6.5, y1 + 0.7, 10.95], [6.9, y1 + 1.3, 11.3], "gold_l", "pixiu cuerno"),
+          box([6.25, y0 + 0.7, 11.6], [6.65, y0 + 1.1, 11.7], "onyx", "pixiu ojo"),
+          box([7.6, y1 + 0.3, 10.7], [8.75, y1 + 0.7, 11.2], "gold_l", "pixiu alas"),
+          box([9.4, y0 + 0.3, 10.82], [10.0, y1 + 0.6, 11.2], "gold_d", "pixiu cola")]
     return e
 
 
