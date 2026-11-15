@@ -1,5 +1,5 @@
 """Propuesta: Cerbero más bestia. Tres cabezas grandes de quijada pesada con colmillos, lengua y fauces de brasa, gorguera
-de pelo erizado, cresta de cerdas en el lomo, patas de dos tramos con zarpas y garras, y la cola que es una serpiente
+de pelo erizado, cresta de cerdas en el lomo, patas de dos tramos con zarpas y garras, y la cola de serpiente
 entera (con cabeza, ojos y colmillos), como en Apolodoro (Biblioteca II 5.12).
 
 Las serpientes del lomo que también menciona Apolodoro quedan apagadas (BACK_SNAKES = False): el usuario pidió quitarlas
@@ -316,14 +316,12 @@ def build():
     dog_head(m, "head", [0, 4.5, -9.8], 0.0)
     dog_head(m, "left_head", [6, 6.2, -9], -0.55, -0.12)
     dog_head(m, "right_head", [-6, 6.2, -9], 0.55, 0.12)
-    # Cola: una serpiente entera que baja de la cadera y se alza con la cabeza mirando adelante.
+    # Cola de serpiente (Apolodoro: «tenía cola de serpiente»): nace gruesa de la cadera como la cola de un perro y se
+    # vuelve un cuerpo de serpiente escamado que se afina en cuatro tramos hasta una punta fina, sin cabeza.
     m.part("tail", "body", [0, -2, 9.5], [-0.3, 0, 0], [cube(-2, -2, -1, 4, 4, 7, scales)])
-    m.part("tail_mid", "tail", [0, 0, 5.5], [0.95, 0, 0], [cube(-1.5, -1.5, 0, 3, 3, 6, scales)])
-    m.part("tail_tip", "tail_mid", [0, 0, 5.5], [0.75, 0, 0], [cube(-1, -1, 0, 2, 2, 5, scales)])
-    m.part("tail_head", "tail_tip", [0, 0, 4.5], [0.6, math.pi, 0], [
-        cube(-1.5, -1.5, -4, 3, 2, 4, snake_head),
-        cube(-1, 0.5, -3.5, 2, 1, 3, snake_jaw)])
-    m.part("tail_tongue", "tail_head", [0, 0.6, -4], [0.2, 0, 0], [cube(-0.5, 0, -2, 1, 0, 2, tongue)])
+    m.part("tail_mid", "tail", [0, 0, 5.5], [0.7, 0, 0], [cube(-1.5, -1.5, 0, 3, 3, 6, scales)])
+    m.part("tail_tip", "tail_mid", [0, 0, 5.5], [0.55, 0, 0], [cube(-1, -1, 0, 2, 2, 5, scales)])
+    m.part("tail_end", "tail_tip", [0, 0, 4.5], [-0.5, 0, 0], [cube(-0.5, -0.5, 0, 1, 1, 4, scales)])
     if BACK_SNAKES:
         for i, (x, z) in enumerate(((-2.5, -6), (2.5, -6), (0, -3), (-2, 0), (2, 0))):
             m.part(f"back_snake{i}", "body", [x, -7, z], [-0.3, 0, x * 0.08], [
@@ -341,11 +339,11 @@ NOTES = "\n".join([
     "Fauces de brasa: paladar y quijada brillan; ojos rojo-dorado al frente y a los lados.",
     "Cuellos largos dentro de una gorguera de pelo erizado, joroba en la cruz y cresta de cerdas en el lomo.",
     "Patas de dos tramos: hombro y codo adelante, anca y corvejón atrás, zarpas anchas con tres garras.",
-    "La cola deja de ser un rabo: es una serpiente entera con cabeza, ojos que brillan, colmillos y lengua.",
+    "La cola deja de ser un rabo de perro: es una cola de serpiente escamada que se afina hasta la punta (sin cabeza).",
     "Textura 128 px: pelo de sombra con mechones, escamas verdes con vientre de placas, collares de hierro con púas.",
     "Fiel al mito: tres cabezas de perro y cola de serpiente (Apolodoro); fiera del Hades, de fauces temibles (Hesíodo).",
     "Licencia de juego: fauces y ojos de brasa; collares de hierro con púas (por la reliquia, el «Collar de Cerbero»).",
     "Sin las serpientes del lomo de Apolodoro, porque el usuario pidió quitarlas (están listas con BACK_SNAKES).",
     "Cultura pop: nada.",
-    "Animación propuesta: las tres quijadas gruñen a destiempo, cabezas laterales que se balancean, orejas que se aplastan al atacar, cola-serpiente que ondea y lanza la cabeza, patas con codo y corvejón que se doblan al trotar.",
+    "Animación propuesta: las tres quijadas gruñen a destiempo, cabezas laterales que se balancean, orejas que se aplastan al atacar, cola de serpiente que ondea, patas con codo y corvejón que se doblan al trotar.",
 ])

@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
+import io.github.potatustudio.mythicrelics.client.entity.geometry.CerberusGeometry;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -44,7 +45,7 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 			heads[i] = root.getChild(names[i]);
 			jaws[i] = heads[i].getChild("jaw");
 		}
-		tail = root.getChild("tail");
+		tail = root.getChild("body").getChild("tail");
 		tailMid = tail.getChild("tail_mid");
 		tailTip = tailMid.getChild("tail_tip");
 		leftFrontLeg = root.getChild("left_front_leg");
@@ -64,37 +65,9 @@ public class CerberusModel extends EntityModel<LivingEntityRenderState> {
 				.texOffs(36, 18).addBox(-2.0f, 0.0f, -5.0f, 4, 1, 5), PartPose.offset(0.0f, 1.0f, -5.0f));
 	}
 
+	/** Geometría generada por tools/model-gen/china_entities.py --mod desde proposals/cerberus.py (aprobada el 2026-11-15) */
 	public static LayerDefinition createBodyLayer() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition root = mesh.getRoot();
-		// Pecho alto y ancho y cadera más baja: lomo encorvado de bestia.
-		root.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 0).addBox(-5.0f, -5.0f, -8.0f, 10, 9, 8)
-				.texOffs(0, 17).addBox(-4.0f, -3.0f, 0.0f, 8, 7, 8),
-				PartPose.offset(0.0f, 10.0f, 0.0f));
-		dogHead(root, "head", PartPose.offset(0.0f, 7.0f, -8.0f));
-		dogHead(root, "left_head", PartPose.offsetAndRotation(5.0f, 9.0f, -6.5f, 0.0f, -SIDE_TURN, 0.0f));
-		dogHead(root, "right_head", PartPose.offsetAndRotation(-5.0f, 9.0f, -6.5f, 0.0f, SIDE_TURN, 0.0f));
-		// Cola de serpiente (no una serpiente): tres tramos de escamas que se afinan, gruesa en la cadera y en punta al final,
-		// que baja y se levanta en la punta.
-		PartDefinition tail = root.addOrReplaceChild("tail", CubeListBuilder.create()
-				.texOffs(0, 46).addBox(-1.5f, -1.5f, 0.0f, 3, 3, 6), PartPose.offsetAndRotation(0.0f, 9.0f, 8.0f, TAIL_BASE, 0.0f, 0.0f));
-		PartDefinition mid = tail.addOrReplaceChild("tail_mid", CubeListBuilder.create()
-				.texOffs(32, 24).addBox(-1.0f, -1.0f, 0.0f, 2, 2, 5), PartPose.offsetAndRotation(0.0f, 0.0f, 5.5f, TAIL_MID, 0.0f, 0.0f));
-		mid.addOrReplaceChild("tail_tip", CubeListBuilder.create()
-				.texOffs(28, 32).addBox(-0.5f, -0.5f, 0.0f, 1, 1, 5), PartPose.offsetAndRotation(0.0f, 0.0f, 4.5f, TAIL_TIP, 0.0f, 0.0f));
-		// Patas gruesas con zarpas anchas y garras.
-		CubeListBuilder leg = CubeListBuilder.create()
-				.texOffs(0, 32).addBox(-1.5f, 0.0f, -1.5f, 3, 10, 3)
-				.texOffs(12, 32).addBox(-2.0f, 8.0f, -2.5f, 4, 2, 4);
-		CubeListBuilder mirroredLeg = CubeListBuilder.create().mirror()
-				.texOffs(0, 32).addBox(-1.5f, 0.0f, -1.5f, 3, 10, 3)
-				.texOffs(12, 32).addBox(-2.0f, 8.0f, -2.5f, 4, 2, 4);
-		root.addOrReplaceChild("left_front_leg", leg, PartPose.offset(3.5f, 14.0f, -4.0f));
-		root.addOrReplaceChild("right_front_leg", mirroredLeg, PartPose.offset(-3.5f, 14.0f, -4.0f));
-		root.addOrReplaceChild("left_hind_leg", leg, PartPose.offset(3.0f, 14.0f, 5.0f));
-		root.addOrReplaceChild("right_hind_leg", mirroredLeg, PartPose.offset(-3.0f, 14.0f, 5.0f));
-		return LayerDefinition.create(mesh, 64, 64);
+		return CerberusGeometry.create();
 	}
 
 	@Override

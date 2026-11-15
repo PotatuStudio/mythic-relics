@@ -33,21 +33,21 @@ public final class ModEntities {
 
 	public static final RegistrySupplier<EntityType<Scarab>> SCARAB = ENTITIES.register("scarab",
 			() -> EntityType.Builder.of(Scarab::new, MobCategory.MISC)
-					.sized(0.5f, 0.35f)
+					.sized(0.9f, 0.6f)
 					.clientTrackingRange(8)
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("scarab"))));
 
 	public static final RegistrySupplier<EntityType<Jackal>> JACKAL = ENTITIES.register("jackal",
 			() -> EntityType.Builder.of(Jackal::new, MobCategory.MISC)
-					.sized(0.5f, 0.75f)
+					.sized(0.55f, 1.05f)
 					.clientTrackingRange(10)
 					.noSave()
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("jackal"))));
 
 	public static final RegistrySupplier<EntityType<Cerberus>> CERBERUS = ENTITIES.register("cerberus",
 			() -> EntityType.Builder.of(Cerberus::new, MobCategory.MISC)
-					.sized(1.4f, 2.2f)
+					.sized(1.65f, 2.6f)
 					.fireImmune()
 					.clientTrackingRange(10)
 					.noSave()
@@ -64,8 +64,8 @@ public final class ModEntities {
 	/** Sleipnir, invocado con la herradura: no se guarda con el mundo (vuelve a Asgard). */
 	public static final RegistrySupplier<EntityType<Sleipnir>> SLEIPNIR = ENTITIES.register("sleipnir",
 			() -> EntityType.Builder.of(Sleipnir::new, MobCategory.CREATURE)
-					.sized(1.3964844f, 1.6f)
-					.eyeHeight(1.52f)
+					.sized(1.75f, 2.0f)
+					.eyeHeight(1.9f)
 					.clientTrackingRange(10)
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("sleipnir"))));
 
@@ -80,7 +80,7 @@ public final class ModEntities {
 	/** El long de la Perla del dragón: la caja es la del lomo donde va el jinete; el cuerpo largo sigue detrás. */
 	public static final RegistrySupplier<EntityType<LongDragon>> LONG_DRAGON = ENTITIES.register("long_dragon",
 			() -> EntityType.Builder.of(LongDragon::new, MobCategory.CREATURE)
-					.sized(1.6f, 1.0f)
+					.sized(2.1f, 1.6f)
 					.clientTrackingRange(12)
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("long_dragon"))));
 
@@ -122,7 +122,7 @@ public final class ModEntities {
 	public static final RegistrySupplier<EntityType<Talos>> TALOS =
 			ENTITIES.register("talos", () -> EntityType.Builder.of(Talos::new,
 							MobCategory.MISC)
-					.sized(1.5f, 2.9f)
+					.sized(2.2f, 4.3f)
 					.clientTrackingRange(10)
 					.fireImmune()
 					.noSave()

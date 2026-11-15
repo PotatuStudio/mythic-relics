@@ -18,7 +18,7 @@ public final class GungnirGeometry {
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition root = mesh.getRoot();
-		PartDefinition p_spear = root.addOrReplaceChild("spear", CubeListBuilder.create()
+		PartDefinition p0 = root.addOrReplaceChild("spear", CubeListBuilder.create()
 				.texOffs(0, 0).addBox(-0.5f, -8.0f, -0.5f, 1.0f, 24.0f, 1.0f)
 				.texOffs(18, 0).addBox(-1.0f, -10.0f, -1.0f, 2.0f, 2.0f, 2.0f)
 				.texOffs(4, 0).addBox(-1.5f, -16.0f, -0.5f, 3.0f, 6.0f, 1.0f)

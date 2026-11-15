@@ -588,47 +588,18 @@ function entityRoot() {
   return { entity, root };
 }
 
-/* Escarabajo (ScarabModel.java) */
-const scarab = entityRoot();
-part(scarab.root, scarabMat, [0, 23, 1.5], [0, 0, 0], [[0, 0, -3, -3, -3.5, 6, 3, 7, false], [0, 10, -2, -4, -2.5, 4, 1, 5, false]]);
-part(scarab.root, scarabMat, [0, 23, -3.5], [0, 0, 0], [[26, 0, -2.5, -2, -1.5, 5, 2, 3, false]]);
-part(scarab.root, scarabMat, [0, 23, -5], [0, 0, 0], [[26, 5, -2, -1, -2, 4, 1, 2, false]]);
-const LEG_Z = [-3.5, -1.0, 1.5], LEG_SPREAD = [0.5, 0.0, -0.5], LEG_DROP = 0.5, STRIDE = 1.8;
-const sLeft = [], sRight = [];
-for (let i = 0; i < 3; i++) {
-  sLeft.push(part(scarab.root, scarabMat, [2.5, 22.2, LEG_Z[i]], [0, LEG_SPREAD[i], LEG_DROP], [[42, 0, 0, -0.5, -0.5, 4, 1, 1, false]]));
-  sRight.push(part(scarab.root, scarabMat, [-2.5, 22.2, LEG_Z[i]], [0, -LEG_SPREAD[i], -LEG_DROP], [[42, 0, -4, -0.5, -0.5, 4, 1, 1, true]]));
-}
-
-/* Chacal (JackalModel.java) */
-const jackal = entityRoot();
-part(jackal.root, jackalMat, [0, 14.5, 0], [0, 0, 0], [[0, 0, -2.5, -2.5, -6, 5, 5, 12, false], [34, 0, -3, -3, -6.5, 6, 6, 1, false]]);
-const jHead = part(jackal.root, jackalMat, [0, 12.5, -6.5], [0, 0, 0], [[34, 7, -2.5, -3, -4, 5, 5, 4, false], [48, 0, -1.5, -0.5, -8, 3, 2, 4, false],
-  [52, 7, -2.5, -7, -2, 2, 4, 1, false], [52, 7, 0.5, -7, -2, 2, 4, 1, true]]);
-const jTail = part(jackal.root, jackalMat, [0, 12.5, 6], [Math.PI / 5, 0, 0], [[8, 17, -1, 0, -1, 2, 7, 2, false]]);
-const jLeg = (x, z, mirror) => part(jackal.root, jackalMat, [x, 17, z], [0, 0, 0], [[0, 17, -1, 0, -1, 2, 7, 2, mirror]]);
-const jLF = jLeg(1.5, -4.5, false), jRF = jLeg(-1.5, -4.5, true), jLH = jLeg(1.5, 4.5, false), jRH = jLeg(-1.5, 4.5, true);
-
-/* Cerbero (CerberusModel.java): tres cabezas con mandíbula y cola de serpiente. Textura 64x64. */
-const cerberus = entityRoot();
-const C_TURN = 0.5;
-const cPart = (parent, offset, rot, cubes) => part(parent, cerberusMat, offset, rot, cubes, 64);
-cPart(cerberus.root, [0, 10, 0], [0, 0, 0], [[0, 0, -5, -5, -8, 10, 9, 8, false], [0, 17, -4, -3, 0, 8, 7, 8, false]]);
-const cHeads = [], cJaws = [];
-for (const [offset, turn] of [[[0, 7, -8], 0], [[5, 9, -6.5], -C_TURN], [[-5, 9, -6.5], C_TURN]]) {
-  const h = cPart(cerberus.root, offset, [0, turn, 0], [[36, 0, -3, -3, -5, 6, 6, 5, false], [36, 11, -2, -1, -10, 4, 2, 5, false],
-    [54, 11, -3, -6, -2, 2, 3, 1, false], [54, 11, 1, -6, -2, 2, 3, 1, true]]);
-  cHeads.push(h);
-  cJaws.push(cPart(h, [0, 1, -5], [0, 0, 0], [[36, 18, -2, 0, -5, 4, 1, 5, false]]));
-}
-const C_TAIL = [0.7, -0.35, -0.45];
-cerberus.entity.scale.setScalar(1.7);   // CerberusRenderer.SCALE
-const cTail = cPart(cerberus.root, [0, 9, 8], [C_TAIL[0], 0, 0], [[0, 46, -1.5, -1.5, 0, 3, 3, 6, false]]);
-const cTailMid = cPart(cTail, [0, 0, 5.5], [C_TAIL[1], 0, 0], [[32, 24, -1, -1, 0, 2, 2, 5, false]]);
-const cTailHead = cPart(cTailMid, [0, 0, 4.5], [C_TAIL[2], 0, 0], [[28, 32, -0.5, -0.5, 0, 1, 1, 5, false]]);
-const cLeg = (x, y, z, mirror) => cPart(cerberus.root, [x, y, z], [0, 0, 0],
-  [[0, 32, -1.5, 0, -1.5, 3, 10, 3, mirror], [12, 32, -2, 8, -2.5, 4, 2, 4, mirror]]);
-const cLF = cLeg(3.5, 14, -4, false), cRF = cLeg(-3.5, 14, -4, true), cLH = cLeg(3, 14, 5, false), cRH = cLeg(-3, 14, 5, true);
+/* Escarabajo, chacal y Cerbero: geometría generada desde tools/model-gen/proposals (como en el juego). */
+const scarab = chinaEntity("scarab");
+const STRIDE = 1.8;   // ScarabModel: zancada de la marcha en trípode
+const sLeft = [0, 1, 2].map(i => scarab.parts["left_leg" + i]), sRight = [0, 1, 2].map(i => scarab.parts["right_leg" + i]);
+const jackal = chinaEntity("jackal");
+const jHead = jackal.parts.head, jTail = jackal.parts.tail;
+const jLF = jackal.parts.left_front_leg, jRF = jackal.parts.right_front_leg, jLH = jackal.parts.left_hind_leg, jRH = jackal.parts.right_hind_leg;
+const cerberus = chinaEntity("cerberus");
+const cHeads = ["head", "left_head", "right_head"].map(n => cerberus.parts[n]);
+const cJaws = cHeads.map(h => h.children.find(c => c.name === "jaw"));
+const cTail = cerberus.parts.tail, cTailMid = cerberus.parts.tail_mid, cTailHead = cerberus.parts.tail_tip;
+const cLF = cerberus.parts.left_front_leg, cRF = cerberus.parts.right_front_leg, cLH = cerberus.parts.left_hind_leg, cRH = cerberus.parts.right_hind_leg;
 
 /* Entidades chinas (ChinaModelLayers.java, generado desde el mismo diseño): mono guerrero y long. Las partes raíz
    llevan el desplazamiento del juego (el long se corre para que el jinete quede en el centro de su caja). */
@@ -641,8 +612,10 @@ function chinaEntity(key) {
   for (const p of e.parts) {
     const off = p.parent ? p.offset : p.offset.map((v, i) => v + e.rootOffset[i]);
     parts[p.name] = part(p.parent ? parts[p.parent] : ent.root, m, off, p.rot, p.cubes.map(c => [...c, false]), e.texH, e.texW);
+    parts[p.name].name = p.name;
   }
   ent.parts = parts;
+  if (e.scale) ent.entity.scale.setScalar(e.scale);
   return ent;
 }
 const monkey = chinaEntity("monkey");
@@ -666,21 +639,11 @@ const water = new THREE.Mesh(new THREE.BoxGeometry(7, 0.5, 7), new THREE.MeshLam
 water.position.y = -0.25; scene.add(water);
 function addRot(p, dx = 0, dy = 0, dz = 0) { const b = p.userData.base; p.rotation.set(b[0] + dx, b[1] + dy, b[2] + dz); }
 
-/* Sleipnir (SleipnirModel.java): caballo vanilla con ocho patas, bardas rúnicas, crin trenzada y cola en dos tramos. */
-const sleipnir = entityRoot();
-const sP = (parent, offset, rot, cubes) => part(parent, sleipnirMat, offset, rot, cubes, 64, 128);
-const sBody = sP(sleipnir.root, [0, 11, 5], [0, 0, 0], [[0, 0, -5, -8, -17, 10, 10, 22, false], [32, 32, -5.5, -8.6, -11, 11, 1, 8, false],
-  [118, 22, -1, -10.6, -11, 2, 2, 1, false], [70, 32, -5.5, -6, -17.6, 11, 9, 1, false],
-  [96, 22, 5, -7, -12, 1, 6, 10, false], [96, 22, -6, -7, -12, 1, 6, 10, true]]);
-const sTail = sP(sBody, [0, -5, 2], [Math.PI / 6, 0, 0], [[16, 32, -1.5, 0, 0, 3, 8, 4, false]]);
-const sTailTip = sP(sTail, [0, 7.5, 0.5], [0, 0, 0], [[30, 42, -1.5, 0, 0, 3, 10, 3, false]]);
-const sHead = sP(sleipnir.root, [0, 4, -12], [Math.PI / 6, 0, 0], [[64, 0, -2.05, -6, -2, 4, 12, 7, false],
-  [112, 0, -1.5, -12, 5.01, 3, 18, 2, false], [86, 12, -2, -11, -7, 4, 5, 5, false]]);
-sP(sHead, [0, 0, 0], [0, 0, 0], [[86, 0, -3, -11, -2, 6, 5, 7, false], [70, 22, -2.5, -11.6, -7.5, 5, 1, 8, false],
-  [118, 25, 0.55, -13, 4, 2, 3, 1, false], [118, 25, -2.55, -13, 4, 2, 3, 1, false]]);
-const sLegs = [[4, -10, -1.9, true], [-4, -10, -1.9, false], [4, -5, -1.9, true], [-4, -5, -1.9, false],
-  [4, 2, -1, true], [-4, 2, -1, false], [4, 7, -1, true], [-4, 7, -1, false]]
-  .map(([x, z, bz, left]) => sP(sleipnir.root, [x, 14, z], [0, 0, 0], [[0, 32, left ? -3 : -1, -1.01, bz, 4, 11, 4, left]]));
+/* Sleipnir: geometría generada (proposals/sleipnir.py), a 1,25 como en SleipnirRenderer. */
+const sleipnir = chinaEntity("sleipnir");
+const sTail = sleipnir.parts.tail, sTailTip = sleipnir.parts.tail_tip;
+const sLegs = ["left_front_leg", "right_front_leg", "left_front_middle_leg", "right_front_middle_leg", "left_hind_middle_leg",
+  "right_hind_middle_leg", "left_hind_leg", "right_hind_leg"].map(n => sleipnir.parts[n]);
 
 /* Jugador de bloques con las reliquias puestas (assets/mythicrelics/trinkets). Mira hacia +Z. */
 const player = new THREE.Group();
@@ -862,27 +825,26 @@ function setupAnim() {
   jLH.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
   jRF.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
   jLF.rotation.x = Math.cos(a) * 1.4 * speed;
-  jTail.rotation.set(Math.PI / 5, Math.cos(a) * 1.4 * speed, 0);
+  addRot(jTail, 0, Math.cos(a) * 1.4 * speed, 0);
   // Sleipnir: como el caballo (AbstractEquineModel) y las patas del medio a medio paso.
   const legA = Math.cos(a + Math.PI), swing = Math.cos(a + Math.PI / 2) * 0.8 * speed;
   sLegs[0].rotation.x = -legA * 0.8 * speed; sLegs[1].rotation.x = legA * 0.8 * speed;
   sLegs[2].rotation.x = -swing; sLegs[3].rotation.x = swing;
   sLegs[4].rotation.x = swing * 0.6; sLegs[5].rotation.x = -swing * 0.6;
   sLegs[6].rotation.x = -legA * 0.5 * speed; sLegs[7].rotation.x = legA * 0.5 * speed;
-  sTail.rotation.set(Math.PI / 6 + speed * 0.75, 0, 0);   // como AbstractEquineModel: 30° en reposo
-  sTailTip.rotation.set(-0.25 + speed * 0.5, Math.sin(performance.now() / 50 * 0.12) * 0.25, 0);
+  addRot(sTail, speed * 0.75, 0, 0);
+  addRot(sTailTip, speed * 0.5, Math.sin(performance.now() / 50 * 0.12) * 0.25, 0);
   cRH.rotation.x = Math.cos(a) * 1.2 * speed;
   cLH.rotation.x = Math.cos(a + Math.PI) * 1.2 * speed;
   cRF.rotation.x = Math.cos(a + Math.PI) * 1.2 * speed;
   cLF.rotation.x = Math.cos(a) * 1.2 * speed;
   const age = performance.now() / 50;
   const sway = Math.sin(age * 0.15) * 0.12;
-  cHeads[1].rotation.set(sway, -C_TURN, 0);
-  cHeads[2].rotation.set(-sway, C_TURN, 0);
-  cJaws.forEach((j, i) => j.rotation.set(0.15 + Math.abs(Math.sin(age * 0.2 + i * 2.1)) * (0.25 + 0.3 * speed), 0, 0));
-  cTail.rotation.set(C_TAIL[0], Math.sin(age * 0.12) * 0.3, 0);
-  cTailMid.rotation.set(C_TAIL[1], Math.sin(age * 0.12 - 1) * 0.3, 0);
-  cTailHead.rotation.set(C_TAIL[2] + Math.sin(age * 0.09) * 0.15, Math.sin(age * 0.12 - 2) * 0.4, 0);
+  addRot(cHeads[1], sway); addRot(cHeads[2], -sway);
+  cJaws.forEach((j, i) => { if (j) addRot(j, Math.abs(Math.sin(age * 0.2 + i * 2.1)) * (0.15 + 0.2 * speed)); });
+  addRot(cTail, 0, Math.sin(age * 0.12) * 0.3, 0);
+  addRot(cTailMid, 0, Math.sin(age * 0.12 - 1) * 0.3, 0);
+  addRot(cTailHead, Math.sin(age * 0.09) * 0.15, Math.sin(age * 0.12 - 2) * 0.4, 0);
   // Mono guerrero (MonkeyWarriorModel#setupAnim)
   const M = monkey.parts, mSwing = Math.cos(a) * 1.2 * speed;
   addRot(M.leg_r, mSwing); addRot(M.leg_l, -mSwing); addRot(M.arm_r, -mSwing * 0.4 - 0.3); addRot(M.arm_l, mSwing);
@@ -988,9 +950,9 @@ document.getElementById("btnWalk").addEventListener("click", () => {
 const speedInput = document.getElementById("speed");
 
 const VIEWS = {
-  scarab: { cam: [0.9, 0.7, 1.1], target: [0, 0.12, 0] },
-  jackal: { cam: [1.6, 1.1, 1.8], target: [0, 0.45, 0] },
-  cerberus: { cam: [3.0, 2.2, 3.6], target: [0, 1.0, 0] },
+  scarab: { cam: [1.7, 1.2, 2.1], target: [0, 0.25, 0] },
+  jackal: { cam: [2.2, 1.5, 2.5], target: [0, 0.6, 0] },
+  cerberus: { cam: [4.2, 3.0, 5.0], target: [0, 1.3, 0] },
   sleipnir: { cam: [3.2, 2.0, 3.6], target: [0, 0.9, 0] },
   monkey: { cam: [1.9, 1.6, 2.6], target: [0, 1.0, 0] },
   dragon: { cam: [6.5, 3.2, 3.0], target: [0, 1.4, -2.2] },

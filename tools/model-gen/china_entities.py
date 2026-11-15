@@ -488,7 +488,25 @@ NAMES = {"monkey": ("monkeyWarrior", "monkey_warrior"), "dragon": ("longDragon",
          "raven": ("odinRaven", "odin_raven"), "skidbladnir": ("skidbladnir", "boat/skidbladnir"),
          "falcon": ("freyjaFalcon", "freyja_falcon"), "pegasus": ("pegasus", "pegasus"), "talos": ("talos", "talos"),
          "freyr_sword": ("freyrSword", "weapon/freyr_sword"), "mjolnir": ("mjolnir", "weapon/mjolnir"),
-         "gungnir": ("gungnir", "weapon/gungnir"), "mistletoe_dart": ("mistletoeDart", "weapon/mistletoe_dart")}
+         "gungnir": ("gungnir", "weapon/gungnir"), "mistletoe_dart": ("mistletoeDart", "weapon/mistletoe_dart"),
+         "scarab": ("scarab", "scarab"), "jackal": ("jackal", "jackal"), "cerberus": ("cerberus", "cerberus"),
+         "sleipnir": ("sleipnir", "sleipnir")}
+# Compañeros cuyo modelo sale de la propuesta aprobada (tools/model-gen/proposals/<clave>.py, revisada en la página de
+# comparación companions_compare.py el 2026-11-15). Los cuatro que antes eran a mano en Java (escarabajo, chacal,
+# Cerbero y Sleipnir) también pasan a generarse desde aquí.
+APPROVED = ["dragon", "pegasus", "talos", "raven", "falcon", "monkey", "scarab", "jackal", "cerberus", "sleipnir"]
+
+
+def proposal(key):
+    """Carga la propuesta aprobada, toma su ROOT_OFFSET y la hornea: (partes, textura, brillo, ancho, alto)."""
+    import importlib.util
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "proposals", key + ".py")
+    spec = importlib.util.spec_from_file_location("proposal_" + key, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    random.seed(getattr(mod, "SEED", 7))
+    ROOT_OFFSET[key] = tuple(getattr(mod, "ROOT_OFFSET", (0, 0, 0)))
+    return bake(mod.build(), mod.TEX_W)
 
 
 def jf(v):
@@ -501,7 +519,10 @@ def java_layer(key, parts, tex_w, tex_h):
     out = ["\tpublic static LayerDefinition create() {",
            "\t\tMeshDefinition mesh = new MeshDefinition();",
            "\t\tPartDefinition root = mesh.getRoot();"]
-    for p in parts:
+    # Variables con índice: varias partes pueden llamarse igual bajo padres distintos (la "jaw" de cada cabeza de
+    # Cerbero). El padre de una parte es la última declarada con ese nombre, como en Model.part.
+    var_of = {}
+    for i, p in enumerate(parts):
         ox, oy, oz = p["offset"]
         if p["parent"] is None:
             ox, oy, oz = ox + dx, oy + dy, oz + dz
@@ -510,8 +531,9 @@ def java_layer(key, parts, tex_w, tex_h):
         rx, ry, rz = p["rot"]
         pose = (f"PartPose.offsetAndRotation({jf(ox)}, {jf(oy)}, {jf(oz)}, {jf(rx)}, {jf(ry)}, {jf(rz)})"
                 if (rx, ry, rz) != (0, 0, 0) else f"PartPose.offset({jf(ox)}, {jf(oy)}, {jf(oz)})")
-        parent = "root" if p["parent"] is None else "p_" + p["parent"]
-        out.append(f"\t\tPartDefinition p_{p['name']} = {parent}.addOrReplaceChild(\"{p['name']}\", CubeListBuilder.create(){cubes},"
+        parent = "root" if p["parent"] is None else var_of[p["parent"]]
+        var_of[p["name"]] = f"p{i}"
+        out.append(f"\t\tPartDefinition p{i} = {parent}.addOrReplaceChild(\"{p['name']}\", CubeListBuilder.create(){cubes},"
                    f"\n\t\t\t\t{pose});")
     out.append(f"\t\treturn LayerDefinition.create(mesh, {tex_w}, {tex_h});")
     out.append("\t}")
@@ -566,6 +588,8 @@ if __name__ == "__main__":
         import weapon_entities as WE  # noqa: E402  (armas en vuelo: espada de Freyr, Mjölnir, Gungnir, dardo)
         for key in WE.MODELS:
             baked[key] = WE.bake_one(key)
+        for key in APPROVED:
+            baked[key] = proposal(key)
         os.makedirs(os.path.join(ENTITY_TEX, "boat"), exist_ok=True)
         os.makedirs(os.path.join(ENTITY_TEX, "weapon"), exist_ok=True)
         write_mod(baked)

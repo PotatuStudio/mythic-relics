@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.Sleipnir;
 import net.minecraft.client.renderer.entity.AbstractHorseRenderer;
@@ -26,6 +27,15 @@ public class SleipnirRenderer extends AbstractHorseRenderer<Sleipnir, EquineRend
 				return GLOW;
 			}
 		});
+	}
+
+	/** Un 25 % más grande que un caballo: el corcel de Odín (proposals/sleipnir.py). */
+	public static final float SCALE = 1.25f;
+
+	@Override
+	protected void scale(EquineRenderState state, PoseStack poseStack) {
+		super.scale(state, poseStack);
+		poseStack.scale(SCALE, SCALE, SCALE);
 	}
 
 	@Override

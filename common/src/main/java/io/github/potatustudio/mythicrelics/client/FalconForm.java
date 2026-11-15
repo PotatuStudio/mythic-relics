@@ -19,7 +19,7 @@ import org.jspecify.annotations.Nullable;
  */
 public final class FalconForm {
 	/** Tamaño del ave (la geometría del halcón, a 1,6). */
-	private static final float SCALE = 1.6f;
+	private static final float SCALE = 1.3f;
 	private static final RenderType BODY = RenderTypes.entityCutout(MythicRelics.id("textures/entity/freyja_falcon.png"));
 	private static final RenderType GLOW = RenderTypes.eyes(MythicRelics.id("textures/entity/freyja_falcon_glow.png"));
 

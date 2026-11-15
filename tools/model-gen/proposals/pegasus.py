@@ -266,7 +266,7 @@ def wing(m, side, body):
     w1 = m.part(f"wing_{side}", body, [s * 3.5, -5, -6], [0, s * -0.2, s * -0.4], [
         cube(X(0, 9), -1.5, -0.5, 9, 2, 2, bone),
         cube(X(0, 9), -0.5, 1.5, 9, 1, 6, coverts),
-        cube(X(0.5, 8), -0.1, 5, 8, 1, 8, secondaries),   # terciarias, junto al cuerpo
+        cube(X(0.5, 8), -0.1, 5, 8, 1, 9, secondaries),   # terciarias, junto al cuerpo (un poco más cortas que las secundarias)
     ])
     w2 = m.part(f"wing_{side}2", w1, [s * 9, 0, 0], [0, s * -0.1, s * -0.15], [
         cube(X(0, 9), -1.5, -0.5, 9, 2, 2, bone),
@@ -277,10 +277,11 @@ def wing(m, side, body):
         cube(X(0, 7), -1, -0.5, 7, 1, 2, bone),
         cube(X(0, 7), -0.6, 1.5, 7, 1, 3, coverts),
     ])
-    # Primarias: nacen a lo largo de la mano y se abren en abanico hacia atrás, las de la punta más largas.
+    # Primarias: nacen a lo largo de la mano y se abren en abanico hacia atrás. El largo crece parejo desde la muñeca
+    # (12, como las secundarias) hasta la punta (16) y el abanico se abre en pasos iguales: el borde de fuga queda suave.
     for k in range(7):
-        length = 16 - abs(k - 1) if k < 3 else 17 - k
-        ang = 0.05 + k * 0.16
+        length = 16 - round(k * 4 / 6)
+        ang = 0.08 + k * 0.14
         m.part(f"wing_{side}_primary{k}", w3, [s * (7 - k * 1.0), 0.1 + 0.11 * k, 1.0], [0, s * -ang, 0],
                [cube(X(0, length), 0, -2, length, 0, 4, pf)])
     return w1
@@ -351,7 +352,7 @@ def build():
 
 
 NOTES = """Hoy: caballo blanco de cajas rectas con dos tablas por ala, crin de una tabla y brida en tres cubos.
-Alas de tres tramos (brazo, antebrazo y mano) con cobertoras en escamas, secundarias y 7 primarias sueltas en abanico; la punta sube como en los estáteros de Corinto. Unos 2 bloques por lado.
+Alas de tres tramos (brazo, antebrazo y mano) con cobertoras en escamas, secundarias y 7 primarias sueltas en abanico, de largo parejo (de 12 en la muñeca a 16 en la punta); la punta sube como en los estáteros de Corinto. Unos 2 bloques por lado.
 Cuerpo con forma: pecho, cruz, vientre, grupa redondeada; patas de dos tramos con rodilla, corvejón, caña y casco.
 Cabeza fina con quijadas, hocico rosado, belfo, ojos con punto de luz y orejas de dos piezas.
 Crin corta y erguida en mechones y copete atado en moño con cinta de oro (friso del Partenón, vasos áticos); cola atada con mechones sueltos.

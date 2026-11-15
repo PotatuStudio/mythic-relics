@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.client.entity;
 
+import io.github.potatustudio.mythicrelics.client.entity.geometry.ScarabGeometry;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -37,29 +38,9 @@ public class ScarabModel extends EntityModel<LivingEntityRenderState> {
 		}
 	}
 
+	/** Geometría generada por tools/model-gen/china_entities.py --mod desde proposals/scarab.py (aprobada el 2026-11-15) */
 	public static LayerDefinition createBodyLayer() {
-		MeshDefinition mesh = new MeshDefinition();
-		PartDefinition root = mesh.getRoot();
-		// Élitros: el cuerpo ovalado, con una cúpula encima para redondearlo.
-		root.addOrReplaceChild("shell", CubeListBuilder.create()
-				.texOffs(0, 0).addBox(-3.0f, -3.0f, -3.5f, 6, 3, 7)
-				.texOffs(0, 10).addBox(-2.0f, -4.0f, -2.5f, 4, 1, 5),
-				PartPose.offset(0.0f, 23.0f, 1.5f));
-		root.addOrReplaceChild("pronotum", CubeListBuilder.create()
-				.texOffs(26, 0).addBox(-2.5f, -2.0f, -1.5f, 5, 2, 3),
-				PartPose.offset(0.0f, 23.0f, -3.5f));
-		root.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(26, 5).addBox(-2.0f, -1.0f, -2.0f, 4, 1, 2),
-				PartPose.offset(0.0f, 23.0f, -5.0f));
-		for (int i = 0; i < 3; i++) {
-			root.addOrReplaceChild("left_leg" + i, CubeListBuilder.create()
-					.texOffs(42, 0).addBox(0.0f, -0.5f, -0.5f, 4, 1, 1),
-					PartPose.offsetAndRotation(2.5f, 22.2f, LEG_Z[i], 0.0f, LEG_SPREAD[i], LEG_DROP));
-			root.addOrReplaceChild("right_leg" + i, CubeListBuilder.create()
-					.texOffs(42, 0).mirror().addBox(-4.0f, -0.5f, -0.5f, 4, 1, 1),
-					PartPose.offsetAndRotation(-2.5f, 22.2f, LEG_Z[i], 0.0f, -LEG_SPREAD[i], -LEG_DROP));
-		}
-		return LayerDefinition.create(mesh, 64, 32);
+		return ScarabGeometry.create();
 	}
 
 	@Override

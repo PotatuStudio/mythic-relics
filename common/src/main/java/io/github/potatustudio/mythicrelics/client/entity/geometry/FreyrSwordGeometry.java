@@ -18,7 +18,7 @@ public final class FreyrSwordGeometry {
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition root = mesh.getRoot();
-		PartDefinition p_sword = root.addOrReplaceChild("sword", CubeListBuilder.create()
+		PartDefinition p0 = root.addOrReplaceChild("sword", CubeListBuilder.create()
 				.texOffs(0, 0).addBox(-1.5f, -13.0f, -0.5f, 3.0f, 17.0f, 1.0f)
 				.texOffs(0, 23).addBox(-1.0f, -15.0f, -0.5f, 2.0f, 2.0f, 1.0f)
 				.texOffs(6, 23).addBox(-0.5f, -16.0f, -0.5f, 1.0f, 1.0f, 1.0f)

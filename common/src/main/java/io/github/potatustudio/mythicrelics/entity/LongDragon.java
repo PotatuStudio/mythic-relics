@@ -91,7 +91,8 @@ public class LongDragon extends PathfinderMob {
 
 	@Override
 	protected Vec3 getPassengerAttachmentPoint(Entity passenger, EntityDimensions dimensions, float scale) {
-		return new Vec3(0.0, dimensions.height() * 0.78, 0.0);
+		// El cuerpo nuevo es más grueso y va más alto (proposals/dragon.py): el jinete se sienta sobre el segundo segmento.
+		return new Vec3(0.0, dimensions.height() * 0.94, 0.0);
 	}
 
 	/** Como el ghast feliz: avanza hacia donde mira el jinete (subiendo o bajando con la mirada) y sube con el salto. */

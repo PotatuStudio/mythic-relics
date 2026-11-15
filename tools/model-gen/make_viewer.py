@@ -123,6 +123,16 @@ if __name__ == "__main__":
                               "scale": GE.SCALE[key],
                               "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
                               "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
+    # Compañeros con la propuesta aprobada (china_entities.APPROVED): partes, textura y escala de su propuesta, como el mod.
+    import importlib.util  # noqa: E402
+    for key in CE.APPROVED:
+        parts, img, glow, tex_w, tex_h = CE.proposal(key)
+        spec = importlib.util.spec_from_file_location("p_" + key, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                                                "proposals", key + ".py"))
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        data["china"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "rootOffset": list(CE.ROOT_OFFSET[key]),
+                              "scale": mod.SCALE, "tex": CE.b64(img), "glow": CE.b64(glow)}
     # Armas que vuelan (weapon_entities.py): el modelo 3D que se ve en el aire en lugar del ícono.
     import weapon_entities as WE  # noqa: E402
     data["weapons"] = {}

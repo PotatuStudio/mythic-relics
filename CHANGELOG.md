@@ -46,6 +46,13 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
     de cliente `mythicrelics:icarus_pose`).
   - Mjölnir: la carga suena con un chasquido eléctrico suave (antes, trueno) y la vuelta a la mano suena más bajo.
   - Visor: arreglado el error que lo dejaba sin 3D (la perla del dragón) y nueva vitrina «En la mano» por cultura.
+- Compañeros con modelo nuevo (aprobados por el usuario en la página de comparación, `tools/model-gen/companions_compare.py`;
+  diseños en `tools/model-gen/proposals/`): Long (escala 1,3, cuerpo grueso en S), Sleipnir (x1,25, ocho patas
+  articuladas y arreos vikingos), Pegaso (alas de tres tramos), Huginn y Muninn, Cerbero (escala 2,0, cola de serpiente),
+  Talos (escala 2,2), chacal, escarabajo, mono guerrero y el halcón de Freyja (x1,3). El escarabajo, el chacal, Cerbero y
+  Sleipnir dejan de ser modelos hechos a mano: su geometría también la genera `china_entities.py --mod`, y los tres
+  primeros suman una capa que brilla. Cajas de choque al tamaño nuevo. La espada de Freyr y Skíðblaðnir no cambian
+  (el barco tiene una propuesta más sencilla en revisión).
 
 ### Removed
 - Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del

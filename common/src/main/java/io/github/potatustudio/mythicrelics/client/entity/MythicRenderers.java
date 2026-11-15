@@ -71,7 +71,15 @@ public final class MythicRenderers {
 	/** El long: mide unos ocho bloques, así que no se oculta cuando su caja (la del jinete) queda fuera de la vista. */
 	public static class Dragon extends Glowing<LongDragon, LongDragonModel> {
 		public Dragon(EntityRendererProvider.Context context) {
-			super(context, new LongDragonModel(context.bakeLayer(LongDragonModel.LAYER)), 1.2f, "long_dragon");
+			super(context, new LongDragonModel(context.bakeLayer(LongDragonModel.LAYER)), 1.5f, "long_dragon");
+		}
+
+		/** Un 30 % más grande que el modelo (proposals/dragon.py). */
+		public static final float SCALE = 1.3f;
+
+		@Override
+		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+			poseStack.scale(SCALE, SCALE, SCALE);
 		}
 
 		@Override
@@ -106,7 +114,7 @@ public final class MythicRenderers {
 
 	/** Talos: hombre de bronce de unos 3 bloques (geometría a 1,5); ojos y vena de ícor que brillan. */
 	public static class TalosRenderer extends Glowing<Talos, TalosModel> {
-		public static final float SCALE = 1.5f;
+		public static final float SCALE = 2.2f;
 
 		public static class State extends LivingEntityRenderState {
 			public float sinceThrow = 100.0f;
@@ -139,6 +147,14 @@ public final class MythicRenderers {
 	public static class RavenRenderer extends Glowing<OdinRaven, OdinRavenModel> {
 		public RavenRenderer(EntityRendererProvider.Context context) {
 			super(context, new OdinRavenModel(context.bakeLayer(OdinRavenModel.LAYER)), 0.3f, "odin_raven");
+		}
+
+		/** El modelo nuevo es más largo (alas en dos tramos): se dibuja al 80 % (proposals/raven.py). */
+		public static final float SCALE = 0.8f;
+
+		@Override
+		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
+			poseStack.scale(SCALE, SCALE, SCALE);
 		}
 
 		@Override

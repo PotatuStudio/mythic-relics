@@ -18,7 +18,7 @@ public final class MjolnirGeometry {
 	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition root = mesh.getRoot();
-		PartDefinition p_hammer = root.addOrReplaceChild("hammer", CubeListBuilder.create()
+		PartDefinition p0 = root.addOrReplaceChild("hammer", CubeListBuilder.create()
 				.texOffs(8, 0).addBox(-4.5f, -9.0f, -2.5f, 9.0f, 5.0f, 5.0f)
 				.texOffs(0, 0).addBox(-1.0f, -4.0f, -1.0f, 2.0f, 9.0f, 2.0f)
 				.texOffs(36, 0).addBox(-1.5f, 5.0f, -1.5f, 3.0f, 2.0f, 3.0f),
