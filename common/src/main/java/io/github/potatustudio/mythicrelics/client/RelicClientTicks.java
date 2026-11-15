@@ -9,7 +9,6 @@ import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
 import io.github.potatustudio.mythicrelics.network.FalconPayload;
 import io.github.potatustudio.mythicrelics.network.HermesJumpPayload;
-import io.github.potatustudio.mythicrelics.network.RingPayload;
 import io.github.potatustudio.mythicrelics.norse.NorseGods;
 import io.github.potatustudio.mythicrelics.network.IcarusPayload;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
@@ -24,8 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Ticks de cliente de las reliquias de todas las culturas: el doble salto (sandalias de Hermes, máscara de tengu), el
- * planeo y los aleteos de las alas de Ícaro (el movimiento lo decide el cliente, como en vanilla; el servidor solo
+ * Ticks de cliente de las reliquias de todas las culturas: el doble salto (sandalias de Hermes), el planeo
+ * y los aleteos de las alas de Ícaro (el movimiento lo decide el cliente, como en vanilla; el servidor solo
  * reinicia la caída y muestra las alas), el hilo rojo de Ariadna hacia el punto de inicio y la tecla del manto de Freyja.
  */
 public final class RelicClientTicks {
@@ -37,9 +36,6 @@ public final class RelicClientTicks {
 	/** Manto de halcón: la tecla (V por defecto, se cambia en Controles) te vuelve halcón y de nuevo humano. */
 	public static final KeyMapping FALCON_KEY = new KeyMapping("key.mythicrelics.falcon_form",
 			InputConstants.KEY_V, KeyMapping.Category.GAMEPLAY);
-	/** Aro del universo: la tecla (R por defecto, se cambia en Controles) lo lanza desde la muñeca. */
-	public static final KeyMapping RING_KEY = new KeyMapping("key.mythicrelics.universe_ring",
-			InputConstants.KEY_R, KeyMapping.Category.GAMEPLAY);
 	/** Se soltó el salto ya en el aire: el doble salto pide una segunda pulsación, no mantener la del primer salto. */
 	private static boolean releasedInAir;
 	private static int icarusFlaps;
@@ -54,7 +50,6 @@ public final class RelicClientTicks {
 
 	public static void init() {
 		KeyMappingRegistry.register(FALCON_KEY);
-		KeyMappingRegistry.register(RING_KEY);
 		ClientTickEvent.CLIENT_POST.register(RelicClientTicks::tick);
 	}
 
@@ -72,8 +67,7 @@ public final class RelicClientTicks {
 			icarusFlaps = GreeceHeroes.ICARUS_FLAPS;
 		} else if (!jumpDown) {
 			releasedInAir = true;
-		} else if (pressed && releasedInAir && !doubleJumpUsed && (WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())
-				|| WornRelics.isWearing(player, ModItems.TENGU_MASK.get()))) {
+		} else if (pressed && releasedInAir && !doubleJumpUsed && WornRelics.isWearing(player, ModItems.HERMES_SANDALS.get())) {
 			Vec3 motion = player.getDeltaMovement();
 			player.setDeltaMovement(motion.x, GreeceRelics.HERMES_JUMP, motion.z);
 			doubleJumpUsed = true;
@@ -93,11 +87,6 @@ public final class RelicClientTicks {
 			if ((falcon || WornRelics.isWearing(player, ModItems.FALCON_CLOAK.get()))
 					&& NetworkManager.canServerReceive(FalconPayload.TYPE)) {
 				NetworkManager.sendToServer(FalconPayload.INSTANCE);
-			}
-		}
-		while (RING_KEY.consumeClick()) {
-			if (WornRelics.isWearing(player, ModItems.UNIVERSE_RING.get()) && NetworkManager.canServerReceive(RingPayload.TYPE)) {
-				NetworkManager.sendToServer(RingPayload.INSTANCE);
 			}
 		}
 		skidbladnirWind(player);

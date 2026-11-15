@@ -419,28 +419,28 @@ public class RelicClientGameTest implements FabricClientGameTest {
 		}
 	}
 
-	/** Set de Erlang con el ojo puesto y la alabarda en el inventario (no en la mano): debe salir ◐. */
+	/** Set de Anubis con la máscara puesta y el anillo en el inventario (no puesto): debe salir ◐. */
 	private void setTooltip(ClientGameTestContext ctx, TestServerContext srv) {
 		reset(ctx, srv);
-		Item eye = BuiltInRegistries.ITEM.getValue(MythicRelics.id("erlang_eye"));
-		Item halberd = BuiltInRegistries.ITEM.getValue(MythicRelics.id("erlang_halberd"));
+		Item mask = BuiltInRegistries.ITEM.getValue(MythicRelics.id("jackal_mask"));
+		Item ring = BuiltInRegistries.ITEM.getValue(MythicRelics.id("jackal_ring"));
 		srv.runOnServer(s -> {
 			ServerPlayer p = player(s);
-			equip(p, new ItemStack(eye));
-			p.getInventory().setItem(5, new ItemStack(halberd));
+			equip(p, new ItemStack(mask));
+			p.getInventory().setItem(5, new ItemStack(ring));
 		});
 		ctx.waitTicks(5);
 		ctx.getInput().holdShift();
 		ctx.waitTick();
 		String text = ctx.computeOnClient(mc -> {
 			StringBuilder sb = new StringBuilder();
-			for (Component c : new ItemStack(halberd).getTooltipLines(Item.TooltipContext.of(mc.level), mc.player, TooltipFlag.NORMAL)) {
+			for (Component c : new ItemStack(ring).getTooltipLines(Item.TooltipContext.of(mc.level), mc.player, TooltipFlag.NORMAL)) {
 				sb.append(c.getString()).append('\n');
 			}
 			return sb.toString();
 		});
 		ctx.getInput().releaseShift();
-		log("set de Erlang (ojo puesto, alabarda en el inventario):\n" + text);
+		log("set de Anubis (máscara puesta, anillo en el inventario):\n" + text);
 	}
 
 	// ---- 5. Habilidades ---------------------------------------------------------------------------------------------
@@ -486,11 +486,6 @@ public class RelicClientGameTest implements FabricClientGameTest {
 					shot(ctx, "hab_" + id + "_4tecla");
 					ctx.getInput().pressKey(RelicClientTicks.FALCON_KEY);
 					ctx.waitTicks(10);
-				}
-				if (wornToo && id.equals("universe_ring")) {
-					ctx.getInput().pressKey(RelicClientTicks.RING_KEY);
-					ctx.waitTicks(6);
-					shot(ctx, "hab_" + id + "_4tecla");
 				}
 				if (wornToo && id.equals("hades_helm")) {
 					// Agachado y quieto hasta volverse invisible; de frente no debe verse nada del jugador.

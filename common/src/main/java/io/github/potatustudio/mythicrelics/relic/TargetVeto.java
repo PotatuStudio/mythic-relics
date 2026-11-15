@@ -1,6 +1,5 @@
 package io.github.potatustudio.mythicrelics.relic;
 
-import io.github.potatustudio.mythicrelics.japan.JapanGods;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import java.util.Map;
 import java.util.UUID;
@@ -21,7 +20,6 @@ import org.jspecify.annotations.Nullable;
  *   <li>Set de Anubis: los no-muertos no atacan a quien lo lleva, salvo que los haya golpeado hace poco.</li>
  *   <li>Vendas de momia: los husks no atacan a quien las lleva.</li>
  *   <li>Lira de Orfeo: los hostiles dormidos por la música no atacan a nadie.</li>
- *   <li>Hoja del tanuki: los hostiles no ven al jugador transformado.</li>
  * </ul>
  */
 public final class TargetVeto {
@@ -64,9 +62,6 @@ public final class TargetVeto {
 		}
 		if (!(target instanceof ServerPlayer player)) {
 			return false;
-		}
-		if (mob instanceof Enemy && JapanGods.isDisguised(player)) {
-			return true;
 		}
 		if (mob instanceof Husk && WornRelics.isWearing(player, ModItems.MUMMY_WRAPS)) {
 			return true;

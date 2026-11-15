@@ -1,5 +1,5 @@
 """Repinta los modelos 3D hechos con una paleta de colores planos (escudos, Mjölnir y Gungnir en la mano, Ruyi estirado,
-Paladio, Zashiki-warashi) con textura propia: luz, sombras, ruido y patrón del material (worn_texture.retexture).
+Paladio) con textura propia: luz, sombras, ruido y patrón del material (worn_texture.retexture).
 
 Cada generador lo llama al final con los modelos que acaba de escribir (así nunca vuelven a quedar planos); también se
 puede correr solo: python paint_models.py
@@ -21,7 +21,6 @@ MODELS = {
     "item/mjolnir_3d": ("item/norse_palette", "item/painted/mjolnir_3d"),
     "item/gungnir_3d": ("item/norse_palette", "item/painted/gungnir_3d"),
     "item/ruyi_jingu_bang_extended": ("item/norse_palette", "item/painted/ruyi_jingu_bang_extended"),
-    "block/zashiki_warashi": ("block/zashiki_warashi", "block/painted/zashiki_warashi"),
 }
 
 

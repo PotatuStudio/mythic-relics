@@ -4,15 +4,9 @@ import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.china.BananaLeafFanItem;
 import io.github.potatustudio.mythicrelics.china.ChangeElixirItem;
 import io.github.potatustudio.mythicrelics.china.DragonPearlItem;
-import io.github.potatustudio.mythicrelics.china.ErlangHalberdItem;
-import io.github.potatustudio.mythicrelics.china.FireTippedSpearItem;
 import io.github.potatustudio.mythicrelics.china.FuTalismansItem;
-import io.github.potatustudio.mythicrelics.china.ImmortalPeachBranchItem;
-import io.github.potatustudio.mythicrelics.china.QilinHornItem;
-import io.github.potatustudio.mythicrelics.china.UniverseRingItem;
 import io.github.potatustudio.mythicrelics.china.HouYiBowItem;
 import io.github.potatustudio.mythicrelics.china.MonkeyHairsItem;
 import io.github.potatustudio.mythicrelics.china.PurpleGoldGourdItem;
@@ -24,18 +18,6 @@ import io.github.potatustudio.mythicrelics.greece.HarpeItem;
 import io.github.potatustudio.mythicrelics.greece.StoneStatueItem;
 import io.github.potatustudio.mythicrelics.greece.TalosNailItem;
 import io.github.potatustudio.mythicrelics.greece.ZeusThunderboltItem;
-import io.github.potatustudio.mythicrelics.japan.AmeNoNubokoItem;
-import io.github.potatustudio.mythicrelics.japan.FujinWindBagItem;
-import io.github.potatustudio.mythicrelics.japan.KibiDangoItem;
-import io.github.potatustudio.mythicrelics.japan.OrochiScaleItem;
-import io.github.potatustudio.mythicrelics.japan.TanukiLeafItem;
-import io.github.potatustudio.mythicrelics.japan.YashioriSakeItem;
-import io.github.potatustudio.mythicrelics.japan.KitsuneStarBallItem;
-import io.github.potatustudio.mythicrelics.japan.KusanagiItem;
-import io.github.potatustudio.mythicrelics.japan.LuckyMalletItem;
-import io.github.potatustudio.mythicrelics.japan.TideJewelsItem;
-import io.github.potatustudio.mythicrelics.japan.UrashimaRodItem;
-import io.github.potatustudio.mythicrelics.japan.YataMirrorItem;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.egypt.OsirisCrookItem;
 import io.github.potatustudio.mythicrelics.egypt.ThothPaletteItem;
@@ -186,11 +168,7 @@ public final class ModItems {
 			p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> PURPLE_GOLD_GOURD = register("purple_gold_gourd", PurpleGoldGourdItem::new,
 			p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> BANANA_LEAF_FAN = register("banana_leaf_fan", BananaLeafFanItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.WOOD, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
-			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> DRAGON_PEARL = register("dragon_pearl", DragonPearlItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> WIND_FIRE_WHEELS = relic("wind_fire_wheels", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> HOU_YI_BOW = register("hou_yi_bow", HouYiBowItem::new,
 			p -> p.rarity(Rarity.EPIC).durability(384).enchantable(1).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
 			.component(DataComponents.ENCHANTABLE, null));
@@ -198,51 +176,8 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> FIVE_COLOR_STONE = relic("five_color_stone", p -> p.rarity(Rarity.RARE));
 
 	// China, segunda tanda.
-	public static final RegistrySupplier<Item> FIRE_TIPPED_SPEAR = register("fire_tipped_spear", FireTippedSpearItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 5.0f, -2.8f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
-			.component(DataComponents.ENCHANTABLE, null));
-	public static final RegistrySupplier<Item> UNIVERSE_RING = register("universe_ring", UniverseRingItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> ERLANG_EYE = relic("erlang_eye", p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> ERLANG_HALBERD = register("erlang_halberd", ErlangHalberdItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -3.0f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
-			.component(DataComponents.ENCHANTABLE, null));
-	public static final RegistrySupplier<Item> QILIN_HORN = register("qilin_horn", QilinHornItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> PIXIU_BRACELET = relic("pixiu_bracelet", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> FU_TALISMANS = register("fu_talismans", FuTalismansItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> XIRANG_SACK = relic("xirang_sack", p -> p.rarity(Rarity.RARE));
-	public static final RegistrySupplier<Item> IMMORTAL_PEACH_BRANCH = register("immortal_peach_branch", ImmortalPeachBranchItem::new,
-			p -> p.rarity(Rarity.EPIC));
-
-	// Japón, primera tanda.
-	public static final RegistrySupplier<Item> KUSANAGI = register("kusanagi", KusanagiItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
-			.component(DataComponents.ENCHANTABLE, null));
-	public static final RegistrySupplier<Item> YATA_MIRROR = register("yata_mirror", YataMirrorItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> YASAKANI_MAGATAMA = relic("yasakani_magatama", p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> RAIJIN_DRUM = relic("raijin_drum", p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> ONI_KANABO = relic("oni_kanabo", p -> p.rarity(Rarity.EPIC)
-			.sword(ToolMaterial.IRON, 8.0f, -3.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
-			.component(DataComponents.ENCHANTABLE, null));
-	public static final RegistrySupplier<Item> KITSUNE_STAR_BALL = register("kitsune_star_ball", KitsuneStarBallItem::new,
-			p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> TIDE_JEWELS = register("tide_jewels", TideJewelsItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> LUCKY_MALLET = register("lucky_mallet", LuckyMalletItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> KIBI_DANGO = register("kibi_dango", KibiDangoItem::new, p -> p.rarity(Rarity.RARE));
-	public static final RegistrySupplier<Item> URASHIMA_ROD = register("urashima_rod", UrashimaRodItem::new, p -> p.rarity(Rarity.EPIC));
-
-	// Japón, segunda tanda.
-	public static final RegistrySupplier<Item> FUJIN_WIND_BAG = register("fujin_wind_bag", FujinWindBagItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> TENGU_MASK = relic("tengu_mask", p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> YASHIORI_SAKE = register("yashiori_sake", YashioriSakeItem::new, p -> p.rarity(Rarity.RARE));
-	public static final RegistrySupplier<Item> KAPPA_DISH = relic("kappa_dish", p -> p.rarity(Rarity.RARE));
-	public static final RegistrySupplier<Item> TANUKI_LEAF = register("tanuki_leaf", TanukiLeafItem::new, p -> p.rarity(Rarity.RARE));
-	public static final RegistrySupplier<Item> KINTARO_AXE = relic("kintaro_axe", p -> p.rarity(Rarity.EPIC)
-			.axe(ToolMaterial.IRON, 7.0f, -3.1f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
-			.component(DataComponents.ENCHANTABLE, null));
-	public static final RegistrySupplier<Item> ZASHIKI_WARASHI = register("zashiki_warashi",
-			p -> new PalladiumItem(ModBlocks.ZASHIKI_WARASHI.get(), p), p -> p.rarity(Rarity.EPIC).useItemDescriptionPrefix());
-	public static final RegistrySupplier<Item> AME_NO_NUBOKO = register("ame_no_nuboko", AmeNoNubokoItem::new, p -> p.rarity(Rarity.EPIC));
-	public static final RegistrySupplier<Item> OROCHI_SCALE = register("orochi_scale", OrochiScaleItem::new, p -> p.rarity(Rarity.EPIC));
 
 	// Grecia, tercera tanda.
 	public static final RegistrySupplier<Item> ZEUS_THUNDERBOLT = register("zeus_thunderbolt",
@@ -296,7 +231,6 @@ public final class ModItems {
 	public static final RegistrySupplier<CreativeModeTab> TAB_ROME = cultureTab("rome", () -> ANCILE.get());
 	public static final RegistrySupplier<CreativeModeTab> TAB_NORSE = cultureTab("norse", () -> MJOLNIR.get());
 	public static final RegistrySupplier<CreativeModeTab> TAB_CHINA = cultureTab("china", () -> RUYI_JINGU_BANG.get());
-	public static final RegistrySupplier<CreativeModeTab> TAB_JAPAN = cultureTab("japan", () -> KUSANAGI.get());
 
 	private static RegistrySupplier<CreativeModeTab> cultureTab(String culture, Supplier<Item> icon) {
 		return TABS.register(culture, () -> CreativeTabRegistry.create(builder -> builder

@@ -235,6 +235,10 @@ guerreros con el traje de la novela, en `tools/model-gen/china_entities.py`) e �
 Página de diseño: `tools/design-page/china_*.py`. Fuentes: mitos antiguos (Nüwa, Hou Yi, Chang'e), *Viaje al Oeste* y
 *La investidura de los dioses*.
 
+**Borradas el 2026-11-15** (quedan aquí solo como referencia): abanico de hoja de plátano, ruedas de viento y fuego,
+lanza de punta de fuego, aro del universo, ojo y alabarda de Erlang Shen (con su set y el Perro Celestial), cuerno del
+qilin, pulsera del pixiu y rama del melocotonero. China queda con 9 reliquias.
+
 | Reliquia | Espacio | Efecto | Dónde |
 |---|---|---|---|
 | Ruyi Jingu Bang | arma | 9 de daño, +1,5 de alcance; clic derecho: se estira 10 bloques en línea (10 de daño y empuje). Recarga 15 s (ajustada el 2026-11-14; antes 30 s). Hierro negro con aros de oro (el rojo es de Dragon Ball). | Cofre grande de ruinas submarinas, 4 % |
@@ -263,6 +267,9 @@ Modelos del Perro Celestial y del qilin aprobados; íconos: los del primer borra
 | Rama del melocotonero celestial | comida que no se gasta | Un melocotón cada 3 días: Absorción IV 3 min, Regeneración II 10 s y quita efectos negativos. | Templos de la jungla, 3 % |
 
 ## Japón
+**Cultura borrada entera el 2026-11-15**: sus 19 reliquias, los sets de los Tres Tesoros y de Fūjin y Raijin, el
+kitsune, la tortuga de Urashima y la sombra de Orochi ya no están en el mod. Lo de abajo queda solo como referencia.
+
 Tanda 1: aprobada y programada el 2026-11-10 (kitsune a 1,5 veces, del tamaño de un lobo grande; tortuga a 1,7). Página: `tools/design-page/japan_*.py`. Fuentes: Kojiki y Nihon Shoki, los dioses del trueno y el folclore.
 
 | Reliquia | Tipo | Efecto | Dónde |

@@ -2,7 +2,7 @@
 
 Los dibujos son los de la página de diseño (tools/design-page/china_draft.py); aquí se guardan en el mod:
   - textures/item/<reliquia>.png (+ .png.mcmeta con el destello) y los tres cuadros del arco tensado;
-  - models/item/<reliquia>.json (handheld para el bastón y el abanico; el arco hereda la pose del arco vanilla);
+  - models/item/<reliquia>.json (handheld para el bastón; el arco hereda la pose del arco vanilla);
   - items/<reliquia>.json de las que no se llevan puestas (las puestas las escribe worn_models.py), con el arco que se
     tensa como el vanilla.
 Uso: python china_icons.py
@@ -19,8 +19,8 @@ from greece_icons import save  # noqa: E402
 from moddata import ASSETS  # noqa: E402
 
 NS = "mythicrelics"
-HANDHELD = {"ruyi_jingu_bang", "banana_leaf_fan"}
-WORN = {"wind_fire_wheels", "five_color_stone"}
+HANDHELD = {"ruyi_jingu_bang"}
+WORN = {"five_color_stone"}
 
 
 def write(path, data):

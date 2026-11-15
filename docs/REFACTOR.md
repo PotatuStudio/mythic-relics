@@ -25,8 +25,8 @@ Varias herramientas en Python leen el código fuente con expresiones regulares. 
 actualizar la herramienta en la misma etapa:
 - `tools/model-gen/moddata.py`:
   - `constants()` lee las constantes `static final` de una lista fija de archivos (EgyptRelics, EgyptGods, GreeceRelics,
-    GreeceHeroes, RomeRelics, NorseRelics, NorseGods, ChinaRelics, ChinaGods, JapanRelics, JapanGods, GreeceLegends,
-    NorseSagas y `norse/MimirHead`). Si se mueve una constante a otro archivo, ese archivo tiene que estar en la lista.
+    GreeceHeroes, RomeRelics, NorseRelics, NorseGods, ChinaRelics, ChinaGods, GreeceLegends, NorseSagas y
+    `norse/MimirHead`; las clases de Japón se borraron el 2026-11-15). Si se mueve una constante a otro archivo, ese archivo tiene que estar en la lista.
   - `tooltip_args(c)` es una **copia a mano** de los `tooltipArgs` de Java: el libro y la wiki la usan. Si cambia el
     orden o la cantidad de argumentos en Java, hay que cambiarla también (los cambios por script van en `MODDATA` de
     `feedback4_lang.py`).

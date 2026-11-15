@@ -14,9 +14,7 @@ import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,7 +34,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Blaze;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.cubemob.MagmaCube;
 import net.minecraft.world.entity.monster.Phantom;
@@ -45,7 +42,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.MoonPhase;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.phys.Vec3;
 
 /**
  * Primera tanda china (diseño aprobado el 2026-11-10). Mitos antiguos, Viaje al Oeste y La investidura de los dioses:
@@ -54,10 +50,8 @@ import net.minecraft.world.phys.Vec3;
  *   <li><b>Pelos del Rey Mono</b> ({@link MonkeyHairsItem}): cuatro monos guerreros
  *       ({@link MonkeyWarrior}).</li>
  *   <li><b>Calabaza roja de oro púrpura</b> ({@link PurpleGoldGourdItem}): atrapa un mob, lo suelta o lo disuelve.</li>
- *   <li><b>Abanico de hoja de plátano</b> ({@link BananaLeafFanItem}): arma de viento con tres aleteos.</li>
  *   <li><b>Perla del dragón</b> ({@link DragonPearlItem}): llama al long que se monta
  *       ({@link LongDragon}).</li>
- *   <li><b>Ruedas de viento y fuego</b> (pies): velocidad, estela de llamas y cruzar la lava corriendo.</li>
  *   <li><b>Arco de Hou Yi</b> ({@link HouYiBowItem}): derriba «soles» (mobs de fuego y voladores).</li>
  *   <li><b>Elixir de Chang'e</b> ({@link ChangeElixirItem}): ascenso lunar según la fase de la luna.</li>
  *   <li><b>Piedra de cinco colores</b> (cinturón): remienda el equipo y los rayos no te dañan.</li>
@@ -82,18 +76,8 @@ public final class ChinaRelics {
 	public static final int GOURD_DISSOLVE_TICKS = 6000;
 	public static final int GOURD_COOLDOWN = 60;
 
-	public static final int FAN_BLADE_RANGE = 12;
-	public static final float FAN_BLADE_DAMAGE = 6.0f;
-	public static final float FAN_DASH_DAMAGE = 12.0f;
-	public static final int FAN_DASH_BLOCKS = 10;
-	public static final int FAN_CHARGES = 3;
-	public static final int FAN_RECHARGE_TICKS = 120;
-
 	public static final int DRAGON_LEAVE_TICKS = 60;
 	public static final int DRAGON_COOLDOWN = 6000;
-
-	public static final float WHEELS_SPEED = 0.4f;
-	public static final int WHEELS_BURN_SECONDS = 3;
 
 	public static final float HOU_YI_DAMAGE = 0.5f;
 	public static final int HOU_YI_SUN_FACTOR = 3;
@@ -108,17 +92,11 @@ public final class ChinaRelics {
 	public static final int STONE_INTERVAL = 200;
 
 	private static final Identifier RUYI_REACH_ID = MythicRelics.id("ruyi_reach");
-	private static final Identifier WHEELS_SPEED_ID = MythicRelics.id("wind_fire_wheels_speed");
-	private static final Identifier WHEELS_STEP_ID = MythicRelics.id("wind_fire_wheels_step");
 	private static final EquipmentSlot[] REPAIRED = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET,
 			EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND};
 
 	/** Jugador en ascenso lunar -> tick del juego en que termina. */
 	private static final Map<UUID, Long> LUNAR = new HashMap<>();
-	/** Jugador en pleno aleteo del abanico -> ticks que le quedan (empuja a los mobs que cruza y no recibe daño de caída). */
-	private static final Map<UUID, Integer> DASHING = new HashMap<>();
-	/** Mobs ya golpeados por el dash en curso de cada jugador. */
-	private static final Map<UUID, Set<UUID>> DASH_HIT = new HashMap<>();
 	/** Evita que el barrido del Ruyi se barra a sí mismo. */
 	private static final ThreadLocal<Boolean> RUYI_SWEEPING = ThreadLocal.withInitial(() -> false);
 
@@ -143,13 +121,10 @@ public final class ChinaRelics {
 	}
 
 	/**
-	 * Daño recibido: las ruedas anulan el fuego (y la lava) mientras corres; la piedra, los rayos; el arco de Hou Yi
+	 * Daño recibido: la piedra anula los rayos; el arco de Hou Yi
 	 * triplica contra los soles; el ascenso lunar da más daño a los golpes en el aire.
 	 */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
-		if (source.is(DamageTypeTags.IS_FIRE) && self.isSprinting() && WornRelics.isWearing(self, ModItems.WIND_FIRE_WHEELS)) {
-			return 0;
-		}
 		if (source.is(DamageTypeTags.IS_LIGHTNING) && WornRelics.isWearing(self, ModItems.FIVE_COLOR_STONE)) {
 			return 0;
 		}
@@ -178,11 +153,6 @@ public final class ChinaRelics {
 			amount *= 1.0f + ELIXIR_AIR_DAMAGE;
 		}
 		return amount;
-	}
-
-	/** Las ruedas, corriendo: la lava se pisa como suelo. */
-	public static boolean wheelsOnLava(LivingEntity entity) {
-		return entity.isSprinting() && WornRelics.isWearing(entity, ModItems.WIND_FIRE_WHEELS);
 	}
 
 	/** Lo que mata el arco de Hou Yi a un sol cae como el cuervo dorado de tres patas y suelta el doble de botín. */
@@ -223,31 +193,6 @@ public final class ChinaRelics {
 		return until != null && until > player.level().getGameTime();
 	}
 
-	// ---- Abanico ----------------------------------------------------------------------------------------------------
-
-	/** Registra un aleteo: el dash empuja a los mobs que cruza. */
-	static void flap(ServerPlayer player, int dashTicks) {
-		DASHING.put(player.getUUID(), dashTicks);
-		DASH_HIT.put(player.getUUID(), new HashSet<>());
-	}
-
-	private static void dashPush(ServerPlayer player) {
-		player.resetFallDistance();
-		ServerLevel level = player.level();
-		Vec3 push = player.getDeltaMovement().multiply(1, 0, 1).normalize().scale(2.2).add(0, 0.7, 0);
-		Set<UUID> hit = DASH_HIT.computeIfAbsent(player.getUUID(), k -> new HashSet<>());
-		for (LivingEntity mob : Allies.enemiesAround(player, player.getBoundingBox().inflate(2.0))) {
-			if (hit.add(mob.getUUID())) {
-				mob.hurtServer(level, level.damageSources().playerAttack(player), FAN_DASH_DAMAGE);
-				level.sendParticles(ParticleTypes.SWEEP_ATTACK, mob.getX(), mob.getY(0.5), mob.getZ(), 1, 0, 0, 0, 0);
-			}
-			mob.push(push.x, push.y, push.z);
-			mob.needsSync = true;
-		}
-		level.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.5, player.getZ(), 4, 0.3, 0.2, 0.3, 0.02);
-		level.sendParticles(ParticleTypes.GUST, player.getX(), player.getY() + 0.8, player.getZ(), 1, 0.2, 0.2, 0.2, 0.0);
-	}
-
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------
 
 	private static void tick(MinecraftServer server) {
@@ -260,42 +205,11 @@ public final class ChinaRelics {
 					!main.is(ModItems.RUYI_JINGU_BANG.get()) ? 0
 							: RuyiJinguBangItem.isExtended(main, now) ? RUYI_REACH + RUYI_EXTENDED_REACH : RUYI_REACH,
 					AttributeModifier.Operation.ADD_VALUE);
-			boolean wheels = WornRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS);
-			setModifier(player, Attributes.MOVEMENT_SPEED, WHEELS_SPEED_ID, wheels ? WHEELS_SPEED : 0,
-					AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-			setModifier(player, Attributes.STEP_HEIGHT, WHEELS_STEP_ID, wheels ? 0.4 : 0, AttributeModifier.Operation.ADD_VALUE);
-			if (wheels && player.isSprinting()) {
-				wheelsTrail(level, player);
-			}
-			Integer dash = DASHING.get(player.getUUID());
-			if (dash != null) {
-				dashPush(player);
-				if (dash <= 1) {
-					DASHING.remove(player.getUUID());
-				} else {
-					DASHING.put(player.getUUID(), dash - 1);
-				}
-			}
 			if (isLunar(player) && player.tickCount % 4 == 0) {
 				level.sendParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + 0.3, player.getZ(), 1, 0.3, 0.1, 0.3, 0.01);
 			}
 			if (player.tickCount % STONE_INTERVAL == 0 && WornRelics.isWearing(player, ModItems.FIVE_COLOR_STONE)) {
 				mend(player);
-			}
-		}
-	}
-
-	/** Ruedas de viento y fuego: corriendo no te quemas y las llamas de la estela prenden a los hostiles que tocas. */
-	private static void wheelsTrail(ServerLevel level, ServerPlayer player) {
-		player.clearFire();
-		if (player.tickCount % 2 == 0) {
-			level.sendParticles(ParticleTypes.FLAME, player.getX(), player.getY() + 0.1, player.getZ(), 2, 0.2, 0.05, 0.2, 0.01);
-			level.sendParticles(ParticleTypes.SMALL_GUST, player.getX(), player.getY() + 0.2, player.getZ(), 1, 0.2, 0.05, 0.2, 0.0);
-		}
-		if (player.tickCount % 5 == 0) {
-			for (LivingEntity mob : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1.2, 0.2, 1.2),
-					e -> e instanceof Enemy && e.isAlive() && !Allies.isFriend(player, e))) {
-				mob.igniteForSeconds(WHEELS_BURN_SECONDS);
 			}
 		}
 	}
@@ -332,10 +246,7 @@ public final class ChinaRelics {
 				RUYI_EXTENDED_TICKS / 20, (int) RUYI_EXTENDED_REACH);
 		TooltipArgs.register("monkey_king_hairs", HAIRS_MONKEYS, HAIRS_TICKS / 20, MONKEY_HEALTH, MONKEY_DAMAGE, HAIRS_COOLDOWN / 20 / 60);
 		TooltipArgs.register("purple_gold_gourd", GOURD_MAX_HEALTH, GOURD_DISSOLVE_TICKS / 20 / 60, GOURD_COOLDOWN / 20);
-		TooltipArgs.register("banana_leaf_fan", FAN_BLADE_RANGE, (int) FAN_BLADE_DAMAGE, FAN_DASH_BLOCKS, FAN_CHARGES,
-				FAN_RECHARGE_TICKS / 20, (int) FAN_DASH_DAMAGE);
 		TooltipArgs.register("dragon_pearl", DRAGON_LEAVE_TICKS / 20, DRAGON_COOLDOWN / 20 / 60);
-		TooltipArgs.register("wind_fire_wheels", Math.round(WHEELS_SPEED * 100));
 		TooltipArgs.register("hou_yi_bow", Math.round(HOU_YI_DAMAGE * 100), HOU_YI_SUN_FACTOR);
 		TooltipArgs.register("change_elixir", Math.round(ELIXIR_AIR_DAMAGE * 100), ELIXIR_FULL_SECONDS, ELIXIR_QUARTER_SECONDS,
 				ELIXIR_NEW_SECONDS, ELIXIR_COOLDOWN / 20 / 60);
@@ -344,6 +255,6 @@ public final class ChinaRelics {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		ServerState.perPlayer(LUNAR, DASHING, DASH_HIT);
+		ServerState.perPlayer(LUNAR);
 	}
 }

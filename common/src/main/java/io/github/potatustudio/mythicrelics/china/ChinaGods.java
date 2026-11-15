@@ -4,66 +4,41 @@ import com.mojang.math.Transformation;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
-import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.greece.CharonStash;
-import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.mixin.DisplayAccessor;
 import io.github.potatustudio.mythicrelics.mixin.ItemDisplayAccessor;
-import io.github.potatustudio.mythicrelics.network.RingPayload;
-import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
-import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
-import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
-import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
@@ -71,66 +46,20 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 /**
- * Segunda tanda china (diseño aprobado el 2026-11-10): Nezha (lanza y aro), Erlang Shen (ojo, alabarda y su Perro
- * Celestial), el qilin, el pixiu, los talismanes, el xirang y los melocotones de la inmortalidad.
+ * Segunda tanda china (diseño aprobado el 2026-11-10): los talismanes fu y el saco de xirang.
  * <ul>
- *   <li>Ítems: {@link FireTippedSpearItem}, {@link UniverseRingItem}, {@link ErlangHalberdItem}, {@link QilinHornItem},
- *       {@link FuTalismansItem}, el saco de xirang (solo pasiva) e {@link ImmortalPeachBranchItem}.</li>
- *   <li>Aquí: el Ojo de Erlang (hostiles e invisibles brillan), el alcance de la alabarda, el set de Erlang Shen (el
- *       perro aparece al recibir daño), el pixiu (pepitas al matar, tesoros al morir) y los talismanes que vencen.</li>
+ *   <li>Ítems: {@link FuTalismansItem} y el saco de xirang (solo pasiva).</li>
+ *   <li>Aquí: los talismanes que vencen y el rescate del xirang.</li>
  * </ul>
  */
 public final class ChinaGods {
-	public static final int SPEAR_BURN_SECONDS = 4;
-	public static final int SPEAR_FLAME_RANGE = 6;
-	public static final float SPEAR_FLAME_DAMAGE = 16.0f;
-	public static final int SPEAR_COOLDOWN = 100;
-	public static final int SPEAR_WHEELS_COOLDOWN = 60;
-
-	public static final int RING_TARGETS = 3;
-	public static final int RING_RANGE = 8;
-	public static final float RING_DAMAGE = 12.0f;
-	public static final int RING_STUN_TICKS = 20;
-	public static final int RING_COOLDOWN = 80;
-
-
-	public static final int ERLANG_SIGHT_RADIUS = 16;
-	/** El tercer ojo detiene un proyectil que te apunta cada tanto (ticks). */
-	public static final int ERLANG_DEFLECT_COOLDOWN = 20;
-	/** Distancia a la que el ojo ve venir el proyectil. */
-	private static final double ERLANG_DEFLECT_RADIUS = 5.0;
-	/** Último desvío de cada jugador (tick del juego). */
-	private static final Map<UUID, Long> ERLANG_DEFLECTED = new HashMap<>();
-	public static final float HALBERD_REACH = 1.0f;
-	public static final int HALBERD_SWEEP_RADIUS = 2;
-	public static final float HALBERD_SWEEP_DAMAGE = 4.0f;
-	public static final int DOG_TICKS = 900;
-	public static final int DOG_COOLDOWN = 1800;
-	public static final int DOG_HEALTH = 24;
-	public static final int DOG_DAMAGE = 6;
-
-	public static final int QILIN_LEAVE_TICKS = 60;
-	public static final int QILIN_COOLDOWN = 6000;
-	public static final int QILIN_AURA_RADIUS = 8;
-
-	public static final float PIXIU_CHANCE = 0.3f;
-	public static final int PIXIU_MAX_NUGGETS = 3;
-
 	public static final int TALISMAN_TICKS = 160;
 	public static final int TALISMAN_COOLDOWN = 300;
 
 	/** Saco de xirang: solo la pasiva (te salva de la lava o del vacío), con recarga de 5 min. */
 	public static final int XIRANG_RESCUE_COOLDOWN = 6000;
 
-	public static final int PEACH_GROW_TICKS = 72000;
-	public static final int PEACH_ABSORPTION_TICKS = 3600;
-	public static final int PEACH_REGEN_TICKS = 200;
-
 	public static final String TALISMAN_TAG = MythicRelics.MOD_ID + ".talisman";
-	private static final Identifier HALBERD_REACH_ID = MythicRelics.id("erlang_halberd_reach");
-	/** Lo que el pixiu no deja escapar al morir. */
-	private static final Set<Item> TREASURE = Set.of(Items.GOLD_NUGGET, Items.GOLD_INGOT, Items.GOLD_BLOCK, Items.RAW_GOLD,
-			Items.RAW_GOLD_BLOCK, Items.EMERALD, Items.EMERALD_BLOCK, Items.DIAMOND, Items.DIAMOND_BLOCK);
 	/** No-muerto con un talismán pegado -> tick del juego en que se despega. */
 	private static final Map<UUID, Long> SEALED = new HashMap<>();
 	/** El papel pegado en la frente de cada no-muerto sellado (una entidad de visualización de ítem). */
@@ -142,58 +71,7 @@ public final class ChinaGods {
 
 	public static void init() {
 		TickEvent.SERVER_POST.register(ChinaGods::tick);
-		EntityEvent.LIVING_HURT.register(ChinaGods::onHurt);
-		EntityEvent.LIVING_DEATH.register(ChinaGods::onDeath);
 		EntityEvent.ADD.register(ChinaGods::onEntityAdded);
-		NetworkManager.registerReceiver(NetworkManager.c2s(), RingPayload.TYPE, RingPayload.CODEC,
-				(payload, context) -> context.queue(() -> {
-					if (context.getPlayer() instanceof ServerPlayer player) {
-						UniverseRingItem.throwRing(player);
-					}
-				}));
-	}
-
-	/** Nezha completo: la llamarada de la lanza recarga a la mitad con las ruedas puestas. */
-	static int spearCooldown(Player player) {
-		return WornRelics.isWearing(player, ModItems.WIND_FIRE_WHEELS) ? SPEAR_WHEELS_COOLDOWN : SPEAR_COOLDOWN;
-	}
-
-	// ---- Eventos ----------------------------------------------------------------------------------------------------
-
-	private static EventResult onHurt(LivingEntity target, DamageSource source, float amount) {
-		if (target instanceof ServerPlayer player && source.getEntity() instanceof LivingEntity attacker && attacker != player
-				&& Minions.ownerOf(attacker) == null && RelicSets.ERLANG.isComplete(player)
-				&& RelicCooldowns.tryStart(player, "erlang_dog", DOG_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.ERLANG_HALBERD.get()))) {
-			ServerLevel level = player.level();
-			Mob dog = Minions.summon(level, player, ModEntities.CELESTIAL_DOG.get(), player.getX() + 1.0, player.getY(), player.getZ(),
-					DOG_TICKS, Component.translatable("entity.mythicrelics.celestial_dog"));
-			if (dog != null) {
-				dog.setTarget(attacker);
-				level.sendParticles(ParticleTypes.CLOUD, dog.getX(), dog.getY() + 0.5, dog.getZ(), 16, 0.4, 0.3, 0.4, 0.03);
-				RelicFx.sound(level, dog, SoundEvents.FOX_AGGRO, 1.0f, 0.5f);
-				RelicFx.notify(player, "celestial_dog", ChatFormatting.GOLD);
-			}
-		}
-		return EventResult.pass();
-	}
-
-	private static EventResult onDeath(LivingEntity victim, DamageSource source) {
-		if (!(victim.level() instanceof ServerLevel level)) {
-			return EventResult.pass();
-		}
-		// Pixiu: come oro; lo que matas suelta pepitas.
-		if (victim instanceof Enemy && source.getEntity() instanceof ServerPlayer player && WornRelics.isWearing(player, ModItems.PIXIU_BRACELET)
-				&& level.getRandom().nextFloat() < PIXIU_CHANCE) {
-			ItemEntity gold = new ItemEntity(level, victim.getX(), victim.getY() + 0.5, victim.getZ(),
-					new ItemStack(Items.GOLD_NUGGET, 1 + level.getRandom().nextInt(PIXIU_MAX_NUGGETS)));
-			gold.setDefaultPickUpDelay();
-			level.addFreshEntity(gold);
-		}
-		// Pixiu: lo que entra no sale; al morir conservas tus tesoros.
-		if (victim instanceof ServerPlayer player && WornRelics.isWearing(player, ModItems.PIXIU_BRACELET)) {
-			CharonStash.keepTreasure(player, stack -> TREASURE.contains(stack.getItem()));
-		}
-		return EventResult.pass();
 	}
 
 	// ---- Talismanes -------------------------------------------------------------------------------------------------
@@ -333,90 +211,18 @@ public final class ChinaGods {
 					&& player.getInventory().contains(s -> s.is(ModItems.XIRANG_SACK.get()))) {
 				xirangRescue(player);
 			}
-			setModifier(player, Attributes.ENTITY_INTERACTION_RANGE, HALBERD_REACH_ID,
-					player.getMainHandItem().is(ModItems.ERLANG_HALBERD.get()) ? HALBERD_REACH : 0);
-			if (WornRelics.isWearing(player, ModItems.ERLANG_EYE)) {
-				if (player.tickCount % 10 == 0) {
-					erlangSight(player);
-				}
-				erlangDeflect(player);
-			}
-		}
-	}
-
-	/** Ojo de Erlang Shen: nada se esconde. Los invisibles cercanos brillan (también tras las paredes). */
-	private static void erlangSight(ServerPlayer player) {
-		for (LivingEntity e : player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(ERLANG_SIGHT_RADIUS),
-				e -> e != player && e.isAlive() && e.isInvisible())) {
-			e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 25, 0, false, false));
-		}
-	}
-
-	/**
-	 * Ojo de Erlang Shen: el tercer ojo ve venir lo que te lanzan. Una flecha, bola de fuego, tridente o lo que sea que
-	 * venga hacia ti se detiene en el aire con un destello dorado y cae (las bolas de fuego se deshacen). Uno cada
-	 * {@link #ERLANG_DEFLECT_COOLDOWN} ticks; no detiene los de tus aliados ni los tuyos.
-	 */
-	private static void erlangDeflect(ServerPlayer player) {
-		long now = player.level().getGameTime();
-		Long last = ERLANG_DEFLECTED.get(player.getUUID());
-		if (last != null && now - last < ERLANG_DEFLECT_COOLDOWN) {
-			return;
-		}
-		ServerLevel level = player.level();
-		Vec3 center = player.getBoundingBox().getCenter();
-		for (Projectile p : level.getEntitiesOfClass(Projectile.class, player.getBoundingBox().inflate(ERLANG_DEFLECT_RADIUS),
-				p -> p.isAlive() && p.getOwner() != player && !(p.getOwner() != null && Allies.isFriend(player, p.getOwner())))) {
-			Vec3 v = p.getDeltaMovement();
-			if (v.lengthSqr() < 0.04 || v.dot(center.subtract(p.position())) <= 0) {
-				continue;
-			}
-			level.sendParticles(ParticleTypes.END_ROD, p.getX(), p.getY(), p.getZ(), 12, 0.15, 0.15, 0.15, 0.08);
-			level.sendParticles(ParticleTypes.WAX_OFF, p.getX(), p.getY(), p.getZ(), 6, 0.2, 0.2, 0.2, 0.0);
-			RelicFx.sound(level, p, SoundEvents.AMETHYST_BLOCK_CHIME, 1.2f, 1.6f);
-			if (p instanceof AbstractHurtingProjectile) {
-				p.discard();
-			} else {
-				p.setDeltaMovement(0.0, -0.05, 0.0);
-				p.needsSync = true;
-			}
-			ERLANG_DEFLECTED.put(player.getUUID(), now);
-			return;
-		}
-	}
-
-	private static void setModifier(Player player, Holder<Attribute> attribute, Identifier id, double amount) {
-		AttributeInstance instance = player.getAttribute(attribute);
-		if (instance == null) {
-			return;
-		}
-		AttributeModifier current = instance.getModifier(id);
-		if (current != null && current.amount() == amount) {
-			return;
-		}
-		instance.removeModifier(id);
-		if (amount != 0) {
-			instance.addTransientModifier(new AttributeModifier(id, amount, AttributeModifier.Operation.ADD_VALUE));
 		}
 	}
 
 	/** Números de los tooltips de la segunda tanda china. */
 	public static void registerTooltipArgs() {
-		TooltipArgs.register("fire_tipped_spear", SPEAR_BURN_SECONDS, SPEAR_FLAME_RANGE, (int) SPEAR_FLAME_DAMAGE, SPEAR_COOLDOWN / 20,
-				SPEAR_WHEELS_COOLDOWN / 20);
-		TooltipArgs.register("universe_ring", RING_TARGETS, RING_RANGE, (int) RING_DAMAGE, RING_STUN_TICKS / 20, RING_COOLDOWN / 20);
-		TooltipArgs.register("erlang_eye", ERLANG_SIGHT_RADIUS, ERLANG_DEFLECT_COOLDOWN / 20);
-		TooltipArgs.register("erlang_halberd", (int) HALBERD_REACH, HALBERD_SWEEP_RADIUS, DOG_TICKS / 20, DOG_COOLDOWN / 20);
-		TooltipArgs.register("qilin_horn", QILIN_AURA_RADIUS, QILIN_LEAVE_TICKS / 20, QILIN_COOLDOWN / 20 / 60);
-		TooltipArgs.register("pixiu_bracelet", Math.round(PIXIU_CHANCE * 100), PIXIU_MAX_NUGGETS);
 		TooltipArgs.register("fu_talismans", TALISMAN_TICKS / 20, TALISMAN_COOLDOWN / 20);
 		TooltipArgs.register("xirang_sack", XIRANG_RESCUE_COOLDOWN / 20 / 60);
-		TooltipArgs.register("immortal_peach_branch", PEACH_GROW_TICKS / 24000, PEACH_ABSORPTION_TICKS / 20 / 60, PEACH_REGEN_TICKS / 20);
 	}
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		ServerState.perPlayer(SAFE_GROUND, ERLANG_DEFLECTED);
+		ServerState.perPlayer(SAFE_GROUND);
 		ServerState.clearOnStop(SEALED);
 		ServerState.clearOnStop(TALISMAN_PAPER);
 	}

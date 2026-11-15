@@ -10,16 +10,14 @@ import net.minecraft.world.item.Item;
 
 /**
  * Armas de set: con el set completo, el arma del set pega {@link RelicSets#WEAPON_BONUS} más en cuerpo a cuerpo (y en lo
- * que hace con el arma en la mano: barrido del mayal, tajo de viento de Kusanagi, barrido de la alabarda). Mjölnir
- * lanzado y los rayos de Thor y de Raijin se suben donde se calculan (ThrownRelic y RelicLightning).
+ * que hace con el arma en la mano: barrido del mayal). Mjölnir lanzado y los rayos de
+ * Thor se suben donde se calculan (ThrownRelic y RelicLightning).
  */
 public final class SetWeapons {
 	private static final Map<RelicSets, Supplier<Item>> MELEE = Map.of(
 			RelicSets.ANUBIS, () -> ModItems.ANUBIS_SCEPTER.get(),
 			RelicSets.OSIRIS, () -> ModItems.OSIRIS_FLAIL.get(),
-			RelicSets.PERSEUS, () -> ModItems.HARPE.get(),
-			RelicSets.ERLANG, () -> ModItems.ERLANG_HALBERD.get(),
-			RelicSets.REGALIA, () -> ModItems.KUSANAGI.get());
+			RelicSets.PERSEUS, () -> ModItems.HARPE.get());
 
 	private SetWeapons() {
 	}

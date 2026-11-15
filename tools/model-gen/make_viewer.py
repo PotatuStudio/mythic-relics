@@ -66,22 +66,6 @@ if __name__ == "__main__":
         data["china"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "rootOffset": list(CE.ROOT_OFFSET[key]),
                               "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
                               "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
-    import china2_entities as C2  # noqa: E402
-    for key in C2.MODELS:
-        parts, _img, _glow, tex_w, tex_h = C2.bake_one(key)
-        name = CE.NAMES[key][1]
-        data["china"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "rootOffset": list(CE.ROOT_OFFSET[key]),
-                              "scale": C2.SCALE[key],
-                              "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
-                              "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
-    import japan_entities as JE  # noqa: E402
-    for key in JE.MODELS:
-        parts, _img, _glow, tex_w, tex_h = JE.bake_one(key)
-        name = CE.NAMES[key][1]
-        data["china"][key] = {"parts": parts, "texW": tex_w, "texH": tex_h, "rootOffset": list(CE.ROOT_OFFSET[key]),
-                              "scale": JE.SCALE[key],
-                              "tex": b64(os.path.join(ASSETS, "textures", "entity", name + ".png")),
-                              "glow": b64(os.path.join(ASSETS, "textures", "entity", name + "_glow.png"))}
     # Cuervos de Odín y Skíðblaðnir (norse_entities.py, el mismo diseño que client/entity/geometry).
     import norse_entities as NE  # noqa: E402
     for key in NE.MODELS:

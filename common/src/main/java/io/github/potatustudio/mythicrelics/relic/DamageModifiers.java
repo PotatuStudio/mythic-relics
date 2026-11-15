@@ -6,8 +6,6 @@ import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
-import io.github.potatustudio.mythicrelics.japan.JapanGods;
-import io.github.potatustudio.mythicrelics.japan.JapanRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
@@ -31,8 +29,6 @@ public final class DamageModifiers {
 			RomeRelics::modifyIncomingDamage,
 			NorseRelics::modifyIncomingDamage,
 			ChinaRelics::modifyIncomingDamage,
-			JapanRelics::modifyIncomingDamage,
-			JapanGods::modifyIncomingDamage,
 			GreeceLegends::modifyIncomingDamage,
 			NorseSagas::modifyIncomingDamage,
 			SetWeapons::modifyIncomingDamage);

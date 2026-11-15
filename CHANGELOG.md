@@ -6,8 +6,19 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
 ## [Unreleased]
 ### Added
 - Proyecto inicial desde mod-template, con Trinkets Updated (Fabric) y Curios (NeoForge).
-- Reliquias de seis mitologías: Egipto, Grecia, Roma, nórdicos, China y Japón (101 ítems), con sets, aliados, monturas,
+- Reliquias de cinco mitologías: Egipto, Grecia, Roma, nórdicos y China (70 reliquias), con sets, aliados, monturas,
   libro (Modonomicon), página de JEI, una pestaña creativa por mitología y modelos 3D puestos con textura pintada.
+
+### Removed
+- Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del
+  kitsune, joyas de la marea, mazo de la suerte, kibi dango, caña de Urashima, bolsa de Fūjin, máscara de tengu, sake
+  Yashiori, plato del kappa, hoja del tanuki, hacha de Kintarō, muñeca de zashiki-warashi, Ame-no-nuboko y escama de
+  Orochi), los sets de los Tres Tesoros y de Fūjin y Raijin, el kitsune, la tortuga de Urashima, la sombra de Orochi,
+  su pestaña creativa, su categoría del libro y su página de la wiki.
+- Nueve reliquias chinas: lanza de punta de fuego, aro del universo (y su tecla R), ojo y alabarda de Erlang Shen (con
+  el set de Erlang y el Perro Celestial), cuerno del qilin (y el qilin), abanico de hoja de plátano, ruedas de viento y
+  fuego, pulsera del pixiu y rama del melocotonero. China queda con 9.
+- El doble salto vuelve a ser solo de las sandalias de Hermes (ya no avisa que no se acumula con la máscara de tengu).
 
 ### Changed
 - Tooltips cortos: un resumen propio de cada reliquia (lo importante y la recarga) y el set; con Shift, el detalle

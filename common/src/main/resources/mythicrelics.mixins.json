@@ -7,8 +7,6 @@
 		"BrushableBlockEntityMixin",
 		"DisplayAccessor",
 		"DoorInteractGoalAccessor",
-		"FarmlandBlockMixin",
-		"FoxAccessor",
 		"ItemDisplayAccessor",
 		"LivingEntityMixin",
 		"MobMixin",

@@ -28,7 +28,7 @@ import net.minecraft.world.item.TooltipFlag;
  */
 public final class RelicTooltips {
 	private static final Map<String, Integer> COLORS = Map.of("egypt", 0xE8C15A, "greece", 0x7FB7E6, "rome", 0xD0564A,
-			"norse", 0x9FD3E8, "china", 0xE8603C, "japan", 0xF2A2B8);
+			"norse", 0x9FD3E8, "china", 0xE8603C);
 
 	private RelicTooltips() {
 	}

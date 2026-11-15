@@ -30,18 +30,6 @@ public final class ModComponents {
 	public static final RegistrySupplier<DataComponentType<Long>> IDUNN_DAY = COMPONENTS.register("idunn_day",
 			() -> DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build());
 
-	/** Rama del melocotonero: tick del juego en que se comió el último melocotón (si falta, hay uno maduro). */
-	public static final RegistrySupplier<DataComponentType<Long>> PEACH_GROWING = COMPONENTS.register("peach_growing",
-			() -> DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build());
-
-	/** Kibi dango que quedan en la bolsa de Momotarō (si falta, está llena). */
-	public static final RegistrySupplier<DataComponentType<Integer>> KIBI_DANGO = COMPONENTS.register("kibi_dango",
-			() -> DataComponentType.<Integer>builder().persistent(Codec.intRange(0, 64)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-
-	/** Último día de Minecraft en que se rellenó la bolsa de kibi dango. */
-	public static final RegistrySupplier<DataComponentType<Long>> KIBI_DAY = COMPONENTS.register("kibi_day",
-			() -> DataComponentType.<Long>builder().persistent(Codec.LONG).networkSynchronized(ByteBufCodecs.VAR_LONG).build());
-
 	private ModComponents() {
 	}
 

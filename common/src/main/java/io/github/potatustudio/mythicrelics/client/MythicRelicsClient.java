@@ -3,7 +3,6 @@ package io.github.potatustudio.mythicrelics.client;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.client.entity.CelestialDogModel;
 import io.github.potatustudio.mythicrelics.client.entity.CerberusModel;
 import io.github.potatustudio.mythicrelics.client.entity.FreyjaFalconModel;
 import io.github.potatustudio.mythicrelics.client.entity.FreyrSwordRenderer;
@@ -12,16 +11,12 @@ import io.github.potatustudio.mythicrelics.client.entity.LongDragonModel;
 import io.github.potatustudio.mythicrelics.client.entity.MonkeyWarriorModel;
 import io.github.potatustudio.mythicrelics.client.entity.OdinRavenModel;
 import io.github.potatustudio.mythicrelics.client.entity.PegasusModel;
-import io.github.potatustudio.mythicrelics.client.entity.QilinModel;
 import io.github.potatustudio.mythicrelics.client.entity.CerberusRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.JackalModel;
-import io.github.potatustudio.mythicrelics.client.entity.KitsuneModel;
-import io.github.potatustudio.mythicrelics.client.entity.OrochiModel;
 import io.github.potatustudio.mythicrelics.client.entity.SleipnirModel;
 import io.github.potatustudio.mythicrelics.client.entity.StoneStatueRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.TalosModel;
 import io.github.potatustudio.mythicrelics.client.entity.ThrownRelicRenderer;
-import io.github.potatustudio.mythicrelics.client.entity.UrashimaTurtleModel;
 import io.github.potatustudio.mythicrelics.client.entity.SleipnirRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.JackalRenderer;
 import io.github.potatustudio.mythicrelics.client.entity.ScarabModel;
@@ -54,15 +49,6 @@ public final class MythicRelicsClient {
 		EntityRendererRegistry.register(ModEntities.MONKEY_WARRIOR, MythicRenderers.Monkey::new);
 		EntityModelLayerRegistry.register(LongDragonModel.LAYER, LongDragonModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.LONG_DRAGON, MythicRenderers.Dragon::new);
-		EntityModelLayerRegistry.register(CelestialDogModel.LAYER, CelestialDogModel::createBodyLayer);
-		EntityRendererRegistry.register(ModEntities.CELESTIAL_DOG, MythicRenderers.Dog::new);
-		EntityModelLayerRegistry.register(QilinModel.LAYER, QilinModel::createBodyLayer);
-		EntityRendererRegistry.register(ModEntities.QILIN, MythicRenderers.QilinRenderer::new);
-		EntityModelLayerRegistry.register(KitsuneModel.LAYER, KitsuneModel::createBodyLayer);
-		EntityRendererRegistry.register(ModEntities.KITSUNE, MythicRenderers.KitsuneRenderer::new);
-		EntityModelLayerRegistry.register(UrashimaTurtleModel.LAYER, UrashimaTurtleModel::createBodyLayer);
-		EntityRendererRegistry.register(ModEntities.URASHIMA_TURTLE, MythicRenderers.TurtleRenderer::new);
-		EntityModelLayerRegistry.register(OrochiModel.LAYER, OrochiModel::createBodyLayer);
 		EntityModelLayerRegistry.register(OdinRavenModel.LAYER,
 				OdinRavenModel::createBodyLayer);
 		EntityRendererRegistry.register(ModEntities.ODIN_RAVEN, MythicRenderers.RavenRenderer::new);
@@ -71,7 +57,6 @@ public final class MythicRelicsClient {
 				MythicRelics.id("boat/skidbladnir"), "main");
 		EntityModelLayerRegistry.register(ship, SkidbladnirGeometry::create);
 		EntityRendererRegistry.register(ModEntities.SKIDBLADNIR_BOAT, context -> new BoatRenderer(context, ship));
-		EntityRendererRegistry.register(ModEntities.OROCHI_SHADOW, MythicRenderers.OrochiRenderer::new);
 		// Mjölnir y Gungnir en vuelo: el ítem, un poco más grande que un objeto lanzado normal.
 		EntityRendererRegistry.register(ModEntities.THROWN_RELIC, ThrownRelicRenderer::new);
 		// Grecia 3 y nórdicos 3.

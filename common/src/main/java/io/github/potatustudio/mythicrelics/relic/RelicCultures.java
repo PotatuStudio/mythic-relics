@@ -73,46 +73,18 @@ public final class RelicCultures {
 		CULTURE.put("ruyi_jingu_bang", "china");
 		CULTURE.put("monkey_king_hairs", "china");
 		CULTURE.put("purple_gold_gourd", "china");
-		CULTURE.put("banana_leaf_fan", "china");
 		CULTURE.put("dragon_pearl", "china");
-		CULTURE.put("wind_fire_wheels", "china");
 		CULTURE.put("hou_yi_bow", "china");
 		CULTURE.put("change_elixir", "china");
 		CULTURE.put("five_color_stone", "china");
-		CULTURE.put("fire_tipped_spear", "china");
-		CULTURE.put("universe_ring", "china");
-		CULTURE.put("erlang_eye", "china");
-		CULTURE.put("erlang_halberd", "china");
-		CULTURE.put("qilin_horn", "china");
-		CULTURE.put("pixiu_bracelet", "china");
 		CULTURE.put("fu_talismans", "china");
 		CULTURE.put("xirang_sack", "china");
-		CULTURE.put("immortal_peach_branch", "china");
-		CULTURE.put("kusanagi", "japan");
-		CULTURE.put("yata_mirror", "japan");
-		CULTURE.put("yasakani_magatama", "japan");
-		CULTURE.put("raijin_drum", "japan");
-		CULTURE.put("oni_kanabo", "japan");
-		CULTURE.put("kitsune_star_ball", "japan");
-		CULTURE.put("tide_jewels", "japan");
-		CULTURE.put("lucky_mallet", "japan");
-		CULTURE.put("kibi_dango", "japan");
-		CULTURE.put("urashima_rod", "japan");
-		CULTURE.put("fujin_wind_bag", "japan");
-		CULTURE.put("tengu_mask", "japan");
-		CULTURE.put("yashiori_sake", "japan");
-		CULTURE.put("kappa_dish", "japan");
-		CULTURE.put("tanuki_leaf", "japan");
-		CULTURE.put("kintaro_axe", "japan");
-		CULTURE.put("zashiki_warashi", "japan");
-		CULTURE.put("ame_no_nuboko", "japan");
-		CULTURE.put("orochi_scale", "japan");
 	}
 
 	private RelicCultures() {
 	}
 
-	/** egypt, greece, rome, norse, china o japan; null si no es una reliquia. */
+	/** egypt, greece, rome, norse o china; null si no es una reliquia. */
 	public static @Nullable String of(String id) {
 		return CULTURE.get(id);
 	}

@@ -44,14 +44,6 @@ public final class MythicRelicsNeoForgeClient {
 		ICurioRenderer.register(ModItems.DRAUPNIR.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
 		ICurioRenderer.register(ModItems.BRISINGAMEN.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
 		ICurioRenderer.register(ModItems.ANDVARANAUT.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
-		ICurioRenderer.register(ModItems.WIND_FIRE_WHEELS.get(), () -> new CuriosRelicRenderer(Part.BOTH_LEGS, 0f));
 		ICurioRenderer.register(ModItems.FIVE_COLOR_STONE.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
-		ICurioRenderer.register(ModItems.ERLANG_EYE.get(), () -> new CuriosRelicRenderer(Part.HEAD, 0f));
-		ICurioRenderer.register(ModItems.PIXIU_BRACELET.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
-		ICurioRenderer.register(ModItems.UNIVERSE_RING.get(), () -> new CuriosRelicRenderer(Part.MAIN_ARM, -1f));
-		ICurioRenderer.register(ModItems.YASAKANI_MAGATAMA.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
-		ICurioRenderer.register(ModItems.RAIJIN_DRUM.get(), () -> new CuriosRelicRenderer(Part.BODY, 0f));
-		ICurioRenderer.register(ModItems.TENGU_MASK.get(), () -> new CuriosRelicRenderer(Part.HEAD, 0f));
-		ICurioRenderer.register(ModItems.KAPPA_DISH.get(), () -> new CuriosRelicRenderer(Part.HEAD, 0f));
 	}
 }

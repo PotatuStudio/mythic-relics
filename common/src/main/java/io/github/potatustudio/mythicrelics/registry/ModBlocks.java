@@ -3,7 +3,6 @@ package io.github.potatustudio.mythicrelics.registry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.japan.ZashikiWarashiBlock;
 import io.github.potatustudio.mythicrelics.rome.PalladiumBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -20,11 +19,6 @@ public final class ModBlocks {
 	public static final RegistrySupplier<Block> PALLADIUM = BLOCKS.register("palladium", () -> new PalladiumBlock(
 			BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0f, 6.0f).sound(SoundType.WOOD).noOcclusion()
 					.setId(ResourceKey.create(Registries.BLOCK, MythicRelics.id("palladium")))));
-
-	/** Muñeca de zashiki-warashi: muñeca de tela y madera. */
-	public static final RegistrySupplier<Block> ZASHIKI_WARASHI = BLOCKS.register("zashiki_warashi", () -> new ZashikiWarashiBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(1.0f, 6.0f).sound(SoundType.WOOL).noOcclusion()
-					.setId(ResourceKey.create(Registries.BLOCK, MythicRelics.id("zashiki_warashi")))));
 
 	private ModBlocks() {
 	}

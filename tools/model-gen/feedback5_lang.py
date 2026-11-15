@@ -1,7 +1,7 @@
 """Textos de la quinta ronda de arreglos (2026-11-14): dardo de muérdago sin recarga, Medusa a la mitad de alcance, lira de
 Orfeo (Epitafio de Seikilos, frena poco), yelmo de Hades (oculta todo y agachado vas más rápido), Gram pasiva, talismán
-fu visible, Gleipnir (atar y debilitar), aro del universo como brazalete que se lanza con su tecla, ojo de Erlang que
-desvía proyectiles, espada de Freyr en la espalda, doble salto que no se acumula y +30 % al arma de cada set.
+fu visible, Gleipnir (atar y debilitar), espada de Freyr en la espalda y +30 % al arma de cada set (las entradas de
+las reliquias chinas y japonesas que se quitaron el 2026-11-15 ya no están).
 También ajusta los números de moddata (tooltip_args) que cambiaron. Uso: python feedback5_lang.py"""
 import io
 import json
@@ -23,22 +23,12 @@ ES = {
     "item.mythicrelics.orpheus_lyre.tooltip.4": "Mientras tocas caminas un poco más lento",
     "item.mythicrelics.hades_helm.tooltip.1": "Agachado y quieto %1$s s: te vuelves invisible del todo (armadura, reliquias y manos incluidas)",
     "item.mythicrelics.hades_helm.tooltip.4": "Con el yelmo puesto, agachado caminas un %2$s%% más rápido",
-    "item.mythicrelics.universe_ring.tooltip.1": "Va en la muñeca. Tecla del aro (R por defecto, en Controles): lo lanzas y golpea hasta %1$s enemigos a %2$s bloques",
-    "item.mythicrelics.universe_ring.tooltip.2": "%3$s de daño a cada uno, los deja aturdidos %4$s s y vuelve a tu muñeca",
     "item.mythicrelics.fu_talismans.tooltip.1": "Clic derecho a un no-muerto: le pegas un talismán en la frente y queda inmóvil %1$s s",
-    "item.mythicrelics.erlang_eye.tooltip.1": "Los invisibles a %1$s bloques brillan para ti",
-    "item.mythicrelics.erlang_eye.tooltip.2": "El tercer ojo detiene flechas, bolas de fuego y tridentes que te apuntan (uno cada %2$s s)",
     "item.mythicrelics.freyr_sword.tooltip.1": "Va envainada en la espalda. En combate (o con un hostil persiguiéndote a %1$s bloques) sale y pelea sola",
-    "item.mythicrelics.hermes_sandals.tooltip.3": "El doble salto no se acumula con la máscara de tengu",
-    "item.mythicrelics.tengu_mask.tooltip.3": "El salto extra no se acumula con las sandalias de Hermes",
     "set.mythicrelics.anubis_set.bonus.2": "+30 % de daño con el cetro de Anubis",
     "set.mythicrelics.osiris_set.bonus.3": "+30 % de daño con el mayal",
     "set.mythicrelics.perseus_set.bonus.2": "+30 % de daño con la harpe",
     "set.mythicrelics.thor_set.bonus.2": "+30 % de daño de Mjölnir lanzado y de sus rayos",
-    "set.mythicrelics.erlang_set.bonus.2": "+30 % de daño con la alabarda",
-    "set.mythicrelics.regalia_set.bonus.3": "+30 % de daño con Kusanagi (también su tajo de viento)",
-    "set.mythicrelics.fujin_raijin_set.bonus.3": "Los rayos del tambor hacen +30 % de daño",
-    "key.mythicrelics.universe_ring": "Lanzar el aro del universo",
 }
 EN = {
     "item.mythicrelics.mistletoe_dart.tooltip.1": "Hold right-click and release to throw it; it stays stuck where it lands until you pick it up (no cooldown)",
@@ -52,22 +42,12 @@ EN = {
     "item.mythicrelics.orpheus_lyre.tooltip.4": "While playing you walk a little slower",
     "item.mythicrelics.hades_helm.tooltip.1": "Sneak still for %1$s s: you become fully invisible (armor, relics and hands included)",
     "item.mythicrelics.hades_helm.tooltip.4": "While wearing the helm you sneak %2$s%% faster",
-    "item.mythicrelics.universe_ring.tooltip.1": "Worn on the wrist. Ring key (R by default, in Controls): throw it to hit up to %1$s enemies within %2$s blocks",
-    "item.mythicrelics.universe_ring.tooltip.2": "%3$s damage to each, stuns them for %4$s s and returns to your wrist",
     "item.mythicrelics.fu_talismans.tooltip.1": "Right-click an undead: you stick a talisman on its forehead and it is frozen for %1$s s",
-    "item.mythicrelics.erlang_eye.tooltip.1": "Invisible creatures within %1$s blocks glow for you",
-    "item.mythicrelics.erlang_eye.tooltip.2": "The third eye stops arrows, fireballs and tridents aimed at you (one every %2$s s)",
     "item.mythicrelics.freyr_sword.tooltip.1": "Sheathed on your back. In combat (or with a hostile chasing you within %1$s blocks) it draws itself and fights",
-    "item.mythicrelics.hermes_sandals.tooltip.3": "The double jump doesn't stack with the tengu mask",
-    "item.mythicrelics.tengu_mask.tooltip.3": "The extra jump doesn't stack with Hermes' sandals",
     "set.mythicrelics.anubis_set.bonus.2": "+30% damage with the Scepter of Anubis",
     "set.mythicrelics.osiris_set.bonus.3": "+30% damage with the flail",
     "set.mythicrelics.perseus_set.bonus.2": "+30% damage with the harpe",
     "set.mythicrelics.thor_set.bonus.2": "+30% damage from thrown Mjölnir and its lightning",
-    "set.mythicrelics.erlang_set.bonus.2": "+30% damage with the halberd",
-    "set.mythicrelics.regalia_set.bonus.3": "+30% damage with Kusanagi (its wind slash too)",
-    "set.mythicrelics.fujin_raijin_set.bonus.3": "The drum's lightning deals +30% damage",
-    "key.mythicrelics.universe_ring": "Throw the Universe Ring",
 }
 
 REMOVE = ["item.mythicrelics.mistletoe_dart.tooltip.3", "item.mythicrelics.gram.tooltip.3", "item.mythicrelics.gram.tooltip.4",
@@ -79,8 +59,6 @@ MODDATA = [
     ('"gleipnir": [int(c["GLEIPNIR_TICKS"] // 20), int(c["GLEIPNIR_COOLDOWN"] // 20)],',
      '"gleipnir": [int(c["GLEIPNIR_TICKS"] // 20), int(c["GLEIPNIR_COOLDOWN"] // 20), round(c["GLEIPNIR_DAMAGE_TAKEN"] * 100),\n'
      '                     int(c["GLEIPNIR_BOSS_TICKS"] // 20)],'),
-    ('"erlang_eye": [int(c["ERLANG_SIGHT_RADIUS"])],',
-     '"erlang_eye": [int(c["ERLANG_SIGHT_RADIUS"]), int(c["ERLANG_DEFLECT_COOLDOWN"] // 20)],'),
     ('"gram": [int(c["GRAM_CHARGE_TICKS"] // 20), int(c["GRAM_THRUST_DAMAGE"]), int(c["GRAM_BIG_HEALTH"]), int(c["GRAM_COOLDOWN"] // 20)],',
      '"gram": [int(c["GRAM_HITS_PER_THRUST"]), round(c["GRAM_THRUST_BONUS"] * 100), int(c["GRAM_BIG_HEALTH"])],'),
     ('"mistletoe_dart": [int(c["DART_DAMAGE"]), int(c["DART_COOLDOWN"] // 20)],',

@@ -122,7 +122,7 @@ En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la 
 **Espacio:** anillo · **Rareza:** rara
 
 - De noche o bajo tierra, al recibir un golpe acuden 2 chacales aliados por 20 s
-- Recarga: 4 s
+- Recarga: 90 s
 
 *Set de Anubis (Máscara de chacal, Anillo de los chacales, Cetro was de Anubis)* Los no-muertos no te atacan salvo que los ataques primero +30 % de daño con el cetro de Anubis
 

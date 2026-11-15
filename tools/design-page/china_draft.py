@@ -79,38 +79,6 @@ GOURD = grid([
 ])
 
 
-def fan():
-    """Abanico de hoja de plátano: hoja seca dorada en forma de abanico (ancha arriba, borde ondulado) con los nervios
-    marcados que salen del mango; mango de madera con anillo de oro y borla roja."""
-    c = blank()
-    bx, by = 4.5, 10.5
-    for y in range(16):
-        for x in range(16):
-            dx, dy = x - bx, y - by
-            d = math.hypot(dx, dy)
-            ang = math.atan2(-dy, dx)  # 0 = derecha, pi/2 = arriba
-            if not (-0.25 <= ang <= 1.85):
-                continue
-            edge = 10.6 + 0.7 * math.cos(ang * 14)
-            if 1.8 <= d <= edge:
-                rib = (math.sin(ang * 9) > 0.55)
-                light = (ang - 0.8) * 0.6 + (0.3 if d < edge - 2 else 0)
-                if d > edge - 1.0:
-                    c[y][x] = 't'
-                elif rib:
-                    c[y][x] = 't' if d > 3 else 'T'
-                else:
-                    c[y][x] = '8' if light > 0.35 else '9' if light > -0.25 else 'T'
-    for x, y in [(4, 11), (3, 12), (2, 13), (1, 14)]:
-        c[y][x] = 'P'
-        c[y][x + 1] = 'p'
-    c[10][4] = 'g'
-    c[10][5] = 'd'
-    for x, y, ch in [(0, 15, 'r'), (1, 15, 'x'), (0, 14, 'R')]:
-        c[y][x] = ch
-    return outline(c)
-
-
 def pearl():
     """Perla del dragón: la «perla llameante» (huozhu) del arte chino. Una perla de nácar redonda (blanca con reflejos
     lila y celestes) y tres lenguas de fuego finas que suben desde el borde, sin contorno, para que no la tapen."""
@@ -144,29 +112,6 @@ def pearl():
             if c[y][x] == '.':
                 c[y][x] = ch
     return c
-
-
-def wheel():
-    """Ruedas de viento y fuego (Nezha): aro de oro con rayos y llamas por debajo."""
-    c = blank()
-    cx, cy = 7.5, 7.0
-    for y in range(16):
-        for x in range(16):
-            d = math.hypot(x - cx, y - cy)
-            ang = math.atan2(y - cy, x - cx)
-            if 4.3 <= d <= 5.6:
-                light = -(x - cx + y - cy) / 6
-                c[y][x] = 'G' if light > 0.4 else 'g' if light > -0.4 else 'd'
-            elif d <= 1.3:
-                c[y][x] = 'r'
-            elif d < 4.3 and min(abs(math.sin(ang * 3)), 1) < 0.25:
-                c[y][x] = 'd'
-    for x, h in [(3, 3), (5, 2), (7, 4), (9, 2), (11, 3), (13, 2), (2, 1), (12, 1)]:
-        for k in range(h):
-            y = 13 + 2 - k
-            if 0 <= y < 16 and c[y][x] == '.':
-                c[y][x] = 'Y' if k == 0 else 'R' if k == 1 else 'r'
-    return outline(c)
 
 
 def bow(pull=0):
@@ -250,7 +195,7 @@ def stone():
 
 
 ICONS = {"ruyi_jingu_bang": ruyi, "monkey_king_hairs": hairs, "purple_gold_gourd": lambda: outline(GOURD),
-         "banana_leaf_fan": fan, "dragon_pearl": pearl, "wind_fire_wheels": wheel, "hou_yi_bow": bow,
+         "dragon_pearl": pearl, "hou_yi_bow": bow,
          "change_elixir": lambda: outline(ELIXIR), "five_color_stone": stone}
 
 COLORS = {"gold_l": "#fff3a8", "gold": "#f5c842", "gold_d": "#c98f1c", "fire_y": "#ffe14a", "fire": "#ff7a2a",
@@ -274,19 +219,6 @@ def box(frm, to, color, name=""):
     return {"name": name, "from": list(frm), "to": list(to), "faces": faces}
 
 
-def wheels_worn():
-    """Un aro de oro alrededor del tobillo con rayos hacia afuera y llamas detrás (en cada pierna)."""
-    e = []
-    y0, y1 = 2.2, 3.2
-    e += [box([4.6, y0, 4.6], [11.4, y1, 5.4], "gold", "aro atrás"), box([4.6, y0, 10.6], [11.4, y1, 11.4], "gold", "aro adelante"),
-          box([4.6, y0, 5.4], [5.4, y1, 10.6], "gold", "aro der."), box([10.6, y0, 5.4], [11.4, y1, 10.6], "gold", "aro izq.")]
-    for x0, z0 in [(5.6, 4.0), (8.8, 4.0), (4.0, 7.4), (11.4, 7.4)]:
-        e.append(box([x0, y0 - 0.2, z0], [x0 + 1.6 if z0 < 5 else x0 + 0.6, y1 + 0.2, z0 + 0.6 if z0 < 5 else z0 + 1.2], "gold", "rayo"))
-    for x0, h in [(5.0, 2.4), (6.6, 3.4), (8.2, 2.8), (9.8, 3.6)]:
-        e.append(box([x0, y1, 3.6], [x0 + 1.2, y1 + h, 4.4], "fire", "llama"))
-    return e
-
-
 def stone_worn():
     return [box([3.6, 2.4, 9.9], [12.4, 3.4, 10.5], "red", "cordón"),
             box([6.8, 1.0, 10.3], [9.2, 3.6, 11.1], "jade", "piedra"),
@@ -294,7 +226,7 @@ def stone_worn():
             box([7.4, 2.6, 11.1], [7.9, 3.2, 11.3], "fire_d", "faceta"), box([8.1, 1.4, 11.1], [8.8, 2.0, 11.3], "black", "faceta")]
 
 
-WORN = {"wind_fire_wheels": ("legs", wheels_worn), "five_color_stone": ("body", stone_worn)}
+WORN = {"five_color_stone": ("body", stone_worn)}
 
 
 def png_b64(img):

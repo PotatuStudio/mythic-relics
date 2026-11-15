@@ -31,10 +31,7 @@ public enum RelicSets {
 	ANUBIS("anubis_set", worn("jackal_mask"), worn("jackal_ring"), inventory("anubis_scepter")),
 	OSIRIS("osiris_set", hand("osiris_crook"), hand("osiris_flail")),
 	PERSEUS("perseus_set", GreeceRelics.PERSEUS_SET_PIECES, worn("hermes_sandals"), worn("hades_helm"), worn("athena_aegis"), inventory("harpe")),
-	THOR("thor_set", bearer("mjolnir"), worn("jarngreipr"), worn("megingjord")),
-	ERLANG("erlang_set", worn("erlang_eye"), mainHand("erlang_halberd")),
-	REGALIA("regalia_set", hand("kusanagi"), hand("yata_mirror"), worn("yasakani_magatama")),
-	FUJIN_RAIJIN("fujin_raijin_set", inventory("fujin_wind_bag"), worn("raijin_drum"));
+	THOR("thor_set", bearer("mjolnir"), worn("jarngreipr"), worn("megingjord"));
 
 	/** Dónde tiene que estar una pieza para contar. */
 	public enum Where {
@@ -190,7 +187,7 @@ public enum RelicSets {
 		return null;
 	}
 
-	/** Daño extra del arma de un set completo (cetro, mayal, harpe, Mjölnir y su rayo, alabarda, Kusanagi, rayo del tambor). */
+	/** Daño extra del arma de un set completo (cetro, mayal, harpe, Mjölnir y su rayo). */
 	public static final float WEAPON_BONUS = 0.3f;
 
 	/** Sets activos de cada jugador en la última revisión (bit por set). */

@@ -4,8 +4,8 @@
   "category": "mythicrelics:china",
   "name": "item.mythicrelics.fu_talismans",
   "icon": "mythicrelics:fu_talismans",
-  "x": 1,
-  "y": 14,
+  "x": -1,
+  "y": 11,
   "pages": [
     {
       "type": "modonomicon:spotlight",

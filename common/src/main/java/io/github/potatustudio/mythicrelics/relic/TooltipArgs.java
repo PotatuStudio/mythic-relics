@@ -12,8 +12,6 @@ import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceHeroes;
 import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
 import io.github.potatustudio.mythicrelics.greece.GreeceRelics;
-import io.github.potatustudio.mythicrelics.japan.JapanGods;
-import io.github.potatustudio.mythicrelics.japan.JapanRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseGods;
 import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
@@ -52,8 +50,6 @@ public final class TooltipArgs {
 		NorseSagas.registerTooltipArgs();
 		ChinaRelics.registerTooltipArgs();
 		ChinaGods.registerTooltipArgs();
-		JapanRelics.registerTooltipArgs();
-		JapanGods.registerTooltipArgs();
 		if (Platform.isDevelopmentEnvironment()) {
 			check();
 		}

@@ -2,16 +2,11 @@ package io.github.potatustudio.mythicrelics.client.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.entity.CelestialDog;
-import io.github.potatustudio.mythicrelics.entity.Kitsune;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
 import io.github.potatustudio.mythicrelics.entity.OdinRaven;
-import io.github.potatustudio.mythicrelics.entity.OrochiShadow;
 import io.github.potatustudio.mythicrelics.entity.Pegasus;
-import io.github.potatustudio.mythicrelics.entity.Qilin;
 import io.github.potatustudio.mythicrelics.entity.Talos;
-import io.github.potatustudio.mythicrelics.entity.UrashimaTurtle;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -25,9 +20,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 
 /**
- * Renderizadores de las entidades de todas las culturas (monos, long, perro celestial, qilin, kitsune, tortuga, cuervos,
- * Orochi, Pegaso, Talos…). Varias tienen una segunda textura que brilla en la oscuridad (como los ojos de la araña): los
- * ojos de fuego del mono; los ojos del long y su perla llameante; los ojos del perro; las llamas del qilin.
+ * Renderizadores de las entidades de todas las culturas (monos, long, cuervos, Pegaso, Talos…). Varias tienen una
+ * segunda textura que brilla en la oscuridad (como los ojos de la araña): los ojos de fuego del mono; los ojos del long y
+ * su perla llameante.
  */
 public final class MythicRenderers {
 	private MythicRenderers() {
@@ -82,55 +77,6 @@ public final class MythicRenderers {
 		@Override
 		protected boolean affectedByCulling(LongDragon entity) {
 			return false;
-		}
-	}
-
-	/** Perro Celestial. */
-	public static class Dog extends Glowing<CelestialDog, CelestialDogModel> {
-		public Dog(EntityRendererProvider.Context context) {
-			super(context, new CelestialDogModel(context.bakeLayer(CelestialDogModel.LAYER)), 0.5f, "celestial_dog");
-		}
-	}
-
-	/** Qilin: se dibuja más grande que su geometría, del tamaño de un caballo. */
-	public static class QilinRenderer extends Glowing<Qilin, QilinModel> {
-		public static final float SCALE = 1.35f;
-
-		public QilinRenderer(EntityRendererProvider.Context context) {
-			super(context, new QilinModel(context.bakeLayer(QilinModel.LAYER)), 0.9f, "qilin");
-		}
-
-		@Override
-		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
-			poseStack.scale(SCALE, SCALE, SCALE);
-		}
-	}
-
-	/** Kitsune de nueve colas: del tamaño de un lobo grande. */
-	public static class KitsuneRenderer extends Glowing<Kitsune, KitsuneModel> {
-		public static final float SCALE = 1.5f;
-
-		public KitsuneRenderer(EntityRendererProvider.Context context) {
-			super(context, new KitsuneModel(context.bakeLayer(KitsuneModel.LAYER)), 0.6f, "kitsune");
-		}
-
-		@Override
-		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
-			poseStack.scale(SCALE, SCALE, SCALE);
-		}
-	}
-
-	/** Tortuga de Urashima: tortuga marina gigante. */
-	public static class TurtleRenderer extends Glowing<UrashimaTurtle, UrashimaTurtleModel> {
-		public static final float SCALE = 1.7f;
-
-		public TurtleRenderer(EntityRendererProvider.Context context) {
-			super(context, new UrashimaTurtleModel(context.bakeLayer(UrashimaTurtleModel.LAYER)), 1.2f, "urashima_turtle");
-		}
-
-		@Override
-		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
-			poseStack.scale(SCALE, SCALE, SCALE);
 		}
 	}
 
@@ -200,46 +146,6 @@ public final class MythicRenderers {
 			super.extractRenderState(raven, state, partialTick);
 			// Posado: alas plegadas (el modelo lo lee de la velocidad de "caminar").
 			state.walkAnimationSpeed = raven.isPerched() ? 0.0f : 1.0f;
-		}
-	}
-
-	/** Sombra de Orochi: serpiente de ocho cabezas, al doble de su geometría; no se oculta si su caja sale de la vista. */
-	public static class OrochiRenderer extends Glowing<OrochiShadow, OrochiModel> {
-		public static final float SCALE = 2.0f;
-
-		public OrochiRenderer(EntityRendererProvider.Context context) {
-			super(context, new OrochiModel(context.bakeLayer(OrochiModel.LAYER)), 2.0f, "orochi_shadow");
-		}
-
-		/** Estado con la mordida: el modelo abre las mandíbulas solo cuando el servidor avisa que mordió. */
-		public static class State extends LivingEntityRenderState {
-			/** Ticks (con fracción) desde la última mordida. */
-			public float sinceBite = 100.0f;
-			public int bitingHeads;
-		}
-
-		@Override
-		public LivingEntityRenderState createRenderState() {
-			return new State();
-		}
-
-		@Override
-		public void extractRenderState(OrochiShadow orochi, LivingEntityRenderState state, float partialTick) {
-			super.extractRenderState(orochi, state, partialTick);
-			if (state instanceof State s) {
-				s.sinceBite = orochi.ticksSinceBite() + partialTick;
-				s.bitingHeads = orochi.bitingHeads();
-			}
-		}
-
-		@Override
-		protected void scale(LivingEntityRenderState state, PoseStack poseStack) {
-			poseStack.scale(SCALE, SCALE, SCALE);
-		}
-
-		@Override
-		protected boolean affectedByCulling(OrochiShadow entity) {
-			return false;
 		}
 	}
 }

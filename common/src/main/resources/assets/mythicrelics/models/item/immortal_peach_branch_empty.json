@@ -1,6 +1,0 @@
-{
- "parent": "minecraft:item/generated",
- "textures": {
-  "layer0": "mythicrelics:item/immortal_peach_branch_empty"
- }
-}

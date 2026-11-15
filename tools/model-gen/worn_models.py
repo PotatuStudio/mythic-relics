@@ -722,34 +722,6 @@ def cerberus_collar():
     return e
 
 
-def wind_fire_wheels():
-    """Ruedas de viento y fuego de Nezha, en cada tobillo (el pie llega a y 2): una rueda octogonal de oro que rodea el
-    tobillo, con aro interior rojo, ocho rayos hacia el pie y lenguas de fuego que salen del borde echadas hacia afuera
-    y hacia atrás (más altas atrás, como si giraran a toda velocidad)."""
-    e = []
-    cx, cz, r, y0, y1 = 8.0, 8.0, 4.0, 2.1, 3.0
-    for i in range(8):
-        a = i * 45
-        rad = math.radians(a)
-        mx, mz = cx + r * math.cos(rad), cz + r * math.sin(rad)
-        # Llanta: tramo tangente; aro rojo por dentro; rayo hacia el centro.
-        e.append(turned([mx - 1.75, y0, mz - 0.4], [mx + 1.75, y1, mz + 0.4], "gold", f"llanta {i}", [mx, (y0 + y1) / 2, mz],
-                        _ry(-a + 90)))
-        ix, iz = cx + (r - 0.8) * math.cos(rad), cz + (r - 0.8) * math.sin(rad)
-        e.append(turned([ix - 1.3, y0 + 0.2, iz - 0.2], [ix + 1.3, y1 - 0.2, iz + 0.2], "sun_d", f"aro rojo {i}",
-                        [ix, (y0 + y1) / 2, iz], _ry(-a + 90)))
-        # Llama: más alta atrás (z bajo), inclinada hacia afuera del borde.
-        back = 0.5 - 0.5 * math.sin(rad)          # 1 atrás, 0 adelante
-        h = 1.6 + 2.2 * back
-        fx, fz = cx + (r + 0.2) * math.cos(rad), cz + (r + 0.2) * math.sin(rad)
-        out = _mul(_ry(-a), _rz(-20))
-        e.append(turned([fx - 0.45, y1, fz - 0.45], [fx + 0.45, y1 + h, fz + 0.45], "ember" if i % 2 else "sun",
-                        f"llama {i}", [fx, y1, fz], out))
-        e.append(turned([fx - 0.3, y1 + h, fz - 0.3], [fx + 0.3, y1 + h + 0.7, fz + 0.3], "amber", f"punta de llama {i}",
-                        [fx, y1, fz], out))
-    return e
-
-
 def five_color_stone():
     """La piedra de cinco colores de Nüwa, con la que remendó el cielo: un cordón grueso de seda roja a la cintura,
     anudado al frente con dos borlas que cuelgan, y la piedra engastada en oro debajo del nudo: verde azulada, con vetas
@@ -772,200 +744,6 @@ def five_color_stone():
           box([7.3, 0.0, 11.5], [7.9, 0.7, 11.62], "ruby", "veta roja"),
           box([8.2, -0.1, 11.5], [8.8, 0.6, 11.6], "onyx", "veta negra"),
           box([7.9, 0.6, 11.5], [8.3, 1.1, 11.66], "turq_l", "brillo")]
-    return e
-
-
-def erlang_eye():
-    """El tercer ojo de Erlang Shen: diadema de oro con una placa labrada al centro, dos alas de oro que se levantan a
-    los lados (como su tocado) y, en la frente, el ojo vertical en forma de almendra con borde rojo, pestañas oscuras,
-    iris de oro y pupila. Cabeza 4..12, frente en z 12."""
-    e = ring(3.25, 12.75, 9.65, 10.65, 3.25, 12.75, 0.6, "gold", "diadema")
-    e += [box([3.15, 10.65, 3.15], [12.85, 10.95, 12.85], "gold_d", "filo de arriba"),
-          box([6.4, 9.4, 12.75], [9.6, 12.4, 12.95], "gold_d", "placa"),
-          box([6.8, 12.4, 12.8], [9.2, 13.0, 12.95], "gold", "remate"),
-          box([7.6, 13.0, 12.82], [8.4, 13.6, 12.95], "gold_l", "punta del remate")]
-    # Ojo en almendra (vertical): borde rojo, blanco, iris y pupila, pestañas arriba y abajo.
-    e += [box([7.2, 9.6, 12.95], [8.8, 12.2, 13.11], "crest", "borde del ojo"),
-          box([7.0, 10.2, 12.95], [9.0, 11.6, 13.08], "crest", "borde ancho"),
-          box([7.4, 9.9, 13.1], [8.6, 11.9, 13.2], "white", "ojo"),
-          box([7.55, 10.3, 13.2], [8.45, 11.5, 13.28], "gold_l", "iris"),
-          box([7.85, 10.6, 13.28], [8.15, 11.2, 13.34], "onyx", "pupila"),
-          box([7.6, 12.2, 12.95], [8.4, 12.5, 13.15], "onyx", "pestañas arriba"),
-          box([7.6, 9.3, 12.95], [8.4, 9.6, 13.15], "onyx", "pestañas abajo")]
-    # Alas del tocado a los lados, subiendo hacia atrás.
-    for side, x0, x1 in (("der.", 2.6, 3.25), ("izq.", 12.75, 13.4)):
-        e += [box([x0, 10.0, 7.05], [x1, 11.95, 10.0], "gold", f"ala {side}"),
-              box([x0, 11.95, 6.0], [x1, 13.4, 8.6], "gold", f"ala alta {side}"),
-              box([x0 + 0.1, 13.4, 5.2], [x1 - 0.1, 14.4, 7.2], "gold_l", f"punta del ala {side}")]
-    return e
-
-
-def pixiu_bracelet():
-    """Pulsera de pixiu: cuentas de obsidiana y jade alternadas alrededor de la muñeca (cada una en relieve) y el pixiu de
-    oro arriba: cuerpo echado, cabeza con su cuerno, alitas y la cola. Más afuera y más arriba que los guantes, para no
-    compartir planos con ellos (la mano llega a y 2)."""
-    y0, y1 = 3.6, 4.6
-    e = ring(5.48, 10.52, y0 + 0.15, y1 - 0.15, 5.48, 10.52, 0.4, "onyx_d", "hilo")
-    beads = [(5.4, 6.4), (5.4, 8.0), (5.4, 9.6), (6.6, 5.4), (9.4, 5.4), (10.6, 6.4), (10.6, 8.0), (10.6, 9.6), (6.6, 10.6)]
-    for i, (x, z) in enumerate(beads):
-        tone = "onyx" if i % 2 == 0 else "turq"
-        e.append(box([x - 0.55, y0, z - 0.55], [x + 0.55, y1, z + 0.55], tone, f"cuenta {i}"))
-    # Pixiu al frente (z 10,6..): cuerpo, cabeza, cuerno, alas y cola.
-    e += [box([7.0, y0 - 0.1, 10.62], [9.4, y1 + 0.3, 11.5], "gold", "pixiu cuerpo"),
-          box([6.2, y0 + 0.4, 10.7], [7.2, y1 + 0.7, 11.6], "gold", "pixiu cabeza"),
-          box([6.5, y1 + 0.7, 10.95], [6.9, y1 + 1.3, 11.3], "gold_l", "pixiu cuerno"),
-          box([6.25, y0 + 0.7, 11.6], [6.65, y0 + 1.1, 11.7], "onyx", "pixiu ojo"),
-          box([7.6, y1 + 0.3, 10.7], [8.75, y1 + 0.7, 11.2], "gold_l", "pixiu alas"),
-          box([9.4, y0 + 0.3, 10.82], [10.0, y1 + 0.6, 11.2], "gold_d", "pixiu cola")]
-    return e
-
-
-def universe_ring():
-    """Qiankun quan, el aro del universo de Nezha, en la muñeca: aro de oro macizo y grueso con dos filetes claros, la
-    franja grabada al frente y el lazo de seda roja (hun tian ling) anudado, con sus puntas que cuelgan. Más afuera y
-    más arriba que los guantes; comparte el espacio de anillo con la pulsera de pixiu (no se llevan juntos)."""
-    y0, y1 = 3.45, 5.0
-    e = ring(5.07, 10.93, y0, y1, 5.07, 10.93, 0.75, "gold", "aro")
-    e += ring(4.88, 11.12, y0 + 0.2, y0 + 0.5, 4.88, 11.12, 0.15, "gold_l", "filete de abajo")
-    e += ring(4.88, 11.12, y1 - 0.5, y1 - 0.2, 4.88, 11.12, 0.15, "gold_l", "filete de arriba")
-    e += [box([6.4, y0 + 0.6, 11.1], [9.6, y1 - 0.6, 11.25], "gold_d", "franja grabada"),
-          box([7.2, y0 + 0.55, 11.25], [8.8, y1 - 0.55, 11.35], "crest", "nudo de seda"),
-          box([7.4, y0 - 1.6, 11.12], [8.0, y0 + 0.55, 11.3], "crest", "punta de seda 1"),
-          box([8.1, y0 - 1.1, 11.12], [8.6, y0 + 0.55, 11.28], "crest_d", "punta de seda 2")]
-    return e
-
-
-def yasakani_magatama():
-    """Yasakani no magatama, uno de los Tres Tesoros: un collar de cuentas de jade, oro y cristal que baja del cuello al
-    pecho, con la gran magatama de jade al centro (cabeza redonda con su agujero y la cola curva) y dos magatamas chicas
-    a los lados. Cuello en y 14, pecho en z 10 (sobresale 0,5)."""
-    # Cordón (mismo recorrido que Brísingamen: los collares no se llevan juntos).
-    e = [box([3.5, 13.2, 5.45], [12.5, 13.9, 6.05], "gold_d", "cordón atrás"),
-         box([3.5, 13.2, 6.05], [4.05, 13.9, 10.55], "gold_d", "cordón der."),
-         box([11.95, 13.2, 6.05], [12.5, 13.9, 10.55], "gold_d", "cordón izq.")]
-    # Cuentas al frente, bajando en V hacia la magatama: jade, oro y cristal alternados, cada una en relieve.
-    beads = [(4.2, 13.1), (5.1, 12.6), (5.9, 12.0), (6.6, 11.4), (9.4, 11.4), (10.1, 12.0), (10.9, 12.6), (11.8, 13.1)]
-    tones = ["turq", "gold", "white", "turq", "turq", "white", "gold", "turq"]
-    for i, ((x, y), tone) in enumerate(zip(beads, tones)):
-        e.append(box([x - 0.45, y - 0.45, 10.5], [x + 0.45, y + 0.45, 11.0], tone, f"cuenta {i}"))
-    # Gran magatama de jade: cabeza redonda (octógono escalonado) con el agujero, y la cola que baja curvándose.
-    e += [box([7.0, 9.6, 10.5], [9.0, 11.6, 11.3], "turq", "magatama cabeza"),
-          box([6.7, 9.9, 10.55], [9.3, 11.3, 11.25], "turq", "magatama cabeza ancha"),
-          box([7.6, 10.4, 11.3], [8.4, 11.0, 11.36], "onyx", "agujero"),
-          box([7.5, 8.6, 10.55], [9.2, 9.6, 11.2], "turq", "cola 1"),
-          box([8.0, 7.8, 10.6], [9.3, 8.6, 11.15], "turq", "cola 2"),
-          box([8.5, 7.2, 10.62], [9.2, 7.8, 11.1], "turq_l", "punta de la cola"),
-          box([7.2, 10.9, 11.25], [7.8, 11.4, 11.35], "turq_l", "brillo"),
-          box([7.6, 11.6, 10.6], [8.4, 12.3, 11.0], "gold", "anilla")]
-    # Magatamas chicas a los lados (una mirando a cada lado).
-    for side, x in (("der.", 5.0), ("izq.", 10.0)):
-        flip = 1 if side == "der." else -1
-        e += [box([x, 10.6, 10.5], [x + 1.0, 11.6, 10.95], "lapis", f"magatama chica {side}"),
-              box([x + (0.5 if flip > 0 else 0.0), 9.9, 10.52], [x + (1.0 if flip > 0 else 0.5), 10.6, 10.92], "lapis",
-                  f"cola chica {side}")]
-    return e
-
-
-def raijin_drum():
-    """Los tambores de Raijin: el aro de taikos (renko-daiko) que el dios del trueno lleva a la espalda, como en el biombo
-    de Sōtatsu. Un arco de bronce sale detrás de una cadera, pasa por encima de la cabeza y baja a la otra; en él van
-    ocho tamborcitos rojos con parche blanco y el tomoe de tres comas en oro, y dos correas lo sujetan a los hombros.
-    Todo queda detrás del cuerpo (z < 5,3), sin chocar con el vellocino ni la piel de Nemea."""
-    e = [box([4.6, 12.4, 4.8], [6.0, 13.6, 5.3], "leather", "correa der."),
-         box([10.0, 12.4, 4.8], [11.4, 13.6, 5.3], "leather", "correa izq."),
-         box([5.0, 9.2, 4.6], [11.0, 10.4, 5.25], "leather_d", "travesaño"),
-         box([7.2, 8.6, 4.1], [8.8, 13.4, 4.6], "bronze_d", "mástil")]
-    cx, cy, r = 8.0, 9.5, 8.6
-    n = 8
-    for i in range(n):
-        a = math.radians(-20 + i * (220 / (n - 1)))          # de una cadera, por arriba, a la otra
-        px, py = cx + r * math.cos(a), cy + r * math.sin(a)
-        tilt = _rz(math.degrees(a) - 90)
-        b = [px, py, 3.6]
-        # Tramo del arco hasta el siguiente tambor.
-        if i < n - 1:
-            a2 = math.radians(-20 + (i + 0.5) * (220 / (n - 1)))
-            mx, my = cx + r * math.cos(a2), cy + r * math.sin(a2)
-            e.append(turned([mx - 1.2, my - 0.3, 3.43], [mx + 1.2, my + 0.3, 3.87], "bronze", f"arco {i}",
-                            [mx, my, 3.65], _rz(math.degrees(a2) - 90)))
-        # Tambor: cuerpo rojo, aros de oro y parche blanco (hacia atrás) con el tomoe.
-        parts = [([px - 1.25, py - 1.0, 2.63], [px + 1.25, py + 1.0, 4.6], "sun_d", "tambor"),
-                 ([px - 1.0, py - 1.25, 2.63], [px + 1.0, py + 1.25, 4.58], "sun_d", "tambor alto"),
-                 ([px - 1.35, py - 1.1, 2.75], [px + 1.35, py + 1.1, 2.95], "gold", "aro"),
-                 ([px - 0.95, py - 0.95, 2.48], [px + 0.95, py + 0.95, 2.63], "white", "parche"),
-                 ([px - 0.45, py - 0.05, 2.38], [px + 0.15, py + 0.55, 2.45], "gold", "coma 1"),
-                 ([px + 0.05, py - 0.55, 2.38], [px + 0.55, py + 0.05, 2.45], "gold", "coma 2"),
-                 ([px - 0.55, py - 0.6, 2.38], [px - 0.05, py - 0.15, 2.45], "gold", "coma 3")]
-        for frm, to, color, name in parts:
-            e.append(turned(frm, to, color, f"{name} {i}", b, tilt))
-    return e
-
-
-def tengu_mask():
-    """Máscara de tengu (daitengu): cara roja con la nariz larga que apunta hacia adelante y un poco arriba, el ceño
-    marcado, cejas blancas espesas, ojos dorados de mirada fiera, bigote y barba blancos que caen bajo el mentón, y el
-    tokin negro de los yamabushi atado en la frente; las cintas negras dan la vuelta a la cabeza. Frente en z 12."""
-    e = [box([4.0, 4.45, 12.8], [12.0, 12.2, 13.3], "ruby", "máscara"),
-         box([3.3, 5.2, 10.8], [4.0, 11.6, 13.3], "ruby", "mejilla der."),
-         box([12.0, 5.2, 10.8], [12.7, 11.6, 13.3], "ruby", "mejilla izq."),
-         box([4.4, 10.0, 13.3], [11.6, 10.9, 13.8], "crest_d", "ceño"),
-         box([6.8, 9.0, 13.3], [9.2, 10.0, 13.65], "crest", "entrecejo")]
-    for side, x0, x1, tx0, tx1 in (("der.", 4.4, 7.4, 3.9, 5.2), ("izq.", 8.6, 11.6, 10.8, 12.1)):
-        e += [box([x0, 10.6, 13.8], [x1, 11.5, 14.25], "white", f"ceja {side}"),
-              box([tx0, 11.2, 13.6], [tx1, 12.3, 14.1], "white", f"punta de la ceja {side}"),
-              box([x0 + 0.5, 8.4, 13.3], [x1 - 0.5, 9.5, 13.42], "onyx", f"ojo {side}"),
-              box([x0 + 1.1, 8.6, 13.42], [x1 - 1.1, 9.3, 13.5], "gold", f"pupila {side}")]
-    # Nariz larga, en tres tramos que se afinan, levantada 12°.
-    nose = [([6.9, 6.9, 13.3], [9.1, 9.3, 14.9], "ruby"), ([7.15, 7.15, 14.9], [8.85, 9.0, 16.7], "crest"),
-            ([7.4, 7.4, 16.7], [8.6, 8.7, 18.3], "crest_l")]
-    for k, (frm, to, color) in enumerate(nose):
-        e.append(turned(frm, to, color, f"nariz {k}", [8.0, 8.0, 13.3], _rx(-12)))
-    # Bigote que cae a los lados y barba bajo el mentón.
-    e += [box([5.0, 6.0, 13.3], [11.0, 6.8, 13.85], "white", "bigote"),
-          box([4.4, 4.6, 13.3], [5.4, 6.6, 13.75], "white", "bigote cae der."),
-          box([10.6, 4.6, 13.3], [11.6, 6.6, 13.75], "white", "bigote cae izq."),
-          box([6.2, 3.0, 12.9], [9.8, 5.2, 13.5], "white", "barba"),
-          box([6.8, 2.0, 12.95], [9.2, 3.0, 13.4], "ivory", "punta de la barba"),
-          box([6.6, 5.2, 13.3], [9.4, 5.8, 13.5], "crest_d", "boca")]
-    # Tokin: el gorrito negro de los yamabushi, atado en la frente.
-    e += [box([6.9, 12.2, 11.7], [9.1, 13.6, 13.2], "onyx", "tokin"),
-          box([7.25, 13.6, 12.0], [8.75, 14.2, 12.8], "onyx_hi", "tokin arriba"),
-          box([3.25, 9.9, 4.0], [3.5, 10.4, 12.8], "onyx", "cinta der."),
-          box([12.5, 9.9, 4.0], [12.75, 10.4, 12.8], "onyx", "cinta izq."),
-          box([3.25, 9.9, 3.25], [12.75, 10.4, 3.5], "onyx", "cinta atrás"),
-          box([7.4, 8.4, 3.0], [8.6, 10.6, 3.25], "onyx", "nudo")]
-    return e
-
-
-def kappa_dish():
-    """El sara del kappa: el plato blanquecino lleno de agua en la coronilla, con su borde alzado y el agua que brilla,
-    rodeado por el pelo verde del kappa cortado como una melena corta (okappa): cae por los costados y la nuca hasta la
-    altura de las orejas, en mechones de largo distinto y con relieve, y adelante un flequillo corto que no tapa los ojos.
-    Cabeza: arriba en y 12, lados en x 4 y 12, frente en z 12 (sobresale 0,75)."""
-    e = ring(3.08, 12.92, 12.05, 12.85, 3.08, 12.68, 0.9, "cobra_d", "melena arriba")
-    # Costados: mechones a lo largo de z, de largo y saliente alternados.
-    lows = [8.2, 7.6, 8.6, 7.8, 8.4]
-    for k, z in enumerate((4.25, 5.75, 7.25, 8.75, 10.25)):
-        out = 0.03 if k % 2 else 0.0
-        tone = "cobra" if k % 2 else "cobra_d"
-        e.append(box([3.05 - out, lows[k], z], [3.4 - out, 12.05, z + 1.5], tone, f"mechón der. {k}"))
-        e.append(box([12.6 + out, lows[-1 - k], z], [12.95 + out, 12.05, z + 1.5], tone, f"mechón izq. {k}"))
-    # Nuca: la melena cae más larga atrás.
-    backs = [7.4, 7.0, 7.6, 6.9, 7.3, 7.7]
-    for k, x in enumerate((3.4, 4.9, 6.4, 7.9, 9.4, 10.9)):
-        out = 0.03 if k % 2 else 0.0
-        e.append(box([x, backs[k], 3.05 - out], [x + 1.5, 12.05, 3.4 - out], "cobra" if k % 2 else "cobra_d", f"mechón atrás {k}"))
-    # Flequillo corto (por encima de los ojos).
-    fringe = [11.0, 10.6, 10.9, 10.55, 10.8]
-    for k, x in enumerate((4.05, 5.6, 7.2, 8.8, 10.35)):
-        e.append(box([x, fringe[k], 12.3 + (0.04 if k % 2 else 0)], [x + 1.6, 12.05, 12.7], "cobra" if k % 2 else "cobra_d",
-                     f"flequillo {k}"))
-    # El plato: borde alzado, fondo y agua.
-    e += ring(4.4, 11.6, 12.75, 13.85, 4.4, 11.6, 0.7, "ivory", "borde del plato")
-    e += [box([5.1, 12.75, 5.1], [10.9, 13.25, 10.9], "ivory_d", "fondo del plato"),
-          box([5.1, 13.25, 5.1], [10.9, 13.55, 10.9], "turq_l", "agua"),
-          box([6.0, 13.55, 6.4], [7.4, 13.62, 7.2], "white", "brillo del agua"),
-          box([8.6, 13.55, 8.8], [9.4, 13.6, 9.4], "white", "brillo chico")]
     return e
 
 
@@ -1057,8 +835,8 @@ def nemean_lion_skin():
 
 
 def freyr_sword():
-    """Espada de Freyr envainada en la espalda (espacio de espalda: no se lleva junto a la égida, las alas de Ícaro, el
-    tambor de Raijin ni el manto de halcón). La vaina cruza la espalda en diagonal, de la cadera izquierda al hombro
+    """Espada de Freyr envainada en la espalda (espacio de espalda: no se lleva junto a la égida, las alas de Ícaro ni
+    el manto de halcón). La vaina cruza la espalda en diagonal, de la cadera izquierda al hombro
     derecho, con la empuñadura asomando sobre el hombro: de ahí sale y ahí vuelve. Vaina de cuero con abrazaderas y runas
     de oro, la guarda con sus puntas, el puño envuelto y el pomo con la gema verde (la espada del dios de la
     fertilidad); un tahalí la sujeta a los hombros. Todo detrás del cuerpo (z < 5,3), por fuera de las capas."""
@@ -1157,20 +935,8 @@ WORN = {
     "draupnir": (lambda: model(draupnir_ring()), both_hands("ring", "draupnir", (0, -1, 0))),
     "brisingamen": (lambda: model(brisingamen()), [attach("body", "brisingamen")]),
     "andvaranaut": (lambda: model(andvaranaut()), both_hands("ring", "andvaranaut", (0, -1, 0))),
-    # China: las ruedas van en las dos piernas.
-    "wind_fire_wheels": (lambda: model(wind_fire_wheels()),
-                         [attach("right_leg", "wind_fire_wheels"), attach("left_leg", "wind_fire_wheels")]),
+    # China
     "five_color_stone": (lambda: model(five_color_stone()), [attach("body", "five_color_stone")]),
-    # China, tanda 2
-    "erlang_eye": (lambda: model(erlang_eye()), [attach("head", "erlang_eye")]),
-    "pixiu_bracelet": (lambda: model(pixiu_bracelet()), both_hands("ring", "pixiu_bracelet", (0, -1, 0))),
-    "universe_ring": (lambda: model(universe_ring()), both_hands("ring", "universe_ring", (0, -1, 0))),
-    # Japón
-    "yasakani_magatama": (lambda: model(yasakani_magatama()), [attach("body", "yasakani_magatama")]),
-    "raijin_drum": (lambda: model(raijin_drum()), [attach("body", "raijin_drum")]),
-    # Japón, tanda 2
-    "tengu_mask": (lambda: model(tengu_mask()), [attach("head", "tengu_mask")]),
-    "kappa_dish": (lambda: model(kappa_dish()), [attach("head", "kappa_dish")]),
     # Grecia, tanda 3
     "nemean_lion_skin": (lambda: model(nemean_lion_skin()), [attach("body", "nemean_lion_skin")]),
     # Nórdicos, tanda 3

@@ -37,7 +37,6 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 
 - +20% de velocidad y doble salto
 - La arena y la tierra de almas no te frenan
-- El doble salto no se acumula con la máscara de tengu
 
 *Set de Perseo (Sandalias aladas de Hermes, Yelmo de Hades, Égida de Atenea, Harpe)* La mirada de Medusa petrifica el doble de rápido y lo petrificado recibe +50 % de daño +30 % de daño con la harpe
 

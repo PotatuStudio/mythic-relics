@@ -80,30 +80,13 @@ CULTURE_INFO = {
         "positions": {
             "intro": (0, 0),
             "ruyi_jingu_bang": (-2, 2), "monkey_king_hairs": (0, 2), "purple_gold_gourd": (2, 2),
-            "banana_leaf_fan": (-3, 5), "dragon_pearl": (-1, 5), "wind_fire_wheels": (1, 5), "hou_yi_bow": (3, 5),
+            "dragon_pearl": (-1, 5), "hou_yi_bow": (1, 5),
             "change_elixir": (-1, 8), "five_color_stone": (1, 8),
-            "fire_tipped_spear": (-3, 11), "universe_ring": (-1, 11), "erlang_eye": (1, 11), "erlang_halberd": (3, 11),
-            "erlang_set": (2, 12),
-            "qilin_horn": (-3, 14), "pixiu_bracelet": (-1, 14), "fu_talismans": (1, 14), "xirang_sack": (3, 14),
-            "immortal_peach_branch": (0, 16),
-        },
-    },
-    "japan": {
-        "wiki": "japon.md", "title": "Japón", "icon": "kusanagi", "intro_icon": "minecraft:cherry_log",
-        "positions": {
-            "intro": (0, 0),
-            "kusanagi": (-2, 2), "yata_mirror": (0, 2), "yasakani_magatama": (2, 2), "regalia_set": (0, 4),
-            "fujin_raijin_set": (-4, 8),
-            "raijin_drum": (-3, 5), "oni_kanabo": (-1, 5), "kitsune_star_ball": (1, 5), "tide_jewels": (3, 5),
-            "lucky_mallet": (-2, 8), "kibi_dango": (0, 8), "urashima_rod": (2, 8),
-            "fujin_wind_bag": (-3, 11), "tengu_mask": (-1, 11), "yashiori_sake": (1, 11), "kappa_dish": (3, 11),
-            "tanuki_leaf": (-3, 14), "kintaro_axe": (-1, 14), "zashiki_warashi": (1, 14), "ame_no_nuboko": (3, 14),
-            "orochi_scale": (0, 16),
+            "fu_talismans": (-1, 11), "xirang_sack": (1, 11),
         },
     },
 }
-SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm", "thor_set": "mjolnir",
-             "erlang_set": "erlang_eye", "regalia_set": "kusanagi", "fujin_raijin_set": "raijin_drum"}
+SET_ICONS = {"anubis_set": "jackal_mask", "osiris_set": "osiris_flail", "perseus_set": "hades_helm", "thor_set": "mjolnir"}
 SLOT_NAMES = {
     "es_es": {"legs/belt": "cinturón", "head/face": "cara", "chest/necklace": "collar", "hand/glove": "guantes",
               "hand/ring": "anillo", "mainhand": "mano (arma)", "head/hat": "sombrero", "offhand": "mano secundaria",
@@ -343,7 +326,7 @@ def write_cultures():
            "/** Cultura de cada reliquia. GENERADO por tools/model-gen/make_codex.py desde moddata.CULTURES: no editar a mano. */\n"
            "public final class RelicCultures {\n\tprivate static final Map<String, String> CULTURE = new HashMap<>();\n\n"
            "\tstatic {\n" + "\n".join(rows) + "\n\t}\n\n\tprivate RelicCultures() {\n\t}\n\n"
-           "\t/** egypt, greece, rome, norse, china o japan; null si no es una reliquia. */\n"
+           "\t/** egypt, greece, rome, norse o china; null si no es una reliquia. */\n"
            "\tpublic static @Nullable String of(String id) {\n\t\treturn CULTURE.get(id);\n\t}\n}\n")
     with open(os.path.join(JAVA, "relic", "RelicCultures.java"), "w", encoding="utf-8", newline="\n") as f:
         f.write(src)

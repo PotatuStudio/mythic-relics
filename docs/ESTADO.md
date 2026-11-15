@@ -1,12 +1,16 @@
 # Estado del proyecto (para retomar)
 
-Última sesión: 2026-11-14 (cuarta ronda de arreglos: Medusa como escudo sin recarga, halcón con tecla V, Mímir se pregunta, tooltips cortos con Shift, cabezas y armas en 3D, reliquias puestas con textura pintada, auditoría de memoria, rendimiento y limpieza). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2 y Japón 1 y 2
-programadas). El usuario ya empezó a probar en NeoForge (con `runClient` en su PC) y se hicieron cuatro rondas de
+**2026-11-15: se borraron Japón entero y 9 reliquias chinas** (ver «Reliquias borradas»). Quedan 70 reliquias en cinco
+mitologías: Egipto, Grecia, Roma, nórdicos y China (9).
+
+Última sesión: 2026-11-14 (cuarta ronda de arreglos: Medusa como escudo sin recarga, halcón con tecla V, Mímir se pregunta, tooltips cortos con Shift, cabezas y armas en 3D, reliquias puestas con textura pintada, auditoría de memoria, rendimiento y limpieza). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2
+programadas; Japón se borró el 2026-11-15). El usuario ya empezó a probar en NeoForge (con `runClient` en su PC) y se hicieron cuatro rondas de
 arreglos con lo que reportó; ver «Arreglos tras…» y «Después». Para retomar: leer «Después», punto 1.
 **Próxima sesión: el paquete de refactors**, con el plan por etapas y las lecciones de la sesión en `docs/REFACTOR.md`.
 
 ## Decisiones tomadas
-- **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, nórdicos, celtas, folclore japonés, etc.) como equipo RPG.
+- **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, Roma, nórdicos, China, etc.) como equipo RPG. Japón se
+  programó y luego se quitó entero (2026-11-15), junto con 9 reliquias chinas.
   Es un mod aparte de Misfit Relics (que trata de lo "olvidado" de Minecraft); nada se mueve entre ellos.
 - **Fabric + NeoForge** en la última versión de Minecraft (26.3), con **Architectury** (módulos `common`, `fabric`,
   `neoforge` + Architectury API). Misfit Relics se portará igual después.
@@ -158,69 +162,41 @@ que se pliega, el doble de oro y de trueques, los avisos de Mímir y el crecimie
 
 ## Primera tanda china (programada el 2026-11-10)
 Diseño aprobado en `docs/ideas.md` (páginas en `tools/design-page/china_*.py`). Código en `china/ChinaRelics` (constantes,
-daño, ruedas, piedra, ascenso lunar, aleteos y nube de lluvia del abanico) y los ítems `RuyiJinguBangItem`,
-`MonkeyHairsItem`, `PurpleGoldGourdItem` (el mob va en `custom_data` del ítem), `BananaLeafFanItem` (cargas en
-`custom_data`, barra del ítem), `DragonPearlItem`, `HouYiBowItem` (subclase de `BowItem`, con los tres cuadros tensados)
+daño, piedra y ascenso lunar) y los ítems `RuyiJinguBangItem`,
+`MonkeyHairsItem`, `PurpleGoldGourdItem` (el mob va en `custom_data` del ítem), `DragonPearlItem`, `HouYiBowItem` (subclase de `BowItem`, con los tres cuadros tensados)
 y `ChangeElixirItem` (fase de la luna con `EnvironmentAttributes.MOON_PHASE`). Entidades nuevas: `entity/MonkeyWarrior`
 (aliado de `Minions`) y `entity/LongDragon` (montura voladora que se maneja como el ghast feliz). Su geometría y texturas
 salen de `tools/model-gen/china_entities.py --mod` (escribe `client/entity/ChinaModelLayers.java`, generado, y las
-texturas con la capa que brilla), el mismo diseño que el visor de aliados. Íconos: `tools/model-gen/china_icons.py`;
-Mixin: `LivingEntityMixin#canStandOnFluid` (las ruedas cruzan lava corriendo).
+texturas con la capa que brilla), el mismo diseño que el visor de aliados. Íconos: `tools/model-gen/china_icons.py`.
+El abanico de hoja de plátano y las ruedas de viento y fuego se borraron el 2026-11-15.
 **Sin probar en el juego**: montar y manejar al long (subir con salto, bajar mirando abajo, nadar), que el jinete no
 quede mal ubicado sobre el lomo ni el cuerpo se vea cortado; los monos (aparición, pelea, que se vayan); capturar,
-soltar y disolver con la calabaza (y que se conserve al salir y volver); el dash del abanico (distancia) y la lluvia del
-tercer aleteo; caminar sobre lava con las ruedas; el arco (daño x3, doble botín, tensado); el elixir según la luna; el
-bastón estirado; reparación de la piedra; las ruedas y la piedra puestas en los dos loaders.
+soltar y disolver con la calabaza (y que se conserve al salir y volver); el arco (daño x3, doble botín, tensado); el
+elixir según la luna; el bastón estirado; reparación de la piedra; la piedra puesta en los dos loaders.
 
 ## Segunda tanda china (programada el 2026-11-10)
 Diseño aprobado en `docs/ideas.md` (páginas en `tools/design-page/china2_*.py`; los íconos son los del primer borrador,
-que el usuario prefirió). Código en `china/ChinaGods` (constantes; Ojo de Erlang; alcance de la alabarda; set de Erlang
-Shen que trae al Perro Celestial al recibir daño; pixiu: pepitas al matar y los tesoros guardados al morir con
-`CharonStash#keepTreasure`; talismanes que vencen) y los ítems `FireTippedSpearItem` (con las ruedas de Nezha, recarga a
-la mitad), `UniverseRingItem` (el vuelo se muestra como una estela de oro de golpe en golpe; el ítem no sale de la
-mano), `ErlangHalberdItem`, `QilinHornItem`, `FuTalismansItem`, el saco de xirang (solo pasiva: te salva de la lava o el vacío,
-recarga 5 min) e `ImmortalPeachBranchItem` (componente `peach_growing`; la definición del ítem cambia el dibujo de la rama
-con o sin melocotón). Entidades: `entity/CelestialDog` (aliado de `Minions`; mordida que inmoviliza) y `entity/Qilin`
-(subclase de `AbstractHorse` como Sleipnir; se dibuja a 1,35 veces). Mixin nuevo: `FarmlandBlockMixin` (el qilin no
-pisotea cultivos). Geometría y texturas desde `tools/model-gen/china2_entities.py` (con `china_entities.py --mod`).
-Íconos: `china2_icons.py`. **Sin probar en el juego**: montar el qilin (altura del
-jinete, tamaño, que no pise cultivos, el aura), que el perro aparezca al recibir daño con el set completo, la llamarada
-de la lanza, el rebote del aro, el brillo del Ojo, los tesoros que guarda el pixiu al morir
-(también junto al óbolo), el melocotón (dibujo con y sin fruto) y el Ojo y la pulsera puestos en los dos loaders.
+que el usuario prefirió). Quedan los talismanes fu (`FuTalismansItem`; el papel se ve pegado en la frente) y el saco de
+xirang (solo pasiva: te salva de la lava o el vacío, recarga 5 min). Código en `china/ChinaGods`. Íconos:
+`china2_icons.py`. El resto de la tanda se borró el 2026-11-15 (ver «Reliquias borradas»).
+**Sin probar en el juego**: los talismanes (que el no-muerto quede quieto y el papel se despegue al vencer) y el rescate
+del xirang.
 
-## Primera tanda japonesa (programada el 2026-11-10)
-Diseño aprobado en `docs/ideas.md` (páginas en `tools/design-page/japan_*.py`; íconos del borrador, con la magatama
-redibujada). Código en `japan/JapanRelics` (constantes; reflejo del espejo con `RomeRelics#reflectLater`; magatama y set
-de los Tres Tesoros; redoble del tambor de Raijin; golpe de oni del kanabō; pasillo seco de kanju, que se vacía cada 2
-ticks mientras dura; tamaño del mazo con el atributo `scale`) y los ítems `KusanagiItem`, `YataMirrorItem`,
-`KitsuneStarBallItem`, `TideJewelsItem`, `LuckyMalletItem`, `KibiDangoItem` (componentes `kibi_dango` y `kibi_day`;
-el zorro confía con `FoxAccessor`) y `UrashimaRodItem`. Entidades: `entity/Kitsune` (aliado de `Minions` que lanza
-kitsunebi; se dibuja a 1,5) y `entity/UrashimaTurtle` (montura que nada hacia donde mira el jinete y da el poder del
-conducto; se dibuja a 1,7). Geometría: `tools/model-gen/japan_entities.py`; la clase generada pasó a llamarse
-`client/entity/geometry` (China y Japón). Íconos: `japan_icons.py`.
-**Sin probar en el juego**: montar la tortuga bajo el agua (control, velocidad, altura del jinete, que no se hunda ni
-flote mal), el kitsune y sus kitsunebi, el pasillo seco de kanju (que el agua no lo inunde y vuelva al terminar), la ola
-de manju, el reflejo del espejo (flechas y bolas de fuego), el rayo del tambor, el golpe del kanabō contra armadura,
-crecer con el mazo (tamaño, alcance, vida y que vuelva a la normalidad al salir y entrar), domar con los kibi dango, el
-tajo de Kusanagi y el set de los Tres Tesoros; la magatama y el tambor puestos en los dos loaders.
-
-## Segunda tanda japonesa (programada el 2026-11-10)
-Diseño aprobado en `docs/ideas.md` (páginas en `tools/design-page/japan2_*.py`). Código en `japan/JapanGods`
-(constantes; críticos de la máscara de tengu; plato del kappa y su sequía al sol; borrachera del sake; disfraz del
-tanuki; tala del hacha de Kintarō al romper un tronco agachado; prosperidad de la muñeca) y los ítems
-`FujinWindBagItem`, `YashioriSakeItem`, `TanukiLeafItem`, `AmeNoNubokoItem` y `OrochiScaleItem`. La muñeca de
-zashiki-warashi es un bloque (`ZashikiWarashiBlock`, con `ZashikiWarashis` guardando dónde hay, como el Paladio; el ítem
-reutiliza `PalladiumItem`). El set de Fūjin y Raijin cambia el redoble en `JapanRelics#onHurt` (3 golpes y el rayo
-salta a 2 hostiles). El doble salto del tengu reutiliza el de las sandalias de Hermes (`RelicClientTicks` y
-`GreeceRelics#hermesJumped`). Entidad: `entity/OrochiShadow` (aliado quieto de `Minions`: cada 1,5 s muerde a hasta 8
-hostiles a 6 bloques; se dibuja al doble con `OrochiModel`). Geometría en `japan_entities.py`; íconos, bloque de la
-muñeca y su paleta en `japan2_icons.py`; máscara y plato puestos en `worn_models.py`.
-Tablas nuevas de botín: herrerías de herramientas de aldea y mapas de naufragios.
-**Sin probar en el juego**: la altura y el planeo de la bolsa de vientos y el ventarrón; el set con el tambor; el doble
-salto y los críticos del tengu; la borrachera (que los hostiles se peleen entre ellos); el plato del kappa (nado, daño,
-mensajes al secarse y mojarse); el disfraz del tanuki (que los hostiles dejen de perseguir y que se rompa al atacar);
-talar con el hacha agachado; la muñeca colocada (modelo, orientación, Suerte y precios de los aldeanos); la isla de la
-lanza; la sombra de Orochi (tamaño, mordidas y que no se mueva); la máscara y el plato puestos en los dos loaders.
+## Reliquias borradas (2026-11-15)
+Decisión del usuario: se quitaron del todo (código, recursos, libro, wiki, botín, textos y herramientas).
+- **China** (9): lanza de punta de fuego, aro del universo, ojo y alabarda de Erlang Shen (con el set de Erlang y el
+  Perro Celestial), cuerno del qilin (y la montura qilin con su `FarmlandBlockMixin`), abanico de hoja de plátano,
+  ruedas de viento y fuego, pulsera del pixiu y rama del melocotonero (componente `peach_growing`).
+- **Japón entero** (19): Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del kitsune, joyas
+  de la marea, mazo de la suerte, kibi dango, caña de Urashima, bolsa de Fūjin, máscara de tengu, sake Yashiori, plato
+  del kappa, hoja del tanuki, hacha de Kintarō, muñeca de zashiki-warashi (bloque), Ame-no-nuboko y escama de Orochi;
+  los sets de los Tres Tesoros y de Fūjin y Raijin; el kitsune, la tortuga de Urashima y la sombra de Orochi; la
+  pestaña creativa, la categoría del libro y la página de la wiki.
+- Con ellas se fueron `RingPayload` y la tecla R, `FoxAccessor`, `relic/RelicMotion`, `RomeRelics#reflectLater`,
+  `CharonStash#keepTreasure`, los componentes `kibi_dango` y `kibi_day`, y las herramientas `china2_entities.py`,
+  `japan_entities.py`, `japan_icons.py`, `japan2_icons.py` y los borradores `japan*_draft.py`.
+- El doble salto vuelve a ser solo de las sandalias de Hermes; el rayo con bono de set, solo el de Thor.
+- Las tablas de botín de herrerías de herramientas y mapas de naufragios quedaron sin reliquias.
 
 ## Arreglos tras la primera prueba en NeoForge (2026-11-10)
 - Objetivos negados en el origen (`relic/TargetVeto` + `mixin/MobMixin` en `setTarget`/`getTarget`): set de Anubis,
@@ -305,7 +281,7 @@ como `template_skull`).
 - `tools/model-gen/coplanar_check.py`: busca caras coplanares entre reliquias del cuerpo que se pueden llevar juntas
   (parpadeo). Correrlo después de `worn_models.py` y agregar las reliquias nuevas a sus grupos.
 - `tools/model-gen/rome_icons.py`, `norse_icons.py`, `rome_models.py` (Ancile y
-  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_entities.py`, `china2_icons.py`, `china2_entities.py`, `japan_icons.py`, `japan_entities.py`
+  Paladio), `cerberus_texture.py`, `sleipnir_texture.py`, `china_icons.py`, `china_entities.py`, `china2_icons.py`
   (visor de aliados y, con `--mod`, la geometría en Java y las texturas del mono y del long).
 - `worn_texture.py`: textura pintada por cara (luz, sombras, ruido y patrón del material) para todas las reliquias
   puestas, y `paint_models.py` para los modelos 3D hechos con paleta (escudos, Mjölnir, Gungnir, Ruyi, Paladio,
@@ -339,23 +315,21 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
 ## Después
 1. **Seguir probando en el juego** (NeoForge en el PC del usuario, con Jade para ver la vida). Lo pendiente de confirmar
    tras la cuarta ronda:
-   - Montar y controlar Sleipnir, qilin, long y tortuga (correr, saltar, nadar); Skíðblaðnir (vista, vela, plegado).
+   - Montar y controlar Sleipnir y el long (correr, saltar, nadar); Skíðblaðnir (vista, vela, plegado).
    - Cuervos de Odín: que se posen y se queden quietos mirando; graznido ocasional; hostiles brillando. Las alas
      plegadas se rehicieron el 2026-11-12 (antes colgaban hasta el suelo y parecían patas): confirmar que se ven bien.
-   - Sombra de Orochi: ahora abre las mandíbulas solo al morder (se echa atrás, se lanza y cierra; una cabeza por
-     hostil, con el evento de entidad 100 + cabezas).
    - Gungnir en la mano, al cargar y en vuelo; Mjölnir en la mano y en vuelo (sus `display` son estimados); Ruyi estirado.
    - Estatuas de Medusa: colocar, romper, que no crasheen; textura de piedra sobre los mobs petrificados.
    - Paladio (modelo y parpadeo), candado de Jano en puertas, trampillas, vallas y cofres, yelmo de Hades puesto.
-   - Set de Anubis y lira (que los mobs no disparen), doble salto de Hermes y tengu, recarga y bloque de set en los
+   - Set de Anubis y lira (que los mobs no disparen), doble salto de Hermes, recarga y bloque de set en los
      tooltips, pestañas por mitología, ícono del mod en la lista.
-   - Todo lo de Japón 2 (ver su sección) y lo de las rondas de arreglos.
+   - Lo de las rondas de arreglos.
    - Grecia 3 y nórdicos 3 (ver su sección): rayo (salto entre enemigos, sin fuego), piel de Nemea, cólera del escudo
      y que bloquee bien en la mano, harpe (aviso, decapitar, cabezas, set de Perseo con 3 de 4), Pegaso (despegar,
      planear, picada, tábano), manzana, Talos (rocas, abrazo, vueltas, tobillo); Gram (estocada y aviso), Tyrfing
      (críticos, chispas, maldición), Dáinsleif (sin curación y sangrado), espada de Freyr (sale, pelea, vuelve; que se
      vea suave y bien orientada en el renderizador), halcón (activar en el aire, volar, volver al ser golpeado) y dardo
-     (orientación en vuelo, daño que ignora armadura). Recargas nuevas de Kusanagi, lanza de Nezha y Ruyi.
+     (orientación en vuelo, daño que ignora armadura). Recarga nueva del Ruyi.
    - Armas en vuelo con modelo 3D (`WeaponModel`, geometría de `weapon_entities.py`): espada de Freyr, Mjölnir,
      Gungnir y dardo ya no se ven como el ícono en el aire. Revisar que la punta vaya hacia adelante, el tamaño, que
      Mjölnir gire de punta a punta y que brillen el canal de la espada y las runas de Gungnir.
@@ -368,11 +342,10 @@ Dáinsleif, espada de Freyr, halcón, dardo); los dos encadenan `tooltipArgs` (J
    - Rayo de Zeus fuerte: mantener 2 s (mini rayos a tu alrededor y trueno al estar listo), soltar 3 rayos con su daño
      y salto, recarga 10 s; el débil sigue igual.
    - Arte del 2026-11-14: alas de Ícaro nuevas (en abanico, echadas hacia atrás) y las 25 reliquias puestas no griegas
-     con más detalle (Egipto, Roma, nórdicos, China y Japón): revisarlas en NeoForge (Curios), que la prueba automática
+     con más detalle (Egipto, Roma, nórdicos y China): revisarlas en NeoForge (Curios), que la prueba automática
      solo cubre Fabric.
-   - Tras el refactor del 2026-11-14 (no debería cambiar nada del juego): tooltip de sets con ✔ / ◐ / ✘ (por ejemplo la
-     alabarda de Erlang en el inventario sale ◐ «en la mano principal»); recargas largas (Kusanagi, abanico, sake,
-     joyas de la marea…) que siguen en el ícono al salir y volver a entrar; un vistazo general a avisos y sonidos.
+   - Tras el refactor del 2026-11-14 (no debería cambiar nada del juego): tooltip de sets con ✔ / ◐ / ✘ (por ejemplo el
+     anillo del chacal en el inventario sale ◐ «póntela»); recargas largas (Ruyi, monos, elixir…) que siguen en el ícono al salir y volver a entrar; un vistazo general a avisos y sonidos.
    - Tooltip corto con el resumen nuevo de cada reliquia (lo importante y la recarga); con Shift, el detalle.
    Después, probar también en Fabric (Trinkets).
 2. **Cuando el usuario apruebe las pruebas: Chile/mapuche** como tanda especial (los celtas se descartaron el

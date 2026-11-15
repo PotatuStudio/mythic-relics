@@ -1,6 +1,5 @@
 package io.github.potatustudio.mythicrelics.mixin;
 
-import io.github.potatustudio.mythicrelics.china.ChinaRelics;
 import io.github.potatustudio.mythicrelics.egypt.EgyptGods;
 import io.github.potatustudio.mythicrelics.egypt.EgyptRelics;
 import io.github.potatustudio.mythicrelics.greece.GreeceLegends;
@@ -11,12 +10,10 @@ import io.github.potatustudio.mythicrelics.relic.DamageModifiers;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.material.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  *   <li>el renacer de Osiris, en la misma comprobación que el tótem;</li>
  *   <li>la égida de Atenea, al bloquear con escudo, y el Ancile, que devuelve los proyectiles bloqueados;</li>
  *   <li>la lámpara de Vesta impide congelarse; el Ancile protege a los aldeanos en una invasión;</li>
- *   <li>China: daño de las ruedas, la piedra, el arco de Hou Yi y el elixir; las ruedas pisan la lava corriendo;</li>
+ *   <li>China: daño de la piedra, el arco de Hou Yi y el elixir;</li>
  *   <li>Grecia 3 y nórdicos 3: la piel de Nemea, la cólera de Aquiles al bloquear, Talos, Tyrfing y Dáinsleif (que no
  *       deja curarse).</li>
  * </ul>
@@ -80,14 +77,6 @@ public abstract class LivingEntityMixin {
 	private void mythicrelics$vestaWarmth(CallbackInfoReturnable<Boolean> cir) {
 		if (RomeRelics.warmedByVesta((LivingEntity) (Object) this)) {
 			cir.setReturnValue(false);
-		}
-	}
-
-	/** Ruedas de viento y fuego: corriendo, la lava se pisa como suelo. */
-	@Inject(method = "canStandOnFluid", at = @At("HEAD"), cancellable = true)
-	private void mythicrelics$wheelsOnLava(FluidState fluid, CallbackInfoReturnable<Boolean> cir) {
-		if (fluid.is(FluidTags.LAVA) && ChinaRelics.wheelsOnLava((LivingEntity) (Object) this)) {
-			cir.setReturnValue(true);
 		}
 	}
 

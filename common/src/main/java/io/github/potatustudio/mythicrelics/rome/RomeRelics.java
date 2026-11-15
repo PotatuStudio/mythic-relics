@@ -118,13 +118,6 @@ public final class RomeRelics {
 		}
 	}
 
-	/** Devuelve un proyectil a quien lo lanzó en el próximo tick (lo usan el Ancile y el espejo Yata). */
-	public static void reflectLater(Projectile projectile, LivingEntity shooter, LivingEntity defender) {
-		synchronized (REFLECT) {
-			REFLECT.add(new Object[] {projectile, shooter, defender});
-		}
-	}
-
 	/** Daño recibido: en una invasión, aldeanos y gólems cerca de quien sostiene el Ancile reciben la mitad. */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
 		if (!(self instanceof AbstractVillager || self instanceof IronGolem) || !(self.level() instanceof ServerLevel level)

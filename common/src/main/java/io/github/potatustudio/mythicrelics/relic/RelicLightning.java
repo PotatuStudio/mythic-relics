@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Rayo de reliquia (Mjölnir con el set de Thor, el tambor de Raijin): se ve y suena como uno de verdad y hace su daño de
+ * Rayo de reliquia (Mjölnir con el set de Thor): se ve y suena como uno de verdad y hace su daño de
  * rayo, pero no prende fuego al suelo ni a los bloques. El rayo vanilla se lanza solo como efecto visual y el daño se
  * aplica aparte, sin quemar.
  */
@@ -31,8 +31,8 @@ public final class RelicLightning {
 			bolt.setCause(cause);
 		}
 		level.addFreshEntity(bolt);
-		// Con el set de Thor o el de Fūjin y Raijin, el rayo es el arma del set: pega más.
-		boolean set = cause != null && (RelicSets.THOR.isComplete(cause) || RelicSets.FUJIN_RAIJIN.isComplete(cause));
+		// Con el set de Thor, el rayo es el arma del set: pega más.
+		boolean set = cause != null && RelicSets.THOR.isComplete(cause);
 		float damage = DAMAGE * (set ? 1.0f + RelicSets.WEAPON_BONUS : 1.0f);
 		for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, bolt.getBoundingBox().inflate(RADIUS, 6, RADIUS),
 				e -> e.isAlive() && e != cause && (cause == null || !Allies.isFriend(cause, e)))) {

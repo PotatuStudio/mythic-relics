@@ -4,24 +4,19 @@ import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.potatustudio.mythicrelics.MythicRelics;
-import io.github.potatustudio.mythicrelics.entity.CelestialDog;
 import io.github.potatustudio.mythicrelics.entity.Cerberus;
 import io.github.potatustudio.mythicrelics.entity.FreyrSword;
 import io.github.potatustudio.mythicrelics.entity.Jackal;
-import io.github.potatustudio.mythicrelics.entity.Kitsune;
 import io.github.potatustudio.mythicrelics.entity.LongDragon;
 import io.github.potatustudio.mythicrelics.entity.MonkeyWarrior;
 import io.github.potatustudio.mythicrelics.entity.OdinRaven;
-import io.github.potatustudio.mythicrelics.entity.OrochiShadow;
 import io.github.potatustudio.mythicrelics.entity.Pegasus;
-import io.github.potatustudio.mythicrelics.entity.Qilin;
 import io.github.potatustudio.mythicrelics.entity.Scarab;
 import io.github.potatustudio.mythicrelics.entity.SkidbladnirBoat;
 import io.github.potatustudio.mythicrelics.entity.Sleipnir;
 import io.github.potatustudio.mythicrelics.entity.StoneStatue;
 import io.github.potatustudio.mythicrelics.entity.Talos;
 import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
-import io.github.potatustudio.mythicrelics.entity.UrashimaTurtle;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
@@ -89,49 +84,6 @@ public final class ModEntities {
 					.clientTrackingRange(12)
 					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("long_dragon"))));
 
-	/** Perro Celestial de Erlang Shen (aliado temporal del set). */
-	public static final RegistrySupplier<EntityType<CelestialDog>> CELESTIAL_DOG = ENTITIES.register("celestial_dog",
-			() -> EntityType.Builder.of(CelestialDog::new, MobCategory.MISC)
-					.sized(0.6f, 0.9f)
-					.clientTrackingRange(10)
-					.noSave()
-					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("celestial_dog"))));
-
-	/** El qilin del cuerno: montura del tamaño de un caballo, inmune al fuego; no se guarda con el mundo. */
-	public static final RegistrySupplier<EntityType<Qilin>> QILIN = ENTITIES.register("qilin",
-			() -> EntityType.Builder.of(Qilin::new, MobCategory.CREATURE)
-					.sized(1.3f, 1.8f)
-					.eyeHeight(1.7f)
-					.passengerAttachments(1.5f)
-					.fireImmune()
-					.clientTrackingRange(10)
-					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("qilin"))));
-
-	/** Kitsune de nueve colas de la esfera estelar (aliado temporal); se dibuja a 1,5 veces. */
-	public static final RegistrySupplier<EntityType<Kitsune>> KITSUNE = ENTITIES.register("kitsune",
-			() -> EntityType.Builder.of(Kitsune::new, MobCategory.MISC)
-					.sized(0.9f, 1.1f)
-					.fireImmune()
-					.clientTrackingRange(10)
-					.noSave()
-					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("kitsune"))));
-
-	/** Tortuga gigante de Urashima (montura submarina); se dibuja a 1,7 veces; no se guarda con el mundo. */
-	public static final RegistrySupplier<EntityType<UrashimaTurtle>> URASHIMA_TURTLE = ENTITIES.register("urashima_turtle",
-			() -> EntityType.Builder.of(UrashimaTurtle::new, MobCategory.WATER_CREATURE)
-					.sized(1.9f, 1.2f)
-					.clientTrackingRange(10)
-					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("urashima_turtle"))));
-
-	/** Sombra de Yamata no Orochi de la escama (aliado temporal, quieto); se dibuja al doble; no se guarda con el mundo. */
-	public static final RegistrySupplier<EntityType<OrochiShadow>> OROCHI_SHADOW = ENTITIES.register("orochi_shadow",
-			() -> EntityType.Builder.of(OrochiShadow::new, MobCategory.MISC)
-					.sized(3.0f, 3.0f)
-					.fireImmune()
-					.clientTrackingRange(10)
-					.noSave()
-					.build(ResourceKey.create(Registries.ENTITY_TYPE, MythicRelics.id("orochi_shadow"))));
-
 	/** Estatua de piedra de un mob (decorativa, se guarda con el mundo). */
 	public static final RegistrySupplier<EntityType<StoneStatue>> STONE_STATUE =
 			ENTITIES.register("stone_statue", () -> EntityType.Builder.of(StoneStatue::new,
@@ -197,11 +149,6 @@ public final class ModEntities {
 		EntityAttributeRegistry.register(SLEIPNIR, Sleipnir::createAttributes);
 		EntityAttributeRegistry.register(MONKEY_WARRIOR, MonkeyWarrior::createAttributes);
 		EntityAttributeRegistry.register(LONG_DRAGON, LongDragon::createAttributes);
-		EntityAttributeRegistry.register(CELESTIAL_DOG, CelestialDog::createAttributes);
-		EntityAttributeRegistry.register(QILIN, Qilin::createAttributes);
-		EntityAttributeRegistry.register(KITSUNE, Kitsune::createAttributes);
-		EntityAttributeRegistry.register(URASHIMA_TURTLE, UrashimaTurtle::createAttributes);
-		EntityAttributeRegistry.register(OROCHI_SHADOW, OrochiShadow::createAttributes);
 		EntityAttributeRegistry.register(ODIN_RAVEN, OdinRaven::createAttributes);
 		EntityAttributeRegistry.register(PEGASUS, Pegasus::createAttributes);
 		EntityAttributeRegistry.register(TALOS, Talos::createAttributes);
