@@ -924,18 +924,27 @@ def tengu_mask():
 
 def kappa_dish():
     """El sara del kappa: el plato blanquecino lleno de agua en la coronilla, con su borde alzado y el agua que brilla,
-    rodeado por la melena verde desgreñada de los kappa (mechones de largo distinto que caen a los lados y atrás, sin
-    tapar la cara). Cabeza: arriba en y 12, lados en x 4 y 12 (sobresale 0,75)."""
-    e = []
-    # Melena: aro de pelo alrededor de la coronilla y mechones que caen (los de adelante, cortos, no tapan los ojos).
-    e += ring(3.2, 12.8, 11.2, 12.85, 3.2, 12.7, 1.3, "cobra_d", "melena")
-    tufts = [("der.", [3.2, 8.6, 5.0], [3.6, 11.2, 7.2]), ("der. 2", [3.2, 9.4, 7.4], [3.6, 11.2, 9.4]),
-             ("izq.", [12.4, 8.8, 5.2], [12.8, 11.2, 7.4]), ("izq. 2", [12.4, 9.6, 7.6], [12.8, 11.2, 9.6]),
-             ("atrás 1", [4.0, 8.2, 3.2], [6.0, 11.2, 3.6]), ("atrás 2", [6.2, 7.6, 3.2], [8.0, 11.2, 3.6]),
-             ("atrás 3", [8.2, 8.0, 3.2], [10.0, 11.2, 3.6]), ("atrás 4", [10.2, 8.6, 3.2], [12.0, 11.2, 3.6]),
-             ("flequillo 1", [4.4, 11.0, 12.35], [6.2, 11.9, 12.75]), ("flequillo 2", [9.8, 11.0, 12.35], [11.6, 11.9, 12.75])]
-    for name, frm, to in tufts:
-        e.append(box(frm, to, "cobra" if "2" in name else "cobra_d", f"mechón {name}"))
+    rodeado por el pelo verde del kappa cortado como una melena corta (okappa): cae por los costados y la nuca hasta la
+    altura de las orejas, en mechones de largo distinto y con relieve, y adelante un flequillo corto que no tapa los ojos.
+    Cabeza: arriba en y 12, lados en x 4 y 12, frente en z 12 (sobresale 0,75)."""
+    e = ring(3.08, 12.92, 12.05, 12.85, 3.08, 12.68, 0.9, "cobra_d", "melena arriba")
+    # Costados: mechones a lo largo de z, de largo y saliente alternados.
+    lows = [8.2, 7.6, 8.6, 7.8, 8.4]
+    for k, z in enumerate((4.25, 5.75, 7.25, 8.75, 10.25)):
+        out = 0.03 if k % 2 else 0.0
+        tone = "cobra" if k % 2 else "cobra_d"
+        e.append(box([3.05 - out, lows[k], z], [3.4 - out, 12.05, z + 1.5], tone, f"mechón der. {k}"))
+        e.append(box([12.6 + out, lows[-1 - k], z], [12.95 + out, 12.05, z + 1.5], tone, f"mechón izq. {k}"))
+    # Nuca: la melena cae más larga atrás.
+    backs = [7.4, 7.0, 7.6, 6.9, 7.3, 7.7]
+    for k, x in enumerate((3.4, 4.9, 6.4, 7.9, 9.4, 10.9)):
+        out = 0.03 if k % 2 else 0.0
+        e.append(box([x, backs[k], 3.05 - out], [x + 1.5, 12.05, 3.4 - out], "cobra" if k % 2 else "cobra_d", f"mechón atrás {k}"))
+    # Flequillo corto (por encima de los ojos).
+    fringe = [11.0, 10.6, 10.9, 10.55, 10.8]
+    for k, x in enumerate((4.05, 5.6, 7.2, 8.8, 10.35)):
+        e.append(box([x, fringe[k], 12.3 + (0.04 if k % 2 else 0)], [x + 1.6, 12.05, 12.7], "cobra" if k % 2 else "cobra_d",
+                     f"flequillo {k}"))
     # El plato: borde alzado, fondo y agua.
     e += ring(4.4, 11.6, 12.75, 13.85, 4.4, 11.6, 0.7, "ivory", "borde del plato")
     e += [box([5.1, 12.75, 5.1], [10.9, 13.25, 10.9], "ivory_d", "fondo del plato"),
