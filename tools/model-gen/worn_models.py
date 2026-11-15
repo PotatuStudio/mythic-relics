@@ -528,46 +528,100 @@ def golden_fleece():
 
 
 def jarngreipr():
-    """Guantelete de hierro hasta la muñeca, puño de oro y remaches al frente. Por dentro de los anillos (5,15..10,85)."""
+    """Járngreipr, los guanteletes de hierro de Thor: placas articuladas (lamas) sobre el dorso de la mano, nudillos con
+    tachas, una banda de runas al frente, el puño de oro acampanado y remaches. Por dentro de los anillos (5,15..10,85)."""
     e = ring(5.45, 10.55, 2.0, 7.0, 5.45, 10.55, 0.55, "iron", "guantelete")
     e += ring(5.3, 10.7, 7.0, 8.2, 5.3, 10.7, 0.5, "gold", "puño")
-    e += [box([5.45, 1.5, 5.45], [10.55, 2.0, 10.55], "iron", "nudillos")]
-    for x in (6.0, 7.4, 8.8):
-        e.append(box([x, 4.4, 10.55], [x + 0.9, 5.2, 10.8], "iron", "remache"))
+    e += [box([5.2, 8.2, 5.2], [10.8, 8.55, 10.8], "gold_d", "borde del puño"),
+          box([5.45, 1.5, 5.45], [10.55, 2.0, 10.55], "iron_d", "nudillos")]
+    # Lamas: tiras de hierro superpuestas en el dorso (frente del brazo, z 10,55..), cada una un poco más saliente.
+    for i, y in enumerate((2.3, 3.3, 4.3, 5.32)):
+        e.append(box([5.6, y, 10.55], [10.4, y + 0.8, 10.7 + i * 0.04], "iron_l" if i % 2 == 0 else "iron", f"lama {i}"))
+    for k, x in enumerate((5.9, 7.3, 8.7)):
+        e.append(box([x, 1.55, 10.55], [x + 1.0, 2.15, 10.85], "iron_l", f"tacha del nudillo {k}"))
+    # Banda de runas sobre el puño.
+    e.append(box([5.7, 6.3, 10.55], [10.3, 6.9, 10.7], "gold", "banda de runas"))
+    for k, x in enumerate((6.1, 7.3, 8.5, 9.5)):
+        e.append(box([x, 6.4, 10.7], [x + 0.4, 6.8, 10.78], "onyx", f"runa {k}"))
+    for k, (x, y) in enumerate(((5.6, 4.6), (9.95, 4.6))):
+        e.append(box([x, y, 10.55], [x + 0.4, y + 0.5, 10.95], "iron_d", f"remache {k}"))
     return e
 
 
 def megingjord():
-    """Cinturón de cuero a la cintura con hebilla de oro trenzada y la punta colgando."""
+    """Megingjörð, el cinturón de fuerza de Thor: cuero ancho con placas de bronce cuadradas alrededor, una gran hebilla
+    de oro con nudo entrelazado y la punta del cinturón que cuelga con su remate de oro."""
     e = ring(3.45, 12.55, 2.6, 4.4, 5.45, 10.55, 0.55, "leather", "cinturón")
-    e += [box([6.6, 2.2, 10.55], [9.4, 4.8, 11.25], "gold", "hebilla"),
-          box([7.4, 3.0, 11.25], [8.6, 4.0, 11.45], "gold_d", "nudo"),
-          box([9.6, 1.0, 10.6], [10.4, 2.6, 10.95], "leather", "punta")]
+    # Placas alrededor (frente y costados; atrás quedan planas para no chocar con las capas).
+    for k, x in enumerate((3.9, 5.3, 10.0, 11.3)):
+        e.append(box([x, 2.9, 10.55], [x + 0.9, 4.1, 10.75], "bronze", f"placa frente {k}"))
+    for side, x0, x1 in (("der.", 3.25, 3.45), ("izq.", 12.55, 12.75)):
+        for k, z in enumerate((6.4, 8.4)):
+            e.append(box([x0, 2.9, z], [x1, 4.1, z + 0.9], "bronze", f"placa {side} {k}"))
+    # Hebilla con nudo entrelazado.
+    e += [box([6.5, 2.1, 10.55], [9.5, 4.9, 11.15], "gold", "hebilla"),
+          box([6.8, 2.4, 11.15], [9.2, 4.6, 11.3], "gold_d", "nudo"),
+          box([7.2, 2.8, 11.3], [8.8, 3.1, 11.42], "gold_l", "lazo 1"),
+          box([7.2, 3.9, 11.3], [8.8, 4.2, 11.42], "gold_l", "lazo 2"),
+          box([7.2, 3.1, 11.3], [7.5, 3.9, 11.42], "gold_l", "lazo 3"),
+          box([8.5, 3.1, 11.3], [8.8, 3.9, 11.42], "gold_l", "lazo 4"),
+          box([7.85, 3.3, 11.3], [8.15, 3.7, 11.45], "ruby", "gema del nudo"),
+          box([9.6, 0.6, 10.6], [10.4, 2.6, 10.95], "leather", "punta"),
+          box([9.5, 0.1, 10.58], [10.5, 0.6, 11.0], "gold", "remate de la punta")]
     return e
 
 
 def draupnir_ring():
-    """Anillo de oro macizo con un sello liso, en el mismo lugar que el anillo de los chacales (no se llevan juntos)."""
+    """Draupnir, el anillo que gotea: un aro grueso de oro torcido (segmentos claros y oscuros alternados que parecen un
+    cordón retorcido), con un sello liso y un anillo nuevo que cuelga goteando debajo. En el mismo lugar que el anillo
+    de los chacales (no se llevan juntos)."""
     e = ring(5.15, 10.85, 8.6, 9.6, 5.15, 10.85, 0.5, "gold", "aro")
-    e += [box([7.2, 8.4, 10.85], [8.8, 9.8, 11.4], "gold", "sello"),
-          box([7.6, 8.8, 11.4], [8.4, 9.4, 11.5], "gold_l", "brillo")]
+    for k, x in enumerate((5.6, 7.0, 8.4, 9.8)):
+        e.append(box([x, 8.55, 10.85], [x + 0.7, 9.65, 11.0], "gold_l", f"torsión frente {k}"))
+    for k, z in enumerate((5.6, 7.0, 8.4, 9.8)):
+        e.append(box([4.98, 8.55, z], [5.15, 9.65, z + 0.7], "gold_l", f"torsión der. {k}"))
+        e.append(box([10.85, 8.55, z], [11.02, 9.65, z + 0.7], "gold_l", f"torsión izq. {k}"))
+    e += [box([7.2, 8.4, 11.0], [8.8, 9.8, 11.4], "gold", "sello"),
+          box([7.6, 8.8, 11.4], [8.4, 9.4, 11.5], "gold_l", "brillo"),
+          box([7.7, 7.6, 10.95], [8.3, 8.4, 11.15], "gold_d", "gota"),
+          box([7.3, 6.6, 10.95], [8.7, 7.6, 11.1], "gold", "anillo que gotea")]
     return e
 
 
 def brisingamen():
-    """Cadena de oro como la del Anj y cinco piezas en V sobre el pecho, alternando ámbar y oro (los cuatro enanos)."""
+    """Brísingamen, el collar de Freyja forjado por cuatro enanos: torques de oro trenzado al cuello y, sobre el pecho,
+    una media luna de cinco piezas de ámbar engastadas en oro, con la gran ámbar central en forma de gota y una perla de
+    oro bajo cada pieza."""
     e = [box([3.5, 13.3, 5.5], [12.5, 13.8, 6.0], "gold_d", "cadena atrás"),
          box([3.5, 13.3, 6.0], [4.0, 13.8, 10.5], "gold", "cadena der."),
-         box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "gold", "cadena izq.")]
-    for i, (x, y) in enumerate([(4.4, 12.2), (5.7, 11.2), (7.3, 10.6), (8.9, 11.2), (10.2, 12.2)]):
-        e.append(box([x, y, 10.5], [x + 1.4, y + 1.2, 11.2], "amber" if i % 2 == 0 else "gold", "pieza"))
+         box([12.0, 13.3, 6.0], [12.5, 13.8, 10.5], "gold", "cadena izq."),
+         box([4.0, 13.3, 10.5], [12.0, 13.8, 10.75], "gold", "torques frente")]
+    for k, x in enumerate((4.6, 6.2, 9.0, 10.6)):
+        e.append(box([x, 13.25, 10.75], [x + 0.8, 13.85, 10.85], "gold_l", f"trenzado {k}"))
+    pieces = [(4.5, 12.0, 1.2), (5.8, 11.0, 1.3), (7.1, 9.6, 1.8), (8.9, 11.0, 1.3), (10.3, 12.0, 1.2)]
+    for i, (x, y, w) in enumerate(pieces):
+        e += [box([x - 0.15, y - 0.15, 10.5], [x + w + 0.15, y + 1.35, 11.0], "gold", f"engaste {i}"),
+              box([x, y, 11.0], [x + w, y + 1.2, 11.25], "amber", f"ámbar {i}"),
+              box([x + w / 2 - 0.25, y - 0.6, 10.55], [x + w / 2 + 0.25, y - 0.15, 10.95], "gold_l", f"perla {i}")]
+    e += [box([7.5, 8.6, 10.55], [8.5, 9.6, 11.1], "amber", "gota central"),
+          box([7.3, 10.2, 11.25], [7.8, 10.7, 11.32], "white", "brillo")]
     return e
 
 
 def andvaranaut():
-    """Anillo de oro con la gema roja de la maldición, en el lugar de los demás anillos."""
+    """Andvaranaut, el anillo maldito del enano Andvari: un aro de oro con forma de serpiente que se muerde la cola, la
+    cabeza al frente sosteniendo la gema roja de la maldición, y runas oscuras grabadas a los lados. En el lugar de los
+    demás anillos."""
     e = ring(5.15, 10.85, 8.6, 9.6, 5.15, 10.85, 0.5, "gold", "aro")
-    e += [box([7.3, 8.4, 10.85], [8.7, 9.8, 11.5], "ruby", "gema")]
+    e += [box([6.9, 8.3, 10.85], [9.1, 9.9, 11.2], "gold_d", "cabeza de la serpiente"),
+          box([7.3, 8.5, 11.2], [8.7, 9.7, 11.55], "ruby", "gema"),
+          box([7.6, 9.2, 11.55], [8.0, 9.5, 11.6], "white", "brillo de la gema"),
+          box([6.6, 8.7, 10.95], [6.9, 9.0, 11.1], "onyx", "ojo der."),
+          box([9.1, 8.7, 10.95], [9.4, 9.0, 11.1], "onyx", "ojo izq."),
+          box([9.1, 9.1, 10.85], [10.2, 9.5, 11.05], "gold_d", "cola mordida")]
+    for k, z in enumerate((6.2, 7.6, 9.0)):
+        e.append(box([4.98, 8.85, z], [5.15, 9.35, z + 0.5], "onyx", f"runa der. {k}"))
+        e.append(box([10.85, 8.85, z], [11.02, 9.35, z + 0.5], "onyx", f"runa izq. {k}"))
     return e
 
 
@@ -927,27 +981,49 @@ def nemean_lion_skin():
 
 def freyr_sword():
     """Espada de Freyr envainada (cinturón, compite con el escarabajo, Megingjörð y la piedra: usa los planos de
-    Megingjörð). Cinturón de cuero y la vaina al frente de la cadera izquierda, por fuera del brazo, con la guarda y el
-    pomo de oro arriba."""
+    Megingjörð). Cinturón de cuero con tahalí y la vaina al frente de la cadera izquierda, por fuera del brazo: vaina de
+    cuero con abrazaderas de oro y runas, la guarda de oro con sus puntas, el puño envuelto y el pomo con la gema verde
+    (la espada del dios de la fertilidad)."""
     e = ring(3.45, 12.55, 2.6, 3.6, 5.45, 10.55, 0.55, "leather", "cinturón")
-    e += [box([10.4, -6.0, 10.6], [11.6, 2.4, 11.6], "leather", "vaina"),
+    e += [box([9.6, 1.8, 10.55], [10.6, 3.8, 10.85], "leather_d", "tahalí"),
+          box([10.4, -6.0, 10.6], [11.6, 2.4, 11.6], "leather", "vaina"),
           box([10.3, -6.6, 10.5], [11.7, -6.0, 11.7], "gold", "contera"),
-          box([10.3, 1.8, 10.5], [11.7, 2.4, 11.7], "gold", "boca de la vaina"),
-          box([9.8, 2.4, 10.4], [12.2, 3.0, 11.8], "gold", "guarda"),
+          box([10.5, -7.1, 10.7], [11.5, -6.6, 11.5], "gold_d", "punta de la contera"),
+          box([10.3, 1.8, 10.5], [11.7, 2.4, 11.7], "gold", "boca de la vaina")]
+    for k, y in enumerate((-3.6, -1.0)):
+        e.append(box([10.32, y, 10.52], [11.68, y + 0.5, 11.68], "gold_d", f"abrazadera {k}"))
+    for k, y in enumerate((-5.2, -4.4, -2.6, -1.8, 0.2)):
+        e.append(box([10.8, y, 11.6], [11.2, y + 0.5, 11.68], "gold_l", f"runa {k}"))
+    e += [box([9.8, 2.4, 10.4], [12.2, 3.0, 11.8], "gold", "guarda"),
+          box([9.5, 2.5, 10.7], [9.8, 3.4, 11.5], "gold_l", "punta de la guarda der."),
+          box([12.2, 2.5, 10.7], [12.5, 3.4, 11.5], "gold_l", "punta de la guarda izq."),
           box([10.6, 3.0, 10.8], [11.4, 5.0, 11.4], "leather_d", "puño"),
-          box([10.4, 5.0, 10.6], [11.6, 5.8, 11.6], "gold", "pomo")]
+          box([10.55, 3.4, 10.75], [11.45, 3.7, 11.45], "gold_d", "vuelta del puño 1"),
+          box([10.55, 4.2, 10.75], [11.45, 4.5, 11.45], "gold_d", "vuelta del puño 2"),
+          box([10.4, 5.0, 10.6], [11.6, 5.8, 11.6], "gold", "pomo"),
+          box([10.7, 5.2, 11.6], [11.3, 5.6, 11.7], "cobra_l", "gema del pomo")]
     return e
 
 
 def falcon_cloak():
     """Manto de plumas de halcón de Freyja (espalda, compite con la égida, las alas de Ícaro y el tambor: va por detrás de
-    la capa, z < 5,35, como las alas). Cae por la espalda y se abre abajo, con las barras claras del plumaje y un borde de
-    puntas de plumas; una esclavina de plumas por encima de los hombros de la capa (sin bajar por el pecho, donde van los collares),
-    cuello claro y broche de oro."""
+    la capa, z < 5,35, como las alas). Cae por la espalda y se abre abajo, cubierto de hileras de plumas escalonadas como
+    escamas (cada hilera tapa la base de la de abajo, con las barras claras del halcón), un borde de puntas de plumas,
+    la esclavina de plumas sobre los hombros, cuello claro y broche de oro."""
     e = [box([3.2, 3.0, 4.6], [12.8, 13.6, 5.3], "falcon", "manto"),
          box([2.6, 0.4, 4.3], [13.4, 3.0, 5.1], "falcon", "manto abierto abajo")]
-    for i, y in enumerate((4.2, 6.6, 9.0, 11.4)):
-        e.append(box([3.1, y, 4.4], [12.9, y + 0.6, 4.55], "falcon_l", f"barra {i}"))
+    # Hileras de plumas: de arriba hacia abajo, cada una más afuera (z menor) y desplazada media pluma.
+    rows = [12.0, 10.3, 8.6, 6.9, 5.2, 3.5]
+    for r, y in enumerate(rows):
+        z0 = 4.48 - r * 0.03
+        offset = 0.0 if r % 2 == 0 else 0.8
+        x = 3.2 + offset
+        k = 0
+        while x + 1.5 <= 12.9:
+            tone = "falcon_l" if (k + r) % 3 == 0 else ("falcon_d" if (k + r) % 3 == 1 else "falcon")
+            e.append(box([x, y - 0.4, z0], [x + 1.5, y + 1.3, z0 + 0.12], tone, f"pluma {r}-{k}"))
+            k += 1
+            x += 1.6
     e.append(box([2.5, 1.4, 4.1], [13.5, 2.0, 4.25], "falcon_l", "barra de abajo"))
     x = 2.6
     while x < 13.2:
@@ -955,7 +1031,10 @@ def falcon_cloak():
         x += 1.6
     e += [box([2.9, 14.6, 4.4], [13.1, 15.1, 10.7], "falcon", "esclavina"),
           box([3.4, 15.1, 4.7], [12.6, 15.6, 10.4], "feather_w", "cuello"),
-          box([7.0, 14.7, 10.7], [9.0, 15.3, 11.0], "gold", "broche")]
+          box([7.0, 14.7, 10.7], [9.0, 15.3, 11.0], "gold", "broche"),
+          box([7.6, 14.85, 11.0], [8.4, 15.15, 11.08], "amber", "gema del broche")]
+    for k, x in enumerate((3.0, 5.0, 11.0)):
+        e.append(box([x, 13.9, 4.3], [x + 1.6, 14.6, 4.6], "falcon_d", f"pluma del hombro {k}"))
     return e
 
 
