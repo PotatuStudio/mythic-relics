@@ -3,10 +3,33 @@
 **2026-11-15: se borraron Japón entero y 9 reliquias chinas** (ver «Reliquias borradas»). Quedan 70 reliquias en cinco
 mitologías: Egipto, Grecia, Roma, nórdicos y China (9).
 
-Última sesión: 2026-11-14 (cuarta ronda de arreglos: Medusa como escudo sin recarga, halcón con tecla V, Mímir se pregunta, tooltips cortos con Shift, cabezas y armas en 3D, reliquias puestas con textura pintada, auditoría de memoria, rendimiento y limpieza). Rama de trabajo: `main` (Egipto 1 y 2, Grecia 1 y 2, Roma 1, nórdicos 1 y 2, China 1 y 2
-programadas; Japón se borró el 2026-11-15). El usuario ya empezó a probar en NeoForge (con `runClient` en su PC) y se hicieron cuatro rondas de
-arreglos con lo que reportó; ver «Arreglos tras…» y «Después». Para retomar: leer «Después», punto 1.
-**Próxima sesión: el paquete de refactors**, con el plan por etapas y las lecciones de la sesión en `docs/REFACTOR.md`.
+## Para retomar (sesión del 2026-11-14 y 15)
+Rama de trabajo: `main`. Todo lo de esta sesión está subido. Hecho, en orden:
+- Paquete de refactors completo (`docs/REFACTOR.md`), con los opcionales (geometría por entidad, resúmenes `.summary`).
+- **Prueba automática de cliente** (`./gradlew :fabric:runClientGameTest`): abre el juego solo, prueba cada reliquia y deja
+  capturas y `registro.txt` en `fabric/build/run/clientGameTest/mythic-test/`. Fases con la variable `MYTHIC_FASES`
+  (separadas por coma): `tooltips`, `manos`, `puestas`, `una` (cada reliquia puesta sola, frente/espalda/lado/arriba),
+  `entidades`, `escudos`, `sets`, `habilidades`. Sin la variable corre todas (~10 min). No entrar con la terminal a
+  `fabric/build/run` mientras corre (no puede borrar la carpeta). Encontró dos errores reales (crash de
+  `WornRelics.holding` y escudos invisibles en primera persona), ya arreglados.
+- Arte: alas de Ícaro nuevas (giros reales de elemento) y más detalle en las reliquias puestas de Egipto, Roma,
+  nórdicos y China; pelo del kappa.
+- Quinta ronda de arreglos del usuario (ver CHANGELOG): dardo sin recarga, Medusa a 8, lira con el Epitafio de
+  Seikilos, yelmo de Hades que oculta todo y acelera agachado, Gram pasiva, Gleipnir 15 s con +40 % de daño, talismán
+  fu visible en la frente, espada de Freyr en la espalda, +30 % al arma de cada set, armas sin reparación ni encantos.
+- Revisión de la mitología china con fuentes: https://claude.ai/artifact/Q5Pv7o7DFL3DzuyXknshcM. Tras leerla, el
+  usuario **borró Japón entero y 9 reliquias chinas** (ver «Reliquias borradas»).
+
+**Siguiente:**
+1. El usuario prueba en NeoForge (Curios): las reliquias puestas con el arte nuevo, la espada de Freyr en la espalda, el
+   yelmo de Hades (que no se vea nada al estar invisible), la lira y los cambios de la quinta ronda. El papel del
+   talismán fu en la frente no quedó visto en la prueba automática (el clic no le dio al husk): confirmarlo.
+2. Mejoras de las 9 reliquias chinas que quedan, según la revisión (el usuario eligió dejarlas para después):
+   calabaza que llama por el nombre y atrapa al que responde; xirang con nombre «Puñado de xirang», lore corregido
+   (tapó manantiales), rescate que desaparece a los segundos y uso contra el agua; elixir de Chang'e sin el daño en el
+   aire y con vuelo lento de noche; piedra de cinco colores con un escudo de «remendar el cielo». Mostrarlas antes de
+   programar.
+3. Luego, Chile/mapuche (punto 2 de «Después»).
 
 ## Decisiones tomadas
 - **Mythic Relics**: reliquias mitológicas (Egipto, Grecia, Roma, nórdicos, China, etc.) como equipo RPG. Japón se
