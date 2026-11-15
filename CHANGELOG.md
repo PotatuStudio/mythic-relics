@@ -60,6 +60,18 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
   del ala y plegado en dos tiempos al posarse), halcón de Freyja (aleteo, planeo, picada y suelo), Sleipnir (cañas que
   se doblan, ocho patas en onda, crin y cola trenzada), Pegaso (alas de tres tramos que se pliegan en Z en el suelo,
   patas recogidas en vuelo) y Talos (paso pesado, lanzamiento en tres tiempos y abrazo al rojo vivo).
+- Octava ronda (2026-11-15): cuervos sin parpadeo (plumas planas con descarte de caras), más lejos del dueño (8 a 14
+  bloques), alcanzan volando rápido y reaparecen cerca si se pierden; cabeza de Medusa alzada mirando al frente en
+  tercera persona; luz del hinojo del lado del cliente (`client/HeldLightClient`, se quita `relic/HeldLight`); égida con
+  la Gorgona más plana; Pegaso aletea más lento, no abre las alas en tierra al bajar escalones y al tocar el agua te
+  desmonta y se va; espada de Freyr pega cada ~2,6 s (antes ~1,3 s).
+- Novena ronda (2026-11-15): Sodium 0.9.2, Iris 1.11.7 y LambDynamicLights 4.13.0 (este solo en Fabric) como
+  dependencias de desarrollo, y los shaders Complementary Unbound y Reimagined que baja `downloadShaderpacks` a
+  run/shaderpacks antes de runClient (para grabar y probar estabilidad; la prueba completa de cliente pasa con ellos).
+  Con LambDynamicLights instalado, el hinojo usa su luz dinámica (`assets/mythicrelics/dynamiclights/item`) y se
+  desactiva la de respaldo. Mjölnir también es pico y pala, y al clavarse en un bloque suena como maza (el sonido se
+  fijaba antes de saber qué arma era). Pegaso pliega las alas hacia atrás pegadas a los flancos. Las alas de Ícaro pasan
+  de 7 poses a una grilla de 95 que el cliente recorre con un suavizado en tiempo real (aleteo de 2,2 por segundo).
 
 ### Removed
 - Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del
