@@ -233,6 +233,7 @@ En Troya, Paris lo mató con una flecha en el talón.
 - Lo que golpeas arde 4 s
 - Clic derecho: cocina o funde al instante el stack entero de la otra mano
 - Recarga: 1 s por objeto (mínimo 5 s)
+- En la mano alumbra a tu alrededor como una antorcha, incluso bajo el agua
 
 **Mito.** El titán Prometeo robó el fuego de los dioses escondiendo una brasa en un tallo hueco de hinojo, y se lo dio a los humanos junto con las artes.  
 Zeus lo encadenó a una roca, donde un águila le comía el hígado cada día.

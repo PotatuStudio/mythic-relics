@@ -2,7 +2,7 @@
 también contra jefes, hilo de Ariadna sin límite de distancia y 1 min, escudo de Aquiles con una sola carga de +100 %,
 égida de Atenea como escudo, Tyrfing que cuesta medio corazón por golpe que no mata, cayado y mayal de Osiris más
 fuertes (no-muertos de tu lado, Regeneración con las dos insignias, renacer cada 10 min), aterrizaje seguro tras el
-doble salto de Hermes y las alas de Ícaro, y paleta de Thot sin límite.
+doble salto de Hermes y las alas de Ícaro, paleta de Thot sin límite e hinojo de Prometeo que alumbra.
 Uso: python feedback6_lang.py (después, python make_codex.py)"""
 import json
 import os
@@ -41,6 +41,8 @@ ES = {
     "item.mythicrelics.thoth_palette.tooltip.3": "Sin límite de puntos, y no se pierden al morir",
     "item.mythicrelics.thoth_palette.tooltip.4": "En la mano secundaria: +%1$s%% de experiencia",
     "tooltip.mythicrelics.thoth_palette.written": "Escrito: %s puntos (como subir al nivel %s)",
+    "item.mythicrelics.prometheus_fennel.summary": "Alumbra como una antorcha (también bajo el agua); lo que golpeas arde; clic derecho funde la otra mano",
+    "item.mythicrelics.prometheus_fennel.tooltip.4": "En la mano alumbra a tu alrededor como una antorcha, incluso bajo el agua",
 }
 EN = {
     "item.mythicrelics.medusa_head.tooltip.2": "Any mob that stays %3$s s in the gaze slows down until it turns to stone for %1$s s (hostile, neutral and passive; not bosses)",
@@ -72,6 +74,8 @@ EN = {
     "item.mythicrelics.thoth_palette.tooltip.3": "No point limit, and they are not lost on death",
     "item.mythicrelics.thoth_palette.tooltip.4": "In your off hand: +%1$s%% experience",
     "tooltip.mythicrelics.thoth_palette.written": "Written: %s points (like reaching level %s)",
+    "item.mythicrelics.prometheus_fennel.summary": "Lights up like a torch (even underwater); sets what you hit on fire; right-click smelts your other hand",
+    "item.mythicrelics.prometheus_fennel.tooltip.4": "In your hand it lights up your surroundings like a torch, even underwater",
 }
 
 REMOVE = ["message.mythicrelics.ariadne_far", "message.mythicrelics.tyrfing_curse", "message.mythicrelics.tyrfing_hungers"]

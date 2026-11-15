@@ -18,6 +18,7 @@ import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
+import io.github.potatustudio.mythicrelics.relic.HeldLight;
 import io.github.potatustudio.mythicrelics.relic.SafeLanding;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
@@ -46,6 +47,7 @@ public final class MythicRelics {
 		Minions.init();
 		RelicCooldowns.init();
 		SafeLanding.init();
+		HeldLight.init();
 		RelicSets.init();
 		TooltipArgs.init();
 		EgyptRelics.init();

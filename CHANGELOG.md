@@ -30,6 +30,8 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
   - Sandalias de Hermes y alas de Ícaro: tras el doble salto, aleteo o planeo no hay daño de caída hasta tocar el suelo
     (`relic/SafeLanding`).
   - Paleta de Thot: sin límite de experiencia.
+  - Hinojo de Prometeo: en la mano alumbra como una antorcha, también bajo el agua (bloque de luz invisible que te sigue,
+    `relic/HeldLight`); sigue prendiendo lo que golpeas y fundiendo lo de la otra mano.
 
 ### Removed
 - Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del
