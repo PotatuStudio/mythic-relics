@@ -52,7 +52,14 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
   Talos (escala 2,2), chacal, escarabajo, mono guerrero y el halcón de Freyja (x1,3). El escarabajo, el chacal, Cerbero y
   Sleipnir dejan de ser modelos hechos a mano: su geometría también la genera `china_entities.py --mod`, y los tres
   primeros suman una capa que brilla. Cajas de choque al tamaño nuevo. La espada de Freyr y Skíðblaðnir no cambian
-  (el barco tiene una propuesta más sencilla en revisión).
+  (el usuario prefirió quedarse con el barco actual).
+- Animaciones de los compañeros nuevos: Cerbero (quijadas que gruñen a destiempo, orejas, cola de serpiente en cuatro
+  tramos, patas con codo y corvejón, furia), chacal (trote articulado, orejas, cola, mordida), escarabajo (trípode con
+  fémur y tibia, antenas en abanico, élitros que se abren, disco solar que late), Long (melena, barba y bigotes en cadena,
+  patas que reman y se apoyan al aterrizar), mono guerrero (cola y plumas, bastón que gira al golpear), cuervos (latigazo
+  del ala y plegado en dos tiempos al posarse), halcón de Freyja (aleteo, planeo, picada y suelo), Sleipnir (cañas que
+  se doblan, ocho patas en onda, crin y cola trenzada), Pegaso (alas de tres tramos que se pliegan en Z en el suelo,
+  patas recogidas en vuelo) y Talos (paso pesado, lanzamiento en tres tiempos y abrazo al rojo vivo).
 
 ### Removed
 - Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del
