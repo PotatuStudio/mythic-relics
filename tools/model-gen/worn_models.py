@@ -442,7 +442,7 @@ def icarus_wings(lift=16, back=30):
     abanico en la punta, de punta oscura; goterones de cera en las uniones. Las hileras se escalonan en z (sin caras
     coplanares) y todo queda detrás del vellocino (z < 5,35 junto al cuerpo).
     {lift} y {back} son los grados que el ala sube y se echa hacia atrás: con ellos salen las poses de la animación
-    (ICARUS_POSES: plegadas, planeo, aleteo y picada)."""
+    (ICARUS_POSES: la grilla que recorre el cliente)."""
     e = [box([6.0, 8.5, 4.75], [10.0, 13.0, 5.3], "wax", "cera"),
          box([6.6, 9.2, 4.6], [9.4, 12.2, 4.75], "wax_l", "cera clara")]
     for k, (x0, y0, x1, y1) in enumerate([(4.0, 12.6, 6.0, 13.6), (10.0, 12.6, 12.0, 13.6), (4.4, 6.2, 6.4, 7.2), (9.6, 6.2, 11.6, 7.2)]):
@@ -482,10 +482,22 @@ def icarus_wings(lift=16, back=30):
     return e + side + [mirror(p) for p in side]
 
 
-# Poses de las alas de Ícaro (lift, back) y el valor de la propiedad mythicrelics:icarus_pose (client/IcarusPose) que
-# las elige: plegadas en el suelo, aleteo en 4 cuadros mientras subes, abiertas al planear y echadas atrás en picada.
-ICARUS_POSES = [("folded", 0, -62, 22), ("flap_0", 1, 46, 14), ("flap_1", 2, 22, 10), ("flap_2", 3, -8, 10),
-                ("flap_3", 4, -28, 16), ("glide", 5, 6, 6), ("dive", 6, 34, 58)]
+# Poses de las alas de Ícaro: una grilla de (lift, back) que recorre el cliente (client/IcarusPose) suavizando el paso
+# de un estado a otro (plegadas en el suelo, aleteo continuo al subir, abiertas al planear, echadas atrás en picada).
+# El índice de la pose es i_lift * len(ICARUS_BACKS) + i_back; IcarusPose repite estos valores (LIFT_MIN, LIFT_STEP,
+# LIFT_COUNT y BACKS): si cambian aquí, hay que cambiarlos allá. Todas las poses tienen las mismas piezas, del mismo
+# tamaño y en el mismo orden que icarus_wings_worn, así que comparten su textura (worn/icarus_wings.png) y sus UV.
+ICARUS_LIFTS = list(range(-62, 47, 6))   # 19 valores: -62 (plegadas) .. 46 (arriba del aleteo)
+ICARUS_BACKS = [6, 12, 22, 38, 58]       # planeo, aleteo, plegadas, intermedia, picada
+
+
+def icarus_pose_name(lift, back):
+    return f"icarus_wings_lift_{'n' if lift < 0 else 'p'}{abs(lift)}_back_{back}"
+
+
+ICARUS_POSES = [(icarus_pose_name(lift, back), i * len(ICARUS_BACKS) + j, lift, back)
+                for i, lift in enumerate(ICARUS_LIFTS) for j, back in enumerate(ICARUS_BACKS)]
+ICARUS_POSE_NAMES = {name for name, _v, _l, _b in ICARUS_POSES}
 
 
 def golden_fleece():
@@ -895,7 +907,7 @@ WORN = {
     "hades_helm": (lambda: model(helm()), [attach("head", "hades_helm")]),
     # Grecia, tanda 2
     "icarus_wings": (lambda: model(icarus_wings()), [attach("body", "icarus_wings")]),
-    **{f"icarus_wings_{pose}": ((lambda lift=lift, back=back: model(icarus_wings(lift, back))), None)
+    **{pose: ((lambda lift=lift, back=back: model(icarus_wings(lift, back))), None)
        for pose, _v, lift, back in ICARUS_POSES},
     "golden_fleece": (lambda: model(golden_fleece()), [attach("body", "golden_fleece")]),
     "cerberus_collar": (lambda: model(cerberus_collar()), [attach("body", "cerberus_collar")]),
@@ -929,11 +941,26 @@ def palette():
     return img
 
 
-def write(path, data):
+def write(path, data, compact=False):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(data, f, indent=1, ensure_ascii=False)
+        if compact:
+            json.dump(data, f, separators=(",", ":"), ensure_ascii=False)
+        else:
+            json.dump(data, f, indent=1, ensure_ascii=False)
         f.write("\n")
+
+
+def share_texture(base, elements):
+    """Una pose de Ícaro con la textura y las UV del modelo base (mismas piezas, mismo tamaño, mismo orden)."""
+    assert len(base["elements"]) == len(elements)
+    for b, el in zip(base["elements"], elements):
+        assert b["name"] == el["name"], (b["name"], el["name"])
+        size = [t - f for f, t in zip(el["from"], el["to"])]
+        base_size = [t - f for f, t in zip(b["from"], b["to"])]
+        assert all(abs(x - y) < 0.01 for x, y in zip(size, base_size)), el["name"]
+        el["faces"] = json.loads(json.dumps(b["faces"]))
+    return {"textures": dict(base["textures"]), "elements": elements}
 
 
 # Reliquias con textura pintada por cara (luz, sombras, ruido y patrón del material; worn_texture.py) en lugar de los
@@ -950,21 +977,26 @@ if __name__ == "__main__":
         for el in m["elements"]:
             assert all(-16 <= c <= 32 for c in el["from"] + el["to"]), (name, el["name"])
             assert all(a < b for a, b in zip(el["from"], el["to"])), (name, el["name"])
-        if name in TEXTURED:
+        if name in ICARUS_POSE_NAMES:      # textura y UV del modelo base (va antes en WORN)
+            m = share_texture(icarus_base, m["elements"])
+        elif name in TEXTURED:
             m, img = worn_texture.texture(name, m["elements"], COLORS, NS)
             img.save(os.path.join(ASSETS, "textures", "item", "worn", name + ".png"))
         for el in m["elements"]:
             el.pop("__color", None)
-        write(os.path.join(ASSETS, "models", "item", name + "_worn.json"), m)
+        if name == "icarus_wings":
+            icarus_base = m
+        write(os.path.join(ASSETS, "models", "item", name + "_worn.json"), m, compact=name in ICARUS_POSE_NAMES)
         if render is None:              # solo el modelo (lo usa otra reliquia)
-            print(f"{name}: {len(m['elements'])} elementos")
+            if name not in ICARUS_POSE_NAMES:
+                print(f"{name}: {len(m['elements'])} elementos")
             continue
         worn = {"type": "minecraft:model", "model": f"{NS}:item/{name}_worn"}
         if name == "icarus_wings":
             # La pose la elige el cliente según cómo se mueve quien las lleva (propiedad IcarusPose).
             worn = {"type": "minecraft:range_dispatch", "property": f"{NS}:icarus_pose",
                     "entries": [{"threshold": v - 0.5, "model": {"type": "minecraft:model",
-                                                                 "model": f"{NS}:item/icarus_wings_{pose}_worn"}}
+                                                                 "model": f"{NS}:item/{pose}_worn"}}
                                 for pose, v, _l, _b in ICARUS_POSES],
                     "fallback": worn}
         if name == "freyr_sword":

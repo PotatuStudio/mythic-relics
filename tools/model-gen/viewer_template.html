@@ -1104,16 +1104,20 @@ function animPegasus(age, speed, pos, air) {
   R(P.leg_fl_lower, 0.8 * sp * liftHalf(wp + PI) + 1.4 * air);
   R(P.leg_bl_lower, -0.6 * sp * liftHalf(wp) - 0.5 * air);
   R(P.leg_br_lower, -0.6 * sp * liftHalf(wp + PI) - 0.5 * air);
-  const beat = t * 0.55;
+  const beat = t * 0.36;
   const arm = (-0.1 + 0.6 * Math.sin(beat)) * air, forearm = 0.35 * Math.sin(beat - 0.6) * air, hand = 0.3 * Math.sin(beat - 1.2) * air;
-  const shoulder = smooth(ground * 2), sweep = smooth(ground * 1.4), zfold = smooth((ground - 0.35) / 0.65);
+  // Plegado (PegasusModel): el hombro sale y sube, la mano gira hacia la grupa, el antebrazo se dobla sobre el brazo
+  // por fuera y, al final, el brazo baja contra el flanco con las plumas hacia atrás.
+  const st = (a, b) => smooth((ground - a) / (b - a));
+  const sh = st(0, 0.45), hs = st(0, 0.55), fs = st(0.1, 0.7), ad = st(0.35, 1.0);
   const breathe = (0.5 + 0.5 * Math.sin(t * 0.06)) * 0.03 * ground;
-  P.wing_r.position.x -= 3.5 * shoulder; P.wing_l.position.x += 3.5 * shoulder;
-  P.wing_r.position.y += -2.0 * shoulder; P.wing_l.position.y += -2.0 * shoulder;
-  R(P.wing_r, -1.42 * sweep, 1.17 * sweep, arm + breathe);
-  R(P.wing_l, -1.42 * sweep, -1.17 * sweep, -arm - breathe);
-  R(P.wing_r2, 0, 0, forearm - 2.9 * zfold); R(P.wing_l2, 0, 0, -forearm + 2.9 * zfold);
-  R(P.wing_r3, 0, 0, hand + 2.6 * zfold); R(P.wing_l3, 0, 0, -hand - 2.6 * zfold);
+  P.wing_r.position.x -= 3.0 * sh; P.wing_l.position.x += 3.0 * sh;
+  P.wing_r.position.y += -1.5 * sh; P.wing_l.position.y += -1.5 * sh;
+  R(P.wing_r, 0, -0.12 * ad, arm - 1.87 * ad + breathe);
+  R(P.wing_l, 0, 0.12 * ad, -arm + 1.87 * ad - breathe);
+  P.wing_r2.position.y += -0.6 * fs; P.wing_l2.position.y += -0.6 * fs;
+  R(P.wing_r2, 0, 0, forearm + 2.85 * fs); R(P.wing_l2, 0, 0, -forearm - 2.85 * fs);
+  R(P.wing_r3, 1.196 * hs, 1.184 * hs, hand + 0.786 * hs); R(P.wing_l3, 1.196 * hs, -1.184 * hs, -hand - 0.786 * hs);
   const close = 0.9 * smooth(ground * 1.5);
   for (let k = 0; k < 7; k++) {
     const wave = Math.sin(beat - 1.6 - 0.12 * k), spread = 1 - close + air * (0.15 + 0.1 * wave), curl = 0.12 * wave * air;

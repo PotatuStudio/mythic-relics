@@ -148,11 +148,14 @@ if __name__ == "__main__":
                               "tex": b64(os.path.join(ASSETS, "textures", "item", "head", key + ".png"))}
     # Cómo se ve cada reliquia en la mano (la misma definición del ítem que usa el juego): modelo 3D o ícono.
     data["held"] = {name: held(name) for name in ORDER}
-    # Poses de las alas de Ícaro (worn_models.ICARUS_POSES), que el visor alterna como en el juego.
-    for pose in ("folded", "flap_0", "flap_1", "flap_2", "flap_3", "glide", "dive"):
-        key = "icarus_wings_" + pose
-        data["wornModels"][key] = json.loads(read(os.path.join(ASSETS, "models", "item", key + "_worn.json")))
-        data["wornTextures"][key] = b64(os.path.join(ASSETS, "textures", "item", "worn", key + ".png"))
+    # Poses de las alas de Ícaro: el juego elige entre 95 de una grilla (worn_models.ICARUS_POSES, client/IcarusPose); el
+    # visor carga siete representativas (plegadas, cuatro del aleteo, planeo y picada) con la textura única de las alas.
+    import worn_models  # noqa: E402
+    for pose, (lift, back) in {"folded": (-62, 22), "flap_0": (46, 12), "flap_1": (22, 12), "flap_2": (-8, 12),
+                               "flap_3": (-26, 12), "glide": (4, 6), "dive": (34, 58)}.items():
+        name = worn_models.icarus_pose_name(lift, back)
+        data["wornModels"]["icarus_wings_" + pose] = json.loads(read(os.path.join(ASSETS, "models", "item", name + "_worn.json")))
+        data["wornTextures"]["icarus_wings_" + pose] = b64(os.path.join(ASSETS, "textures", "item", "worn", "icarus_wings.png"))
     template = read(os.path.join(os.path.dirname(os.path.abspath(__file__)), "viewer_template.html"))
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(template.replace("__DATA__", json.dumps(data, ensure_ascii=False)))

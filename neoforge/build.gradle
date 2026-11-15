@@ -35,6 +35,9 @@ dependencies {
 	localRuntime "maven.modrinth:jade:${rootProject.jade_version}+neoforge"
 	// Libro de reliquias (solo datos). Sin transitivas: el jar ya trae sus bibliotecas.
 	localRuntime("com.klikli_dev:modonomicon-${rootProject.minecraft_version}-neoforge:$rootProject.modonomicon_version") { transitive = false }
+	// Rendimiento y shaders (solo desarrollo): para grabar contenido y probar estabilidad con mods de rendimiento.
+	localRuntime "maven.modrinth:sodium:${rootProject.sodium_version}-neoforge"
+	localRuntime "maven.modrinth:iris:${rootProject.iris_version}-neoforge"
 
 	common(project(path: ":common")) { transitive false }
 	shadowBundle(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
@@ -63,3 +66,36 @@ shadowJar {
 }
 
 assemble.dependsOn shadowJar
+
+// Shaders para grabar en desarrollo: Complementary Unbound y Reimagined (de Modrinth) en run/shaderpacks. Se bajan una
+// vez antes de runClient y no se suben al repo (run/ está en .gitignore). En el juego: Opciones > Video > Shaders.
+tasks.register("downloadShaderpacks") {
+	group = "mythicrelics"
+	description = "Baja Complementary Unbound y Reimagined a run/shaderpacks"
+	def dir = file("run/shaderpacks")
+	def v = rootProject.complementary_version
+	def packs = [
+		"ComplementaryUnbound_${v}.zip"   : "complementary-unbound",
+		"ComplementaryReimagined_${v}.zip": "complementary-reimagined",
+	]
+	outputs.dir dir
+	doLast {
+		dir.mkdirs()
+		packs.each { name, project ->
+			def target = new File(dir, name)
+			if (target.exists()) {
+				return
+			}
+			def api = new URL("https://api.modrinth.com/v2/project/${project}/version")
+			def versions = new groovy.json.JsonSlurper().parse(api.newReader("UTF-8"))
+			def version = versions.find { it.version_number == v }
+			if (version == null) {
+				throw new GradleException("No encontré ${project} ${v} en Modrinth")
+			}
+			def url = version.files.find { it.primary }?.url ?: version.files[0].url
+			logger.lifecycle("Bajando ${name}")
+			new URL(url).withInputStream { input -> target.withOutputStream { out -> out << input } }
+		}
+	}
+}
+tasks.matching { it.name == "runClient" }.configureEach { dependsOn "downloadShaderpacks" }

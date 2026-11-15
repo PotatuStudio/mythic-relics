@@ -1,5 +1,10 @@
 package io.github.potatustudio.mythicrelics.registry;
 
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.component.Tool;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.HolderGetter;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -144,7 +149,17 @@ public final class ModItems {
 	// Nórdicos, primera tanda. Las armas lanzables no se rompen (vuelven siempre a la mano).
 	public static final RegistrySupplier<Item> MJOLNIR = register("mjolnir", p -> new ThrownRelicItem(p, false),
 			p -> p.rarity(Rarity.EPIC).axe(ToolMaterial.IRON, 6.0f, -3.1f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
-			.component(DataComponents.ENCHANTABLE, null));
+			.component(DataComponents.ENCHANTABLE, null).component(DataComponents.TOOL, hammerTool()));
+
+	/** Mjölnir rompe como hacha, pico y pala de hierro (a la velocidad del hierro, sin gastarse). */
+	private static Tool hammerTool() {
+		HolderGetter<Block> blocks = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);
+		float speed = ToolMaterial.IRON.speed();
+		return new Tool(List.of(Tool.Rule.deniesDrops(blocks.getOrThrow(BlockTags.INCORRECT_FOR_IRON_TOOL)),
+				Tool.Rule.minesAndDrops(blocks.getOrThrow(BlockTags.MINEABLE_WITH_PICKAXE), speed),
+				Tool.Rule.minesAndDrops(blocks.getOrThrow(BlockTags.MINEABLE_WITH_AXE), speed),
+				Tool.Rule.minesAndDrops(blocks.getOrThrow(BlockTags.MINEABLE_WITH_SHOVEL), speed)), 1.0f, 0, true);
+	}
 	public static final RegistrySupplier<Item> JARNGREIPR = relic("jarngreipr", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> MEGINGJORD = relic("megingjord", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> GUNGNIR = register("gungnir", p -> new ThrownRelicItem(p, true),

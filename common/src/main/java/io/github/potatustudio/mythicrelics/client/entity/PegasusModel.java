@@ -19,15 +19,19 @@ public class PegasusModel extends EntityModel<LivingEntityRenderState> {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(MythicRelics.id("pegasus"), "main");
 	private static final int PRIMARIES = 7;
 
-	// Plegado de las alas en el suelo (comprobado contra las cajas del cuerpo): el brazo rueda sobre su eje para que las
-	// plumas cuelguen hacia abajo y gira hacia atrás; el hombro se corre afuera y arriba para que el ala cuelgue por fuera
-	// del flanco; el antebrazo se dobla hacia adelante sobre el brazo y la mano vuelve hacia atrás (la Z del ala de ave).
-	private static final float FOLD_ROLL = -1.42f;
-	private static final float FOLD_YAW = 1.17f;
-	private static final float FOLD_SHOULDER_X = 3.5f;
-	private static final float FOLD_SHOULDER_Y = -2.0f;
-	private static final float FOLD_FOREARM = 2.9f;
-	private static final float FOLD_HAND = 2.6f;
+	// Plegado de las alas en el suelo, como un ave posada (comprobado contra las cajas del cuerpo, las patas y la cola):
+	// el brazo baja pegado al flanco con las plumas hacia atrás, el antebrazo se dobla encima por fuera (la Z del ala de
+	// ave) y la mano gira hacia la grupa, con las primarias juntas apuntando atrás, un poco hacia dentro y hacia arriba,
+	// para que las puntas queden sobre la cola. El hombro sale y sube apenas lo justo para no meterse en el cuerpo.
+	private static final float FOLD_SHOULDER_X = 3.0f;
+	private static final float FOLD_SHOULDER_Y = -1.5f;
+	private static final float FOLD_ARM_Z = -1.87f;
+	private static final float FOLD_ARM_Y = -0.12f;
+	private static final float FOLD_FOREARM = 2.85f;
+	private static final float FOLD_FOREARM_OUT = -0.6f;
+	private static final float FOLD_HAND_X = 1.196f;
+	private static final float FOLD_HAND_Y = 1.184f;
+	private static final float FOLD_HAND_Z = 0.786f;
 
 	private final ModelPart neck;
 	private final ModelPart head;
@@ -134,26 +138,32 @@ public class PegasusModel extends EntityModel<LivingEntityRenderState> {
 		wingR3.zRot += hand;
 		wingL3.zRot -= hand;
 
-		// Plegado (en el suelo): por etapas para que nada cruce el cuerpo en la transición. Primero el hombro sale hacia
-		// afuera y arriba, luego el ala rueda y gira hacia atrás y, al final, antebrazo y mano se doblan en Z.
-		float shoulder = smooth(ground * 2.0f);
-		float sweep = smooth(ground * 1.4f);
-		float zfold = smooth((ground - 0.35f) / 0.65f);
+		// Plegado (en el suelo): por etapas para que nada cruce el cuerpo en la transición. El hombro sale primero; la
+		// mano gira hacia la grupa mientras el ala sigue arriba; luego el antebrazo se dobla sobre el brazo (barre por
+		// fuera) y, al final, el brazo baja contra el flanco ya plegado. Al despegar se deshace en orden inverso.
+		float shoulder = smooth(ground / 0.45f);
+		float handFold = smooth(ground / 0.55f);
+		float forearmFold = smooth((ground - 0.1f) / 0.6f);
+		float armDown = smooth((ground - 0.35f) / 0.65f);
 		float breathe = (0.5f + 0.5f * Mth.sin(t * 0.06f)) * 0.03f * ground;   // en reposo el ala respira, siempre hacia afuera
 		wingR.x -= FOLD_SHOULDER_X * shoulder;
 		wingL.x += FOLD_SHOULDER_X * shoulder;
 		wingR.y += FOLD_SHOULDER_Y * shoulder;
 		wingL.y += FOLD_SHOULDER_Y * shoulder;
-		wingR.xRot += FOLD_ROLL * sweep;
-		wingL.xRot += FOLD_ROLL * sweep;
-		wingR.yRot += FOLD_YAW * sweep;
-		wingL.yRot -= FOLD_YAW * sweep;
-		wingR.zRot += breathe;
-		wingL.zRot -= breathe;
-		wingR2.zRot -= FOLD_FOREARM * zfold;
-		wingL2.zRot += FOLD_FOREARM * zfold;
-		wingR3.zRot += FOLD_HAND * zfold;
-		wingL3.zRot -= FOLD_HAND * zfold;
+		wingR.yRot += FOLD_ARM_Y * armDown;
+		wingL.yRot -= FOLD_ARM_Y * armDown;
+		wingR.zRot += FOLD_ARM_Z * armDown + breathe;
+		wingL.zRot -= FOLD_ARM_Z * armDown + breathe;
+		wingR2.y += FOLD_FOREARM_OUT * forearmFold;
+		wingL2.y += FOLD_FOREARM_OUT * forearmFold;
+		wingR2.zRot += FOLD_FOREARM * forearmFold;
+		wingL2.zRot -= FOLD_FOREARM * forearmFold;
+		wingR3.xRot += FOLD_HAND_X * handFold;
+		wingL3.xRot += FOLD_HAND_X * handFold;
+		wingR3.yRot += FOLD_HAND_Y * handFold;
+		wingL3.yRot -= FOLD_HAND_Y * handFold;
+		wingR3.zRot += FOLD_HAND_Z * handFold;
+		wingL3.zRot -= FOLD_HAND_Z * handFold;
 
 		// Primarias: en el suelo el abanico se cierra (las plumas quedan juntas sobre la mano); en vuelo se abre un poco
 		// más que en reposo y respira con el aleteo, cada pluma un poco más atrasada; las puntas se curvan con la onda.

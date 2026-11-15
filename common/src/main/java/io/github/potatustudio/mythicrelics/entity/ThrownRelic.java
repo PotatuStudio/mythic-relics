@@ -62,6 +62,17 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 		super(ModEntities.THROWN_RELIC.get(), owner, level, stack, null);
 		entityData.set(ITEM, stack.copyWithCount(1));
 		origin = position();
+		// AbstractArrow elige el sonido de impacto en su constructor, cuando todavía no sabe qué arma es.
+		setSoundEvent(getDefaultHitGroundSoundEvent());
+	}
+
+	/** Al llegar el ítem (también al cargarse desde el disco o en el cliente), el sonido de impacto correcto. */
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		super.onSyncedDataUpdated(key);
+		if (ITEM.equals(key)) {
+			setSoundEvent(getDefaultHitGroundSoundEvent());
+		}
 	}
 
 	public void setTarget(@Nullable Entity target) {

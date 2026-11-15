@@ -1,6 +1,7 @@
 package io.github.potatustudio.mythicrelics.client;
 
 import dev.architectury.event.events.client.ClientTickEvent;
+import dev.architectury.platform.Platform;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,9 @@ import net.minecraft.world.level.material.Fluids;
  * el mismo cuadro, sin esperar al servidor (antes iba por el servidor y se notaba a saltos). En el agua va anegado; si a
  * la altura de los ojos hay algas u otra cosa, prueba los bloques de al lado. La luz nueva se pone antes de devolver el
  * bloque anterior, para que no haya un instante a oscuras. Es solo visual: no cambia dónde aparecen los monstruos.
+ * <p>
+ * Si está instalado LambDynamicLights, la luz la hace ese mod en cada cuadro (assets/mythicrelics/dynamiclights/item/
+ * prometheus_fennel.json) y esta clase no hace nada: este bloque de luz va a saltos de un tick.
  */
 public final class HeldLightClient {
 	private static final double RANGE = 64.0;
@@ -38,6 +42,9 @@ public final class HeldLightClient {
 	}
 
 	public static void init() {
+		if (Platform.isModLoaded("lambdynlights")) {
+			return;
+		}
 		ClientTickEvent.CLIENT_POST.register(HeldLightClient::tick);
 	}
 
