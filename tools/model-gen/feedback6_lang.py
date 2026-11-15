@@ -2,7 +2,7 @@
 también contra jefes, hilo de Ariadna sin límite de distancia y 1 min, escudo de Aquiles con una sola carga de +100 %,
 égida de Atenea como escudo, Tyrfing que cuesta medio corazón por golpe que no mata, cayado y mayal de Osiris más
 fuertes (no-muertos de tu lado, Regeneración con las dos insignias, renacer cada 10 min), aterrizaje seguro tras el
-doble salto de Hermes y las alas de Ícaro, paleta de Thot sin límite e hinojo de Prometeo que alumbra.
+doble salto de Hermes y las alas de Ícaro, paleta de Thot sin límite hinojo de Prometeo que alumbra y disco de Ra rediseñado (renacer al amanecer + Ojo de Ra).
 Uso: python feedback6_lang.py (después, python make_codex.py)"""
 import json
 import os
@@ -41,6 +41,14 @@ ES = {
     "item.mythicrelics.thoth_palette.tooltip.3": "Sin límite de puntos, y no se pierden al morir",
     "item.mythicrelics.thoth_palette.tooltip.4": "En la mano secundaria: +%1$s%% de experiencia",
     "tooltip.mythicrelics.thoth_palette.written": "Escrito: %s puntos (como subir al nivel %s)",
+    "item.mythicrelics.ra_disk.summary": "Cada amanecer te cura del todo; malherido, el Ojo de Ra estalla · recarga %5$s s",
+    "item.mythicrelics.ra_disk.tooltip.1": "Ra renace: al salir el sol te cura toda la vida y te quita los efectos negativos (una vez por día)",
+    "item.mythicrelics.ra_disk.tooltip.2": "Ojo de Ra: si quedas con %1$s ❤ o menos, estalla: los hostiles a %2$s bloques",
+    "item.mythicrelics.ra_disk.tooltip.3": "reciben %3$s de daño, arden y quedan ciegos %4$s s",
+    "item.mythicrelics.ra_disk.tooltip.4": "Recarga del Ojo: %5$s s",
+    "message.mythicrelics.ra_dawn": "Ra renace con el sol: te cura del todo",
+    "message.mythicrelics.ra_eye": "¡El Ojo de Ra estalla!",
+    "lore.mythicrelics.ra_disk": "Ra, dios del sol, cruza el cielo de día en su barca y de noche atraviesa la Duat, el inframundo, donde lucha contra Apep, la serpiente del caos; cada mañana renace con el amanecer.\\\nCuando los humanos se rebelaron, mandó contra ellos a su Ojo, la diosa leona Sekhmet, que los arrasó.",
     "item.mythicrelics.prometheus_fennel.summary": "Alumbra como una antorcha (también bajo el agua); lo que golpeas arde; clic derecho funde la otra mano",
     "item.mythicrelics.prometheus_fennel.tooltip.4": "En la mano alumbra a tu alrededor como una antorcha, incluso bajo el agua",
 }
@@ -74,6 +82,14 @@ EN = {
     "item.mythicrelics.thoth_palette.tooltip.3": "No point limit, and they are not lost on death",
     "item.mythicrelics.thoth_palette.tooltip.4": "In your off hand: +%1$s%% experience",
     "tooltip.mythicrelics.thoth_palette.written": "Written: %s points (like reaching level %s)",
+    "item.mythicrelics.ra_disk.summary": "Every sunrise heals you fully; badly hurt, the Eye of Ra bursts · cooldown %5$s s",
+    "item.mythicrelics.ra_disk.tooltip.1": "Ra is reborn: at sunrise it heals you fully and removes harmful effects (once per day)",
+    "item.mythicrelics.ra_disk.tooltip.2": "Eye of Ra: at %1$s ❤ or less it bursts: hostiles within %2$s blocks",
+    "item.mythicrelics.ra_disk.tooltip.3": "take %3$s damage, catch fire and are blinded for %4$s s",
+    "item.mythicrelics.ra_disk.tooltip.4": "Eye cooldown: %5$s s",
+    "message.mythicrelics.ra_dawn": "Ra is reborn with the sun: you are fully healed",
+    "message.mythicrelics.ra_eye": "The Eye of Ra bursts!",
+    "lore.mythicrelics.ra_disk": "Ra, the sun god, crosses the sky in his barque by day and by night travels through the Duat, the underworld, where he battles Apep, the serpent of chaos; every morning he is reborn at dawn.\\\nWhen humankind rebelled, he sent his Eye against them, the lioness goddess Sekhmet, who laid them waste.",
     "item.mythicrelics.prometheus_fennel.summary": "Lights up like a torch (even underwater); sets what you hit on fire; right-click smelts your other hand",
     "item.mythicrelics.prometheus_fennel.tooltip.4": "In your hand it lights up your surroundings like a torch, even underwater",
 }

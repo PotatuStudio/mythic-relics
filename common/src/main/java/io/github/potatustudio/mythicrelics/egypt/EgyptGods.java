@@ -28,9 +28,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -54,8 +57,8 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * Segunda tanda de Egipto (diseño aprobado el 2026-11-09):
  * <ul>
- *   <li><b>Disco solar de Ra</b> (sombrero): bajo el sol, más daño a los no-muertos y los prende; el ureo escupe fuego a
- *       quien te golpea cuerpo a cuerpo. De noche solo queda el ureo.</li>
+ *   <li><b>Disco solar de Ra</b> (sombrero): Ra renace cada amanecer y te cura del todo, sin efectos negativos; si te
+ *       dejan malherido, el Ojo de Ra estalla contra los hostiles cercanos (rediseño del 2026-11-15).</li>
  *   <li><b>Amuleto de Bastet</b> (collar): creepers y phantoms te evitan; caes de pie.</li>
  *   <li><b>Paleta de escriba de Thot</b> (mano secundaria): guarda experiencia por escrito, sin límite ({@link ThothPaletteItem}), y
  *       da más experiencia.</li>
@@ -68,10 +71,15 @@ import net.minecraft.world.level.block.state.BlockState;
  * experiencia y el botín de la arqueología) va en los mixins, que llaman a los métodos públicos de esta clase.
  */
 public final class EgyptGods {
-	public static final float RA_UNDEAD_BONUS = 0.30f;
-	public static final int RA_BURN_SECONDS = 5;
-	public static final int URAEUS_BURN_SECONDS = 3;
-	public static final int URAEUS_COOLDOWN = 200;
+	/** Ojo de Ra: estalla al quedar con esta vida o menos (6 corazones). */
+	public static final float RA_EYE_HEALTH = 12.0f;
+	public static final double RA_EYE_RADIUS = 8.0;
+	public static final float RA_EYE_DAMAGE = 12.0f;
+	public static final int RA_EYE_BURN_SECONDS = 5;
+	public static final int RA_EYE_BLIND_TICKS = 60;
+	public static final int RA_EYE_COOLDOWN = 1800;
+	/** Último día (del mundo) en que Ra renació para cada jugador con el disco puesto. */
+	private static final Map<UUID, Long> RA_DAY = new HashMap<>();
 
 	public static final double BASTET_RADIUS = 16.0;
 
@@ -113,15 +121,12 @@ public final class EgyptGods {
 			if (blocked || damageTaken <= 0 || !(entity.level() instanceof ServerLevel level)) {
 				return;
 			}
-			if (entity instanceof ServerPlayer player && source.getEntity() instanceof LivingEntity attacker
-					&& source.getDirectEntity() == attacker && attacker != player && WornRelics.isWearing(player, ModItems.RA_DISK)) {
-				uraeus(level, player, attacker);
+			if (entity instanceof ServerPlayer player && player.isAlive() && player.getHealth() <= RA_EYE_HEALTH
+					&& WornRelics.isWearing(player, ModItems.RA_DISK)) {
+				eyeOfRa(level, player);
 			}
 			if (source.getEntity() instanceof ServerPlayer attacker && source.getDirectEntity() == attacker && attacker != entity
 					&& entity.isAlive()) {
-				if (entity.typeHolder().is(EntityTypeTags.UNDEAD) && WornRelics.isWearing(attacker, ModItems.RA_DISK) && underTheSun(attacker)) {
-					entity.igniteForSeconds(RA_BURN_SECONDS);
-				}
 				Frenzy frenzy = FRENZY.get(attacker.getUUID());
 				if (frenzy != null && frenzy.level() >= SEKHMET_MAX) {
 					entity.igniteForSeconds(SEKHMET_BURN_SECONDS);
@@ -147,14 +152,60 @@ public final class EgyptGods {
 		return level.isBrightOutside() && level.canSeeSky(head) && !level.isRainingAt(head);
 	}
 
-	private static void uraeus(ServerLevel level, ServerPlayer player, LivingEntity attacker) {
-		if (!RelicCooldowns.tryStart(player, "uraeus", URAEUS_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.RA_DISK.get()))) {
+	/**
+	 * Ojo de Ra: Ra mandó su Ojo (Sekhmet) a arrasar a los que se rebelaron. Al quedar malherido, estalla: los hostiles
+	 * cercanos reciben daño, arden y quedan ciegos. El daño lo causa el jugador pero sin golpe directo, para que no cuente
+	 * como un golpe de su arma (Tyrfing, Gram, la cólera de Aquiles…).
+	 */
+	private static void eyeOfRa(ServerLevel level, ServerPlayer player) {
+		if (!RelicCooldowns.tryStart(player, "ra_eye", RA_EYE_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.RA_DISK.get()))) {
 			return;
 		}
-		attacker.igniteForSeconds(URAEUS_BURN_SECONDS);
-		level.sendParticles(ParticleTypes.FLAME, attacker.getX(), attacker.getY() + attacker.getBbHeight() / 2, attacker.getZ(),
-				14, 0.3, 0.4, 0.3, 0.02);
-		RelicFx.sound(level, player, SoundEvents.FIRECHARGE_USE, 0.7f, 1.3f);
+		DamageSource source = new DamageSource(level.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(DamageTypes.MAGIC),
+				null, player);
+		double r2 = RA_EYE_RADIUS * RA_EYE_RADIUS;
+		for (LivingEntity target : Allies.enemiesAround(player, player.getBoundingBox().inflate(RA_EYE_RADIUS),
+				e -> e instanceof Enemy && e.distanceToSqr(player) <= r2)) {
+			target.hurtServer(level, source, RA_EYE_DAMAGE);
+			target.igniteForSeconds(RA_EYE_BURN_SECONDS);
+			target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, RA_EYE_BLIND_TICKS, 0), player);
+			level.sendParticles(ParticleTypes.FLAME, target.getX(), target.getY(0.5), target.getZ(), 12, 0.3, 0.4, 0.3, 0.03);
+		}
+		// El estallido: un anillo de fuego dorado que se abre desde el jugador.
+		for (int i = 0; i < 48; i++) {
+			double a = i * Math.PI * 2 / 48;
+			for (double d = 2; d <= RA_EYE_RADIUS; d += 3) {
+				level.sendParticles(ParticleTypes.FLAME, player.getX() + Math.cos(a) * d, player.getY() + 0.6, player.getZ() + Math.sin(a) * d,
+						1, 0, 0.05, 0, 0.01);
+			}
+		}
+		level.sendParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + 1.8, player.getZ(), 40, 0.3, 0.3, 0.3, 0.25);
+		RelicFx.sound(level, player, SoundEvents.BLAZE_SHOOT, 1.0f, 0.6f);
+		RelicFx.sound(level, player, SoundEvents.BEACON_POWER_SELECT, 1.0f, 1.4f);
+		RelicFx.notify(player, "ra_eye", ChatFormatting.GOLD);
+	}
+
+	/** Ra renace: el primer amanecer con el disco puesto te cura del todo y te quita los efectos negativos. */
+	private static void raDawn(MinecraftServer server, ServerPlayer player) {
+		if (!WornRelics.isWearing(player, ModItems.RA_DISK)) {
+			return;
+		}
+		long day = server.overworld().getOverworldClockTime() / 24000L;
+		Long last = RA_DAY.put(player.getUUID(), day);
+		if (last == null || last >= day || !player.isAlive()) {
+			return;   // al ponérselo solo se anota el día: el renacer llega con el próximo amanecer
+		}
+		player.setHealth(player.getMaxHealth());
+		for (MobEffectInstance effect : java.util.List.copyOf(player.getActiveEffects())) {
+			if (effect.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+				player.removeEffect(effect.getEffect());
+			}
+		}
+		ServerLevel level = player.level();
+		level.sendParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + 1.0, player.getZ(), 30, 0.4, 0.8, 0.4, 0.05);
+		level.sendParticles(ParticleTypes.HEART, player.getX(), player.getY() + 2.0, player.getZ(), 5, 0.4, 0.2, 0.4, 0);
+		RelicFx.sound(level, player, SoundEvents.BEACON_ACTIVATE, 0.8f, 1.5f);
+		RelicFx.notify(player, "ra_dawn", ChatFormatting.GOLD);
 	}
 
 	// ---- Daño (lo llama el mixin de LivingEntity) ------------------------------------------------------------------
@@ -166,10 +217,6 @@ public final class EgyptGods {
 		}
 		if (!(source.getEntity() instanceof LivingEntity attacker)) {
 			return amount;
-		}
-		boolean undead = self.typeHolder().is(EntityTypeTags.UNDEAD);
-		if (undead && source.getDirectEntity() == attacker && WornRelics.isWearing(attacker, ModItems.RA_DISK) && underTheSun(attacker)) {
-			amount *= 1.0f + RA_UNDEAD_BONUS;
 		}
 		Frenzy frenzy = FRENZY.get(attacker.getUUID());
 		if (frenzy != null) {
@@ -344,6 +391,9 @@ public final class EgyptGods {
 			}
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+			if (player.tickCount % 20 == 0) {
+				raDawn(server, player);
+			}
 			// Insignias de Osiris: con el cayado y el mayal en las manos, Regeneración I sin cortes.
 			if (player.tickCount % 10 == 0 && RelicSets.OSIRIS.isComplete(player)) {
 				MobEffectInstance regen = player.getEffect(MobEffects.REGENERATION);
@@ -364,7 +414,7 @@ public final class EgyptGods {
 
 	/** Números de los tooltips de la tanda 2 (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static void registerTooltipArgs() {
-		TooltipArgs.register("ra_disk", Math.round(RA_UNDEAD_BONUS * 100), RA_BURN_SECONDS, URAEUS_BURN_SECONDS, URAEUS_COOLDOWN / 20);
+		TooltipArgs.register("ra_disk", (int) (RA_EYE_HEALTH / 2), (int) RA_EYE_RADIUS, (int) RA_EYE_DAMAGE, RA_EYE_BLIND_TICKS / 20, RA_EYE_COOLDOWN / 20);
 		TooltipArgs.register("thoth_palette", Math.round(THOTH_XP_BONUS * 100));
 		TooltipArgs.register("osiris_crook", CROOK_GROW_COOLDOWN / 20, CROOK_RULE_TICKS / 20);
 		TooltipArgs.register("osiris_flail", FLAIL_SWEEP_RADIUS, Math.round(FLAIL_SWEEP_DAMAGE * 100));
@@ -374,6 +424,6 @@ public final class EgyptGods {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		ServerState.perPlayer(FRENZY);
+		ServerState.perPlayer(FRENZY, RA_DAY);
 	}
 }

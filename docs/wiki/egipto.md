@@ -137,12 +137,12 @@ En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la 
 
 **Espacio:** sombrero · **Rareza:** épica
 
-- Bajo el sol, +30% de daño a los no-muertos y los prendes fuego 5 s
-- Ureo: quien te golpea cuerpo a cuerpo arde 3 s
-- Recarga del ureo: 10 s. De noche solo queda el ureo
+- Ra renace: al salir el sol te cura toda la vida y te quita los efectos negativos (una vez por día)
+- Ojo de Ra: si quedas con 6 ❤ o menos, estalla: los hostiles a 8 bloques reciben 12 de daño, arden y quedan ciegos 3 s
+- Recarga del Ojo: 90 s
 
-**Mito.** Ra, dios del sol, cruza el cielo de día en su barca y de noche atraviesa la Duat, el inframundo, donde lucha contra Apep, la serpiente del caos.  
-Sobre su cabeza lleva el disco solar rodeado por el ureo, la cobra que escupe fuego contra sus enemigos.
+**Mito.** Ra, dios del sol, cruza el cielo de día en su barca y de noche atraviesa la Duat, el inframundo, donde lucha contra Apep, la serpiente del caos; cada mañana renace con el amanecer.  
+Cuando los humanos se rebelaron, mandó contra ellos a su Ojo, la diosa leona Sekhmet, que los arrasó.
 
 **Dónde encontrarla.** **Arena sospechosa de pirámides del desierto**: 1.5 % por bloque cepillado
 

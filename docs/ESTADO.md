@@ -20,9 +20,7 @@ Rama de trabajo: `main`. Todo lo de esta sesión está subido. Hecho, en orden:
 - Revisión de la mitología china con fuentes: https://claude.ai/artifact/Q5Pv7o7DFL3DzuyXknshcM. Tras leerla, el
   usuario **borró Japón entero y 9 reliquias chinas** (ver «Reliquias borradas»).
 
-**Sexta ronda (2026-11-15)**: ver CHANGELOG. **Pendientes de rediseñar con el usuario**: el disco solar de Ra (ninguna
-de las tres ideas le gustó: rayo solar, aura de calor, barca solar) (el hinojo quedó: alumbra como antorcha + lo de antes; descartadas para él: brasa robada,
-inmune al fuego, fuego para todos). Proponer ideas nuevas antes de programar.
+**Sexta ronda (2026-11-15)**: ver CHANGELOG. Ra y el hinojo de Prometeo ya quedaron rediseñados con el usuario.
 
 **Siguiente:**
 1. El usuario prueba en NeoForge (Curios): las reliquias puestas con el arte nuevo, la espada de Freyr en la espalda, el

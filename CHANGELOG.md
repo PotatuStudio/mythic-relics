@@ -32,6 +32,9 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
   - Paleta de Thot: sin límite de experiencia.
   - Hinojo de Prometeo: en la mano alumbra como una antorcha, también bajo el agua (bloque de luz invisible que te sigue,
     `relic/HeldLight`); sigue prendiendo lo que golpeas y fundiendo lo de la otra mano.
+  - Disco solar de Ra rediseñado: Ra renace (cada amanecer te cura del todo y te quita los efectos negativos) y Ojo de
+    Ra (con 6 corazones o menos estalla: 12 de daño, fuego y ceguera a los hostiles a 8 bloques; recarga 90 s). Se quitan
+    el +30 % a no-muertos bajo el sol y el ureo.
 
 ### Removed
 - Japón entero: sus 19 reliquias (Kusanagi, espejo Yata, magatama Yasakani, tambor de Raijin, kanabō, esfera del

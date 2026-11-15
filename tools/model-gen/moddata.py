@@ -108,8 +108,8 @@ def tooltip_args(c):
         "jackal_mask": [fmt(c["MASK_SOUL_HEAL"] / 2), int(c["MASK_SOUL_TICKS"] // 20)],
         "jackal_ring": [int(c["RING_JACKALS"]), int(c["RING_JACKAL_TICKS"] // 20), int(c["RING_COOLDOWN"] // 20)],
         # Tanda 2 (EgyptGods#tooltipArgs)
-        "ra_disk": [round(c["RA_UNDEAD_BONUS"] * 100), int(c["RA_BURN_SECONDS"]), int(c["URAEUS_BURN_SECONDS"]),
-                    int(c["URAEUS_COOLDOWN"] // 20)],
+        "ra_disk": [int(c["RA_EYE_HEALTH"] // 2), int(c["RA_EYE_RADIUS"]), int(c["RA_EYE_DAMAGE"]), int(c["RA_EYE_BLIND_TICKS"] // 20),
+                    int(c["RA_EYE_COOLDOWN"] // 20)],
         "bastet_amulet": [],
         "thoth_palette": [round(c["THOTH_XP_BONUS"] * 100)],
         "osiris_crook": [int(c["CROOK_GROW_COOLDOWN"] // 20), int(c["CROOK_RULE_TICKS"] // 20)],
