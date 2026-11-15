@@ -1,0 +1,204 @@
+<title>Compañeros: antes y después</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Diseño: una sola mirada oscura (como el visor del mod): lista de compañeros arriba, el escenario 3D con el modelo
+   actual a la izquierda y la propuesta a la derecha, y debajo qué cambia y por qué. */
+:root {
+  --bg: #16120e; --panel: #211b15; --line: #3a3026; --fg: #efe6d6; --muted: #b3a690; --gold: #e8b84a; --before: #8fa3b8;
+  --display: "Cinzel", "Trajan Pro", Georgia, serif; --body: "Inter", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--bg); color: var(--fg); }
+body { font: 15px/1.55 var(--body); padding-block: 24px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 18px; }
+h1 { font: 700 clamp(26px, 4vw, 38px)/1.1 var(--display); margin: 0; letter-spacing: 0.02em; color: var(--gold); text-wrap: balance; }
+.lede { margin: 6px 0 0; color: var(--muted); max-width: 68ch; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 500 14px var(--body); color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: var(--gold); color: #1c140a; border-color: var(--gold); }
+.tabs button:focus-visible, .views button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.tabs button .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; background: var(--line); vertical-align: 1px; }
+.tabs button .dot.ready { background: #6fcf8f; }
+.stage { position: relative; background: #0b0907; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 8; max-width: 100%; min-height: 300px; }
+.stage canvas { display: block; width: 100%; height: 100%; }
+.tag { position: absolute; top: 12px; font: 600 12px var(--body); letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; background: rgba(11, 9, 7, 0.75); }
+.tag.before { left: 12px; color: var(--before); }
+.tag.after { right: 12px; color: var(--gold); }
+.views { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+.views button { font: 500 12px var(--body); color: var(--fg); background: rgba(33, 27, 21, 0.85); border: 1px solid var(--line); border-radius: 5px; padding: 5px 9px; cursor: pointer; }
+.views button[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+.info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 18px; }
+@media (max-width: 760px) { .info { grid-template-columns: minmax(0, 1fr); } .stage { aspect-ratio: 4 / 5; } }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; }
+.card h2 { font: 600 20px var(--display); margin: 0 0 4px; }
+.card .relic { color: var(--muted); margin: 0 0 12px; }
+dl { display: grid; grid-template-columns: auto auto auto; gap: 6px 14px; margin: 0; font-variant-numeric: tabular-nums; }
+dt { color: var(--muted); }
+dd { margin: 0; font-family: var(--mono); }
+dd.a { color: var(--gold); }
+.notes { white-space: pre-line; margin: 0; max-width: 72ch; }
+.pending { color: var(--muted); font-style: italic; }
+@media (prefers-reduced-motion: reduce) { .tabs button { transition: none; } }
+</style>
+<div class="wrap">
+  <header>
+    <h1>Compañeros: antes y después</h1>
+    <p class="lede">Cada aliado, montura o invocación del mod con el modelo que tiene hoy a la izquierda y la propuesta a la derecha, a la misma escala que en el juego. Arrastra para girar, usa la rueda para acercar o elige una vista.</p>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="Compañeros"></nav>
+  <div class="stage" id="stage">
+    <span class="tag before">Hoy</span><span class="tag after" id="afterTag">Propuesta</span>
+    <div class="views" id="views"></div>
+  </div>
+  <section class="info">
+    <div class="card">
+      <h2 id="name"></h2>
+      <p class="relic" id="relic"></p>
+      <dl id="stats"></dl>
+    </div>
+    <div class="card"><h2>Qué cambia</h2><p class="notes" id="notes"></p></div>
+  </section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DATA = __DATA__;
+const VIEWS = [["three", "Tres cuartos"], ["front", "Frente"], ["side", "Costado"], ["back", "Atrás"], ["top", "Arriba"]];
+const stage = document.getElementById("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+stage.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0b0907);
+const camera = new THREE.PerspectiveCamera(35, 2, 0.05, 200);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+scene.add(new THREE.HemisphereLight(0xfff4e0, 0x3a2e22, 0.85));
+const sun = new THREE.DirectionalLight(0xffffff, 0.75); sun.position.set(3, 6, 4); scene.add(sun);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshLambertMaterial({ color: 0x2a231b }));
+floor.rotation.x = -Math.PI / 2; scene.add(floor);
+const grid = new THREE.GridHelper(60, 60, 0x3a3026, 0x2f271f); grid.position.y = 0.002; scene.add(grid);
+
+function texFromB64(b64) {
+  const img = new Image(), tex = new THREE.Texture(img);
+  img.onload = () => { tex.needsUpdate = true; };
+  img.src = "data:image/png;base64," + b64;
+  tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter; tex.encoding = THREE.sRGBEncoding;
+  return tex;
+}
+/* Cubo de ModelPart con UV de caja (igual que el visor del mod y CubeDefinition del juego). */
+function cube(material, texW, texH, u, v, x0, y0, z0, w, h, d, mirror) {
+  const x1 = x0 + w, y1 = y0 + h, z1 = z0 + d, ax = mirror ? x1 : x0, bx = mirror ? x0 : x1;
+  const v000 = [ax, y0, z0], v100 = [bx, y0, z0], v110 = [bx, y1, z0], v010 = [ax, y1, z0];
+  const v001 = [ax, y0, z1], v101 = [bx, y0, z1], v111 = [bx, y1, z1], v011 = [ax, y1, z1];
+  const f8 = u + d, f9 = u + d + w, f10 = u + d + w + w, f11 = u + d + w + d, f12 = u + d + w + d + w, f13 = v + d, f14 = v + d + h;
+  const faces = [[[v101, v001, v000, v100], f8, v, f9, f13], [[v110, v010, v011, v111], f9, f13, f10, v],
+    [[v000, v001, v011, v010], u, f13, f8, f14], [[v100, v000, v010, v110], f8, f13, f9, f14],
+    [[v101, v100, v110, v111], f9, f13, f11, f14], [[v001, v101, v111, v011], f11, f13, f12, f14]];
+  const pos = [], uv = [], idx = [];
+  for (const [verts, u1, v1, u2, v2] of faces) {
+    const base = pos.length / 3, uvs = [[u2, v1], [u1, v1], [u1, v2], [u2, v2]];
+    verts.forEach((p, i) => { pos.push(...p); uv.push(uvs[i][0] / texW, 1 - uvs[i][1] / texH); });
+    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return new THREE.Mesh(g, material);
+}
+/* Un modelo: partes [nombre, padre, offset, rot, cubos]; raíz con la escala del renderer y el suelo en y = 24. */
+function buildModel(spec) {
+  const glow = spec.glow ? { emissiveMap: texFromB64(spec.glow), emissive: new THREE.Color(0xffffff) } : {};
+  const mat = new THREE.MeshLambertMaterial({ map: texFromB64(spec.tex), side: THREE.DoubleSide, alphaTest: 0.1, ...glow });
+  const entity = new THREE.Group(), root = new THREE.Group();
+  root.scale.set(-1 / 16, -1 / 16, 1 / 16); root.position.y = 1.5; entity.add(root);
+  entity.scale.setScalar(spec.scale || 1);
+  const parts = {};
+  for (const [name, parent, off, rot, cubes] of spec.parts) {
+    const p = new THREE.Group(); p.position.set(...off); p.rotation.order = "ZYX"; p.rotation.set(rot[0], rot[1], rot[2]);
+    for (const c of cubes) p.add(cube(mat, spec.texW, spec.texH, ...c));
+    (parent ? parts[parent] : root).add(p); parts[name] = p;
+  }
+  return entity;
+}
+
+let current = null, view = "three", models = [], spin = true;
+const tabs = document.getElementById("tabs"), viewsBox = document.getElementById("views");
+DATA.forEach(d => {
+  const b = document.createElement("button");
+  b.id = "tab-" + d.key; b.type = "button";
+  b.innerHTML = `<span class="dot${d.after ? " ready" : ""}"></span>${d.name}`;
+  b.addEventListener("click", () => { location.hash = d.key; });
+  tabs.appendChild(b);
+});
+VIEWS.forEach(([k, label]) => {
+  const b = document.createElement("button"); b.type = "button"; b.textContent = label; b.dataset.view = k;
+  b.addEventListener("click", () => { view = k; spin = k === "three"; placeCamera(); markViews(); });
+  viewsBox.appendChild(b);
+});
+const spinBtn = document.createElement("button"); spinBtn.type = "button"; spinBtn.textContent = "Girar";
+spinBtn.addEventListener("click", () => { spin = !spin; spinBtn.setAttribute("aria-pressed", String(spin)); });
+viewsBox.appendChild(spinBtn);
+function markViews() { viewsBox.querySelectorAll("button[data-view]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === view))); spinBtn.setAttribute("aria-pressed", String(spin)); }
+
+let bounds = new THREE.Box3();
+function show(key) {
+  const d = DATA.find(x => x.key === key) || DATA[0];
+  current = d;
+  for (const m of models) scene.remove(m.group);
+  models = [];
+  const specs = [d.before, d.after].filter(Boolean);
+  const built = specs.map(s => { const pivot = new THREE.Group(), e = buildModel(s); pivot.add(e); scene.add(pivot); return { group: pivot, entity: e }; });
+  // Centrar cada modelo en su lugar (sin cambiar su tamaño: la escala es la del juego).
+  const sizes = built.map(b => { const box = new THREE.Box3().setFromObject(b.entity); const c = box.getCenter(new THREE.Vector3());
+    b.entity.position.x -= c.x; b.entity.position.z -= c.z; return box.getSize(new THREE.Vector3()); });
+  const reach = sizes.map(s => Math.hypot(s.x, s.z) / 2);
+  const gap = 0.4;
+  // La cámara mira desde -z (el frente de los modelos), así que la izquierda de la pantalla es +x.
+  if (built.length === 2) { built[0].group.position.x = reach[0] + gap / 2; built[1].group.position.x = -(reach[1] + gap / 2); }
+  models = built;
+  bounds = new THREE.Box3(); built.forEach(b => bounds.expandByObject(b.group));
+  document.getElementById("afterTag").hidden = !d.after;
+  document.querySelectorAll("#tabs button").forEach(b => b.setAttribute("aria-pressed", String(b.id === "tab-" + d.key)));
+  document.getElementById("name").textContent = d.name;
+  document.getElementById("relic").textContent = "Lo trae: " + d.relic;
+  const fmt = n => n.toLocaleString("es");
+  const size = s => `${s.x.toFixed(1)} × ${s.y.toFixed(1)} × ${s.z.toFixed(1)}`;
+  document.getElementById("stats").innerHTML = `<dt></dt><dd>Hoy</dd><dd class="a">Propuesta</dd>`
+    + `<dt>Cubos</dt><dd>${fmt(d.before.cubes)}</dd><dd class="a">${d.after ? fmt(d.after.cubes) : "–"}</dd>`
+    + `<dt>Textura</dt><dd>${d.before.texW}×${d.before.texH}</dd><dd class="a">${d.after ? d.after.texW + "×" + d.after.texH : "–"}</dd>`
+    + `<dt>Tamaño (bloques)</dt><dd>${size(sizes[0])}</dd><dd class="a">${d.after ? size(sizes[1]) : "–"}</dd>`;
+  const notes = document.getElementById("notes");
+  notes.textContent = d.after ? d.after.notes : "La propuesta para este compañero todavía se está armando.";
+  notes.classList.toggle("pending", !d.after);
+  placeCamera(); markViews();
+}
+function placeCamera() {
+  const c = bounds.getCenter(new THREE.Vector3()), s = bounds.getSize(new THREE.Vector3());
+  const r = Math.max(s.x, s.y * 1.4, s.z, 1.2) * 1.15;
+  const dir = { three: [0.55, 0.45, -1], front: [0, 0.12, -1], side: [1, 0.12, 0], back: [0, 0.12, 1], top: [0.001, 1, 0.25] }[view];
+  const v = new THREE.Vector3(...dir).normalize().multiplyScalar(r * 1.25);
+  controls.target.copy(c); camera.position.copy(c).add(v); controls.update();
+}
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage); resize();
+function route() {
+  const [key, v] = (location.hash.slice(1) || DATA[0].key).split("-");
+  if (v && VIEWS.some(x => x[0] === v)) { view = v; spin = v === "three"; }
+  show(key);
+}
+window.addEventListener("hashchange", route);
+route();
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (spin && !reduce) for (const m of models) m.group.rotation.y += dt * 0.35;
+  controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
