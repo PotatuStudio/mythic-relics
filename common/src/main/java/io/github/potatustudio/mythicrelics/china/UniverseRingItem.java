@@ -1,14 +1,18 @@
 package io.github.potatustudio.mythicrelics.china;
 
+import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +21,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,7 +29,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Aro del Universo (qiankun quan) de Nezha: se lanza hacia donde miras, golpea a un enemigo, rebota al siguiente más
+ * Aro del Universo (qiankun quan) de Nezha: el aro de oro con el que nació, que lleva en la muñeca y lanza como arma
+ * (Fengshen Yanyi). Va puesto en el espacio de anillo; con su tecla (R por defecto) se lanza hacia donde miras, golpea a un enemigo, rebota al siguiente más
  * cercano (hasta tres) y vuelve a tu mano. El vuelo se ve como una estela de oro de golpe en golpe; el aro no sale del
  * inventario, así que nunca se pierde.
  */
@@ -36,22 +42,22 @@ public class UniverseRingItem extends RelicItem {
 		super(properties);
 	}
 
-	@Override
-	public InteractionResult use(Level level, Player player, InteractionHand hand) {
-		ItemStack stack = player.getItemInHand(hand);
-		if (player.getCooldowns().isOnCooldown(stack)) {
-			return InteractionResult.PASS;
-		}
-		if (!(level instanceof ServerLevel server)) {
-			return InteractionResult.SUCCESS;
+	/**
+	 * Lanza el aro desde la muñeca (lo llama la tecla de la reliquia, con el aro puesto): golpea, rebota y vuelve. La
+	 * recarga se ve en el ícono del aro.
+	 */
+	public static void throwRing(ServerPlayer player) {
+		ServerLevel server = player.level();
+		if (!WornRelics.isWearing(player, ModItems.UNIVERSE_RING) || !RelicCooldowns.tryStart(player, "universe_ring",
+				ChinaGods.RING_COOLDOWN, BuiltInRegistries.ITEM.getKey(ModItems.UNIVERSE_RING.get()))) {
+			return;
 		}
 		LivingEntity first = aim(server, player);
-		RelicCooldowns.start(player, stack, ChinaGods.RING_COOLDOWN);
 		RelicFx.sound(server, player, SoundEvents.TRIDENT_THROW.value(), 1.0f, 1.4f);
 		Vec3 from = player.getEyePosition().add(0, -0.3, 0);
 		if (first == null) {
 			trail(server, from, from.add(player.getLookAngle().scale(ChinaGods.RING_RANGE)));
-			return InteractionResult.SUCCESS;
+			return;
 		}
 		List<LivingEntity> hit = new ArrayList<>();
 		LivingEntity current = first;
@@ -71,7 +77,6 @@ public class UniverseRingItem extends RelicItem {
 		}
 		// Vuelve a la mano.
 		trail(server, from, player.getEyePosition().add(0, -0.3, 0));
-		return InteractionResult.SUCCESS;
 	}
 
 	/** El primer blanco: el ser vivo más cercano dentro de un cono angosto frente a ti. */

@@ -139,6 +139,9 @@ public class ThrownRelic extends AbstractArrow implements ItemSupplier {
 		DamageSource source = damageSources().trident(this, owner == null ? this : owner);
 		dealtDamage = true;
 		float damage = isMjolnir() ? NorseRelics.MJOLNIR_DAMAGE : NorseRelics.GUNGNIR_DAMAGE;
+		if (isMjolnir() && RelicSets.THOR.isComplete(owner)) {
+			damage *= 1.0f + RelicSets.WEAPON_BONUS;
+		}
 		if (isDart()) {
 			source = new DamageSource(level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
 					.getOrThrow(MISTLETOE), this, owner == null ? this : owner);

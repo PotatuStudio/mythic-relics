@@ -1,6 +1,9 @@
 package io.github.potatustudio.mythicrelics.client;
 
-/** Campos agregados por mixin a {@code LivingEntityRenderState}: el mob se dibuja de piedra; el jugador es un halcón. */
+/**
+ * Campos agregados por mixin a {@code LivingEntityRenderState}: el mob se dibuja de piedra; el jugador es un halcón; el
+ * jugador está oculto del todo por el yelmo de Hades.
+ */
 public interface StoneLook {
 	boolean mythicrelics$isStone();
 
@@ -13,4 +16,8 @@ public interface StoneLook {
 	boolean mythicrelics$isFalcon();
 
 	void mythicrelics$setFalcon(boolean falcon);
+
+	boolean mythicrelics$isHidden();
+
+	void mythicrelics$setHidden(boolean hidden);
 }

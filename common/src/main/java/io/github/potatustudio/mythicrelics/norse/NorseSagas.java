@@ -54,18 +54,19 @@ import org.jspecify.annotations.Nullable;
  *   <li><b>Gram</b> ({@link GramItem}): estocada cargada «desde el foso», el doble contra mobs grandes, con aviso.</li>
  *   <li><b>Tyrfing</b>: todos los golpes son críticos y brilla como el fuego; maldición: debe matar o te hiere.</li>
  *   <li><b>Dáinsleif</b>: el golpeado no se cura y sangra.</li>
- *   <li><b>Espada de Freyr</b> (cinturón): en combate sale de la vaina y pelea sola ({@link FreyrSword}).</li>
+ *   <li><b>Espada de Freyr</b> (espalda): en combate sale de la vaina y pelea sola ({@link FreyrSword}).</li>
  *   <li><b>Manto de plumas de halcón</b> (espalda): doble toque de salto en el aire y vuelas como halcón.</li>
  *   <li><b>Dardo de muérdago</b>: se lanza; ignora armadura, Resistencia y protección, doble contra jefes.</li>
  * </ul>
  */
 public final class NorseSagas {
 	// Gram
-	public static final int GRAM_CHARGE_TICKS = 20;
-	public static final float GRAM_THRUST_DAMAGE = 20.0f;
+	/** Golpes normales antes de cada estocada de Gram. */
+	public static final int GRAM_HITS_PER_THRUST = 2;
+	/** Daño extra de la estocada. */
+	public static final float GRAM_THRUST_BONUS = 0.5f;
+	/** Vida desde la que un mob es «grande» (la estocada de Gram le hace el doble; la espada de Freyr, más daño). */
 	public static final float GRAM_BIG_HEALTH = 100.0f;
-	public static final double GRAM_REACH = 4.5;
-	public static final int GRAM_COOLDOWN = 240;
 	// Tyrfing
 	public static final float TYRFING_CRIT = 0.5f;
 	public static final int TYRFING_CURSE_TICKS = 1200;
@@ -87,9 +88,8 @@ public final class NorseSagas {
 	public static final float FALCON_FLY_SPEED = 0.07f;
 	public static final int FALCON_SLOW_FALL_TICKS = 80;
 	// Dardo de muérdago
-	public static final float DART_DAMAGE = 12.0f;
+	public static final float DART_DAMAGE = 16.0f;
 	public static final float DART_BOSS_MULTIPLIER = 2.0f;
-	public static final int DART_COOLDOWN = 400;
 
 	private static final DustParticleOptions FIRE_GOLD = new DustParticleOptions(0xFFB040, 0.8f);
 
@@ -107,7 +107,8 @@ public final class NorseSagas {
 	 */
 	public static final Identifier FALCON_SCALE_ID = MythicRelics.id("falcon_form");
 	public static final double FALCON_SCALE = -0.65;
-	private static final Map<UUID, UUID> GRAM_WARNED = new HashMap<>();
+	/** Golpes de Gram desde la última estocada, por jugador. */
+	private static final Map<UUID, Integer> GRAM_HITS = new HashMap<>();
 
 	private NorseSagas() {
 	}
@@ -161,6 +162,10 @@ public final class NorseSagas {
 			// En forma de halcón no se puede atacar.
 			if (isFalcon(attacker)) {
 				return 0.0f;
+			}
+			// Gram: cada GRAM_HITS_PER_THRUST golpes, el siguiente es la estocada «desde el foso» que mató a Fáfnir.
+			if (attacker.getMainHandItem().is(ModItems.GRAM.get()) && self.level() instanceof ServerLevel level) {
+				amount = gramHit(level, attacker, self, amount);
 			}
 			// Tyrfing nunca falla: todos sus golpes son críticos.
 			if (attacker.getMainHandItem().is(ModItems.TYRFING.get()) && self.level() instanceof ServerLevel level) {
@@ -355,9 +360,6 @@ public final class NorseSagas {
 		long now = server.overworld().getGameTime();
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			tyrfing(player);
-			if (now % 5 == 0) {
-				gramWarning(player);
-			}
 			freyr(player);
 			falcon(player);
 		}
@@ -393,22 +395,28 @@ public final class NorseSagas {
 		}
 	}
 
-	/** Gram: con la estocada lista, el mob grande al que apuntas brilla y suena un aviso una vez. */
-	private static void gramWarning(ServerPlayer player) {
-		ItemStack held = player.getMainHandItem();
-		if (!held.is(ModItems.GRAM.get()) || player.getCooldowns().isOnCooldown(held)) {
-			GRAM_WARNED.remove(player.getUUID());
-			return;
+	/**
+	 * Un golpe con Gram: cuenta los golpes y, al llegar a {@link #GRAM_HITS_PER_THRUST}, el siguiente es una estocada con
+	 * +{@link #GRAM_THRUST_BONUS} de daño (el doble contra mobs grandes), con chispas, sonido de yunque y un empujón.
+	 * Cuando la estocada queda lista suena un aviso corto.
+	 */
+	private static float gramHit(ServerLevel level, Player attacker, LivingEntity target, float amount) {
+		int hits = GRAM_HITS.getOrDefault(attacker.getUUID(), 0);
+		if (hits < GRAM_HITS_PER_THRUST) {
+			GRAM_HITS.put(attacker.getUUID(), hits + 1);
+			if (hits + 1 == GRAM_HITS_PER_THRUST) {
+				RelicFx.sound(level, attacker, SoundEvents.EXPERIENCE_ORB_PICKUP, 0.5f, 0.6f);
+			}
+			return amount;
 		}
-		LivingEntity aimed = GramItem.aimed(player, 8.0);
-		if (aimed == null || aimed.getMaxHealth() < GRAM_BIG_HEALTH) {
-			return;
-		}
-		aimed.addEffect(new MobEffectInstance(MobEffects.GLOWING, 10, 0, false, false));
-		if (!aimed.getUUID().equals(GRAM_WARNED.put(player.getUUID(), aimed.getUUID()))) {
-			player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.6f, 0.5f);
-			RelicFx.notify(player, "gram_ready", ChatFormatting.GOLD);
-		}
+		GRAM_HITS.put(attacker.getUUID(), 0);
+		float bonus = GRAM_THRUST_BONUS * (target.getMaxHealth() >= GRAM_BIG_HEALTH ? 2.0f : 1.0f);
+		Vec3 look = attacker.getLookAngle();
+		target.push(look.x * 0.5, 0.2, look.z * 0.5);
+		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.5), target.getZ(), 20, 0.3, 0.4, 0.3, 0.4);
+		level.sendParticles(ParticleTypes.ENCHANTED_HIT, target.getX(), target.getY(0.5), target.getZ(), 12, 0.3, 0.4, 0.3, 0.3);
+		RelicFx.sound(level, target, SoundEvents.ANVIL_LAND, 0.6f, 1.5f);
+		return amount * (1.0f + bonus);
 	}
 
 	/** Dáinsleif: los heridos sangran medio corazón por segundo. */
@@ -429,13 +437,13 @@ public final class NorseSagas {
 
 	/** Números de los tooltips de la tercera tanda nórdica. */
 	public static void registerTooltipArgs() {
-		TooltipArgs.register("gram", GRAM_CHARGE_TICKS / 20, (int) GRAM_THRUST_DAMAGE, (int) GRAM_BIG_HEALTH, GRAM_COOLDOWN / 20);
+		TooltipArgs.register("gram", GRAM_HITS_PER_THRUST, Math.round(GRAM_THRUST_BONUS * 100), (int) GRAM_BIG_HEALTH);
 		TooltipArgs.register("tyrfing", Math.round(TYRFING_CRIT * 100), TYRFING_CURSE_TICKS / 20, (int) (TYRFING_CURSE_DAMAGE / 2));
 		TooltipArgs.register("dainsleif", DAINSLEIF_NO_HEAL_TICKS / 20, DAINSLEIF_BLEED_TICKS / 20);
 		TooltipArgs.register("freyr_sword", FREYR_RADIUS, (int) FREYR_DAMAGE, Math.round(FREYR_BIG_BONUS * 100), FREYR_WISE_LEVEL,
 				Math.round(FREYR_WISE_BONUS * 100), FREYR_IDLE_TICKS / 20);
 		TooltipArgs.register("falcon_cloak", FALCON_TICKS / 20, FALCON_COOLDOWN / 20);
-		TooltipArgs.register("mistletoe_dart", (int) DART_DAMAGE, DART_COOLDOWN / 20);
+		TooltipArgs.register("mistletoe_dart", (int) DART_DAMAGE);
 	}
 
 
@@ -450,6 +458,6 @@ public final class NorseSagas {
 				sword.discard();
 			}
 		});
-		ServerState.perPlayer(TYRFING_HELD, COMBAT_UNTIL, SWORDS, GRAM_WARNED, FALCON_UNTIL);
+		ServerState.perPlayer(TYRFING_HELD, COMBAT_UNTIL, SWORDS, GRAM_HITS, FALCON_UNTIL);
 	}
 }

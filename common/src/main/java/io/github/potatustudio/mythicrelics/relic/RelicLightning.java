@@ -31,9 +31,12 @@ public final class RelicLightning {
 			bolt.setCause(cause);
 		}
 		level.addFreshEntity(bolt);
+		// Con el set de Thor o el de Fūjin y Raijin, el rayo es el arma del set: pega más.
+		boolean set = cause != null && (RelicSets.THOR.isComplete(cause) || RelicSets.FUJIN_RAIJIN.isComplete(cause));
+		float damage = DAMAGE * (set ? 1.0f + RelicSets.WEAPON_BONUS : 1.0f);
 		for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, bolt.getBoundingBox().inflate(RADIUS, 6, RADIUS),
 				e -> e.isAlive() && e != cause && (cause == null || !Allies.isFriend(cause, e)))) {
-			e.hurtServer(level, level.damageSources().lightningBolt(), DAMAGE);
+			e.hurtServer(level, level.damageSources().lightningBolt(), damage);
 		}
 	}
 }

@@ -81,6 +81,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.UseCooldown;
+import net.minecraft.world.item.component.UseEffects;
 
 /**
  * Ítems y pestaña creativa del mod. Los espacios de accesorio se asignan con tags en cada loader: data/trinkets en Fabric
@@ -100,7 +101,8 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> MUMMY_WRAPS = relic("mummy_wraps", p -> p.rarity(Rarity.UNCOMMON));
 	// Set de Anubis.
 	public static final RegistrySupplier<Item> ANUBIS_SCEPTER = relic("anubis_scepter", p -> p.rarity(Rarity.EPIC)
-			.sword(ToolMaterial.GOLD, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			.sword(ToolMaterial.GOLD, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> JACKAL_MASK = relic("jackal_mask", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> JACKAL_RING = relic("jackal_ring", p -> p.rarity(Rarity.RARE));
 
@@ -110,7 +112,8 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> THOTH_PALETTE = register("thoth_palette", ThothPaletteItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> OSIRIS_CROOK = register("osiris_crook", OsirisCrookItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> OSIRIS_FLAIL = relic("osiris_flail", p -> p.rarity(Rarity.EPIC)
-			.sword(ToolMaterial.GOLD, 2.0f, -2.8f)
+			.sword(ToolMaterial.GOLD, 2.0f, -2.8f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+			.component(DataComponents.REPAIRABLE, null).component(DataComponents.ENCHANTABLE, null)
 			// El grupo de enfriamiento hace que el ícono del mayal muestre la recarga del renacer.
 			.component(DataComponents.USE_COOLDOWN, new UseCooldown(0.05f, Optional.of(EgyptGods.OSIRIS_REBIRTH_GROUP))));
 	public static final RegistrySupplier<Item> SEKHMET_CLAWS = relic("sekhmet_claws", p -> p.rarity(Rarity.EPIC));
@@ -122,7 +125,9 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> MEDUSA_HEAD = register("medusa_head", MedusaHeadItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ARIADNE_THREAD = register("ariadne_thread", AriadneThreadItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> CHARON_OBOL = register("charon_obol", RelicItem::new, p -> p.rarity(Rarity.RARE).stacksTo(16));
-	public static final RegistrySupplier<Item> ORPHEUS_LYRE = register("orpheus_lyre", OrpheusLyreItem::new, p -> p.rarity(Rarity.EPIC));
+	// Tocar la lira frena poco (por defecto, usar un ítem deja al 20 % de la velocidad).
+	public static final RegistrySupplier<Item> ORPHEUS_LYRE = register("orpheus_lyre", OrpheusLyreItem::new, p -> p.rarity(Rarity.EPIC)
+			.component(DataComponents.USE_EFFECTS, new UseEffects(false, true, 0.7f)));
 
 	// Grecia, segunda tanda.
 	public static final RegistrySupplier<Item> ICARUS_WINGS = relic("icarus_wings", p -> p.rarity(Rarity.EPIC));
@@ -151,11 +156,13 @@ public final class ModItems {
 
 	// Nórdicos, primera tanda. Las armas lanzables no se rompen (vuelven siempre a la mano).
 	public static final RegistrySupplier<Item> MJOLNIR = register("mjolnir", p -> new ThrownRelicItem(p, false),
-			p -> p.rarity(Rarity.EPIC).axe(ToolMaterial.IRON, 6.0f, -3.1f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).axe(ToolMaterial.IRON, 6.0f, -3.1f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> JARNGREIPR = relic("jarngreipr", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> MEGINGJORD = relic("megingjord", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> GUNGNIR = register("gungnir", p -> new ThrownRelicItem(p, true),
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 4.0f, -2.9f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 4.0f, -2.9f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> DRAUPNIR = relic("draupnir", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> GJALLARHORN = register("gjallarhorn", GjallarhornItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> GLEIPNIR = register("gleipnir", GleipnirItem::new, p -> p.rarity(Rarity.EPIC));
@@ -173,27 +180,32 @@ public final class ModItems {
 
 	// China, primera tanda. Las armas no se rompen.
 	public static final RegistrySupplier<Item> RUYI_JINGU_BANG = register("ruyi_jingu_bang", RuyiJinguBangItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -3.0f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -3.0f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> MONKEY_KING_HAIRS = register("monkey_king_hairs", MonkeyHairsItem::new,
 			p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> PURPLE_GOLD_GOURD = register("purple_gold_gourd", PurpleGoldGourdItem::new,
 			p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> BANANA_LEAF_FAN = register("banana_leaf_fan", BananaLeafFanItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.WOOD, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.WOOD, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> DRAGON_PEARL = register("dragon_pearl", DragonPearlItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> WIND_FIRE_WHEELS = relic("wind_fire_wheels", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> HOU_YI_BOW = register("hou_yi_bow", HouYiBowItem::new,
-			p -> p.rarity(Rarity.EPIC).durability(384).enchantable(1).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).durability(384).enchantable(1).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> CHANGE_ELIXIR = register("change_elixir", ChangeElixirItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> FIVE_COLOR_STONE = relic("five_color_stone", p -> p.rarity(Rarity.RARE));
 
 	// China, segunda tanda.
 	public static final RegistrySupplier<Item> FIRE_TIPPED_SPEAR = register("fire_tipped_spear", FireTippedSpearItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 5.0f, -2.8f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 5.0f, -2.8f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> UNIVERSE_RING = register("universe_ring", UniverseRingItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ERLANG_EYE = relic("erlang_eye", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ERLANG_HALBERD = register("erlang_halberd", ErlangHalberdItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -3.0f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -3.0f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> QILIN_HORN = register("qilin_horn", QilinHornItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> PIXIU_BRACELET = relic("pixiu_bracelet", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> FU_TALISMANS = register("fu_talismans", FuTalismansItem::new, p -> p.rarity(Rarity.RARE));
@@ -203,12 +215,14 @@ public final class ModItems {
 
 	// Japón, primera tanda.
 	public static final RegistrySupplier<Item> KUSANAGI = register("kusanagi", KusanagiItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> YATA_MIRROR = register("yata_mirror", YataMirrorItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> YASAKANI_MAGATAMA = relic("yasakani_magatama", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> RAIJIN_DRUM = relic("raijin_drum", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> ONI_KANABO = relic("oni_kanabo", p -> p.rarity(Rarity.EPIC)
-			.sword(ToolMaterial.IRON, 8.0f, -3.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			.sword(ToolMaterial.IRON, 8.0f, -3.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> KITSUNE_STAR_BALL = register("kitsune_star_ball", KitsuneStarBallItem::new,
 			p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> TIDE_JEWELS = register("tide_jewels", TideJewelsItem::new, p -> p.rarity(Rarity.EPIC));
@@ -223,7 +237,8 @@ public final class ModItems {
 	public static final RegistrySupplier<Item> KAPPA_DISH = relic("kappa_dish", p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> TANUKI_LEAF = register("tanuki_leaf", TanukiLeafItem::new, p -> p.rarity(Rarity.RARE));
 	public static final RegistrySupplier<Item> KINTARO_AXE = relic("kintaro_axe", p -> p.rarity(Rarity.EPIC)
-			.axe(ToolMaterial.IRON, 7.0f, -3.1f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			.axe(ToolMaterial.IRON, 7.0f, -3.1f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> ZASHIKI_WARASHI = register("zashiki_warashi",
 			p -> new PalladiumItem(ModBlocks.ZASHIKI_WARASHI.get(), p), p -> p.rarity(Rarity.EPIC).useItemDescriptionPrefix());
 	public static final RegistrySupplier<Item> AME_NO_NUBOKO = register("ame_no_nuboko", AmeNoNubokoItem::new, p -> p.rarity(Rarity.EPIC));
@@ -240,7 +255,8 @@ public final class ModItems {
 					new BlocksAttacks.ItemDamageFunction(3.0f, 1.0f, 1.0f), Optional.empty(),
 					Optional.of(SoundEvents.SHIELD_BLOCK), Optional.of(SoundEvents.SHIELD_BREAK))));
 	public static final RegistrySupplier<Item> HARPE = register("harpe", HarpeItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 4.0f, -2.2f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 4.0f, -2.2f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> GOLDEN_BRIDLE = register("golden_bridle",
 			GoldenBridleItem::new, p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> APPLE_OF_DISCORD = register("apple_of_discord",
@@ -250,15 +266,19 @@ public final class ModItems {
 
 	// Nórdicos, tercera tanda.
 	public static final RegistrySupplier<Item> GRAM = register("gram", GramItem::new,
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -2.5f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 6.0f, -2.5f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> TYRFING = relic("tyrfing", p -> p.rarity(Rarity.EPIC)
-			.sword(ToolMaterial.IRON, 7.0f, -2.6f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			.sword(ToolMaterial.IRON, 7.0f, -2.6f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> DAINSLEIF = relic("dainsleif", p -> p.rarity(Rarity.EPIC)
-			.sword(ToolMaterial.IRON, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			.sword(ToolMaterial.IRON, 5.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 	public static final RegistrySupplier<Item> FREYR_SWORD = relic("freyr_sword", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> FALCON_CLOAK = relic("falcon_cloak", p -> p.rarity(Rarity.EPIC));
 	public static final RegistrySupplier<Item> MISTLETOE_DART = register("mistletoe_dart", p -> new ThrownRelicItem(p, false),
-			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 1.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE));
+			p -> p.rarity(Rarity.EPIC).sword(ToolMaterial.IRON, 1.0f, -2.4f).component(DataComponents.UNBREAKABLE, Unit.INSTANCE).component(DataComponents.REPAIRABLE, null)
+			.component(DataComponents.ENCHANTABLE, null));
 
 	/** Estatua de piedra de un mob que murió petrificado por la cabeza de Medusa (no es una reliquia). */
 	public static final RegistrySupplier<Item> STONE_STATUE = register("stone_statue",

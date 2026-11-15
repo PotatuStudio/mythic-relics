@@ -487,6 +487,22 @@ public class RelicClientGameTest implements FabricClientGameTest {
 					ctx.getInput().pressKey(RelicClientTicks.FALCON_KEY);
 					ctx.waitTicks(10);
 				}
+				if (wornToo && id.equals("universe_ring")) {
+					ctx.getInput().pressKey(RelicClientTicks.RING_KEY);
+					ctx.waitTicks(6);
+					shot(ctx, "hab_" + id + "_4tecla");
+				}
+				if (wornToo && id.equals("hades_helm")) {
+					// Agachado y quieto hasta volverse invisible; de frente no debe verse nada del jugador.
+					ctx.getInput().holdKey(o -> o.keyShift);
+					ctx.waitTicks(55);
+					camera(ctx, CameraType.THIRD_PERSON_FRONT);
+					ctx.waitTicks(2);
+					shot(ctx, "hab_" + id + "_7invisible");
+					camera(ctx, CameraType.FIRST_PERSON);
+					ctx.getInput().releaseKey(o -> o.keyShift);
+					ctx.waitTicks(4);
+				}
 				if (text.contains("sneak") || text.contains("crouch") || text.contains("agachado")) {
 					srv.runCommand("ride @a dismount");
 					srv.runOnServer(s -> {

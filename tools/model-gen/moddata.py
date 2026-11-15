@@ -67,7 +67,7 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          "ruyi_jingu_bang": "mainhand", "monkey_king_hairs": "hand", "purple_gold_gourd": "hand", "banana_leaf_fan": "mainhand",
          "dragon_pearl": "hand", "wind_fire_wheels": "feet/shoes", "hou_yi_bow": "mainhand", "change_elixir": "hand",
          "five_color_stone": "legs/belt",
-         "fire_tipped_spear": "mainhand", "universe_ring": "hand", "erlang_eye": "head/face", "erlang_halberd": "mainhand",
+         "fire_tipped_spear": "mainhand", "universe_ring": "hand/ring", "erlang_eye": "head/face", "erlang_halberd": "mainhand",
          "qilin_horn": "hand", "pixiu_bracelet": "hand/ring", "fu_talismans": "hand", "xirang_sack": "hand",
          "immortal_peach_branch": "hand",
          "kusanagi": "mainhand", "yata_mirror": "offhand", "yasakani_magatama": "chest/necklace", "raijin_drum": "chest/back",
@@ -79,7 +79,7 @@ SLOTS = {"golden_scarab": "legs/belt", "eye_of_horus": "head/face", "ankh": "che
          # Grecia 3 y nórdicos 3
          "zeus_thunderbolt": "mainhand", "nemean_lion_skin": "chest/cape", "achilles_shield": "offhand", "harpe": "mainhand",
          "golden_bridle": "hand", "apple_of_discord": "hand", "talos_nail": "hand",
-         "gram": "mainhand", "tyrfing": "mainhand", "dainsleif": "mainhand", "freyr_sword": "legs/belt",
+         "gram": "mainhand", "tyrfing": "mainhand", "dainsleif": "mainhand", "freyr_sword": "chest/back",
          "falcon_cloak": "chest/back", "mistletoe_dart": "mainhand"}
 
 
@@ -136,7 +136,7 @@ def tooltip_args(c):
                           int(c["SEKHMET_BURN_SECONDS"]), round(c["SEKHMET_CALM_HEAL"] / 2)],
         # Grecia (GreeceRelics#tooltipArgs)
         "hermes_sandals": [round(c["HERMES_SPEED"] * 100)],
-        "hades_helm": [int(c["HADES_STILL_TICKS"] // 20)],
+        "hades_helm": [int(c["HADES_STILL_TICKS"] // 20), round(c["HADES_SNEAK_SPEED"] * 100 / 0.3)],
         "athena_aegis": [int(c["AEGIS_STUN_TICKS"] // 20)],
         "medusa_head": [int(c["MEDUSA_TICKS"] // 20), int(c["MEDUSA_RADIUS"]), int(c["MEDUSA_GAZE_TICKS"] * 50)],
         "ariadne_thread": [int(c["ARIADNE_MAX_DISTANCE"]), int(c["ARIADNE_COOLDOWN"] // 20 // 60)],
@@ -174,7 +174,8 @@ def tooltip_args(c):
         "draupnir": [int(c["DRAUPNIR_NIGHTS"]), int(c["DRAUPNIR_INGOTS"])],
         "gjallarhorn": [int(c["HORN_USE_TICKS"] // 20), int(c["HORN_ALLY_RADIUS"]), int(c["HORN_BUFF_TICKS"] // 20),
                         int(c["HORN_SIGHT_RADIUS"]), int(c["HORN_GLOW_TICKS"] // 20), int(c["HORN_COOLDOWN"] // 20 // 60)],
-        "gleipnir": [int(c["GLEIPNIR_TICKS"] // 20), int(c["GLEIPNIR_COOLDOWN"] // 20)],
+        "gleipnir": [int(c["GLEIPNIR_TICKS"] // 20), int(c["GLEIPNIR_COOLDOWN"] // 20), round(c["GLEIPNIR_DAMAGE_TAKEN"] * 100),
+                     int(c["GLEIPNIR_BOSS_TICKS"] // 20)],
         "idunn_apples": [int(c["IDUNN_REGEN_TICKS"] // 20), int(c["IDUNN_ABSORPTION_TICKS"] // 20 // 60), int(c["IDUNN_MAX"])],
         # Nórdicos, tanda 2 (NorseGods#tooltipArgs)
         "sleipnir_horseshoe": [int(c["SLEIPNIR_LEAVE_TICKS"] // 20), int(c["SLEIPNIR_COOLDOWN"] // 20 // 60)],
@@ -203,7 +204,7 @@ def tooltip_args(c):
                               int(c["SPEAR_COOLDOWN"] // 20), int(c["SPEAR_WHEELS_COOLDOWN"] // 20)],
         "universe_ring": [int(c["RING_TARGETS"]), int(c["RING_RANGE"]), int(c["RING_DAMAGE"]), int(c["RING_STUN_TICKS"] // 20),
                           int(c["RING_COOLDOWN"] // 20)],
-        "erlang_eye": [int(c["ERLANG_SIGHT_RADIUS"])],
+        "erlang_eye": [int(c["ERLANG_SIGHT_RADIUS"]), int(c["ERLANG_DEFLECT_COOLDOWN"] // 20)],
         "erlang_halberd": [int(c["HALBERD_REACH"]), int(c["HALBERD_SWEEP_RADIUS"]), int(c["DOG_TICKS"] // 20), int(c["DOG_COOLDOWN"] // 20)],
         "qilin_horn": [int(c["QILIN_AURA_RADIUS"]), int(c["QILIN_LEAVE_TICKS"] // 20), int(c["QILIN_COOLDOWN"] // 20 // 60)],
         "pixiu_bracelet": [round(c["PIXIU_CHANCE"] * 100), int(c["PIXIU_MAX_NUGGETS"])],
@@ -250,13 +251,13 @@ def tooltip_args(c):
                        int(c["TALOS_ROCK_RANGE"]), int(c["TALOS_HUG_DAMAGE"]), int(c["TALOS_HUG_FIRE_SECONDS"]),
                        int(c["TALOS_COOLDOWN"] // 20 // 60)],
         # Nórdicos 3 (NorseSagas.tooltipArgs)
-        "gram": [int(c["GRAM_CHARGE_TICKS"] // 20), int(c["GRAM_THRUST_DAMAGE"]), int(c["GRAM_BIG_HEALTH"]), int(c["GRAM_COOLDOWN"] // 20)],
+        "gram": [int(c["GRAM_HITS_PER_THRUST"]), round(c["GRAM_THRUST_BONUS"] * 100), int(c["GRAM_BIG_HEALTH"])],
         "tyrfing": [round(c["TYRFING_CRIT"] * 100), int(c["TYRFING_CURSE_TICKS"] // 20), int(c["TYRFING_CURSE_DAMAGE"] / 2)],
         "dainsleif": [int(c["DAINSLEIF_NO_HEAL_TICKS"] // 20), int(c["DAINSLEIF_BLEED_TICKS"] // 20)],
         "freyr_sword": [int(c["FREYR_RADIUS"]), int(c["FREYR_DAMAGE"]), round(c["FREYR_BIG_BONUS"] * 100), int(c["FREYR_WISE_LEVEL"]),
                         round(c["FREYR_WISE_BONUS"] * 100), int(c["FREYR_IDLE_TICKS"] // 20)],
         "falcon_cloak": [int(c["FALCON_TICKS"] // 20), int(c["FALCON_COOLDOWN"] // 20)],
-        "mistletoe_dart": [int(c["DART_DAMAGE"]), int(c["DART_COOLDOWN"] // 20)],
+        "mistletoe_dart": [int(c["DART_DAMAGE"])],
     }
 
 

@@ -190,6 +190,9 @@ public enum RelicSets {
 		return null;
 	}
 
+	/** Daño extra del arma de un set completo (cetro, mayal, harpe, Mjölnir y su rayo, alabarda, Kusanagi, rayo del tambor). */
+	public static final float WEAPON_BONUS = 0.3f;
+
 	/** Sets activos de cada jugador en la última revisión (bit por set). */
 	private static final Map<UUID, Integer> ACTIVE = new HashMap<>();
 

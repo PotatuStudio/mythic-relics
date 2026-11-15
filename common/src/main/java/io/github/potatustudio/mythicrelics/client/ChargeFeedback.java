@@ -78,9 +78,6 @@ public final class ChargeFeedback {
 		if (stack.is(ModItems.ZEUS_THUNDERBOLT.get())) {
 			return GreeceLegends.ZEUS_CHARGE_TICKS;
 		}
-		if (stack.is(ModItems.GRAM.get())) {
-			return NorseSagas.GRAM_CHARGE_TICKS;
-		}
 		if (stack.is(ModItems.MJOLNIR.get()) || stack.is(ModItems.GUNGNIR.get()) || stack.is(ModItems.MISTLETOE_DART.get())) {
 			return ThrownRelicItem.MIN_CHARGE;
 		}

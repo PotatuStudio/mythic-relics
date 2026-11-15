@@ -72,13 +72,16 @@ public final class GreeceRelics {
 	private static final Identifier HERMES_SOUL_ID = MythicRelics.id("hermes_soul");
 
 	public static final int HADES_STILL_TICKS = 40;
-	private static final double HADES_MAX_SPEED = 0.08;
+	private static final double HADES_MAX_SPEED = 0.12;
+	/** Velocidad agachado extra con el yelmo puesto (como un nivel de Pies Sigilosos). */
+	public static final double HADES_SNEAK_SPEED = 0.15;
+	private static final Identifier HADES_SNEAK_ID = Identifier.fromNamespaceAndPath("mythicrelics", "hades_sneak");
 
 	public static final int AEGIS_STUN_TICKS = 40;
 
 	/** Lo que dura petrificado (se va agrietando hasta romperse). */
 	public static final int MEDUSA_TICKS = 200;
-	public static final double MEDUSA_RADIUS = 16.0;
+	public static final double MEDUSA_RADIUS = 8.0;
 	/** Ticks dentro de la mirada que hacen falta para petrificar (la mitad con el set de Perseo). */
 	public static final int MEDUSA_GAZE_TICKS = 10;
 	public static final float PERSEUS_PETRIFIED_BONUS = 0.5f;
@@ -165,7 +168,16 @@ public final class GreeceRelics {
 	// ---- Hades -------------------------------------------------------------------------------------------------------
 
 	private static void hades(ServerPlayer player) {
-		if (!WornRelics.isWearing(player, ModItems.HADES_HELM)) {
+		boolean wearing = WornRelics.isWearing(player, ModItems.HADES_HELM);
+		AttributeInstance sneak = player.getAttribute(Attributes.SNEAKING_SPEED);
+		if (sneak != null && wearing != sneak.hasModifier(HADES_SNEAK_ID)) {
+			if (wearing) {
+				sneak.addTransientModifier(new AttributeModifier(HADES_SNEAK_ID, HADES_SNEAK_SPEED, AttributeModifier.Operation.ADD_VALUE));
+			} else {
+				sneak.removeModifier(HADES_SNEAK_ID);
+			}
+		}
+		if (!wearing) {
 			breakInvisibility(player);
 			HADES_STILL.remove(player.getUUID());
 			return;
@@ -392,7 +404,7 @@ public final class GreeceRelics {
 	/** Números de los tooltips de Grecia (%1$s, %2$s… de sus líneas de traducción, en este orden). */
 	public static void registerTooltipArgs() {
 		TooltipArgs.register("hermes_sandals", Math.round(HERMES_SPEED * 100));
-		TooltipArgs.register("hades_helm", HADES_STILL_TICKS / 20);
+		TooltipArgs.register("hades_helm", HADES_STILL_TICKS / 20, (int) Math.round(HADES_SNEAK_SPEED * 100 / 0.3));
 		TooltipArgs.register("athena_aegis", AEGIS_STUN_TICKS / 20);
 		TooltipArgs.register("medusa_head", MEDUSA_TICKS / 20, (int) MEDUSA_RADIUS, MEDUSA_GAZE_TICKS * 50);
 		TooltipArgs.register("ariadne_thread", ARIADNE_MAX_DISTANCE, ARIADNE_COOLDOWN / 20 / 60);

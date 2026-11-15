@@ -25,7 +25,7 @@ Están donde su mito calza: el frío del norte, las minas de los enanos y las pr
 | ![](img/gram.png) | [Gram](#gram) | mano (arma) | épica | Armeros de aldea: 2 % por cofre |
 | ![](img/tyrfing.png) | [Tyrfing](#tyrfing) | mano (arma) | épica | Tesoros de bastiones: 2 % por cofre |
 | ![](img/dainsleif.png) | [Dáinsleif](#dainsleif) | mano (arma) | épica | Ciudades antiguas: 3 % por cofre |
-| ![](img/freyr_sword.png) | [Espada de Freyr](#freyr-sword) | cinturón | épica | Mansiones del bosque: 3 % por cofre |
+| ![](img/freyr_sword.png) | [Espada de Freyr](#freyr-sword) | espalda | épica | Mansiones del bosque: 3 % por cofre |
 | ![](img/falcon_cloak.png) | [Manto de plumas de halcón](#falcon-cloak) | espalda | épica | Casas de aldeas de taiga: 3 % por cofre |
 | ![](img/mistletoe_dart.png) | [Dardo de muérdago](#mistletoe-dart) | mano (arma) | épica | Mansiones del bosque: 3 % por cofre |
 
@@ -39,7 +39,7 @@ Están donde su mito calza: el frío del norte, las minas de los enanos y las pr
 - Mantén clic derecho y suelta para lanzarlo: vuela hasta 24 bloques, golpea y vuelve a ti
 - En tormenta, donde golpea cae un rayo
 
-*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
+*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta +30 % de daño de Mjölnir lanzado y de sus rayos
 
 **Mito.** El martillo de Thor lo forjaron los enanos Brokkr y Sindri. Loki, convertido en tábano, picó a Brokkr en el párpado y por eso el mango quedó corto.  
 Mjölnir nunca falla y siempre vuelve a la mano de Thor.
@@ -56,7 +56,7 @@ Mjölnir nunca falla y siempre vuelve a la mano de Thor.
 - Puños de hierro: +3 de daño sin arma
 - Los rayos no te hacen daño
 
-*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
+*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta +30 % de daño de Mjölnir lanzado y de sus rayos
 
 **Mito.** Los guantes de hierro de Thor. Los necesitaba para empuñar a Mjölnir, que ardía al rojo cuando volvía de un lanzamiento.
 
@@ -71,7 +71,7 @@ Mjölnir nunca falla y siempre vuelve a la mano de Thor.
 
 - Fuerza divina: +25% de daño cuerpo a cuerpo y 50% menos retroceso al recibir golpes
 
-*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
+*Set de Thor (Mjölnir, Járngreipr, Megingjörð)* Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta +30 % de daño de Mjölnir lanzado y de sus rayos
 
 **Mito.** El cinturón de fuerza de Thor: al ceñírselo, su fuerza divina se duplicaba.
 
@@ -127,9 +127,10 @@ Su toque se oye en los nueve mundos y anunciará el Ragnarök.
 
 **Espacio:** mano · **Rareza:** épica
 
-- Clic derecho a un mob: queda atado 6 s
-- No se mueve ni ataca (no los jefes)
-- Recarga: 30 s
+- Clic derecho a un mob: queda atado 15 s, sin moverse ni atacar
+- Mientras está atado recibe +40% de daño
+- A los jefes no los ata: los frena mucho durante 5 s
+- Recarga: 20 s
 
 **Mito.** La única atadura que pudo con el lobo Fenrir. La hicieron los enanos con seis cosas que no existen: el ruido de los pasos del gato, la barba de la mujer, las raíces de la montaña, los tendones del oso, el aliento del pez y la saliva del pájaro.  
 Era fina y suave como una cinta de seda.
@@ -266,10 +267,8 @@ Odín se lo robó a los gigantes convertido en águila.
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Mantén clic derecho 1 s y suelta: estocada desde el foso de 20 de daño
-- El doble contra mobs de 100 de vida o más (dragón, Wither, devastador, gólem, Warden)
-- Cuando apuntas a uno así y está lista, brilla y suena un aviso
-- Recarga: 12 s
+- Pasiva: cada 2 golpes, el siguiente es una estocada con +50% de daño
+- La estocada hace el doble contra mobs de 100 de vida o más (dragón, Wither, devastador, gólem, Warden)
 
 **Mito.** Odín clavó una espada en el árbol Barnstokkr y solo Sigmund pudo sacarla. El herrero Regin reforjó sus pedazos para Sigurd: Gram partió el yunque de un golpe.  
 Con ella Sigurd mató al dragón Fáfnir desde un foso, hiriéndolo desde abajo.
@@ -311,9 +310,9 @@ La forjaron los enanos y sus heridas nunca sanaban.
 
 <img src="img/freyr_sword.png" width="64" alt="">
 
-**Espacio:** cinturón · **Rareza:** épica
+**Espacio:** espalda · **Rareza:** épica
 
-- Va envainada a tu costado. En combate (o con un hostil persiguiéndote a 12 bloques) sale y pelea sola
+- Va envainada en la espalda. En combate (o con un hostil persiguiéndote a 12 bloques) sale y pelea sola
 - 5 de daño por tajo; +50% contra mobs grandes
 - +50% si tienes 30 niveles o más («si su portador es sabio»)
 - No se puede herir. A los 5 s sin combate vuelve a la vaina
@@ -346,9 +345,8 @@ Loki se lo pidió prestado para buscar el martillo que le robaron a Thor y para 
 
 **Espacio:** mano (arma) · **Rareza:** épica
 
-- Mantén clic derecho y suelta para lanzarlo; queda clavado donde cae hasta que lo recojas
-- 12 de daño que ignora armadura, Resistencia y encantamientos de protección; el doble contra jefes
-- Recarga: 20 s
+- Mantén clic derecho y suelta para lanzarlo; queda clavado donde cae hasta que lo recojas (sin recarga)
+- 16 de daño que ignora armadura, Resistencia y encantamientos de protección; el doble contra jefes
 
 **Mito.** Frigg hizo jurar a todas las cosas que no dañarían a su hijo Baldr; solo dejó fuera al muérdago, que le pareció demasiado joven.  
 Loki, disfrazado de anciana, le sacó el secreto, hizo un dardo de muérdago y se lo puso en la mano al ciego Höðr, que lo lanzó y mató a Baldr.
@@ -357,6 +355,6 @@ Loki, disfrazado de anciana, le sacó el secreto, hizo un dardo de muérdago y s
 
 ## Set de Thor
 
-Set de Thor (Mjölnir, Járngreipr, Megingjörð) Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta
+Set de Thor (Mjölnir, Járngreipr, Megingjörð) Cada martillo lanzado llama un rayo donde golpea, con o sin tormenta +30 % de daño de Mjölnir lanzado y de sus rayos
 
 **Mito.** Thor no podía empuñar a Mjölnir sin sus guantes de hierro, y con el cinturón de fuerza su poder se duplicaba: los tres juntos son el dios del trueno.

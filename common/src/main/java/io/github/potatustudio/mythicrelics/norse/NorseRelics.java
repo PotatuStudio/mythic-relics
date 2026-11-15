@@ -69,8 +69,12 @@ public final class NorseRelics {
 	public static final int HORN_GLOW_TICKS = 200;
 	public static final int HORN_COOLDOWN = 6000;
 
-	public static final int GLEIPNIR_TICKS = 120;
-	public static final int GLEIPNIR_COOLDOWN = 600;
+	public static final int GLEIPNIR_TICKS = 300;
+	public static final int GLEIPNIR_COOLDOWN = 400;
+	/** Daño extra que recibe un mob atado por Gleipnir. */
+	public static final float GLEIPNIR_DAMAGE_TAKEN = 0.4f;
+	/** A los jefes no los ata: Lentitud IV este tiempo. */
+	public static final int GLEIPNIR_BOSS_TICKS = 100;
 	public static final String BOUND_TAG = MythicRelics.MOD_ID + ".bound";
 
 	public static final int IDUNN_MAX = 3;
@@ -92,6 +96,9 @@ public final class NorseRelics {
 
 	/** Daño recibido: Járngreipr anula los rayos; Megingjörð da más daño cuerpo a cuerpo a quien lo lleva. */
 	public static float modifyIncomingDamage(LivingEntity self, DamageSource source, float amount) {
+		if (self.entityTags().contains(BOUND_TAG)) {
+			amount *= 1.0f + GLEIPNIR_DAMAGE_TAKEN;
+		}
 		if (source.is(DamageTypeTags.IS_LIGHTNING) && WornRelics.isWearing(self, ModItems.JARNGREIPR)) {
 			return 0;
 		}
@@ -193,7 +200,8 @@ public final class NorseRelics {
 		TooltipArgs.register("draupnir", DRAUPNIR_NIGHTS, DRAUPNIR_INGOTS);
 		TooltipArgs.register("gjallarhorn", HORN_USE_TICKS / 20, HORN_ALLY_RADIUS, HORN_BUFF_TICKS / 20, HORN_SIGHT_RADIUS,
 				HORN_GLOW_TICKS / 20, HORN_COOLDOWN / 20 / 60);
-		TooltipArgs.register("gleipnir", GLEIPNIR_TICKS / 20, GLEIPNIR_COOLDOWN / 20);
+		TooltipArgs.register("gleipnir", GLEIPNIR_TICKS / 20, GLEIPNIR_COOLDOWN / 20, Math.round(GLEIPNIR_DAMAGE_TAKEN * 100),
+				GLEIPNIR_BOSS_TICKS / 20);
 		TooltipArgs.register("idunn_apples", IDUNN_REGEN_TICKS / 20, IDUNN_ABSORPTION_TICKS / 20 / 60, IDUNN_MAX);
 	}
 

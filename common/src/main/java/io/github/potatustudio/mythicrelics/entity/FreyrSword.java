@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 /**
- * La espada de Freyr, que pelea sola. La llevas envainada en el cinturón; al entrar en combate sale de la vaina girando
+ * La espada de Freyr, que pelea sola. La llevas envainada en la espalda; al entrar en combate sale de la vaina girando
  * con un destello dorado, embiste a un enemigo dejando una estela de luz, da tajos en arco o estocadas, vuelve a tu lado
  * entre ataque y ataque y, a los 5 s sin combate, vuelve girando a la vaina y desaparece. No se puede herir.
  *
@@ -91,8 +91,9 @@ public class FreyrSword extends Mob {
 	}
 
 	/**
-	 * La boca de la vaina: el cinto la lleva adelante, en la cadera izquierda (freyr_sword_worn.json), así que la espada
-	 * sale y vuelve por ese mismo lado. directionFromRotation(0, yRot - 90) es la izquierda del jugador.
+	 * La boca de la vaina: la vaina cruza la espalda y la empuñadura asoma sobre el hombro derecho
+	 * (freyr_sword_worn.json), así que la espada sale y vuelve por ahí. directionFromRotation(0, yRot - 90) es la
+	 * izquierda del jugador.
 	 */
 	/** Objetivo en guardia (se recalcula cada 5 ticks). */
 	private @Nullable LivingEntity guardTarget;
@@ -100,8 +101,8 @@ public class FreyrSword extends Mob {
 	private static Vec3 hip(Player player) {
 		Vec3 left = Vec3.directionFromRotation(0, player.getYRot() - 90.0f);
 		Vec3 forward = Vec3.directionFromRotation(0, player.getYRot());
-		// Vaina en x 11, z 11 y boca a la altura 2,4 del modelo puesto (centro del cuerpo x 8, z 8; y 2 = cintura, 0,75 bloques).
-		return player.position().add(left.scale(0.19)).add(forward.scale(0.19)).add(0, 0.78, 0);
+		// Empuñadura sobre el hombro derecho y detrás de la espalda (centro del cuerpo x 8, z 8; y 14 = hombros, 1,5 bloques).
+		return player.position().add(left.scale(-0.22)).add(forward.scale(-0.2)).add(0, 1.62, 0);
 	}
 
 	private Vec3 guardPoint(Player player) {

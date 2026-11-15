@@ -34,7 +34,8 @@ public final class DamageModifiers {
 			JapanRelics::modifyIncomingDamage,
 			JapanGods::modifyIncomingDamage,
 			GreeceLegends::modifyIncomingDamage,
-			NorseSagas::modifyIncomingDamage);
+			NorseSagas::modifyIncomingDamage,
+			SetWeapons::modifyIncomingDamage);
 
 	private DamageModifiers() {
 	}

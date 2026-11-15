@@ -67,9 +67,6 @@ public class ThrownRelicItem extends RelicItem {
 			}
 			server.addFreshEntity(thrown);
 			server.playSound(null, thrown, SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0f, homing ? 1.2f : 0.7f);
-			if (stack.is(ModItems.MISTLETOE_DART.get())) {
-				RelicCooldowns.start(player, stack, NorseSagas.DART_COOLDOWN);
-			}
 			if (!player.hasInfiniteMaterials()) {
 				player.getInventory().removeItem(stack);
 			}

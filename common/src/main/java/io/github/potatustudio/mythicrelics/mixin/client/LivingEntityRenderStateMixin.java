@@ -14,6 +14,8 @@ public abstract class LivingEntityRenderStateMixin implements StoneLook {
 	@Unique
 	private boolean mythicrelics$falcon;
 	@Unique
+	private boolean mythicrelics$hidden;
+	@Unique
 	private int mythicrelics$stoneStage;
 
 	@Override
@@ -34,6 +36,16 @@ public abstract class LivingEntityRenderStateMixin implements StoneLook {
 	@Override
 	public void mythicrelics$setFalcon(boolean falcon) {
 		mythicrelics$falcon = falcon;
+	}
+
+	@Override
+	public boolean mythicrelics$isHidden() {
+		return mythicrelics$hidden;
+	}
+
+	@Override
+	public void mythicrelics$setHidden(boolean hidden) {
+		mythicrelics$hidden = hidden;
 	}
 
 	@Override

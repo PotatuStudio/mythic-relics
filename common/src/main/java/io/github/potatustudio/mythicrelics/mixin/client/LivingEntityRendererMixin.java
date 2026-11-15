@@ -5,6 +5,8 @@ import io.github.potatustudio.mythicrelics.client.FalconForm;
 import io.github.potatustudio.mythicrelics.client.PetrifiedClient;
 import io.github.potatustudio.mythicrelics.client.StoneLook;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
+import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -32,6 +34,9 @@ public abstract class LivingEntityRendererMixin {
 		((StoneLook) state).mythicrelics$setStoneStage(PetrifiedClient.stage(entity));
 		((StoneLook) state).mythicrelics$setFalcon(entity instanceof Player player
 				&& NorseSagas.isFalconForm(player));
+		// Yelmo de Hades: invisible del todo, también la armadura, las reliquias puestas y lo que lleva en las manos.
+		((StoneLook) state).mythicrelics$setHidden(entity instanceof Player player && player.isInvisible()
+				&& WornRelics.isWearing(player, ModItems.HADES_HELM));
 	}
 
 	/** Manto de halcón: el jugador transformado se dibuja como el halcón (sin capa, armadura ni objetos). */
@@ -40,7 +45,8 @@ public abstract class LivingEntityRendererMixin {
 	private void mythicrelics$falconForm(LivingEntityRenderState state, PoseStack poseStack,
 			SubmitNodeCollector collector, CameraRenderState camera,
 			CallbackInfo ci) {
-		if (((StoneLook) state).mythicrelics$isFalcon() && FalconForm.submit(state, poseStack, collector)) {
+		if (((StoneLook) state).mythicrelics$isHidden()
+				|| ((StoneLook) state).mythicrelics$isFalcon() && FalconForm.submit(state, poseStack, collector)) {
 			ci.cancel();
 		}
 	}

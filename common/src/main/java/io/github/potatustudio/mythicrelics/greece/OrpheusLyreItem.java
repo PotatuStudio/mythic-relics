@@ -22,11 +22,35 @@ import net.minecraft.world.level.Level;
 
 /**
  * Lira de Orfeo: se toca manteniendo clic derecho. Mientras suena, los animales cercanos te siguen y los hostiles se
- * duermen (no se mueven ni atacan). Tocar ocupa las manos y frena, como tensar un arco: no se puede atacar a la vez.
+ * duermen (no se mueven ni atacan). Tocar ocupa las manos y frena un poco (no como tensar un arco: ver
+ * {@code use_effects} en ModItems). La melodía es el Epitafio de Seikilos (siglo I), la canción griega completa más
+ * antigua que se conserva, leída de la piedra: C=la, O=si, K=do♯, I=re, Z=mi, Φ=sol, X=fa♯, Ɔ=mi grave; sin marca
+ * dura un pulso, con raya dos y con raya y punto tres.
  */
 public class OrpheusLyreItem extends RelicItem {
 	private static final int USE_TICKS = 72000;
-	private static final float[] NOTES = {0.5f, 0.63f, 0.75f, 0.84f, 1.0f, 1.26f, 1.5f};
+	/** Notas del bloque musical (0 = fa♯3 … 24 = fa♯5): mi4 10, fa♯4 12, sol4 13, la4 15, si4 17, do♯5 19, re5 20, mi5 22. */
+	private static final int E4 = 10, FS = 12, G = 13, A = 15, B = 17, CS = 19, D = 20, E5 = 22;
+	/** Seikilos: (nota, pulsos). «Ὅσον ζῇς φαίνου, μηδὲν ὅλως σὺ λυποῦ· πρὸς ὀλίγον ἐστὶ τὸ ζῆν, τὸ τέλος ὁ χρόνος ἀπαιτεῖ.» */
+	private static final int[][] SEIKILOS = {
+			{A, 1}, {E5, 2}, {E5, 3}, {CS, 1}, {D, 1}, {E5, 1}, {D, 3}, {CS, 2}, {D, 1}, {E5, 1}, {D, 1}, {CS, 1},
+			{B, 1}, {A, 2}, {B, 1}, {G, 2},
+			{A, 3}, {CS, 1}, {E5, 1}, {D, 1}, {CS, 1}, {D, 1}, {CS, 1}, {A, 3}, {B, 1}, {G, 3},
+			{A, 2}, {CS, 1}, {B, 1}, {D, 1}, {E5, 1}, {CS, 2}, {A, 1}, {A, 2}, {A, 1}, {FS, 1}, {E4, 4}};
+	/** Ticks por pulso (un poco más de cinco notas por segundo, tranquilo). */
+	private static final int BEAT = 4;
+	/** Tick (dentro de la vuelta) en que empieza cada nota, y largo de la vuelta con un silencio al final. */
+	private static final int[] STARTS = new int[SEIKILOS.length];
+	private static final int LOOP;
+
+	static {
+		int t = 0;
+		for (int i = 0; i < SEIKILOS.length; i++) {
+			STARTS[i] = t;
+			t += SEIKILOS[i][1] * BEAT;
+		}
+		LOOP = t + 4 * BEAT;
+	}
 
 	public OrpheusLyreItem(Properties properties) {
 		super(properties);
@@ -54,10 +78,15 @@ public class OrpheusLyreItem extends RelicItem {
 			return;
 		}
 		int played = USE_TICKS - remaining;
-		if (played % 5 == 0) {
-			float pitch = NOTES[server.getRandom().nextInt(NOTES.length)];
-			RelicFx.sound(server, user, SoundEvents.NOTE_BLOCK_HARP.value(), 0.7f, pitch);
-			server.sendParticles(ParticleTypes.NOTE, user.getX(), user.getY() + 2.2, user.getZ(), 1, 0.4, 0.1, 0.4, 1.0);
+		int t = played % LOOP;
+		for (int i = 0; i < SEIKILOS.length; i++) {
+			if (STARTS[i] == t) {
+				int note = SEIKILOS[i][0];
+				RelicFx.sound(server, user, SoundEvents.NOTE_BLOCK_HARP.value(), 0.8f, (float) Math.pow(2.0, (note - 12) / 12.0));
+				// La partícula de nota toma su color del tono, como en el bloque musical.
+				server.sendParticles(ParticleTypes.NOTE, user.getX(), user.getY() + 2.2, user.getZ(), 0, note / 24.0, 0.0, 0.0, 1.0);
+				break;
+			}
 		}
 		if (played % 10 != 0) {
 			return;

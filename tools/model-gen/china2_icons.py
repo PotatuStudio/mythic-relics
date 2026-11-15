@@ -18,7 +18,7 @@ from moddata import ASSETS  # noqa: E402
 
 NS = "mythicrelics"
 HANDHELD = {"fire_tipped_spear", "erlang_halberd"}
-WORN = {"erlang_eye", "pixiu_bracelet"}
+WORN = {"erlang_eye", "pixiu_bracelet", "universe_ring"}
 PEACH = "immortal_peach_branch"
 
 

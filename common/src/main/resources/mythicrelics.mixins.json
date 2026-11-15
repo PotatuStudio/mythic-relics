@@ -5,9 +5,11 @@
 	"mixins": [
 		"BreakDoorGoalMixin",
 		"BrushableBlockEntityMixin",
+		"DisplayAccessor",
 		"DoorInteractGoalAccessor",
 		"FarmlandBlockMixin",
 		"FoxAccessor",
+		"ItemDisplayAccessor",
 		"LivingEntityMixin",
 		"MobMixin",
 		"PiglinAiMixin",

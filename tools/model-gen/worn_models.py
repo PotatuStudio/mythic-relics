@@ -820,6 +820,21 @@ def pixiu_bracelet():
     return e
 
 
+def universe_ring():
+    """Qiankun quan, el aro del universo de Nezha, en la muñeca: aro de oro macizo y grueso con dos filetes claros, la
+    franja grabada al frente y el lazo de seda roja (hun tian ling) anudado, con sus puntas que cuelgan. Más afuera y
+    más arriba que los guantes; comparte el espacio de anillo con la pulsera de pixiu (no se llevan juntos)."""
+    y0, y1 = 3.45, 5.0
+    e = ring(5.07, 10.93, y0, y1, 5.07, 10.93, 0.75, "gold", "aro")
+    e += ring(4.88, 11.12, y0 + 0.2, y0 + 0.5, 4.88, 11.12, 0.15, "gold_l", "filete de abajo")
+    e += ring(4.88, 11.12, y1 - 0.5, y1 - 0.2, 4.88, 11.12, 0.15, "gold_l", "filete de arriba")
+    e += [box([6.4, y0 + 0.6, 11.1], [9.6, y1 - 0.6, 11.25], "gold_d", "franja grabada"),
+          box([7.2, y0 + 0.55, 11.25], [8.8, y1 - 0.55, 11.35], "crest", "nudo de seda"),
+          box([7.4, y0 - 1.6, 11.12], [8.0, y0 + 0.55, 11.3], "crest", "punta de seda 1"),
+          box([8.1, y0 - 1.1, 11.12], [8.6, y0 + 0.55, 11.28], "crest_d", "punta de seda 2")]
+    return e
+
+
 def yasakani_magatama():
     """Yasakani no magatama, uno de los Tres Tesoros: un collar de cuentas de jade, oro y cristal que baja del cuello al
     pecho, con la gran magatama de jade al centro (cabeza redonda con su agujero y la cola curva) y dos magatamas chicas
@@ -1042,28 +1057,34 @@ def nemean_lion_skin():
 
 
 def freyr_sword():
-    """Espada de Freyr envainada (cinturón, compite con el escarabajo, Megingjörð y la piedra: usa los planos de
-    Megingjörð). Cinturón de cuero con tahalí y la vaina al frente de la cadera izquierda, por fuera del brazo: vaina de
-    cuero con abrazaderas de oro y runas, la guarda de oro con sus puntas, el puño envuelto y el pomo con la gema verde
-    (la espada del dios de la fertilidad)."""
-    e = ring(3.45, 12.55, 2.6, 3.6, 5.45, 10.55, 0.55, "leather", "cinturón")
-    e += [box([9.6, 1.8, 10.55], [10.6, 3.8, 10.85], "leather_d", "tahalí"),
-          box([10.4, -6.0, 10.6], [11.6, 2.4, 11.6], "leather", "vaina"),
-          box([10.3, -6.6, 10.5], [11.7, -6.0, 11.7], "gold", "contera"),
-          box([10.5, -7.1, 10.7], [11.5, -6.6, 11.5], "gold_d", "punta de la contera"),
-          box([10.3, 1.8, 10.5], [11.7, 2.4, 11.7], "gold", "boca de la vaina")]
-    for k, y in enumerate((-3.6, -1.0)):
-        e.append(box([10.32, y, 10.52], [11.68, y + 0.5, 11.68], "gold_d", f"abrazadera {k}"))
-    for k, y in enumerate((-5.2, -4.4, -2.6, -1.8, 0.2)):
-        e.append(box([10.8, y, 11.6], [11.2, y + 0.5, 11.68], "gold_l", f"runa {k}"))
-    e += [box([9.8, 2.4, 10.4], [12.2, 3.0, 11.8], "gold", "guarda"),
-          box([9.5, 2.5, 10.7], [9.8, 3.4, 11.5], "gold_l", "punta de la guarda der."),
-          box([12.2, 2.5, 10.7], [12.5, 3.4, 11.5], "gold_l", "punta de la guarda izq."),
-          box([10.6, 3.0, 10.8], [11.4, 5.0, 11.4], "leather_d", "puño"),
-          box([10.55, 3.4, 10.75], [11.45, 3.7, 11.45], "gold_d", "vuelta del puño 1"),
-          box([10.55, 4.2, 10.75], [11.45, 4.5, 11.45], "gold_d", "vuelta del puño 2"),
-          box([10.4, 5.0, 10.6], [11.6, 5.8, 11.6], "gold", "pomo"),
-          box([10.7, 5.2, 11.6], [11.3, 5.6, 11.7], "cobra_l", "gema del pomo")]
+    """Espada de Freyr envainada en la espalda (espacio de espalda: no se lleva junto a la égida, las alas de Ícaro, el
+    tambor de Raijin ni el manto de halcón). La vaina cruza la espalda en diagonal, de la cadera izquierda al hombro
+    derecho, con la empuñadura asomando sobre el hombro: de ahí sale y ahí vuelve. Vaina de cuero con abrazaderas y runas
+    de oro, la guarda con sus puntas, el puño envuelto y el pomo con la gema verde (la espada del dios de la
+    fertilidad); un tahalí la sujeta a los hombros. Todo detrás del cuerpo (z < 5,3), por fuera de las capas."""
+    pivot = [8.0, 8.8, 4.75]
+    rot = _rz(28)
+    parts = [([7.4, 2.4, 4.3], [8.6, 13.4, 5.2], "leather", "vaina"),
+             ([7.3, 1.8, 4.2], [8.7, 2.4, 5.25], "gold", "contera"),
+             ([7.5, 1.3, 4.35], [8.5, 1.8, 5.1], "gold_d", "punta de la contera"),
+             ([7.3, 13.4, 4.2], [8.7, 14.0, 5.25], "gold", "boca de la vaina"),
+             ([7.32, 5.0, 4.22], [8.68, 5.5, 5.23], "gold_d", "abrazadera 1"),
+             ([7.32, 9.6, 4.22], [8.68, 10.1, 5.23], "gold_d", "abrazadera 2"),
+             ([6.7, 14.0, 4.1], [9.3, 14.6, 5.3], "gold", "guarda"),
+             ([6.4, 14.1, 4.3], [6.7, 15.0, 5.1], "gold_l", "punta de la guarda der."),
+             ([9.3, 14.1, 4.3], [9.6, 15.0, 5.1], "gold_l", "punta de la guarda izq."),
+             ([7.6, 14.6, 4.4], [8.4, 16.6, 5.0], "leather_d", "puño"),
+             ([7.55, 15.0, 4.35], [8.45, 15.3, 5.05], "gold_d", "vuelta del puño 1"),
+             ([7.55, 15.8, 4.35], [8.45, 16.1, 5.05], "gold_d", "vuelta del puño 2"),
+             ([7.4, 16.6, 4.2], [8.6, 17.4, 5.2], "gold", "pomo"),
+             ([7.7, 16.8, 4.12], [8.3, 17.2, 4.2], "cobra_l", "gema del pomo")]
+    for k, y in enumerate((3.4, 6.2, 7.6, 11.0, 12.2)):
+        parts.append(([7.8, y, 4.22], [8.2, y + 0.5, 4.3], "gold_l", f"runa {k}"))
+    e = [turned(frm, to, color, name, pivot, rot) for frm, to, color, name in parts]
+    # Tahalí: correa por detrás de la vaina (cruza al revés) y sobre los hombros.
+    e.append(turned([7.6, 2.0, 5.22], [8.4, 15.0, 5.3], "leather_d", "tahalí", pivot, _rz(-35)))
+    e += [box([4.6, 14.02, 5.22], [5.6, 14.32, 10.5], "leather_d", "correa del hombro der."),
+          box([10.4, 14.02, 5.22], [11.4, 14.32, 10.5], "leather_d", "correa del hombro izq.")]
     return e
 
 
@@ -1143,6 +1164,7 @@ WORN = {
     # China, tanda 2
     "erlang_eye": (lambda: model(erlang_eye()), [attach("head", "erlang_eye")]),
     "pixiu_bracelet": (lambda: model(pixiu_bracelet()), both_hands("ring", "pixiu_bracelet", (0, -1, 0))),
+    "universe_ring": (lambda: model(universe_ring()), both_hands("ring", "universe_ring", (0, -1, 0))),
     # Japón
     "yasakani_magatama": (lambda: model(yasakani_magatama()), [attach("body", "yasakani_magatama")]),
     "raijin_drum": (lambda: model(raijin_drum()), [attach("body", "raijin_drum")]),

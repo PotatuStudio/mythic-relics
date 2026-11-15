@@ -17,7 +17,7 @@ Los dragones chinos (long) no tienen alas ni escupen fuego: vuelan entre las nub
 | ![](img/change_elixir.png) | [Elixir de Chang'e](#change-elixir) | mano | épica | Ciudades del End: 3 % por cofre |
 | ![](img/five_color_stone.png) | [Piedra de cinco colores](#five-color-stone) | cinturón | rara | Arena y grava sospechosas comunes de ruinas de los senderos: 1 % por bloque cepillado |
 | ![](img/fire_tipped_spear.png) | [Lanza de punta de fuego](#fire-tipped-spear) | mano (arma) | épica | Bastiones: 3 % por cofre |
-| ![](img/universe_ring.png) | [Aro del Universo](#universe-ring) | mano | épica | Recompensas de cámaras de desafío: 3 % por cofre |
+| ![](img/universe_ring.png) | [Aro del Universo](#universe-ring) | anillo | épica | Recompensas de cámaras de desafío: 3 % por cofre |
 | ![](img/erlang_eye.png) | [Ojo de Erlang Shen](#erlang-eye) | cara | épica | Ciudades del End: 3 % por cofre |
 | ![](img/erlang_halberd.png) | [Alabarda de tres puntas](#erlang-halberd) | mano (arma) | épica | Mansiones del bosque: 4 % por cofre |
 | ![](img/qilin_horn.png) | [Cuerno del qilin](#qilin-horn) | mano | épica | Templos de aldea: 3 % por cofre |
@@ -190,10 +190,10 @@ Una de las que sobraron es la piedra de «Sueño en el pabellón rojo».
 
 <img src="img/universe_ring.png" width="64" alt="">
 
-**Espacio:** mano · **Rareza:** épica
+**Espacio:** anillo · **Rareza:** épica
 
-- Clic derecho: lanzas el aro, golpea hasta 3 enemigos a 8 bloques y vuelve
-- 12 de daño a cada uno y los deja aturdidos 1 s
+- Va en la muñeca. Tecla del aro (R por defecto, en Controles): lo lanzas y golpea hasta 3 enemigos a 8 bloques
+- 12 de daño a cada uno, los deja aturdidos 1 s y vuelve a tu muñeca
 - Recarga: 4 s
 
 **Mito.** El qiankun quan, el aro de oro con que nació Nezha. Lo lanzaba como un arma y volvía a su mano; con él mató al hijo del Rey Dragón del Mar del Este.
@@ -207,10 +207,10 @@ Una de las que sobraron es la piedra de «Sueño en el pabellón rojo».
 
 **Espacio:** cara · **Rareza:** épica
 
-- Los invisibles brillan para ti
-- Los hostiles a 16 bloques brillan, también a través de las paredes
+- Los invisibles a 16 bloques brillan para ti
+- El tercer ojo detiene flechas, bolas de fuego y tridentes que te apuntan (uno cada 1 s)
 
-*Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas)* Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s)
+*Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas)* Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s) +30 % de daño con la alabarda
 
 **Mito.** Erlang Shen, el único dios que venció al Rey Mono, tenía un tercer ojo en la frente que veía a través de cualquier disfraz.  
 Así descubrió a Wukong aunque se transformara en templo, pez o pájaro.
@@ -226,7 +226,7 @@ Así descubrió a Wukong aunque se transformara en templo, pez o pájaro.
 
 - 1 bloque más de alcance; cada golpe barre a los mobs a 2 bloques
 
-*Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas)* Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s)
+*Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas)* Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s) +30 % de daño con la alabarda
 
 **Mito.** El arma de Erlang Shen, la sanjian liangren dao: una alabarda de tres puntas y doble filo con la que peleó trescientos asaltos contra el Rey Mono.  
 Su perro, el Xiaotian Quan, le mordió la pierna a Wukong para que Erlang lo atrapara.
@@ -272,7 +272,7 @@ Por eso en China se llevan pulseras de jade con un pixiu para atraer la riqueza 
 
 **Espacio:** mano · **Rareza:** rara
 
-- Clic derecho a un no-muerto: le pegas un talismán y queda inmóvil 8 s
+- Clic derecho a un no-muerto: le pegas un talismán en la frente y queda inmóvil 8 s
 - Recarga: 15 s
 
 **Mito.** Los fu, talismanes de papel amarillo escritos con tinta bermellón por los sacerdotes taoístas.  
@@ -311,6 +311,6 @@ El Rey Mono, puesto a cuidarlos, se los comió casi todos.
 
 ## Set de Erlang Shen
 
-Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas) Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s)
+Set de Erlang Shen (Ojo de Erlang Shen, Alabarda de tres puntas) Cuando un mob te hiere, aparece el Perro Celestial durante 45 s (recarga 90 s) +30 % de daño con la alabarda
 
 **Mito.** Erlang Shen, el dios del tercer ojo, cazaba demonios con su alabarda de tres puntas y tres filos, siempre con su fiel Perro Celestial a su lado.

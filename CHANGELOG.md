@@ -22,6 +22,12 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
 
 - Arte: alas de Ícaro nuevas y más detalle en las 25 reliquias puestas de Egipto, Roma, nórdicos, China y Japón.
 
+- Quinta ronda: dardo de muérdago sin recarga y 16 de daño; Medusa a 8 bloques; lira con el Epitafio de Seikilos y
+  frenado leve; yelmo de Hades oculta todo y acelera agachado; Gram pasiva (estocada cada 2 golpes); Gleipnir ata
+  15 s con +40 % de daño recibido; talismán fu visible en la frente; aro del universo como brazalete que se lanza
+  con su tecla; ojo de Erlang desvía proyectiles; espada de Freyr en la espalda; doble salto que avisa que no se
+  acumula; +30 % al arma de cada set; armas reliquia sin reparación ni encantamientos.
+
 ### Fixed
 - Escudo de Aquiles y Ancile en primera persona: al bloquear ya no desaparecen de la pantalla, y el de Aquiles se
   ve a la misma altura que el escudo vanilla.

@@ -1,13 +1,19 @@
 package io.github.potatustudio.mythicrelics.china;
 
+import com.mojang.math.Transformation;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
+import dev.architectury.networking.NetworkManager;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.greece.CharonStash;
 import io.github.potatustudio.mythicrelics.minion.Minions;
+import io.github.potatustudio.mythicrelics.mixin.DisplayAccessor;
+import io.github.potatustudio.mythicrelics.mixin.ItemDisplayAccessor;
+import io.github.potatustudio.mythicrelics.network.RingPayload;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
@@ -23,6 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,7 +45,10 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -48,12 +58,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 /**
  * Segunda tanda china (diseño aprobado el 2026-11-10): Nezha (lanza y aro), Erlang Shen (ojo, alabarda y su Perro
@@ -78,7 +93,14 @@ public final class ChinaGods {
 	public static final int RING_STUN_TICKS = 20;
 	public static final int RING_COOLDOWN = 80;
 
+
 	public static final int ERLANG_SIGHT_RADIUS = 16;
+	/** El tercer ojo detiene un proyectil que te apunta cada tanto (ticks). */
+	public static final int ERLANG_DEFLECT_COOLDOWN = 20;
+	/** Distancia a la que el ojo ve venir el proyectil. */
+	private static final double ERLANG_DEFLECT_RADIUS = 5.0;
+	/** Último desvío de cada jugador (tick del juego). */
+	private static final Map<UUID, Long> ERLANG_DEFLECTED = new HashMap<>();
 	public static final float HALBERD_REACH = 1.0f;
 	public static final int HALBERD_SWEEP_RADIUS = 2;
 	public static final float HALBERD_SWEEP_DAMAGE = 4.0f;
@@ -111,6 +133,9 @@ public final class ChinaGods {
 			Items.RAW_GOLD_BLOCK, Items.EMERALD, Items.EMERALD_BLOCK, Items.DIAMOND, Items.DIAMOND_BLOCK);
 	/** No-muerto con un talismán pegado -> tick del juego en que se despega. */
 	private static final Map<UUID, Long> SEALED = new HashMap<>();
+	/** El papel pegado en la frente de cada no-muerto sellado (una entidad de visualización de ítem). */
+	private static final Map<UUID, UUID> TALISMAN_PAPER = new HashMap<>();
+	private static final String PAPER_TAG = MythicRelics.MOD_ID + ".talisman_paper";
 
 	private ChinaGods() {
 	}
@@ -120,6 +145,12 @@ public final class ChinaGods {
 		EntityEvent.LIVING_HURT.register(ChinaGods::onHurt);
 		EntityEvent.LIVING_DEATH.register(ChinaGods::onDeath);
 		EntityEvent.ADD.register(ChinaGods::onEntityAdded);
+		NetworkManager.registerReceiver(NetworkManager.c2s(), RingPayload.TYPE, RingPayload.CODEC,
+				(payload, context) -> context.queue(() -> {
+					if (context.getPlayer() instanceof ServerPlayer player) {
+						UniverseRingItem.throwRing(player);
+					}
+				}));
 	}
 
 	/** Nezha completo: la llamarada de la lanza recarga a la mitad con las ruedas puestas. */
@@ -171,6 +202,34 @@ public final class ChinaGods {
 		mob.setNoAi(true);
 		mob.addTag(TALISMAN_TAG);
 		SEALED.put(mob.getUUID(), level.getGameTime() + TALISMAN_TICKS);
+		Display.ItemDisplay paper = EntityTypes.ITEM_DISPLAY.create(level, EntitySpawnReason.TRIGGERED);
+		if (paper != null) {
+			ItemStack stack = new ItemStack(ModItems.FU_TALISMANS.get());
+			stack.set(DataComponents.ITEM_MODEL, MythicRelics.id("talisman_seal"));
+			((ItemDisplayAccessor) paper).mythicrelics$setItemStack(stack);
+			((ItemDisplayAccessor) paper).mythicrelics$setItemTransform(ItemDisplayContext.FIXED);
+			float size = 0.55f * Math.clamp(mob.getBbWidth() / 0.6f, 0.6f, 2.0f);
+			((DisplayAccessor) paper).mythicrelics$setTransformation(new Transformation(new Vector3f(), new Quaternionf(), new Vector3f(size, size, size), new Quaternionf()));
+			((DisplayAccessor) paper).mythicrelics$setPosRotInterpolationDuration(2);
+			paper.addTag(PAPER_TAG);
+			placePaper(paper, mob);
+			level.addFreshEntity(paper);
+			TALISMAN_PAPER.put(mob.getUUID(), paper.getUUID());
+		}
+	}
+
+	/** El papel en la frente: delante de la cara, a la altura de los ojos, mirando hacia donde mira la cabeza. */
+	private static void placePaper(Display.ItemDisplay paper, Mob mob) {
+		Vec3 look = Vec3.directionFromRotation(0, mob.getYHeadRot());
+		Vec3 at = new Vec3(mob.getX(), mob.getEyeY() + 0.12, mob.getZ()).add(look.scale(mob.getBbWidth() * 0.5 + 0.04));
+		paper.snapTo(at.x, at.y, at.z, mob.getYHeadRot(), 0.0f);
+	}
+
+	private static void removePaper(ServerLevel level, UUID mob) {
+		UUID id = TALISMAN_PAPER.remove(mob);
+		if (id != null && level.getEntity(id) instanceof Display.ItemDisplay paper) {
+			paper.discard();
+		}
 	}
 
 	private static void unseal(Mob mob) {
@@ -179,6 +238,12 @@ public final class ChinaGods {
 	}
 
 	private static EventResult onEntityAdded(Entity entity, Level level) {
+		// Papeles que quedaron de una sesión anterior (el talismán ya no está): se quitan.
+		if (!level.isClientSide() && entity instanceof Display.ItemDisplay paper && paper.entityTags().contains(PAPER_TAG)
+				&& !TALISMAN_PAPER.containsValue(paper.getUUID())) {
+			paper.discard();
+			return EventResult.pass();
+		}
 		// Si el servidor se cerró con un talismán pegado, al cargarlo se despega.
 		if (!level.isClientSide() && entity instanceof Mob mob && mob.entityTags().contains(TALISMAN_TAG) && !SEALED.containsKey(mob.getUUID())) {
 			unseal(mob);
@@ -242,9 +307,16 @@ public final class ChinaGods {
 				if (level.getEntity(e.getKey()) instanceof Mob mob) {
 					if (expired || !mob.isAlive()) {
 						unseal(mob);
+						removePaper(level, mob.getUUID());
 						level.sendParticles(ParticleTypes.ASH, mob.getX(), mob.getEyeY(), mob.getZ(), 10, 0.2, 0.2, 0.2, 0.02);
-					} else if (now % 10 == 0) {
-						level.sendParticles(ParticleTypes.WAX_ON, mob.getX(), mob.getEyeY() + 0.2, mob.getZ(), 1, 0.1, 0.1, 0.1, 0.0);
+					} else {
+						UUID id = TALISMAN_PAPER.get(mob.getUUID());
+						if (id != null && level.getEntity(id) instanceof Display.ItemDisplay paper) {
+							placePaper(paper, mob);
+						}
+						if (now % 10 == 0) {
+							level.sendParticles(ParticleTypes.WAX_ON, mob.getX(), mob.getEyeY() + 0.2, mob.getZ(), 1, 0.1, 0.1, 0.1, 0.0);
+						}
 					}
 					break;
 				}
@@ -263,17 +335,53 @@ public final class ChinaGods {
 			}
 			setModifier(player, Attributes.ENTITY_INTERACTION_RANGE, HALBERD_REACH_ID,
 					player.getMainHandItem().is(ModItems.ERLANG_HALBERD.get()) ? HALBERD_REACH : 0);
-			if (player.tickCount % 10 == 0 && WornRelics.isWearing(player, ModItems.ERLANG_EYE)) {
-				erlangSight(player);
+			if (WornRelics.isWearing(player, ModItems.ERLANG_EYE)) {
+				if (player.tickCount % 10 == 0) {
+					erlangSight(player);
+				}
+				erlangDeflect(player);
 			}
 		}
 	}
 
-	/** Ojo de Erlang Shen: nada se esconde. Los hostiles cercanos y los invisibles brillan (también tras las paredes). */
+	/** Ojo de Erlang Shen: nada se esconde. Los invisibles cercanos brillan (también tras las paredes). */
 	private static void erlangSight(ServerPlayer player) {
 		for (LivingEntity e : player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(ERLANG_SIGHT_RADIUS),
-				e -> e != player && e.isAlive() && (e instanceof Enemy || e.isInvisible()))) {
+				e -> e != player && e.isAlive() && e.isInvisible())) {
 			e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 25, 0, false, false));
+		}
+	}
+
+	/**
+	 * Ojo de Erlang Shen: el tercer ojo ve venir lo que te lanzan. Una flecha, bola de fuego, tridente o lo que sea que
+	 * venga hacia ti se detiene en el aire con un destello dorado y cae (las bolas de fuego se deshacen). Uno cada
+	 * {@link #ERLANG_DEFLECT_COOLDOWN} ticks; no detiene los de tus aliados ni los tuyos.
+	 */
+	private static void erlangDeflect(ServerPlayer player) {
+		long now = player.level().getGameTime();
+		Long last = ERLANG_DEFLECTED.get(player.getUUID());
+		if (last != null && now - last < ERLANG_DEFLECT_COOLDOWN) {
+			return;
+		}
+		ServerLevel level = player.level();
+		Vec3 center = player.getBoundingBox().getCenter();
+		for (Projectile p : level.getEntitiesOfClass(Projectile.class, player.getBoundingBox().inflate(ERLANG_DEFLECT_RADIUS),
+				p -> p.isAlive() && p.getOwner() != player && !(p.getOwner() != null && Allies.isFriend(player, p.getOwner())))) {
+			Vec3 v = p.getDeltaMovement();
+			if (v.lengthSqr() < 0.04 || v.dot(center.subtract(p.position())) <= 0) {
+				continue;
+			}
+			level.sendParticles(ParticleTypes.END_ROD, p.getX(), p.getY(), p.getZ(), 12, 0.15, 0.15, 0.15, 0.08);
+			level.sendParticles(ParticleTypes.WAX_OFF, p.getX(), p.getY(), p.getZ(), 6, 0.2, 0.2, 0.2, 0.0);
+			RelicFx.sound(level, p, SoundEvents.AMETHYST_BLOCK_CHIME, 1.2f, 1.6f);
+			if (p instanceof AbstractHurtingProjectile) {
+				p.discard();
+			} else {
+				p.setDeltaMovement(0.0, -0.05, 0.0);
+				p.needsSync = true;
+			}
+			ERLANG_DEFLECTED.put(player.getUUID(), now);
+			return;
 		}
 	}
 
@@ -297,7 +405,7 @@ public final class ChinaGods {
 		TooltipArgs.register("fire_tipped_spear", SPEAR_BURN_SECONDS, SPEAR_FLAME_RANGE, (int) SPEAR_FLAME_DAMAGE, SPEAR_COOLDOWN / 20,
 				SPEAR_WHEELS_COOLDOWN / 20);
 		TooltipArgs.register("universe_ring", RING_TARGETS, RING_RANGE, (int) RING_DAMAGE, RING_STUN_TICKS / 20, RING_COOLDOWN / 20);
-		TooltipArgs.register("erlang_eye", ERLANG_SIGHT_RADIUS);
+		TooltipArgs.register("erlang_eye", ERLANG_SIGHT_RADIUS, ERLANG_DEFLECT_COOLDOWN / 20);
 		TooltipArgs.register("erlang_halberd", (int) HALBERD_REACH, HALBERD_SWEEP_RADIUS, DOG_TICKS / 20, DOG_COOLDOWN / 20);
 		TooltipArgs.register("qilin_horn", QILIN_AURA_RADIUS, QILIN_LEAVE_TICKS / 20, QILIN_COOLDOWN / 20 / 60);
 		TooltipArgs.register("pixiu_bracelet", Math.round(PIXIU_CHANCE * 100), PIXIU_MAX_NUGGETS);
@@ -308,7 +416,8 @@ public final class ChinaGods {
 
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
-		ServerState.perPlayer(SAFE_GROUND);
+		ServerState.perPlayer(SAFE_GROUND, ERLANG_DEFLECTED);
 		ServerState.clearOnStop(SEALED);
+		ServerState.clearOnStop(TALISMAN_PAPER);
 	}
 }
