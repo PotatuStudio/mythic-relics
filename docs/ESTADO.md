@@ -20,7 +20,22 @@ Rama de trabajo: `main`. Todo lo de esta sesión está subido. Hecho, en orden:
 - Revisión de la mitología china con fuentes: https://claude.ai/artifact/Q5Pv7o7DFL3DzuyXknshcM. Tras leerla, el
   usuario **borró Japón entero y 9 reliquias chinas** (ver «Reliquias borradas»).
 
-**Sexta ronda (2026-11-15)**: ver CHANGELOG. Ra y el hinojo de Prometeo ya quedaron rediseñados con el usuario.
+**Sesión del 2026-11-15 (rondas 6 a 9, ver CHANGELOG)**: arreglos de reliquias (Ra, hinojo, égida como escudo,
+Medusa animada, alas de Ícaro con 95 poses suavizadas, Mjölnir pico y pala); los 10 compañeros con modelo nuevo y
+animaciones (diseños en `tools/model-gen/proposals/`, comparación en `companions_compare.py`); visor general con vitrina
+«En la mano» y animaciones; Sodium, Iris, LambDynamicLights y shaders Complementary en desarrollo (en NeoForge, Sodium
+0.9.3-beta.3: la 0.9.2 crashea). Todo subido a GitHub (el usuario prueba en otro PC: push siempre).
+
+**Para retomar:**
+1. Que el usuario pruebe en el juego lo de esta sesión: luz del hinojo con LambDynamicLights (Fabric), sonido de Mjölnir
+   al clavarse, alas de Ícaro, alas plegadas de Pegaso, cuervos (parpadeo y distancia), espada de Freyr cada 2,6 s, y
+   montar el Long y Sleipnir (altura del jinete).
+2. Publicar en CurseForge y Modrinth: el usuario crea los proyectos; ofrecer `mod-publish-plugin` (Gradle) con tokens en
+   variables de entorno. Dependencias requeridas: Architectury API y Modonomicon; Fabric API y Trinkets Updated
+   (Fabric); Curios (NeoForge). Revisar a mano que el nombre esté libre en CurseForge.
+3. Evaluar un port a 1.21.1 (NeoForge + Fabric): es donde están los modpacks grandes. Costo alto: no tiene las
+   definiciones de ítem (`items/*.json`) ni el render state de entidades.
+4. Pendientes de antes: mejoras de las 9 reliquias chinas y la tanda Chile/mapuche.
 
 **Siguiente:**
 1. El usuario prueba en NeoForge (Curios): las reliquias puestas con el arte nuevo, la espada de Freyr en la espalda, el
