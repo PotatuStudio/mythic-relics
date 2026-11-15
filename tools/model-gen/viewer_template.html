@@ -490,7 +490,7 @@ const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.01, 100);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.minDistance = 0.3;
-controls.maxDistance = 8;
+controls.maxDistance = 14;
 scene.add(new THREE.AmbientLight(0xffffff, 0.55));
 const sun = new THREE.DirectionalLight(0xfff1d6, 0.75);
 sun.position.set(-2, 4, 3);
@@ -608,13 +608,16 @@ function chinaEntity(key) {
   const m = new THREE.MeshLambertMaterial({ map: texFromB64(e.tex), side: THREE.DoubleSide, alphaTest: 0.1,
     emissiveMap: texFromB64(e.glow), emissive: new THREE.Color(0xffffff) });
   const ent = entityRoot();
-  const parts = {};
+  const parts = {}, all = [];
   for (const p of e.parts) {
     const off = p.parent ? p.offset : p.offset.map((v, i) => v + e.rootOffset[i]);
     parts[p.name] = part(p.parent ? parts[p.parent] : ent.root, m, off, p.rot, p.cubes.map(c => [...c, false]), e.texH, e.texW);
     parts[p.name].name = p.name;
+    parts[p.name].userData.bpos = parts[p.name].position.clone();
+    all.push(parts[p.name]);
   }
   ent.parts = parts;
+  ent.all = all;
   if (e.scale) ent.entity.scale.setScalar(e.scale);
   return ent;
 }
@@ -807,112 +810,418 @@ function applyCultureTo3d() {
   else renderStageText();
 }
 
-/* Animación de marcha (setupAnim de cada modelo) */
+/* Animación de los compañeros: copia de setupAnim de cada modelo Java (client/entity/*Model.java). Como en el juego,
+   cada cuadro devuelve todas las partes a su pose de reposo (resetPose) y luego suma los desfases. Los estados que en el
+   juego llegan del renderer (furia, mordida, élitros, aterrizaje, plegado, vuelo, golpe, abrazo) se simulan con ciclos. */
 let walkPos = 0, walkSpeed = 0;
+const PI = Math.PI;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const smooth = x => { const c = clamp(x, 0, 1); return c * c * (3 - 2 * c); };
+const frac = x => x - Math.floor(x);
+const lerp = (k, a, b) => a + (b - a) * k;
+/** lift de Cerbero, chacal y escarabajo: 0 mientras apoya y seno al cuadrado mientras avanza. */
+const liftPos = ph => { const s = Math.sin(ph); return s > 0 ? s * s : 0; };
+/** lift de Pegaso y Sleipnir: (0,5 + 0,5·sin)². */
+const liftHalf = ph => { const s = 0.5 + 0.5 * Math.sin(ph); return s * s; };
+/** Suma giros (como xRot += ...) sobre lo que ya tenga la parte. */
+function R(p, dx = 0, dy = 0, dz = 0) { p.rotation.x += dx; p.rotation.y += dy; p.rotation.z += dz; }
+function resetPose(ent) {
+  for (const p of ent.all) { const b = p.userData.base; p.rotation.set(b[0], b[1], b[2]); p.position.copy(p.userData.bpos); p.scale.set(1, 1, 1); }
+}
+const child = (p, name) => p.children.find(c => c.name === name);
+/** CerberusRenderer.approach: amortiguado exponencial por tick hacia el objetivo. */
+const EASED = {};
+function approach(key, target, rate, now) {
+  const m = EASED[key] || (EASED[key] = { v: target, t: now });
+  const dt = clamp(now - m.t, 0, 10); m.t = now;
+  m.v += (target - m.v) * (1 - Math.exp(-rate * dt));
+  return m.v;
+}
+/** getSwingAnimation: 0 → 1 en los 6 ticks del golpe vanilla (0 fuera del golpe). */
+function swingAt(c, starts) { for (const s of starts) if (c >= s && c < s + 6) return (c - s) / 6; return 0; }
+const bump = (t, from, span) => { const u = clamp((t - from) / span, 0, 1); const s = Math.sin(u * PI); return s * s; };
+
+function animCerberus(age, speed, pos) {
+  resetPose(cerberus);
+  const P = cerberus.parts;
+  // Ciclo de 12 s: tranquilo, se enfurece (isAggressive) y muerde tres veces (MeleeAttackGoal, cada 20 ticks).
+  const c = age % 240;
+  const fury = approach("cerberus.fury", c >= 60 && c < 200 ? 1 : 0, 0.15, age);
+  const swing = swingAt(c, [100, 120, 140]);
+  const w = pos * 0.6662;
+  const trotFront = (up, low, ph) => { R(up, Math.cos(ph) * 0.8 * speed); R(low, liftPos(ph - 0.4) * 0.75 * speed); };
+  const trotHind = (th, low, foot, ph) => { R(th, Math.cos(ph) * 0.7 * speed); R(low, liftPos(ph - 0.3) * 0.45 * speed); R(foot, liftPos(ph - 0.6) * 0.4 * speed); };
+  trotFront(P.left_front_leg, P.left_front_leg_lower, w);
+  trotFront(P.right_front_leg, P.right_front_leg_lower, w + PI);
+  trotHind(P.left_hind_leg, P.left_hind_leg_lower, P.left_hind_leg_foot, w + PI);
+  trotHind(P.right_hind_leg, P.right_hind_leg_lower, P.right_hind_leg_foot, w);
+  const nod = Math.cos(w * 2) * 0.04 * speed;
+  const names = ["head", "left_head", "right_head"];
+  for (let i = 0; i < 3; i++) {
+    const lunge = bump(swing, i * 0.12, 0.7), head = P[names[i]];
+    if (i === 0) R(head, nod + lunge * 0.3);
+    else {
+      const side = i === 1 ? 1 : -1, t = age * (i === 1 ? 0.071 : 0.083) + i * 1.7;
+      R(head, Math.sin(t) * 0.08 + nod + lunge * 0.3, Math.sin(t * 0.8 + 0.6) * 0.1 - side * lunge * 0.12, Math.sin(t * 0.6) * 0.05);
+    }
+    const growl = 0.5 - 0.5 * Math.cos(age * 0.19 + i * 2.1);
+    const tremble = Math.sin(age * 1.1 + i * 1.3) * 0.025 * growl;
+    R(cJaws[i], -0.18 + growl * 0.3 + tremble + fury * 0.15 + lunge * 0.55);
+    const flat = Math.min(0.4, fury * 0.3 + lunge * 0.2);
+    const twL = Math.sin(age * 0.13 + i * 2.3) * 0.06, twR = Math.sin(age * 0.11 + i * 1.7 + 1) * 0.06;
+    R(child(head, names[i] + "_ear_l"), -flat + twL, 0, flat * 0.4);
+    R(child(head, names[i] + "_ear_r"), -flat + twR, 0, -flat * 0.4);
+  }
+  const tail = [P.tail, P.tail_mid, P.tail_tip, P.tail_end], amp = [0.16, 0.22, 0.28, 0.34];
+  const tailTime = age * (0.11 + 0.08 * speed);
+  for (let i = 0; i < 4; i++) { const ph = tailTime - i * 0.9; R(tail[i], Math.sin(ph * 0.7 + 0.5) * 0.05, Math.sin(ph) * amp[i]); }
+  R(tail[0], fury * 0.25); R(tail[3], -fury * 0.2);
+  P.mane.scale.y += fury * 0.3;
+  R(P.ruff_tuft_l, 0, 0, -fury * 0.25); R(P.ruff_tuft_r, 0, 0, fury * 0.25);
+}
+
+function animJackal(age, speed, pos) {
+  resetPose(jackal);
+  const P = jackal.parts;
+  // Ciclo de 10 s: se pone en guardia (furia) y muerde dos veces.
+  const c = age % 200;
+  const fury = approach("jackal.fury", c >= 50 && c < 160 ? 1 : 0, 0.15, age);
+  const swing = swingAt(c, [90, 110]);
+  const bs = Math.sin(swing * PI), bite = bs * bs, w = pos * 0.6662;
+  R(P.left_front_leg, Math.cos(w) * 0.9 * speed); R(P.left_front_leg_lower, liftPos(w - 0.4) * 0.8 * speed);
+  R(P.right_front_leg, Math.cos(w + PI) * 0.9 * speed); R(P.right_front_leg_lower, liftPos(w + PI - 0.4) * 0.8 * speed);
+  const hind = (th, low, foot, ph) => { R(th, Math.cos(ph) * 0.8 * speed); R(low, liftPos(ph - 0.3) * 0.5 * speed); R(foot, liftPos(ph - 0.6) * 0.45 * speed); };
+  hind(P.left_hind_leg, P.left_hind_leg_lower, P.left_hind_leg_foot, w + PI);
+  hind(P.right_hind_leg, P.right_hind_leg_lower, P.right_hind_leg_foot, w);
+  R(P.head, Math.cos(w * 2) * 0.05 * speed + bite * 0.35);
+  const pant = (0.5 + 0.5 * Math.sin(age * 0.55)) * 0.12 * speed;
+  R(P.jaw, pant + fury * 0.1 + bite * 0.7);
+  const listenL = Math.sin(age * 0.045) * Math.sin(age * 0.031 + 1.3);
+  const listenR = Math.sin(age * 0.041 + 2.2) * Math.sin(age * 0.027 + 0.4);
+  const back = Math.min(0.6, fury * 0.45 + bite * 0.25), calm = 1 - Math.min(1, fury);
+  R(P.left_ear, -back, listenL * 0.45 * calm, back * 0.3);
+  R(P.right_ear, -back, -listenR * 0.45 * calm, -back * 0.3);
+  const wag = speed * 0.22 + 0.05, wagTime = w + age * 0.06, raise = fury * 0.6 + bite * 0.2;
+  const tail = [P.tail, P.tail_mid, P.tail_tip];
+  for (let i = 0; i < 3; i++) {
+    const a = Math.sin(wagTime - i * 0.8) * wag * (1 + i * 0.35);
+    if (i === 0) R(tail[i], raise, -a, a); else R(tail[i], raise * 0.15, 0, a);
+  }
+}
+
+function animScarab(age, speed, pos) {
+  resetPose(scarab);
+  const P = scarab.parts;
+  // Ciclo de 8 s: se pone alerta y abre los élitros como al saltar o atacar (se abren en ~3 ticks y cierran en ~8).
+  const c = age % 160;
+  const target = c >= 70 && c < 110 ? 1 : 0;
+  const cur = EASED["scarab.elytra"] ? EASED["scarab.elytra"].v : 0;
+  const open = approach("scarab.elytra", target, target > cur ? 0.5 : 0.2, age);
+  const alert = approach("scarab.alert", c >= 40 && c < 130 ? 1 : 0, 0.15, age);
+  const w = pos * 1.3;
+  const stepLeg = (femur, tibia, ph, side) => {
+    R(femur, 0, side * Math.cos(ph) * 0.35 * speed, -side * liftPos(0.3 - ph) * 0.3 * speed);
+    R(tibia, 0, 0, side * liftPos(0.6 - ph) * 0.35 * speed);
+  };
+  for (let i = 0; i < 3; i++) {
+    const pl = w + (i % 2 === 0 ? 0 : PI);
+    stepLeg(P["left_leg" + i], P["left_leg" + i + "_tibia"], pl, 1);
+    stepLeg(P["right_leg" + i], P["right_leg" + i + "_tibia"], pl + PI, -1);
+  }
+  const breath = 0.5 - 0.5 * Math.cos(age * 0.06);
+  const fan = Math.min(1, 0.2 + breath * 0.35 + alert * 0.5 + speed * 0.15);
+  ["left_antenna", "right_antenna"].forEach((n, a) => {
+    const side = a === 0 ? 1 : -1, t = age * 0.1 + a * 1.9;
+    R(P[n], Math.sin(t) * 0.08 - alert * 0.12, side * Math.sin(t * 0.8 + 0.5) * 0.1);
+    R(P[n + "_lamella0"], -fan * 0.45); R(P[n + "_lamella2"], fan * 0.45);
+    for (let j = 0; j < 3; j++) R(P[n + "_lamella" + j], 0, side * Math.sin(t * 0.8 - 0.7 - j * 0.15) * 0.08);
+  });
+  const hinge = (el, side, zRot, xRot) => {
+    const hx = side * 6, hy = -0.5, hz = -6;
+    const cx = Math.cos(xRot), sx = Math.sin(xRot), y1 = hy * cx - hz * sx, z1 = hy * sx + hz * cx;
+    const cz = Math.cos(zRot), sz = Math.sin(zRot), x2 = hx * cz - y1 * sz, y2 = hx * sz + y1 * cz;
+    el.position.x += hx - x2; el.position.y += hy - y2; el.position.z += hz - z1;
+    R(el, xRot, 0, zRot);
+  };
+  if (open > 0.001) {
+    const flutter = Math.sin(age * 0.9) * 0.04 * open;
+    hinge(P.left_elytron, 1, open * 0.8 + flutter, open * 0.3);
+    hinge(P.right_elytron, -1, -(open * 0.8 + flutter), open * 0.3);
+  }
+  const seam = clamp(1 - open * 3, 0, 1);
+  P.suture.scale.set(seam, seam, seam);
+  P.suture.visible = seam > 0.001;
+  const beat = 0.5 + 0.5 * Math.sin(age * 0.12), pulse = 1 + beat * beat * 0.07;
+  P.sun.scale.set(pulse, pulse, 1);
+}
+
+function animSleipnir(age, speed, pos) {
+  resetPose(sleipnir);
+  const P = sleipnir.parts;
+  // AbstractEquineModel (vanilla, sin encabritarse ni comer): cabeceo al trotar, patas de los extremos y cola.
+  if (speed > 0.2) R(P.head_parts, Math.cos(pos * 0.8) * 0.15 * speed);
+  const legAnim1 = Math.cos(pos * 0.6662 + PI), legX = legAnim1 * 0.8 * speed;
+  R(P.left_front_leg, legX); R(P.right_front_leg, -legX);
+  R(P.left_hind_leg, -legAnim1 * 0.5 * speed); R(P.right_hind_leg, legAnim1 * 0.5 * speed);
+  R(P.tail, speed * 0.75); P.tail.position.y += speed; P.tail.position.z += speed * 2;
+  // SleipnirModel: patas del medio a destiempo (onda de adelante hacia atrás), cañas, cola trenzada y crin.
+  const wp = pos * 0.6662;
+  const gallop = smooth((speed - 0.3) / 0.5), lag = PI / 2 + 0.5 * gallop;
+  const pLF = wp + PI, pRF = wp, pLH = wp, pRH = wp + PI;
+  const pLFM = pLF - lag, pRFM = pRF - lag, pLHM = pLH + lag, pRHM = pRH + lag;
+  R(P.left_front_middle_leg, Math.cos(pLFM) * 0.8 * speed); R(P.right_front_middle_leg, Math.cos(pRFM) * 0.8 * speed);
+  R(P.left_hind_middle_leg, Math.cos(pLHM) * 0.6 * speed); R(P.right_hind_middle_leg, Math.cos(pRHM) * 0.6 * speed);
+  const knee = 0.9 * speed, hock = -0.7 * speed;
+  R(P.left_front_leg_lower, knee * liftHalf(pLF)); R(P.right_front_leg_lower, knee * liftHalf(pRF));
+  R(P.left_front_middle_leg_lower, knee * liftHalf(pLFM)); R(P.right_front_middle_leg_lower, knee * liftHalf(pRFM));
+  R(P.left_hind_middle_leg_lower, hock * liftHalf(pLHM)); R(P.right_hind_middle_leg_lower, hock * liftHalf(pRHM));
+  R(P.left_hind_leg_lower, hock * liftHalf(pLH)); R(P.right_hind_leg_lower, hock * liftHalf(pRH));
+  R(P.tail, 0, 0, Math.sin(age * 0.12) * 0.08);
+  R(P.tail_tip, speed * 0.5 + Math.sin(age * 0.12 - 0.6) * 0.04, 0, Math.sin(age * 0.12 - 0.8) * 0.16);
+  R(P.mane, 0, 0, Math.sin(age * 0.1) * (0.03 + 0.03 * speed) + Math.sin(wp * 2 - 0.5) * 0.02 * speed);
+}
+
+function animMonkey(age, speed, pos) {
+  resetPose(monkey);
+  const P = monkey.parts;
+  // Ciclo de 6 s: tres golpes de bastón seguidos (cada 20 ticks).
+  const attack = swingAt(age % 120, [60, 80, 100]);
+  const strike = attack > 0 ? Math.sin(attack * PI) : 0, hunch = strike * 0.32;
+  R(P.body, hunch);
+  const waist = P.body.userData.bpos;
+  for (const p of [P.head, P.arm_r, P.arm_l]) {
+    if (hunch === 0) continue;
+    const rest = p.userData.bpos, dy = rest.y - waist.y, dz = rest.z - waist.z, co = Math.cos(hunch), si = Math.sin(hunch);
+    p.position.y = waist.y + dy * co - dz * si; p.position.z = waist.z + dy * si + dz * co;
+  }
+  R(P.head, -hunch * 0.6);
+  const swing = Math.cos(pos * 0.6662) * 1.2 * speed;
+  R(P.leg_r, swing); R(P.leg_l, -swing);
+  R(P.arm_r, (-swing * 0.4 - 0.3) * (1 - strike)); R(P.arm_l, swing);
+  R(P.arm_r, -strike * 2.3);
+  const spin = clamp((attack - 0.05) / 0.8, 0, 1);
+  R(P.staff, -2 * PI * spin * spin * (3 - 2 * spin));
+  R(P.tail, Math.sin(age * 0.1) * 0.15, Math.sin(age * 0.075) * 0.4);
+  R(P.tail2, Math.sin(age * 0.1 - 0.6) * 0.2, Math.sin(age * 0.075 - 0.6) * 0.15);
+  R(P.tail3, Math.sin(age * 0.1 - 1.2) * 0.25, Math.sin(age * 0.075 - 1.2) * 0.2);
+  const sway = 0.08 + speed * 0.15;
+  const fr = [P.feather_r, P.feather_r2, P.feather_r3], fl = [P.feather_l, P.feather_l2, P.feather_l3];
+  for (let i = 0; i < 3; i++) {
+    const amp = sway * (1 + i * 0.6);
+    R(fr[i], Math.sin(age * 0.15 - i * 0.6) * amp - speed * 0.06);
+    R(fl[i], Math.sin(age * 0.15 + 0.5 - i * 0.6) * amp - speed * 0.06);
+  }
+  const run = clamp((speed - 0.3) / 0.5, 0, 1), buzz = Math.sin(age * 2.2) * 0.1 * run;
+  R(P.wing_r, 0, 0, buzz); R(P.wing_l, 0, 0, -buzz);
+}
+
+/** Altura simulada del long: vuela alto, baja a posarse, se queda y vuelve a subir (ciclo de 16 s). */
+function dragonHeight(kt) {
+  const c = kt % 16, keys = [[0, 2.6], [5, 2.6], [8, 0.0], [11, 0.0], [14, 2.6], [16, 2.6]];
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [t0, y0] = keys[i], [t1, y1] = keys[i + 1];
+    if (c < t1) return lerp(smooth((c - t0) / (t1 - t0)), y0, y1);
+  }
+  return 2.6;
+}
+function animDragon(age, speed) {
+  resetPose(dragon);
+  const D = dragon.parts, t = age / 20;
+  const move = Math.min(1, speed * 2), k = 0.35 + move * 0.65;
+  // Dragon renderer: landing = 1 - distancia al suelo / 3 bloques.
+  const height = dragonHeight(t), bob = Math.sin(t * 1.2) * 0.12 * smooth(height / 1.5);
+  dragon.entity.position.y = height + bob;
+  const landing = clamp(1 - (height + bob) / 3, 0, 1), land = landing * landing * (3 - 2 * landing);
+  R(D.seg0, 0, Math.sin(t * 0.9) * 0.15 * k);
+  for (let i = 1; i < 10; i++) R(D["seg" + i], Math.sin(t * 1.8 - i * 0.7) * 0.16 * k, Math.sin(t * 1.3 - i * 0.6) * 0.22 * k);
+  R(D.head, -Math.sin(t * 1.8 + 0.7) * 0.12 * k, -Math.sin(t * 0.9) * 0.12 * k);
+  R(D.jaw, Math.max(0, Math.sin(t * 0.8)) * 0.25);
+  ["r", "l"].forEach((side, s) => {
+    const sign = s === 0 ? -1 : 1;
+    R(D["mane_" + side], Math.sin(t * 2.4 - 1.3) * 0.07 + move * 0.08, sign * Math.sin(t * 1.3 - 0.9) * 0.12);
+    R(D["mane2_" + side], Math.sin(t * 2.4 - 1.9) * 0.08 + move * 0.1, sign * Math.sin(t * 1.3 - 1.5) * 0.14);
+  });
+  R(D.mane_top, Math.sin(t * 2.4 - 1.4) * 0.06 + move * 0.06, Math.sin(t * 1.3 - 1.1) * 0.14 * k);
+  R(D.beard, Math.sin(t * 1.8 - 1.0) * 0.08 + move * 0.18, 0, Math.sin(t * 1.3 - 1.2) * 0.1);
+  ["r", "l"].forEach((side, s) => {
+    R(D["beard_" + side], Math.sin(t * 1.8 - 1.4 - s * 0.4) * 0.09 + move * 0.2, 0, Math.sin(t * 1.3 - 1.6 - s * 0.4) * 0.12);
+    R(D["whisker_" + side], Math.sin(t * 2.2) * 0.2);
+    R(D["whisker2_" + side], Math.sin(t * 2.2 - 0.8) * 0.4);
+    R(D["whisker3_" + side], Math.sin(t * 2.2 - 1.6) * 0.45, Math.sin(t * 1.6 - 1.6) * 0.15);
+  });
+  const paddle = k * (1 - 0.7 * land);
+  ["seg1", "seg4"].forEach((pre, pair) => ["r", "l"].forEach((side, s) => {
+    const g = n => D[pre + "_" + n + "_" + side];
+    const phase = t * 2 + ((pair === 0) === (s === 0) ? 0 : 1.6);
+    R(g("leg"), Math.sin(phase) * 0.35 * paddle - 1.0 * land);
+    R(g("shin"), Math.sin(phase - 0.7) * 0.25 * paddle + 0.35 * land);
+    R(g("foot"), Math.sin(phase - 1.4) * 0.2 * paddle + 0.45 * land);
+    const sign = s === 0 ? -1 : 1;
+    R(g("elbow"), Math.sin(t * 4.2 - pair * 0.6) * 0.1, sign * Math.sin(t * 5.5 - pair * 0.8 - s * 0.5) * 0.18);
+    const claws = land + Math.sin(t * 1.1 + pair) * 0.04;
+    R(g("claw-4"), -0.25 * claws, 0.32 * claws);
+    R(g("claw2"), -0.25 * claws, -0.32 * claws);
+    R(g("claw-1"), -0.3 * claws);
+    R(g("spur"), 0.3 * claws);
+  }));
+  R(D.tuft, 0, Math.sin(t * 1.3 - 6.6) * 0.3 * k);
+}
+
+/** Pose de cabeza pseudoaleatoria del cuervo (entre -1 y 1), siempre la misma para el mismo tramo. */
+const cocked = n => frac(Math.sin(n * 12.9898) * 43758.547) * 2 - 1;
+function animRaven(r, i, age, fold) {
+  resetPose(r);
+  const P = r.parts, f = fold * fold * (3 - 2 * fold), fly = 1 - f;
+  const raise = smooth(fold / 0.5), sweep = smooth((fold - 0.3) / 0.7);
+  const phase = age * 0.45;
+  const beat = Math.sin(phase) * 0.55 * fly, whip = Math.sin(phase - 0.7) * 0.45 * fly;
+  const down = 0.5 * (1 - Math.cos(phase - 0.4)) * fly;
+  ["r", "l"].forEach((side, s) => {
+    const sign = s === 0 ? 1 : -1, wing = P["wing_" + side], hand = P["wing_" + side + "_tip"];
+    R(wing, 0, sign * Math.PI / 2 * sweep, sign * beat + sign * 1.65 * raise);
+    R(hand, 0, -hand.userData.base[1] * sweep, sign * whip);
+    wing.position.x -= sign * 0.8 * sweep; wing.position.y -= 1.0 * sweep;
+    hand.position.x += sign * 4.5 * sweep; hand.position.y += 0.7 * sweep;
+    for (let k = 0; k < 5; k++) {
+      const pr = P["wing_" + side + "_p" + k], rest = pr.userData.base[1];
+      R(pr, 0, (rest * 0.6 + sign * k * 0.04) * down - rest * 0.85 * f);
+    }
+  });
+  R(P.tail, Math.sin(age * 0.1) * 0.1 * (0.4 + 0.6 * fly));
+  for (let k = 0; k < 5; k++) { const tf = P["tail_f" + k]; R(tf, 0, tf.userData.base[1] * (0.25 * fly - 0.75 * f)); }
+  const slot = (age + i * 37) / 22, n = Math.floor(slot);
+  const e = smooth((slot - n) * 22 / 3), amount = 0.12 + 0.25 * f;
+  R(P.head, 0, lerp(e, cocked(n + 99), cocked(n + 100)) * amount * 0.8, lerp(e, cocked(n - 1), cocked(n)) * amount);
+}
+
+function animPegasus(age, speed, pos, air) {
+  resetPose(pegasus);
+  const P = pegasus.parts, t = age, ground = 1 - air;
+  const sp = speed * ground, wp = pos * 0.6662, swing = Math.cos(wp) * 0.9 * sp;
+  R(P.leg_fr, swing - 0.9 * air); R(P.leg_bl, swing + 0.8 * air);
+  R(P.leg_fl, -swing - 0.9 * air); R(P.leg_br, -swing + 0.8 * air);
+  R(P.leg_fr_lower, 0.8 * sp * liftHalf(wp) + 1.4 * air);
+  R(P.leg_fl_lower, 0.8 * sp * liftHalf(wp + PI) + 1.4 * air);
+  R(P.leg_bl_lower, -0.6 * sp * liftHalf(wp) - 0.5 * air);
+  R(P.leg_br_lower, -0.6 * sp * liftHalf(wp + PI) - 0.5 * air);
+  const beat = t * 0.55;
+  const arm = (-0.1 + 0.6 * Math.sin(beat)) * air, forearm = 0.35 * Math.sin(beat - 0.6) * air, hand = 0.3 * Math.sin(beat - 1.2) * air;
+  const shoulder = smooth(ground * 2), sweep = smooth(ground * 1.4), zfold = smooth((ground - 0.35) / 0.65);
+  const breathe = (0.5 + 0.5 * Math.sin(t * 0.06)) * 0.03 * ground;
+  P.wing_r.position.x -= 3.5 * shoulder; P.wing_l.position.x += 3.5 * shoulder;
+  P.wing_r.position.y += -2.0 * shoulder; P.wing_l.position.y += -2.0 * shoulder;
+  R(P.wing_r, -1.42 * sweep, 1.17 * sweep, arm + breathe);
+  R(P.wing_l, -1.42 * sweep, -1.17 * sweep, -arm - breathe);
+  R(P.wing_r2, 0, 0, forearm - 2.9 * zfold); R(P.wing_l2, 0, 0, -forearm + 2.9 * zfold);
+  R(P.wing_r3, 0, 0, hand + 2.6 * zfold); R(P.wing_l3, 0, 0, -hand - 2.6 * zfold);
+  const close = 0.9 * smooth(ground * 1.5);
+  for (let k = 0; k < 7; k++) {
+    const wave = Math.sin(beat - 1.6 - 0.12 * k), spread = 1 - close + air * (0.15 + 0.1 * wave), curl = 0.12 * wave * air;
+    const pr = P["wing_r_primary" + k], pl = P["wing_l_primary" + k];
+    pr.rotation.y = pr.userData.base[1] * spread; pl.rotation.y = pl.userData.base[1] * spread;
+    R(pr, 0, 0, curl); R(pl, 0, 0, -curl);
+  }
+  R(P.neck, Math.sin(t * 0.08) * 0.04 + Math.cos(wp) * 0.05 * sp + 0.25 * air - Math.sin(beat) * 0.04 * air);
+  R(P.head, Math.sin(t * 0.08 - 0.6) * 0.05 + Math.cos(wp - 0.6) * 0.04 * sp - 0.15 * air);
+  R(P.tail, Math.sin(t * 0.07) * 0.08 + 0.6 * air, Math.sin(t * 0.05) * 0.15);
+  R(P.tail2, Math.sin(t * 0.07 - 0.6) * 0.12 - 0.2 * air + Math.sin(beat - 1.0) * 0.12 * air, 0, Math.sin(t * 0.05 - 0.7) * 0.1);
+  const lockSway = Math.sin(t * 0.05 - 1.4) * 0.06, lockWave = Math.sin(beat - 1.6) * 0.15 * air;
+  R(P.tail_lock_r, lockWave + Math.sin(t * 0.07 - 1.2) * 0.06, 0, lockSway);
+  R(P.tail_lock_l, lockWave + Math.sin(t * 0.07 - 1.4) * 0.06, 0, lockSway);
+}
+
+function animTalos(age, speed, pos) {
+  resetPose(talos);
+  const P = talos.parts;
+  // Ciclo de 12 s: lanza dos rocas (ticks 0 y 80) y luego abraza cuatro veces (golpes de MeleeAttackGoal cada 20 ticks).
+  const c = age % 240, since = c < 80 ? c : c < 160 ? c - 80 : c - 80;
+  const hs = Math.sin(swingAt(c, [165, 185, 205, 225]) * PI), hug = hs * hs;
+  const wp = pos * 0.6662;
+  const swing = Math.cos(wp) * 0.7 * speed, armSwing = Math.cos(wp - 0.35) * 0.55 * speed * (1 - hug);
+  R(P.leg_r, swing); R(P.leg_l, -swing);
+  R(P.arm_r, -armSwing, 0, 0.06 * speed); R(P.arm_l, armSwing, 0, -0.06 * speed);
+  const cs = Math.cos(wp), drop = 0.8 * speed * cs * cs, roll = 0.04 * speed * cs;
+  for (const p of [P.body, P.head, P.arm_r, P.arm_l]) p.position.y += drop;
+  R(P.body, 0, 0, roll); R(P.head, 0, 0, roll * 0.6);
+  const u = since / 14;
+  P.rock.visible = !(u > 0.45 && u < 1.4);
+  let throwX = 0, throwZ = 0, lookUp = 0, counter = 0;
+  if (u < 0.45) { const k = smooth(u / 0.45); throwX = -2.8 * k; throwZ = 0.2 * k; lookUp = -0.2 * k; counter = -0.5 * k; }
+  else if (u < 0.75) { const k = smooth((u - 0.45) / 0.3); throwX = lerp(k, -2.8, -0.7); throwZ = lerp(k, 0.2, 0.05); lookUp = lerp(k, -0.2, 0.1); counter = lerp(k, -0.5, -0.2); }
+  else if (u < 1.3) { const k = smooth((u - 0.75) / 0.55); throwX = lerp(k, -0.7, 0); throwZ = lerp(k, 0.05, 0); lookUp = lerp(k, 0.1, 0); counter = lerp(k, -0.2, 0); }
+  R(P.arm_r, throwX, 0, throwZ); R(P.arm_l, counter); R(P.head, lookUp);
+  R(P.arm_r, -1.3 * hug, -0.35 * hug); R(P.arm_l, -1.3 * hug, 0.35 * hug); R(P.head, 0.15 * hug);
+}
+
+/** Vuelo simulado del halcón (FalconForm): crucero, subida, picada, planeo al suelo, posado y despegue (ciclo de 16 s). */
+function falconFlight(kt) {
+  const c = kt % 16;
+  const keys = [[0, 1.0], [6, 1.0], [8, 2.2], [9.2, 0.6], [11, 0], [14, 0], [16, 1.0]];
+  let y = 1.0;
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [t0, y0] = keys[i], [t1, y1] = keys[i + 1];
+    if (c < t1) { y = lerp(smooth((c - t0) / (t1 - t0)), y0, y1); break; }
+  }
+  return { y, dive: c >= 8 && c < 9.2 ? 1 : 0, ground: c >= 10.9 && c < 14 ? 1 : 0, climb: (c >= 6 && c < 8) || c >= 14 ? 1 : 0 };
+}
+function animFalcon(age) {
+  resetPose(falcon);
+  const P = falcon.parts, t = age, fl = falconFlight(age / 20);
+  // FalconForm.measure: picada, suelo y subida suavizados con EASE_TICKS = 4.
+  const dive = approach("falcon.dive", fl.dive, 0.25, age), ground = approach("falcon.ground", fl.ground, 0.25, age);
+  const climb = approach("falcon.climb", fl.climb, 0.25, age);
+  if (subject === "falcon") falcon.entity.position.y = fl.y + Math.sin(age / 20 * 1.5) * 0.1 * (1 - ground) * smooth(fl.y / 0.5);
+  const fold = smooth(Math.max(dive, ground)), open = 1 - fold;
+  const glide = clamp(Math.sin(t * 0.05) * 2, 0, 1) * (1 - climb) * open, flapping = (1 - glide) * open;
+  const phase = t * 0.9;
+  const armBeat = Math.sin(phase) * 0.7 * flapping, midBeat = Math.sin(phase - 0.5) * 0.35 * flapping, tipBeat = Math.sin(phase - 1.0) * 0.3 * flapping;
+  const down = 0.5 * (1 - Math.cos(phase - 0.4)) * flapping, drift = Math.sin(t * 0.1) * 0.05 * glide;
+  ["r", "l"].forEach((side, s) => {
+    const sign = s === 0 ? 1 : -1, wing = P["wing_" + side], mid = P["wing_" + side + "_mid"], tip = P["wing_" + side + "_tip"];
+    R(wing, 0, sign * 0.8 * fold, sign * (armBeat + 0.14 * glide + drift));
+    R(mid, 0, sign * 0.6 * fold, sign * (midBeat - 0.06 * glide));
+    R(tip, 0, sign * 0.3 * fold, sign * (tipBeat - 0.18 * glide));
+    wing.position.y -= (s === 0 ? 1.2 : 1.35) * fold;
+    for (let i = 0; i < 4; i++) {
+      const pr = P["wing_" + side + "_p" + i], rest = pr.userData.base[1], spread = rest * 0.5 + sign * i * 0.03;
+      R(pr, 0, spread * down + spread * 0.5 * glide - rest * fold);
+    }
+    R(P["leg_" + side], -0.75 * smooth(ground));
+  });
+  R(P.tail, Math.sin(t * 0.12) * 0.08 * open);
+  for (let i = 0; i < 5; i++) { const tf = P["tail_f" + i]; R(tf, 0, tf.userData.base[1] * (0.4 * glide - 0.8 * fold)); }
+}
+
 function setupAnim() {
   const speed = Math.min(walkSpeed, 1);
-  for (let i = 0; i < 3; i++) {
-    for (const leg of [sLeft[i], sRight[i]]) leg.rotation.set(...leg.userData.base);
-    const left = walkPos * STRIDE + (i % 2 === 0 ? 0 : Math.PI);
-    const right = left + Math.PI;
-    sLeft[i].rotation.y += Math.cos(left) * 0.6 * speed;
-    sLeft[i].rotation.z -= Math.max(0, Math.sin(left)) * 0.4 * speed;
-    sRight[i].rotation.y -= Math.cos(right) * 0.6 * speed;
-    sRight[i].rotation.z += Math.max(0, Math.sin(right)) * 0.4 * speed;
-  }
-  const a = walkPos * 0.6662;
-  jRH.rotation.x = Math.cos(a) * 1.4 * speed;
-  jLH.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
-  jRF.rotation.x = Math.cos(a + Math.PI) * 1.4 * speed;
-  jLF.rotation.x = Math.cos(a) * 1.4 * speed;
-  addRot(jTail, 0, Math.cos(a) * 1.4 * speed, 0);
-  // Sleipnir: como el caballo (AbstractEquineModel) y las patas del medio a medio paso.
-  const legA = Math.cos(a + Math.PI), swing = Math.cos(a + Math.PI / 2) * 0.8 * speed;
-  sLegs[0].rotation.x = -legA * 0.8 * speed; sLegs[1].rotation.x = legA * 0.8 * speed;
-  sLegs[2].rotation.x = -swing; sLegs[3].rotation.x = swing;
-  sLegs[4].rotation.x = swing * 0.6; sLegs[5].rotation.x = -swing * 0.6;
-  sLegs[6].rotation.x = -legA * 0.5 * speed; sLegs[7].rotation.x = legA * 0.5 * speed;
-  addRot(sTail, speed * 0.75, 0, 0);
-  addRot(sTailTip, speed * 0.5, Math.sin(performance.now() / 50 * 0.12) * 0.25, 0);
-  cRH.rotation.x = Math.cos(a) * 1.2 * speed;
-  cLH.rotation.x = Math.cos(a + Math.PI) * 1.2 * speed;
-  cRF.rotation.x = Math.cos(a + Math.PI) * 1.2 * speed;
-  cLF.rotation.x = Math.cos(a) * 1.2 * speed;
-  const age = performance.now() / 50;
-  const sway = Math.sin(age * 0.15) * 0.12;
-  addRot(cHeads[1], sway); addRot(cHeads[2], -sway);
-  cJaws.forEach((j, i) => { if (j) addRot(j, Math.abs(Math.sin(age * 0.2 + i * 2.1)) * (0.15 + 0.2 * speed)); });
-  addRot(cTail, 0, Math.sin(age * 0.12) * 0.3, 0);
-  addRot(cTailMid, 0, Math.sin(age * 0.12 - 1) * 0.3, 0);
-  addRot(cTailHead, Math.sin(age * 0.09) * 0.15, Math.sin(age * 0.12 - 2) * 0.4, 0);
-  // Mono guerrero (MonkeyWarriorModel#setupAnim)
-  const M = monkey.parts, mSwing = Math.cos(a) * 1.2 * speed;
-  addRot(M.leg_r, mSwing); addRot(M.leg_l, -mSwing); addRot(M.arm_r, -mSwing * 0.4 - 0.3); addRot(M.arm_l, mSwing);
-  addRot(M.tail, Math.sin(age * 0.1) * 0.15, Math.sin(age * 0.075) * 0.4); addRot(M.tail2, Math.sin(age * 0.12) * 0.2);
-  const fs = 0.08 + speed * 0.15;
-  addRot(M.feather_r, Math.sin(age * 0.15) * fs); addRot(M.feather_l, Math.sin(age * 0.15 + 0.5) * fs);
-  addRot(M.feather_r2, Math.sin(age * 0.15 - 0.6) * fs * 2); addRot(M.feather_l2, Math.sin(age * 0.15 - 0.1) * fs * 2);
-  // Long (LongDragonModel#setupAnim): ondula más al moverse; flota sobre el suelo.
-  const D = dragon.parts, t = age / 20, k = 0.35 + Math.min(1, speed * 2) * 0.65;
-  addRot(D.seg0, 0, Math.sin(t * 0.9) * 0.15 * k);
-  for (let i = 1; i < 10; i++) addRot(D["seg" + i], Math.sin(t * 1.8 - i * 0.7) * 0.16 * k, Math.sin(t * 1.3 - i * 0.6) * 0.22 * k);
-  addRot(D.head, -Math.sin(t * 1.8 + 0.7) * 0.12 * k, -Math.sin(t * 0.9) * 0.12 * k);
-  addRot(D.jaw, Math.max(0, Math.sin(t * 0.8)) * 0.25);
-  for (const s of ["r", "l"]) {
-    addRot(D["whisker_" + s], Math.sin(t * 2.2) * 0.2); addRot(D["whisker2_" + s], Math.sin(t * 2.2 - 0.8) * 0.4);
-    addRot(D["seg1_leg_" + s], Math.sin(t * 2 + (s === "r" ? 0 : 1.6)) * 0.35 * k);
-    addRot(D["seg4_leg_" + s], Math.sin(t * 2 + (s === "r" ? 1.6 : 0)) * 0.35 * k);
-  }
-  addRot(D.tuft, 0, Math.sin(t * 1.3 - 6.6) * 0.3 * k);
-  dragon.entity.position.y = 1.2 + Math.sin(t * 1.2) * 0.12;
-  const kt = age / 20;
-  // Cuervos: posados mirando a la cámara; cada 8 s uno de los dos da una vuelta volando y se vuelve a posar.
+  const age = performance.now() / 50, kt = age / 20;
+  animScarab(age, speed, walkPos);
+  animJackal(age, speed, walkPos);
+  animCerberus(age, speed, walkPos);
+  animSleipnir(age, speed, walkPos);
+  animMonkey(age, speed, walkPos);
+  animDragon(age, speed);
+  // Cuervos: posados mirando a la cámara; cada 8 s uno de los dos da una vuelta volando y se vuelve a posar (al posarse
+  // pliega las alas de a poco, FOLD_TICKS = 6, como RavenRenderer).
   ravens.forEach((r, i) => {
-    const R = r.parts, home = [i ? 0.45 : -0.45, 0, 0], cycle = (kt + i * 4) % 8, flying = cycle < 3;
+    const cycle = (kt + i * 4) % 8, flying = cycle < 3, home = [i ? 0.45 : -0.45, 0, 0];
     if (flying) {
       const a = cycle / 3 * Math.PI * 2, lift = Math.sin(cycle / 3 * Math.PI);
       r.entity.position.set(home[0] + Math.sin(a) * 1.4 * (i ? 1 : -1), lift * 1.6, Math.cos(a) * 1.4 - 1.4);
       r.entity.rotation.y = Math.PI - a * (i ? 1 : -1) + (i ? -Math.PI / 2 : Math.PI / 2);
-      const f = Math.sin(kt * 20 * 0.45) * 0.55;
-      addRot(R.wing_r, 0, 0, f); addRot(R.wing_l, 0, 0, -f);
     } else {
       r.entity.position.set(...home); r.entity.rotation.y = Math.PI + (i ? -0.25 : 0.25);
-      addRot(R.wing_r, 0, Math.PI / 2, 1.1); addRot(R.wing_l, 0, -Math.PI / 2, -1.1);
     }
-    addRot(R.tail, Math.sin(kt * 2) * 0.1);
-    addRot(R.head, flying ? 0 : Math.max(0, Math.sin(kt * 1.7 + i * 2)) * 0.25);
+    animRaven(r, i, age, approach("raven.fold" + i, flying ? 0 : 1, 1 / 6, age));
   });
-  // Pegaso: camina en el suelo y, cada 8 s, alza el vuelo batiendo las alas y vuelve a bajar.
+  // Pegaso: camina en el suelo y, cada 8 s, alza el vuelo; air se acerca al objetivo un 18 % por tick (Pegasus#airAnim).
   {
-    const P = pegasus.parts, c = kt % 8, air = c < 1 ? 0 : c < 2 ? (c - 1) : c < 6 ? 1 : c < 7 ? 7 - c : 0;
-    const flap = Math.sin(kt * 11) * 0.75 * air + Math.sin(kt * 1.2) * 0.06 * (1 - air);
-    const tip = Math.sin(kt * 11 - 0.7) * 0.45 * air;
-    addRot(P.wing_r, 0, 0, flap); addRot(P.wing_l, 0, 0, -flap);
-    addRot(P.wing_r2, 0, 0, tip); addRot(P.wing_l2, 0, 0, -tip);
-    const sw = Math.cos(kt * 6) * 0.5 * (1 - air) * (walking ? 1 : 0.15);
-    addRot(P.leg_fr, sw - 0.9 * air); addRot(P.leg_bl, sw + 0.8 * air); addRot(P.leg_fl, -sw - 0.9 * air); addRot(P.leg_br, -sw + 0.8 * air);
-    addRot(P.neck, Math.sin(kt * 1.6) * 0.04 + 0.25 * air); addRot(P.head, Math.sin(kt * 1.6 - 0.6) * 0.05 - 0.15 * air);
-    addRot(P.tail, Math.sin(kt * 1.4) * 0.08 + 0.6 * air, Math.sin(kt) * 0.15); addRot(P.tail2, Math.sin(kt * 1.4 - 0.6) * 0.12 - 0.2 * air);
-    if (subject === "pegasus") pegasus.entity.position.y = air * 1.6 + Math.sin(kt * 11) * 0.05 * air;
+    const c = kt % 8, air = approach("pegasus.air", c >= 1 && c < 6 ? 1 : 0, -Math.log(0.82), age);
+    animPegasus(age, speed, walkPos, air);
+    if (subject === "pegasus") pegasus.entity.position.y = air * 1.6 + Math.sin(age * 0.55) * 0.05 * air;
   }
-  // Talos: camina pesado y cada 4 s levanta la roca y la arroja.
-  {
-    const T = talos.parts, sw = Math.cos(kt * 4) * 0.5 * (walking ? 1 : 0.2);
-    addRot(T.leg_r, sw); addRot(T.leg_l, -sw); addRot(T.arm_l, -sw * 0.8);
-    const u = (kt % 4) / 0.7;   // el lanzamiento dura 0,7 s
-    let raise = 0;
-    if (u < 1) { const r = u < 0.45 ? u / 0.45 : 1 - (u - 0.45) / 0.55; raise = r * r * (3 - 2 * r); }
-    addRot(T.arm_r, sw * 0.8 - 2.8 * raise, 0, 0.2 * raise);
-    T.rock.visible = !(u > 0.45 && u < 1.4);
-    addRot(T.head, 0, Math.sin(kt * 0.7) * 0.25);
-  }
-  // Halcón: aletea rápido y cada tanto planea con las alas abiertas.
-  {
-    const F = falcon.parts, glide = Math.min(1, Math.max(0, Math.sin(kt) * 2));
-    const flap = Math.sin(kt * 18) * 0.8 * (1 - glide) + Math.sin(kt * 2) * 0.05 * glide;
-    addRot(F.wing_r, 0, 0, flap); addRot(F.wing_l, 0, 0, -flap); addRot(F.tail, Math.sin(kt * 2.4) * 0.08);
-    if (subject === "falcon") falcon.entity.position.y = 0.4 + Math.sin(kt * 1.5) * 0.15;
-  }
+  animTalos(age, speed, walkPos);
+  animFalcon(age);
   // Barco: se mece en el agua y la vela flamea.
   ship.entity.position.y = Math.sin(kt * 1.2) * 0.03;
   ship.entity.rotation.z = Math.sin(kt * 0.9) * 0.02;
@@ -955,11 +1264,11 @@ const VIEWS = {
   cerberus: { cam: [4.2, 3.0, 5.0], target: [0, 1.3, 0] },
   sleipnir: { cam: [3.2, 2.0, 3.6], target: [0, 0.9, 0] },
   monkey: { cam: [1.9, 1.6, 2.6], target: [0, 1.0, 0] },
-  dragon: { cam: [6.5, 3.2, 3.0], target: [0, 1.4, -2.2] },
+  dragon: { cam: [9.0, 4.6, 5.0], target: [0, 1.6, -2.2] },
   ravens: { cam: [1.4, 1.1, 2.2], target: [0, 0.4, -0.3] },
   ship: { cam: [3.6, 2.6, 3.8], target: [0, 0.6, 0] },
-  pegasus: { cam: [3.8, 2.6, 4.2], target: [0, 1.2, 0] },
-  talos: { cam: [3.8, 2.8, 4.4], target: [0, 1.5, 0] },
+  pegasus: { cam: [5.0, 3.4, 5.6], target: [0, 1.8, 0] },
+  talos: { cam: [6.8, 4.6, 7.8], target: [0, 2.6, 0] },
   falcon: { cam: [2.8, 2.0, 3.0], target: [0, 1.0, 0] },
   zeus: { cam: [4.6, 3.4, 5.4], target: [0, 1.0, -1.5] },
   freyr: { cam: [-3.6, 2.3, 4.6], target: [0, 1.0, -1.2] },
