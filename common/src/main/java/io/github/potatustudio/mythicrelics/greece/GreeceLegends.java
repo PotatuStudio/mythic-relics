@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.greece;
 
+import io.github.potatustudio.mythicrelics.relic.Modifiers;
 import io.github.potatustudio.mythicrelics.relic.HitEffects;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
@@ -34,7 +35,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -289,14 +289,7 @@ public final class GreeceLegends {
 			}
 			// Bloqueando con el escudo de Aquiles no te empujan.
 			boolean blocking = player.isBlocking() && player.getUseItem().is(ModItems.ACHILLES_SHIELD.get());
-			var kb = player.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
-			if (kb != null) {
-				if (blocking && !kb.hasModifier(WRATH_KNOCKBACK_ID)) {
-					kb.addTransientModifier(new AttributeModifier(WRATH_KNOCKBACK_ID, 1.0, AttributeModifier.Operation.ADD_VALUE));
-				} else if (!blocking && kb.hasModifier(WRATH_KNOCKBACK_ID)) {
-					kb.removeModifier(WRATH_KNOCKBACK_ID);
-				}
-			}
+			Modifiers.set(player, Attributes.KNOCKBACK_RESISTANCE, WRATH_KNOCKBACK_ID, blocking ? 1.0 : 0);
 			if (tick % 10 == 0) {
 				harpeWarning(player);
 			}

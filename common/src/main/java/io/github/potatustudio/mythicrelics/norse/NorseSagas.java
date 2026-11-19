@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.norse;
 
+import io.github.potatustudio.mythicrelics.relic.Modifiers;
 import io.github.potatustudio.mythicrelics.relic.HitEffects;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
@@ -345,16 +346,7 @@ public final class NorseSagas {
 
 	/** Pone o quita el tamaño de halcón (el modificador es transitorio: no se guarda con el jugador). */
 	private static void setFalconScale(ServerPlayer player, boolean on) {
-		var scale = player.getAttribute(Attributes.SCALE);
-		if (scale == null) {
-			return;
-		}
-		if (on && !scale.hasModifier(FALCON_SCALE_ID)) {
-			scale.addTransientModifier(new AttributeModifier(FALCON_SCALE_ID, FALCON_SCALE,
-					AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-		} else if (!on && scale.hasModifier(FALCON_SCALE_ID)) {
-			scale.removeModifier(FALCON_SCALE_ID);
-		}
+		Modifiers.toggle(player, Attributes.SCALE, FALCON_SCALE_ID, on, FALCON_SCALE, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 	}
 
 	// ---- Tick ---------------------------------------------------------------------------------------------------------------

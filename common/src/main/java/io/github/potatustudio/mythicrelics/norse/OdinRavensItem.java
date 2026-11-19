@@ -7,13 +7,14 @@ import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import java.util.HashSet;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -45,12 +46,19 @@ public class OdinRavensItem extends RelicItem {
 	}
 
 	/** Cuervos afuera por dueño: solo para devolverlos al llamarlos (el efecto no depende de ellos). */
-	private static final Map<UUID, List<OdinRaven>> OUT = new ConcurrentHashMap<>();
+	private static final Map<UUID, List<OdinRaven>> OUT = new HashMap<>();
 	/**
 	 * Dueños con los cuervos enviados: Huginn le cuenta a Odín lo que ve, así que el efecto es alrededor del jugador
 	 * aunque los cuervos se alejen, se posen lejos o desaparezcan. Se apaga al volver a usar el ítem.
 	 */
-	private static final Set<UUID> ACTIVE = ConcurrentHashMap.newKeySet();
+	private static final Set<UUID> ACTIVE = new HashSet<>();
+	/** Muninn: el segundo recuerdo (la cama), que sale sobre la barra después del primero. Todo esto es del servidor. */
+	private record Memory(Component text, int at) {
+	}
+
+	private static final Map<UUID, Memory> PENDING_MEMORY = new HashMap<>();
+	/** Ticks entre los dos recuerdos de Muninn (para que se alcance a leer el primero). */
+	private static final int MEMORY_GAP_TICKS = 60;
 
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
@@ -103,6 +111,16 @@ public class OdinRavensItem extends RelicItem {
 		if (server.getTickCount() % 20 != 0) {
 			return;
 		}
+		PENDING_MEMORY.entrySet().removeIf(e -> {
+			if (server.getTickCount() < e.getValue().at()) {
+				return false;
+			}
+			ServerPlayer player = server.getPlayerList().getPlayer(e.getKey());
+			if (player != null) {
+				player.sendOverlayMessage(e.getValue().text());
+			}
+			return true;
+		});
 		OUT.entrySet().removeIf(e -> e.getValue().stream().allMatch(Entity::isRemoved));
 		ACTIVE.forEach(id -> {
 			ServerPlayer player = server.getPlayerList().getPlayer(id);
@@ -116,14 +134,18 @@ public class OdinRavensItem extends RelicItem {
 		});
 	}
 
-	/** Muninn: la última muerte y la cama, con dirección y distancia (o en qué dimensión están). */
+	/**
+	 * Muninn: la última muerte y la cama, con dirección y distancia (o en qué dimensión están). Sobre la barra, sin chat:
+	 * primero la muerte y, unos segundos después, la cama.
+	 */
 	private static void memory(ServerPlayer player) {
 		Optional<GlobalPos> death = player.getLastDeathLocation();
-		player.sendSystemMessage(death.isPresent() ? describe(player, "muninn_death", death.get())
+		player.sendOverlayMessage(death.isPresent() ? describe(player, "muninn_death", death.get())
 				: Component.translatable("message.mythicrelics.muninn_no_death").withStyle(ChatFormatting.GRAY));
 		ServerPlayer.RespawnConfig respawn = player.getRespawnConfig();
-		player.sendSystemMessage(respawn != null ? describe(player, "muninn_bed", respawn.respawnData().globalPos())
-				: Component.translatable("message.mythicrelics.muninn_no_bed").withStyle(ChatFormatting.GRAY));
+		Component bed = respawn != null ? describe(player, "muninn_bed", respawn.respawnData().globalPos())
+				: Component.translatable("message.mythicrelics.muninn_no_bed").withStyle(ChatFormatting.GRAY);
+		PENDING_MEMORY.put(player.getUUID(), new Memory(bed, player.level().getServer().getTickCount() + MEMORY_GAP_TICKS));
 	}
 
 	private static Component describe(ServerPlayer player, String key, GlobalPos where) {
@@ -142,11 +164,12 @@ public class OdinRavensItem extends RelicItem {
 	static {
 		ServerState.onQuit(p -> {
 			ACTIVE.remove(p.getUUID());
+			PENDING_MEMORY.remove(p.getUUID());
 			List<OdinRaven> out = OUT.remove(p.getUUID());
 			if (out != null) {
 				out.forEach(Entity::discard);
 			}
 		});
-		ServerState.clearOnStop(OUT, ACTIVE);
+		ServerState.clearOnStop(OUT, ACTIVE, PENDING_MEMORY);
 	}
 }

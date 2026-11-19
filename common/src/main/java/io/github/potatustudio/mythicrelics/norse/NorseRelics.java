@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.norse;
 
+import io.github.potatustudio.mythicrelics.relic.Modifiers;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
@@ -9,7 +10,6 @@ import io.github.potatustudio.mythicrelics.relic.TimedMobStatus;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
@@ -20,12 +20,8 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -120,8 +116,8 @@ public final class NorseRelics {
 		long day = server.overworld().getOverworldClockTime() / 24000L;
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			boolean gloves = WornRelics.isWearing(player, ModItems.JARNGREIPR);
-			setModifier(player, Attributes.ATTACK_DAMAGE, FIST_ID, gloves && player.getMainHandItem().isEmpty() ? JARNGREIPR_FIST : 0);
-			setModifier(player, Attributes.KNOCKBACK_RESISTANCE, BELT_KNOCKBACK_ID,
+			Modifiers.set(player, Attributes.ATTACK_DAMAGE, FIST_ID, gloves && player.getMainHandItem().isEmpty() ? JARNGREIPR_FIST : 0);
+			Modifiers.set(player, Attributes.KNOCKBACK_RESISTANCE, BELT_KNOCKBACK_ID,
 					WornRelics.isWearing(player, ModItems.MEGINGJORD) ? MEGINGJORD_KNOCKBACK : 0);
 			if (player.tickCount % 100 == 0 && DraupnirNights.dawn(player, day, WornRelics.isWearing(player, ModItems.DRAUPNIR))) {
 				drip(player);
@@ -138,21 +134,6 @@ public final class NorseRelics {
 		RelicFx.sound(level, player, SoundEvents.AMETHYST_BLOCK_RESONATE, 1.0f, 1.2f);
 		level.sendParticles(ParticleTypes.WAX_ON, player.getX(), player.getY() + 1.0, player.getZ(), 20, 0.4, 0.5, 0.4, 0.0);
 		RelicFx.notify(player, "draupnir_drip", ChatFormatting.GOLD);
-	}
-
-	private static void setModifier(Player player, Holder<Attribute> attribute, Identifier id, double amount) {
-		AttributeInstance instance = player.getAttribute(attribute);
-		if (instance == null) {
-			return;
-		}
-		AttributeModifier current = instance.getModifier(id);
-		if (current != null && current.amount() == amount) {
-			return;
-		}
-		instance.removeModifier(id);
-		if (amount != 0) {
-			instance.addTransientModifier(new AttributeModifier(id, amount, AttributeModifier.Operation.ADD_VALUE));
-		}
 	}
 
 	/** Números de los tooltips nórdicos (%1$s, %2$s… de sus líneas de traducción, en este orden). */

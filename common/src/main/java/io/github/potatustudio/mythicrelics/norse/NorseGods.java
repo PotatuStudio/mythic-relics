@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.norse;
 
+import io.github.potatustudio.mythicrelics.relic.Modifiers;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
@@ -33,8 +34,6 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
@@ -146,16 +145,9 @@ public final class NorseGods {
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
 			boolean ring = WornRelics.isWearing(player, ModItems.ANDVARANAUT);
-			AttributeInstance health = player.getAttribute(Attributes.MAX_HEALTH);
-			if (health != null) {
-				if (ring && !health.hasModifier(CURSE_ID)) {
-					health.addTransientModifier(new AttributeModifier(CURSE_ID, -ANDVARANAUT_HEALTH, AttributeModifier.Operation.ADD_VALUE));
-				} else if (!ring && health.hasModifier(CURSE_ID)) {
-					health.removeModifier(CURSE_ID);
-				}
-				if (player.getHealth() > player.getMaxHealth()) {
-					player.setHealth(player.getMaxHealth());
-				}
+			Modifiers.set(player, Attributes.MAX_HEALTH, CURSE_ID, ring ? -ANDVARANAUT_HEALTH : 0);
+			if (player.getHealth() > player.getMaxHealth()) {
+				player.setHealth(player.getMaxHealth());
 			}
 			if (ring && player.tickCount % 20 == 0) {
 				lure(level, player);

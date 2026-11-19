@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.greece;
 
+import io.github.potatustudio.mythicrelics.relic.Modifiers;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,12 +41,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
@@ -179,32 +176,11 @@ public final class GreeceRelics {
 		RelicFx.sound(level, player, SoundEvents.ENDER_DRAGON_FLAP, 0.3f, 1.8f);
 	}
 
-	private static void setModifier(Player player, Holder<Attribute> attribute,
-			Identifier id, double amount, AttributeModifier.Operation operation) {
-		AttributeInstance instance = player.getAttribute(attribute);
-		if (instance == null) {
-			return;
-		}
-		boolean has = instance.hasModifier(id);
-		if (amount == 0 && has) {
-			instance.removeModifier(id);
-		} else if (amount != 0 && !has) {
-			instance.addTransientModifier(new AttributeModifier(id, amount, operation));
-		}
-	}
-
 	// ---- Hades -------------------------------------------------------------------------------------------------------
 
 	private static void hades(ServerPlayer player) {
 		boolean wearing = WornRelics.isWearing(player, ModItems.HADES_HELM);
-		AttributeInstance sneak = player.getAttribute(Attributes.SNEAKING_SPEED);
-		if (sneak != null && wearing != sneak.hasModifier(HADES_SNEAK_ID)) {
-			if (wearing) {
-				sneak.addTransientModifier(new AttributeModifier(HADES_SNEAK_ID, HADES_SNEAK_SPEED, AttributeModifier.Operation.ADD_VALUE));
-			} else {
-				sneak.removeModifier(HADES_SNEAK_ID);
-			}
-		}
+		Modifiers.set(player, Attributes.SNEAKING_SPEED, HADES_SNEAK_ID, wearing ? HADES_SNEAK_SPEED : 0);
 		if (!wearing) {
 			breakInvisibility(player);
 			HADES_STILL.remove(player.getUUID());
@@ -390,12 +366,12 @@ public final class GreeceRelics {
 		GAZE.values().removeIf(g -> now - g[1] > 5);
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			boolean sandals = WornRelics.isWearing(player, ModItems.HERMES_SANDALS);
-			setModifier(player, Attributes.MOVEMENT_SPEED, HERMES_SPEED_ID, sandals ? HERMES_SPEED : 0,
+			Modifiers.set(player, Attributes.MOVEMENT_SPEED, HERMES_SPEED_ID, sandals ? HERMES_SPEED : 0,
 					AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 			boolean onSoul = sandals && player.level().getBlockState(BlockPos.containing(player.getX(), player.getY() - 0.2, player.getZ()))
 					.is(BlockTags.SOUL_SPEED_BLOCKS);
 			// Hermes guía las almas: la arena y la tierra de almas no te frenan.
-			setModifier(player, Attributes.MOVEMENT_EFFICIENCY, HERMES_SOUL_ID, onSoul ? 1.0 : 0, AttributeModifier.Operation.ADD_VALUE);
+			Modifiers.set(player, Attributes.MOVEMENT_EFFICIENCY, HERMES_SOUL_ID, onSoul ? 1.0 : 0, AttributeModifier.Operation.ADD_VALUE);
 			hades(player);
 		}
 	}

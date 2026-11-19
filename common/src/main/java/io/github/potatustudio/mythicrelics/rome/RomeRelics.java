@@ -113,9 +113,7 @@ public final class RomeRelics {
 		}
 		if (source.getDirectEntity() instanceof Projectile projectile && projectile.getOwner() instanceof LivingEntity shooter
 				&& shooter != self) {
-			synchronized (REFLECT) {
-				REFLECT.add(new Object[] {projectile, shooter, self});
-			}
+			REFLECT.add(new Object[] {projectile, shooter, self});
 		}
 	}
 
@@ -201,14 +199,11 @@ public final class RomeRelics {
 	}
 
 	private static void reflect() {
-		List<Object[]> todo;
-		synchronized (REFLECT) {
-			if (REFLECT.isEmpty()) {
-				return;
-			}
-			todo = new ArrayList<>(REFLECT);
-			REFLECT.clear();
+		if (REFLECT.isEmpty()) {
+			return;
 		}
+		List<Object[]> todo = new ArrayList<>(REFLECT);
+		REFLECT.clear();
 		for (Object[] r : todo) {
 			Projectile projectile = (Projectile) r[0];
 			LivingEntity shooter = (LivingEntity) r[1];

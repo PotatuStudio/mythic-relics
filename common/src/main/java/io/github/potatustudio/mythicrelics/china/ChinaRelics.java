@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.china;
 
+import io.github.potatustudio.mythicrelics.relic.Modifiers;
 import io.github.potatustudio.mythicrelics.relic.HitEffects;
 import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import dev.architectury.event.EventResult;
@@ -18,7 +19,6 @@ import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -31,8 +31,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Blaze;
@@ -200,7 +198,7 @@ public final class ChinaRelics {
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			ServerLevel level = player.level();
 			ItemStack main = player.getMainHandItem();
-			setModifier(player, Attributes.ENTITY_INTERACTION_RANGE, RUYI_REACH_ID,
+			Modifiers.set(player, Attributes.ENTITY_INTERACTION_RANGE, RUYI_REACH_ID,
 					!main.is(ModItems.RUYI_JINGU_BANG.get()) ? 0
 							: RuyiJinguBangItem.isExtended(main, now) ? RUYI_REACH + RUYI_EXTENDED_REACH : RUYI_REACH,
 					AttributeModifier.Operation.ADD_VALUE);
@@ -220,22 +218,6 @@ public final class ChinaRelics {
 			if (stack.isDamaged()) {
 				stack.setDamageValue(stack.getDamageValue() - 1);
 			}
-		}
-	}
-
-	private static void setModifier(Player player, Holder<Attribute> attribute, Identifier id, double amount,
-			AttributeModifier.Operation operation) {
-		AttributeInstance instance = player.getAttribute(attribute);
-		if (instance == null) {
-			return;
-		}
-		AttributeModifier current = instance.getModifier(id);
-		if (current != null && current.amount() == amount) {
-			return;
-		}
-		instance.removeModifier(id);
-		if (amount != 0) {
-			instance.addTransientModifier(new AttributeModifier(id, amount, operation));
 		}
 	}
 

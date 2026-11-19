@@ -6,10 +6,10 @@ import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -51,7 +51,7 @@ public class SibyllineBooksItem extends RelicItem {
 	private record Guide(BlockPos target, long until) {
 	}
 
-	private static final Map<UUID, Guide> GUIDES = new ConcurrentHashMap<>();
+	private static final Map<UUID, Guide> GUIDES = new HashMap<>();
 	private static final int GUIDE_TICKS = 300;
 
 	private static final List<Sight> SIGHTS = List.of(
@@ -99,7 +99,7 @@ public class SibyllineBooksItem extends RelicItem {
 
 	private static void prophecy(ServerLevel level, ServerPlayer player) {
 		if (level.dimension() != Level.OVERWORLD) {
-			player.sendSystemMessage(Component.translatable("message.mythicrelics.sibyl_nothing").withStyle(ChatFormatting.DARK_PURPLE));
+			player.sendOverlayMessage(Component.translatable("message.mythicrelics.sibyl_nothing").withStyle(ChatFormatting.DARK_PURPLE));
 			return;
 		}
 		BlockPos here = player.blockPosition();
@@ -114,13 +114,13 @@ public class SibyllineBooksItem extends RelicItem {
 			}
 		}
 		if (best == null) {
-			player.sendSystemMessage(Component.translatable("message.mythicrelics.sibyl_nothing").withStyle(ChatFormatting.DARK_PURPLE));
+			player.sendOverlayMessage(Component.translatable("message.mythicrelics.sibyl_nothing").withStyle(ChatFormatting.DARK_PURPLE));
 			return;
 		}
 		double dx = best.getX() - here.getX();
 		double dz = best.getZ() - here.getZ();
 		int distance = (int) Math.round(Math.sqrt(dx * dx + dz * dz));
-		player.sendSystemMessage(Component.translatable("message.mythicrelics.sibyl_sees",
+		player.sendOverlayMessage(Component.translatable("message.mythicrelics.sibyl_sees",
 				Component.translatable("structure.mythicrelics." + bestSight.name()),
 				Compass.direction(dx, dz), distance).withStyle(ChatFormatting.DARK_PURPLE));
 		// El mapa de la profecía, ya dibujado, con la estructura marcada.

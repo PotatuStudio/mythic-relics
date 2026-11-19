@@ -9,13 +9,13 @@ import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -62,7 +62,7 @@ public final class CharonStash extends SavedData {
 
 	private final Map<UUID, Entry> stash = new HashMap<>();
 	/** Jugadores que pagaron el pasaje en esta muerte: sus accesorios no se sueltan. */
-	private static final Set<UUID> PAID = ConcurrentHashMap.newKeySet();
+	private static final Set<UUID> PAID = new HashSet<>();
 
 	private CharonStash() {
 	}

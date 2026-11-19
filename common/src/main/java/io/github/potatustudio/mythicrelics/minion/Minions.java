@@ -5,7 +5,6 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -51,7 +50,8 @@ public final class Minions {
 	private record Minion(UUID owner, int[] ticksLeft, boolean burrows, boolean converted) {
 	}
 
-	private static final Map<Mob, Minion> MINIONS = Collections.synchronizedMap(new IdentityHashMap<>());
+	/** Solo del servidor: en el cliente {@link #ownerOf} responde null (como en un servidor dedicado). */
+	private static final Map<Mob, Minion> MINIONS = new IdentityHashMap<>();
 
 	private Minions() {
 	}
@@ -74,6 +74,9 @@ public final class Minions {
 	}
 
 	public static @Nullable UUID ownerOf(Entity entity) {
+		if (entity.level().isClientSide()) {
+			return null;
+		}
 		Minion minion = entity instanceof Mob mob ? MINIONS.get(mob) : null;
 		return minion == null ? null : minion.owner();
 	}
@@ -139,48 +142,46 @@ public final class Minions {
 	}
 
 	private static void tick(MinecraftServer server) {
-		synchronized (MINIONS) {
-			Iterator<Map.Entry<Mob, Minion>> it = MINIONS.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<Mob, Minion> e = it.next();
-				Mob mob = e.getKey();
-				Minion minion = e.getValue();
-				if (mob.isRemoved() || !mob.isAlive() || !(mob.level() instanceof ServerLevel level)) {
-					it.remove();
-					continue;
-				}
-				if (--minion.ticksLeft()[0] <= 0) {
-					if (minion.converted()) {
-						// Se le pasa el encantamiento: vuelve a ser hostil, sin el objetivo que tenía como aliado.
-						mob.setTarget(null);
-						level.sendParticles(ParticleTypes.SMOKE, mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 12, 0.3, 0.4, 0.3, 0.02);
-						it.remove();
-						continue;
-					}
-					if (minion.burrows()) {
-						dig(level, mob);
-					} else {
-						level.sendParticles(ParticleTypes.POOF, mob.getX(), mob.getY() + 0.5, mob.getZ(), 10, 0.3, 0.4, 0.3, 0.02);
-					}
-					mob.discard();
-					it.remove();
-					continue;
-				}
-				mob.clearFire();
-				Player owner = level.getPlayerByUUID(minion.owner());
-				LivingEntity current = mob.getTarget();
-				if (current != null && (current == owner || ownerOf(current) != null || isAlly(current, minion.owner()))) {
+		Iterator<Map.Entry<Mob, Minion>> it = MINIONS.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Mob, Minion> e = it.next();
+			Mob mob = e.getKey();
+			Minion minion = e.getValue();
+			if (mob.isRemoved() || !mob.isAlive() || !(mob.level() instanceof ServerLevel level)) {
+				it.remove();
+				continue;
+			}
+			if (--minion.ticksLeft()[0] <= 0) {
+				if (minion.converted()) {
+					// Se le pasa el encantamiento: vuelve a ser hostil, sin el objetivo que tenía como aliado.
 					mob.setTarget(null);
-					current = null;
+					level.sendParticles(ParticleTypes.SMOKE, mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 12, 0.3, 0.4, 0.3, 0.02);
+					it.remove();
+					continue;
 				}
-				// Buscar objetivo cuesta (un rayo de vista por hostil): cada 10 ticks, escalonado entre aliados.
-				if (owner != null && (current == null || !current.isAlive()) && (mob.tickCount + mob.getId()) % 10 == 0) {
-					LivingEntity next = pick(owner, mob);
-					if (next != null) {
-						mob.setTarget(next);
-					} else if (mob.distanceToSqr(owner) > 9) {
-						mob.getNavigation().moveTo(owner, 1.1);
-					}
+				if (minion.burrows()) {
+					dig(level, mob);
+				} else {
+					level.sendParticles(ParticleTypes.POOF, mob.getX(), mob.getY() + 0.5, mob.getZ(), 10, 0.3, 0.4, 0.3, 0.02);
+				}
+				mob.discard();
+				it.remove();
+				continue;
+			}
+			mob.clearFire();
+			Player owner = level.getPlayerByUUID(minion.owner());
+			LivingEntity current = mob.getTarget();
+			if (current != null && (current == owner || ownerOf(current) != null || isAlly(current, minion.owner()))) {
+				mob.setTarget(null);
+				current = null;
+			}
+			// Buscar objetivo cuesta (un rayo de vista por hostil): cada 10 ticks, escalonado entre aliados.
+			if (owner != null && (current == null || !current.isAlive()) && (mob.tickCount + mob.getId()) % 10 == 0) {
+				LivingEntity next = pick(owner, mob);
+				if (next != null) {
+					mob.setTarget(next);
+				} else if (mob.distanceToSqr(owner) > 9) {
+					mob.getNavigation().moveTo(owner, 1.1);
 				}
 			}
 		}

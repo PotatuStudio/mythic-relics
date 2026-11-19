@@ -24,6 +24,9 @@ public class RelicItem extends Item {
 		super(properties);
 	}
 
+	// Mojang lo marca @Deprecated en el sentido de «sobrescribir, no llamar»: en 26.3 sigue siendo el gancho del tooltip
+	// del ítem (ItemStack lo llama). TooltipProvider solo sirve para componentes que vanilla ya conoce.
+	@SuppressWarnings("deprecation")
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip,
 			TooltipFlag flag) {

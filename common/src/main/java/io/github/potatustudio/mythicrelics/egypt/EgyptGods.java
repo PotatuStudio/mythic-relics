@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.egypt;
 
+import io.github.potatustudio.mythicrelics.relic.Modifiers;
 import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
@@ -40,7 +41,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -354,15 +354,8 @@ public final class EgyptGods {
 	}
 
 	private static void setFrenzySpeed(ServerPlayer player, int level) {
-		AttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
-		if (speed == null) {
-			return;
-		}
-		speed.removeModifier(SEKHMET_SPEED);
-		if (level > 0) {
-			speed.addTransientModifier(new AttributeModifier(SEKHMET_SPEED, SEKHMET_PER_LEVEL * level,
-					AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-		}
+		Modifiers.set(player, Attributes.MOVEMENT_SPEED, SEKHMET_SPEED, SEKHMET_PER_LEVEL * level,
+				AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	}
 
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------

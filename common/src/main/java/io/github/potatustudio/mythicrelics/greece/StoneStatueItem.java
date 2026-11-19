@@ -56,6 +56,9 @@ public class StoneStatueItem extends Item {
 		return mob == null ? super.getName(stack) : Component.translatable("item.mythicrelics.stone_statue.of", mob.getDescription());
 	}
 
+	// Mojang lo marca @Deprecated en el sentido de «sobrescribir, no llamar»: en 26.3 sigue siendo el gancho del tooltip
+	// del ítem (ItemStack lo llama). TooltipProvider solo sirve para componentes que vanilla ya conoce.
+	@SuppressWarnings("deprecation")
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip,
 			TooltipFlag flag) {
