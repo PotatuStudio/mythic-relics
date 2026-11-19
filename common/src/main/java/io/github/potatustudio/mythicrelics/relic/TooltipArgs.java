@@ -16,6 +16,8 @@ import io.github.potatustudio.mythicrelics.norse.NorseGods;
 import io.github.potatustudio.mythicrelics.norse.NorseRelics;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import io.github.potatustudio.mythicrelics.rome.RomeRelics;
+import java.util.List;
+import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -67,9 +69,18 @@ public final class TooltipArgs {
 
 	/** Solo en desarrollo: avisa si una línea de tooltip pide un %n$s que su reliquia no registra. */
 	private static void check() {
+		problems().forEach(p -> MythicRelics.LOGGER.warn("Mythic Relics: {}", p));
+	}
+
+	/**
+	 * Líneas de tooltip (en_us) que piden un {@code %n$s} que su reliquia no registra. Vacía si todo calza; la prueba
+	 * automática de cliente exige que lo esté.
+	 */
+	public static List<String> problems() {
+		List<String> out = new ArrayList<>();
 		try (InputStream in = MythicRelics.class.getResourceAsStream("/assets/mythicrelics/lang/en_us.json")) {
 			if (in == null) {
-				return;
+				return List.of("no encontré en_us.json");
 			}
 			JsonObject lang = JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
 			for (Map.Entry<String, JsonElement> e : lang.entrySet()) {
@@ -81,13 +92,13 @@ public final class TooltipArgs {
 				Matcher arg = POSITIONAL.matcher(e.getValue().getAsString());
 				while (arg.find()) {
 					if (Integer.parseInt(arg.group(1)) > have) {
-						MythicRelics.LOGGER.warn("Mythic Relics: {} usa %{}$s pero {} solo registra {} argumentos", e.getKey(),
-								arg.group(1), key.group(1), have);
+						out.add(e.getKey() + " usa %" + arg.group(1) + "$s pero " + key.group(1) + " solo registra " + have + " argumentos");
 					}
 				}
 			}
 		} catch (Exception ex) {
-			MythicRelics.LOGGER.warn("Mythic Relics: no pude revisar los argumentos de los tooltips", ex);
+			out.add("no pude revisar los argumentos de los tooltips: " + ex);
 		}
+		return out;
 	}
 }

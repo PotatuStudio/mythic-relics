@@ -9,6 +9,23 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
 - Reliquias de cinco mitologías: Egipto, Grecia, Roma, nórdicos y China (70 reliquias), con sets, aliados, monturas,
   libro (Modonomicon), página de JEI, una pestaña creativa por mitología y modelos 3D puestos con textura pintada.
 
+### Fixed
+- Auditoría del 2026-11-19 (ver `docs/AUDITORIA.md`):
+  - El sangrado de Dáinsleif ya no tumba el servidor cuando muere uno de varios heridos.
+  - Los tajos de la espada de Freyr, los barridos del mayal y del Ruyi, los rayos de Zeus y la calabaza ya no cuentan
+    como golpe de la mano: no cobran la maldición de Tyrfing ni gastan la cólera, Gram o la harpe.
+  - Gram, la cólera de Aquiles, la harpe y el barrido del Ruyi solo cuentan si el golpe entra (no con frames de
+    invulnerabilidad ni contra un escudo).
+  - El yelmo de Hades ya no borra la invisibilidad de las pociones.
+  - Un mob petrificado y atado a la vez no camina al soltarse uno; un mob sin IA de un mapa sigue sin IA.
+  - El papel del talismán fu ya no queda flotando si el chunk se descargó.
+  - Las recargas vuelven a verse (y a contar) al reaparecer tras morir.
+  - Skíðblaðnir se pliega aunque se haya guardado con el jugador montado.
+  - Romper el fuego de Vesta lo olvida y no da carbón; Mímir no dice «llegaste» al cambiar de dimensión.
+  - El mob petrificado se ve de piedra para quien llega después; los candados ajenos no hacen la animación de abrir.
+  - La calabaza no pierde al mob si se duplicó; el set de Anubis también frena a los zoglin.
+  - Muninn y los libros sibilinos avisan sobre la barra, no en el chat.
+
 ### Changed
 - Espada de Freyr: la de la espalda es la misma que pelea (empuñadura calcada y mismo tamaño, ~1,27 bloques), sin el
   tahalí que la cruzaba; mientras pelea, en la espalda queda la vaina vacía (propiedad `mythicrelics:freyr_drawn`).

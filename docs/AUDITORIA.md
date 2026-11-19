@@ -4,6 +4,38 @@ Revisión del código después del paquete de refactors (`REFACTOR.md`, terminad
 `-Xlint:deprecation,removal` salvo los de abajo. **[JUEGO]** = el arreglo cambia el comportamiento en el juego: se aprueba
 antes de tocarlo. *(sospecha)* = sin comprobar en el juego.
 
+## Resultado (2026-11-19)
+El usuario aprobó corregir todo, también lo que cambia el juego. Estado de cada punto:
+
+| Punto | Estado |
+|---|---|
+| B1 Dáinsleif | Hecho: se decide quién sangra y se daña fuera del recorrido. Lo cubre la prueba de cliente. |
+| B2 Freyr como golpe de la mano | Hecho: `relic/RelicDamage.byPlayer` (la espada es la entidad directa). También barridos del mayal y del Ruyi, rayos de Zeus y la calabaza. El barrido del mayal conserva el bono del set de Osiris; ya no suma el +daño de Megingjörð (no es un golpe de la mano). Lo cubre la prueba de cliente. |
+| B3 Efectos antes de que el golpe entre | Hecho: `relic/HitEffects` (Gram, cólera, harpe y barrido del Ruyi se aplican en `LIVING_DAMAGE_POST`). |
+| B4 Hades y las pociones | Hecho: el yelmo solo pone y quita su propia invisibilidad (corta y sin partículas). |
+| B5 / D2 Estados sin IA | Hecho: `relic/TimedMobStatus` une Gleipnir, talismán y Medusa; la IA vuelve al valor original solo sin otro estado. |
+| B6 Papel del talismán | Hecho: la entrada se borra siempre al vencer; un papel sin sello se rechaza al cargarse (`interruptFalse`, D7). |
+| B7 Recargas al morir | Hecho: se reponen en `PLAYER_RESPAWN`; las vencidas se olvidan al cerrar el mundo. |
+| B8 Skíðblaðnir | Hecho: un bote con la etiqueta vuelve a `SHIPS` al cargarse. |
+| B9 Vesta | Hecho: romper el fuego del hogar lo olvida y no suelta carbón. |
+| B10 Mímir | Hecho: la guía recuerda su dimensión. |
+| B11 Petrificados | Hecho: se manda el estado al empezar a seguir la entidad (`START_TRACKING`). |
+| B12 Candados | Hecho: el ítem del candado lleva el dueño y el cliente no predice abrir lo ajeno. El halcón ya lo resolvía en los dos lados. Los candados puestos antes de este cambio no llevan dueño: para esos sigue decidiendo solo el servidor. |
+| B13 Calabaza | Hecho: el mob sale con un UUID nuevo. |
+| B14 DataFixTypes | **No se cambia**: en 26.3 `SavedDataStorage.readTagFromDisk` usa el tipo sin revisar nulo (pasar `null` cae con NPE). Con la misma versión de datos no corre ninguna regla de vanilla; queda documentado en `RelicCooldowns`. |
+| Sospecha `healBlocked` | Confirmada y hecha: en el cliente responde false. |
+| Sospecha cayado y Brain | Confirmada, sin daño: a los animales con cerebro (cabra, camello, sniffer…) el `TemptGoal` no les hace nada. No se cambia (sería otra mecánica). |
+| Sospecha veto y Brain | Confirmada y hecha: `TargetVeto.init` borra la memoria `ATTACK_TARGET` negada cada 2 ticks cerca de quien tiene un veto. |
+| §2 Fugas | Hecho: `WornRelics` por jugador, `RelicCooldowns` vencidas, `FalconForm` al salir, `TALISMAN_PAPER` (B6). |
+| §3 Rendimiento | Hecho: `FreyrDrawn` sin búsqueda por cuadro, búsquedas muertas de `EgyptRelics` borradas, pila de Ícaro reutilizada, tooltip de la calabaza sin copiar el NBT. Los recorridos de `BOUND`/`SEALED`/`PETRIFIED` quedan (ahora en `TimedMobStatus`): son pocos y no valía la pena indexarlos. |
+| §4 `appendHoverText` | **No se migra**: Mojang lo marca `@Deprecated` como «sobrescribir, no llamar»; en 26.3 sigue siendo el gancho del tooltip (ItemStack lo llama) y `TooltipProvider` solo sirve para componentes que vanilla ya conoce (los propios necesitan API de cada loader). Documentado en los 5 lugares. |
+| §5 Código muerto | Hecho: `fmtTenths`, `pointsUpToLevel`, comentario huérfano, imports sin uso. Las 4 paletas pasaron a `tools/model-gen/palettes` (las herramientas se ajustaron). Los borradores locales fuera de git en `tools/` quedan para que el usuario decida. |
+| §6 Pruebas | Hecho: JUnit en `common` (`./gradlew :common:test`: números de tooltip, rosa de los vientos, experiencia de Thot, idiomas con las mismas claves y argumentos, `.summary` de cada reliquia). La prueba de cliente ahora falla de verdad (habilidades, `TooltipArgs.problems()`, piezas de set únicas, B1 y B2). Los códecs de `RelicCooldowns`/`CharonStash`/`JanusLocks` no se prueban solos: sus clases cargan el registro del mod. |
+| D1 | Hecho: `relic/Modifiers.set`. |
+| D3 | Hecho: mapas solo del servidor sin sincronización; `Minions.ownerOf` responde null en el cliente. |
+| D4 | Hecho: Muninn y la sibila avisan sobre la barra (la cama de Muninn sale 3 s después). |
+| D5 | Queda para después (decisión del usuario). |
+
 ## 1. Bugs
 ### Alta
 - **B1. Crash del servidor con el sangrado de Dáinsleif** (`norse/NorseSagas.java:431-444` y `:208-210`): `bleed()`

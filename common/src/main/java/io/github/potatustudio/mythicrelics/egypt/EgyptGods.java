@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.egypt;
 
+import io.github.potatustudio.mythicrelics.relic.XpMath;
 import io.github.potatustudio.mythicrelics.relic.Modifiers;
 import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import dev.architectury.event.EventResult;
@@ -249,19 +250,14 @@ public final class EgyptGods {
 	/** Mientras la paleta devuelve lo escrito, no se aplica el +20 % (si no, leer daría experiencia de más). */
 	private static boolean readingPalette;
 
-	/** Puntos de experiencia de un nivel (de {@code level} a {@code level + 1}), la misma fórmula de vanilla. */
+	/** Puntos de experiencia de un nivel: ver {@link XpMath#pointsForLevel}. */
 	public static int pointsForLevel(int level) {
-		return level >= 30 ? 112 + (level - 30) * 9 : level >= 15 ? 37 + (level - 15) * 5 : 7 + level * 2;
+		return XpMath.pointsForLevel(level);
 	}
 
-	/** Nivel al que llegarías desde cero con esos puntos (para mostrar lo escrito en la paleta). */
+	/** Nivel al que llegarías desde cero con esos puntos: ver {@link XpMath#levelForPoints}. */
 	public static int levelForPoints(int points) {
-		int level = 0;
-		while (points >= pointsForLevel(level)) {
-			points -= pointsForLevel(level);
-			level++;
-		}
-		return level;
+		return XpMath.levelForPoints(points);
 	}
 
 	/** Devuelve puntos al jugador sin el bono de la paleta. */

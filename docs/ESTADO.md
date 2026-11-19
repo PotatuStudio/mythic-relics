@@ -3,6 +3,14 @@
 **2026-11-15: se borraron Japón entero y 9 reliquias chinas** (ver «Reliquias borradas»). Quedan 70 reliquias en cinco
 mitologías: Egipto, Grecia, Roma, nórdicos y China (9).
 
+## Sesión del 2026-11-19: auditoría corregida
+Se corrigió toda la auditoría ([AUDITORIA.md](AUDITORIA.md), tabla «Resultado»), también lo que cambia el juego, con
+aprobación del usuario. Ayudantes nuevos en `relic/`: `RelicDamage` (daño del jugador que no es de su mano),
+`HitEffects` (efectos que solo cuentan si el golpe entra), `TimedMobStatus` (estados sin IA), `Modifiers` (atributos),
+`XpMath`. Pruebas: `./gradlew :common:test` (JUnit) y la prueba de cliente, que ahora falla de verdad (fase
+`aserciones`). Pendiente que el usuario pruebe en el juego: Freyr con Tyrfing, Gram contra un escudo, Hades con poción,
+Medusa + Gleipnir, candados entre dos jugadores, Muninn y la sibila sobre la barra.
+
 ## Para retomar (sesión del 2026-11-14 y 15)
 Rama de trabajo: `main`. Todo lo de esta sesión está subido. Hecho, en orden:
 - Paquete de refactors completo (`docs/REFACTOR.md`), con los opcionales (geometría por entidad, resúmenes `.summary`).

@@ -46,6 +46,8 @@ public class RelicClientGameTest implements FabricClientGameTest {
 	private static final int Y = 150;
 	private Path out;
 	private PrintWriter log;
+	/** Lo que salió mal: la prueba falla al final si hay algo (las fases siguen corriendo para dejar todas las capturas). */
+	private final List<String> failures = new ArrayList<>();
 
 	@Override
 	public void runTest(ClientGameTestContext ctx) {
@@ -94,13 +96,19 @@ public class RelicClientGameTest implements FabricClientGameTest {
 			if (run.test("habilidades")) {
 				abilities(ctx, srv, relics);
 			}
-			log("FIN");
+			if (run.test("aserciones")) {
+				assertions(ctx, srv);
+			}
+			log(failures.isEmpty() ? "FIN: sin fallos" : "FIN: " + failures.size() + " fallos");
 		} catch (Throwable t) {
 			log("FALLO GENERAL: " + t);
 			t.printStackTrace(log);
 			throw t;
 		} finally {
 			log.close();
+		}
+		if (!failures.isEmpty()) {
+			throw new AssertionError("Mythic Relics: " + failures.size() + " fallos: " + failures);
 		}
 	}
 
@@ -162,6 +170,83 @@ public class RelicClientGameTest implements FabricClientGameTest {
 
 	private void log(String s) {
 		log.println(s);
+	}
+
+	private void fail(String what) {
+		failures.add(what);
+		log("FALLO " + what);
+	}
+
+	private void check(boolean ok, String what) {
+		if (ok) {
+			log("OK " + what);
+		} else {
+			fail(what);
+		}
+	}
+
+	// ---- Aserciones (arreglos de la auditoría del 2026-11-19) --------------------------------------------------------
+
+	private void assertions(ClientGameTestContext ctx, TestServerContext srv) {
+		reset(ctx, srv);
+		// Cada %n$s de los tooltips tiene su número registrado.
+		List<String> args = io.github.potatustudio.mythicrelics.relic.TooltipArgs.problems();
+		check(args.isEmpty(), "tooltipArgs completos " + args);
+		// Ninguna pieza en dos sets.
+		Map<String, String> owner = new LinkedHashMap<>();
+		for (var set : io.github.potatustudio.mythicrelics.relic.RelicSets.values()) {
+			for (var piece : set.pieces()) {
+				String before = owner.put(piece.id(), set.key());
+				check(before == null, "pieza " + piece.id() + " en un solo set" + (before == null ? "" : " (" + before + " y " + set.key() + ")"));
+			}
+		}
+		// B2: un tajo de la espada de Freyr (fuente RelicDamage con la espada como entidad directa) no cobra la maldición
+		// de Tyrfing; un golpe de la mano sí (si no, la prueba no distingue nada).
+		srv.runOnServer(s -> {
+			ServerPlayer p = player(s);
+			p.removeAllEffects();
+			p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+					new ItemStack(io.github.potatustudio.mythicrelics.registry.ModItems.TYRFING.get()));
+			p.setHealth(p.getMaxHealth());
+			var level = p.level();
+			var zombie = net.minecraft.world.entity.EntityTypes.HUSK.create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+			zombie.snapTo(p.getX() + 2, p.getY(), p.getZ(), 0, 0);
+			zombie.setNoAi(true);
+			level.addFreshEntity(zombie);
+			var sword = io.github.potatustudio.mythicrelics.registry.ModEntities.FREYR_SWORD.get()
+					.create(level, net.minecraft.world.entity.EntitySpawnReason.TRIGGERED);
+			float before = p.getHealth();
+			zombie.hurtServer(level, io.github.potatustudio.mythicrelics.relic.RelicDamage.byPlayer(level, sword, p), 1.0f);
+			check(p.getHealth() == before, "B2: tajo de Freyr sin maldición de Tyrfing (vida " + before + " -> " + p.getHealth() + ")");
+			zombie.setInvulnerableTime(0);
+			zombie.hurtServer(level, level.damageSources().playerAttack(p), 1.0f);
+			check(p.getHealth() < before, "B2: golpe de la mano con Tyrfing sí la cobra (control)");
+			zombie.discard();
+			p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+			p.setHealth(p.getMaxHealth());
+		});
+		// B1: dos mobs heridos por Dáinsleif y uno muere desangrado: el servidor no se cae.
+		srv.runOnServer(s -> {
+			ServerPlayer p = player(s);
+			p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+					new ItemStack(io.github.potatustudio.mythicrelics.registry.ModItems.DAINSLEIF.get()));
+			var level = p.level();
+			for (int i = 0; i < 3; i++) {
+				var zombie = net.minecraft.world.entity.EntityTypes.HUSK.create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+				zombie.snapTo(p.getX() - 2 + i * 2, p.getY(), p.getZ() + 3, 0, 0);
+				zombie.setNoAi(true);
+				zombie.addTag("mythic_test_bleed");
+				level.addFreshEntity(zombie);
+				zombie.hurtServer(level, level.damageSources().playerAttack(p), 1.0f);
+				zombie.setHealth(i == 0 ? 0.5f : 20.0f);
+			}
+			p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+		});
+		ctx.waitTicks(60);
+		boolean firstDead = srv.computeOnServer(s -> player(s).level().getEntitiesOfClass(net.minecraft.world.entity.monster.zombie.Husk.class,
+				new AABB(-30, Y - 5, -30, 30, Y + 10, 30), z -> z.entityTags().contains("mythic_test_bleed")).size() < 3);
+		check(firstDead, "B1: el herido de Dáinsleif se desangra sin tumbar el servidor");
+		srv.runCommand("kill @e[tag=mythic_test_bleed]");
 	}
 
 	/** Mata lo que no es jugador, baja de la montura, limpia manos, accesorios y recargas, y cura. */
@@ -561,7 +646,8 @@ public class RelicClientGameTest implements FabricClientGameTest {
 				});
 				log("habilidad " + id + (wornToo ? " (puesta)" : "") + ": " + state);
 			} catch (Throwable t) {
-				log("habilidad " + id + ": EXCEPCIÓN " + t);
+				fail("habilidad " + id + ": EXCEPCIÓN " + t);
+				t.printStackTrace(log);
 				ctx.getInput().releaseKey(o -> o.keyUse);
 				ctx.getInput().releaseKey(o -> o.keyShift);
 			}
