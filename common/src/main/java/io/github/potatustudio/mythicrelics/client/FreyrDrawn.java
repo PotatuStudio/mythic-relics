@@ -26,10 +26,8 @@ public record FreyrDrawn() implements ConditionalItemModelProperty {
 		if (owner == null) {
 			return false;
 		}
-		int id = owner.getId();
-		// La espada nunca se aleja mucho del dueño (FreyrSword: radio de combate de 12 bloques).
-		return !owner.level().getEntitiesOfClass(FreyrSword.class, owner.getBoundingBox().inflate(24.0),
-				sword -> sword.ownerId() == id && !sword.isRemoved()).isEmpty();
+		// Cada espada avisa en su tick (sin buscar entidades en cada cuadro, que con sombras de Iris era el doble).
+		return FreyrSword.clientDrawn(owner.getId(), owner.level().getGameTime());
 	}
 
 	@Override

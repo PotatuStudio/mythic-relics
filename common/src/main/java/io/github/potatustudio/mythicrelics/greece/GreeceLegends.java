@@ -114,7 +114,6 @@ public final class GreeceLegends {
 	private static final Map<UUID, Long> WRATH_UNTIL = new HashMap<>();
 	/** Manzana de la Discordia: mob marcado y hasta cuándo. */
 	private static final Map<Mob, Long> FAIREST = new WeakHashMap<>();
-	/** Harpe: mobs que ya avisaron (para que el aviso suene una vez por mob). */
 
 	private GreeceLegends() {
 	}

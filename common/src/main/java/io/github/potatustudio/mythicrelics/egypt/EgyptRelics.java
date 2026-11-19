@@ -10,7 +10,6 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.ExecuteWarning;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
-import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.TooltipNumbers;
@@ -39,8 +38,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.zombie.Husk;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -92,9 +89,6 @@ public final class EgyptRelics {
 	public static final int RING_JACKALS = 2;
 	public static final int RING_JACKAL_TICKS = 400;
 	public static final int RING_COOLDOWN = 1800;
-
-	/** Ticks durante los que un no-muerto que te golpeaste puede seguir atacándote pese al bono del set de Anubis. */
-	private static final int ANUBIS_SET_PROVOKED_TICKS = 200;
 
 	private static final DustParticleOptions GOLD = new DustParticleOptions(0xFFD84A, 1.4f);
 	/** Etiqueta del no-muerto destruido por el juicio del cetro, para darle el doble de experiencia al morir. */
@@ -304,21 +298,7 @@ public final class EgyptRelics {
 				player.heal(1.0f);
 				level.sendParticles(ParticleTypes.HAPPY_VILLAGER, player.getX(), player.getY() + 1.8, player.getZ(), 2, 0.2, 0.1, 0.2, 0);
 			}
-			if (player.tickCount % 10 == 0 && WornRelics.isWearing(player, ModItems.MUMMY_WRAPS)) {
-				for (Husk husk : level.getEntitiesOfClass(Husk.class, player.getBoundingBox().inflate(24),
-						h -> h.getTarget() == player)) {
-					husk.setTarget(null);
-				}
-			}
-			if (player.tickCount % 5 == 0 && RelicSets.ANUBIS.isComplete(player)) {
-				// Protector de los muertos: los no-muertos no te atacan salvo que los hayas golpeado hace poco.
-				for (Mob mob : level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(24),
-						m -> m.getTarget() == player && m.typeHolder().is(EntityTypeTags.UNDEAD)
-								&& !(m.getLastHurtByMob() == player
-										&& m.tickCount - m.getLastHurtByMobTimestamp() < ANUBIS_SET_PROVOKED_TICKS))) {
-					mob.setTarget(null);
-				}
-			}
+			// Vendas de momia y set de Anubis: lo resuelve relic/TargetVeto (el mob no puede ni fijar el objetivo).
 		}
 	}
 

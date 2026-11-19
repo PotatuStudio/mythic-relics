@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "design-page"))
 import greece3_draft as CD  # noqa: E402
 from greece_icons import save  # noqa: E402
 from mclib import H, png  # noqa: E402
-from moddata import ASSETS  # noqa: E402
+from moddata import ASSETS, palette_path  # noqa: E402
 from rome_models import shield_display  # noqa: E402
 
 NS = "mythicrelics"
@@ -99,7 +99,7 @@ if __name__ == "__main__":
             continue
         write(os.path.join(ASSETS, "items", name + ".json"), {"model": {"type": "minecraft:model", "model": f"{NS}:item/{name}"}})
     # Escudo de Aquiles: modelo 3D para sostener y bloquear, ícono plano en el inventario.
-    png(os.path.join(textures, "greece3_palette.png"), palette())
+    png(palette_path("greece3_palette"), palette())
     models = os.path.join(ASSETS, "models", "item")
     write(os.path.join(models, "achilles_shield_3d.json"), {
         "gui_light": "front", "textures": {"p": f"{NS}:item/greece3_palette", "particle": f"{NS}:item/greece3_palette"},

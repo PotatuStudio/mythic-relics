@@ -13,6 +13,15 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 COMMON = os.path.join(ROOT, "common", "src", "main")
 JAVA = os.path.join(COMMON, "java", "io", "github", "potatustudio", "mythicrelics")
 ASSETS = os.path.join(COMMON, "resources", "assets", "mythicrelics")
+# Paletas de colores planos de los generadores 3D: solo las usan las herramientas (paint_models las lee para pintar y
+# el visor muestra la de las reliquias puestas), así que no van dentro del mod.
+PALETTES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "palettes")
+
+
+def palette_path(name):
+    """Ruta de una paleta (p. ej. "worn_palette") en tools/model-gen/palettes."""
+    os.makedirs(PALETTES, exist_ok=True)
+    return os.path.join(PALETTES, name + ".png")
 # Configuración de render de Trinkets (solo Fabric; en NeoForge la ubicación está en CuriosRelicRenderer).
 FABRIC_ASSETS = os.path.join(ROOT, "fabric", "src", "main", "resources", "assets", "mythicrelics")
 ORDER = ["golden_scarab", "eye_of_horus", "ankh", "mummy_wraps", "anubis_scepter", "jackal_mask", "jackal_ring",

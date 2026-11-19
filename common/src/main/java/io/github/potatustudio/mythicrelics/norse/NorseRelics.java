@@ -1,20 +1,13 @@
 package io.github.potatustudio.mythicrelics.norse;
 
-import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
 import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
-import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TimedMobStatus;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,7 +18,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -36,7 +28,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 
 /**
  * Primera tanda nórdica (diseño aprobado el 2026-11-09), casi todo obra de los enanos:

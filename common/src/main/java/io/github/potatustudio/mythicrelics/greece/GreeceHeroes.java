@@ -105,8 +105,14 @@ public final class GreeceHeroes {
 
 	/** ¿La cera está derretida? (la recarga del ítem, que también ve el cliente). */
 	public static boolean waxMelted(Player player) {
-		return player.getCooldowns().isOnCooldown(new ItemStack(ModItems.ICARUS_WINGS.get()));
+		if (wingsStack == null) {
+			wingsStack = new ItemStack(ModItems.ICARUS_WINGS.get());
+		}
+		return player.getCooldowns().isOnCooldown(wingsStack);
 	}
+
+	/** Pila de muestra para consultar la recarga (se usa cada tick en los dos lados; no se modifica). */
+	private static volatile ItemStack wingsStack;
 
 	/** El cliente planea o aletea: el servidor lo valida, reinicia la caída y hace sonar las alas. */
 	private static void icarus(ServerPlayer player, boolean flap) {

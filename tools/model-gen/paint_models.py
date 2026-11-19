@@ -9,7 +9,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import worn_texture  # noqa: E402
-from moddata import ASSETS  # noqa: E402
+from moddata import ASSETS, palette_path  # noqa: E402
 
 NS = "mythicrelics"
 TEX = os.path.join(ASSETS, "textures")
@@ -30,7 +30,12 @@ def run(names=None):
         if names is not None and name not in names:
             continue
         path = os.path.join(ASSETS, "models", *name.split("/")) + ".json"
-        worn_texture.retexture_file(path, os.path.join(TEX, *palette.split("/")) + ".png", f"{NS}:{texture}", ASSETS)
+        # Las paletas "item/*_palette" viven en tools/model-gen/palettes; las demás (el Paladio) son texturas del mod.
+        if palette.endswith("_palette"):
+            source = palette_path(palette.split("/")[-1])
+        else:
+            source = os.path.join(TEX, *palette.split("/")) + ".png"
+        worn_texture.retexture_file(path, source, f"{NS}:{texture}", ASSETS)
         print("pintado:", name)
 
 

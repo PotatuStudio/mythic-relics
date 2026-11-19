@@ -16,7 +16,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mclib import H, png  # noqa: E402
-from moddata import ASSETS, ROOT  # noqa: E402
+from moddata import ASSETS, ROOT, palette_path  # noqa: E402
 
 NS = "mythicrelics"
 DATA = os.path.join(ROOT, "common", "src", "main", "resources", "data")
@@ -156,7 +156,7 @@ def write(path, data):
 
 
 if __name__ == "__main__":
-    png(os.path.join(ASSETS, "textures", "item", "rome_palette.png"), palette())
+    png(palette_path("rome_palette"), palette())
     os.makedirs(os.path.join(ASSETS, "textures", "block"), exist_ok=True)
     png(os.path.join(ASSETS, "textures", "block", "palladium.png"), palette())
     models = os.path.join(ASSETS, "models")

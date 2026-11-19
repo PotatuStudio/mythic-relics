@@ -254,14 +254,6 @@ public final class EgyptGods {
 		return level >= 30 ? 112 + (level - 30) * 9 : level >= 15 ? 37 + (level - 15) * 5 : 7 + level * 2;
 	}
 
-	public static int pointsUpToLevel(int level) {
-		int total = 0;
-		for (int l = 0; l < level; l++) {
-			total += pointsForLevel(l);
-		}
-		return total;
-	}
-
 	/** Nivel al que llegarías desde cero con esos puntos (para mostrar lo escrito en la paleta). */
 	public static int levelForPoints(int points) {
 		int level = 0;

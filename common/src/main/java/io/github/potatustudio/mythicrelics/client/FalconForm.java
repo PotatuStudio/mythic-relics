@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.client;
 
+import dev.architectury.event.events.client.ClientPlayerEvent;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import io.github.potatustudio.mythicrelics.MythicRelics;
@@ -55,6 +56,11 @@ public final class FalconForm {
 	private static final Map<LivingEntityRenderState, Flight> FLIGHTS = new WeakHashMap<>();
 
 	private FalconForm() {
+	}
+
+	static {
+		// Al salir del mundo se olvidan los halcones de esa partida.
+		ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(player -> EASED.clear());
 	}
 
 	/** Lo llama el renderer del jugador al crearse (ahí está el contexto para armar el modelo). */

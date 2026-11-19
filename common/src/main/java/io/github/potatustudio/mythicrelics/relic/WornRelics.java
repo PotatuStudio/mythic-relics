@@ -80,7 +80,8 @@ public final class WornRelics {
 	}
 
 	static {
-		ServerState.clearOnStop(SERVER_CACHE);
+		// Se olvida al desconectarse cada jugador y al cerrar el servidor.
+		ServerState.perPlayer(SERVER_CACHE);
 		// El del cliente se poda solo (se descarta todo lo que no es del tick en curso).
 	}
 }

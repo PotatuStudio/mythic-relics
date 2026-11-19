@@ -14,7 +14,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mclib import H, png  # noqa: E402
 from handheld3d import GRIP_Y, diagonal, handheld_display  # noqa: E402
-from moddata import ASSETS  # noqa: E402
+from moddata import ASSETS, palette_path  # noqa: E402
 
 NS = "mythicrelics"
 COLORS = {"steel_l": "#a9b0bc", "steel": "#6e7480", "steel_d": "#3e434c", "silver": "#e8e8ec", "silver_d": "#a8a8b0",
@@ -135,7 +135,7 @@ def model_json(name):
 
 
 if __name__ == "__main__":
-    png(os.path.join(ASSETS, "textures", "item", "norse_palette.png"), palette())
+    png(palette_path("norse_palette"), palette())
     for name in MODELS:
         write(os.path.join(ASSETS, "models", "item", name + "_3d.json"), model_json(name))
         icon = {"type": "minecraft:model", "model": f"{NS}:item/{name}"}

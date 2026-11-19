@@ -2,6 +2,8 @@ package io.github.potatustudio.mythicrelics.entity;
 
 import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -82,6 +84,19 @@ public class FreyrSword extends Mob {
 		return entityData.get(STATE);
 	}
 
+	/**
+	 * Cliente: dueño (id de entidad) -> último tick del mundo en que se vio su espada afuera. Lo llena cada espada en
+	 * su tick y lo lee la propiedad de modelo {@code freyr_drawn} sin buscar entidades en cada cuadro. Solo del hilo
+	 * del cliente.
+	 */
+	private static final Map<Integer, Long> CLIENT_DRAWN = new HashMap<>();
+
+	/** Cliente: ¿la espada de ese dueño está afuera? (vista en este tick o el anterior). */
+	public static boolean clientDrawn(int ownerId, long now) {
+		Long seen = CLIENT_DRAWN.get(ownerId);
+		return seen != null && now - seen <= 1;
+	}
+
 	/** Id de entidad del dueño, o -1. */
 	public int ownerId() {
 		return entityData.get(OWNER_ID);
@@ -134,6 +149,13 @@ public class FreyrSword extends Mob {
 		super.tick();
 		noPhysics = true;
 		if (!(level() instanceof ServerLevel level)) {
+			if (!isRemoved() && ownerId() >= 0) {
+				long now = level().getGameTime();
+				if (CLIENT_DRAWN.size() > 32) {
+					CLIENT_DRAWN.values().removeIf(t -> now - t > 20);
+				}
+				CLIENT_DRAWN.put(ownerId(), now);
+			}
 			return;
 		}
 		Player player = owner == null ? null : level.getPlayerByUUID(owner);

@@ -16,7 +16,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from moddata import (ARCHAEOLOGY, ASSETS, CULTURES, FABRIC_ASSETS, ORDER, SETS, SLOTS, LOOT_TABLE_KEYS, b64, constants, icons, lang, loot,  # noqa: E402
+from moddata import (ARCHAEOLOGY, ASSETS, palette_path, CULTURES, FABRIC_ASSETS, ORDER, SETS, SLOTS, LOOT_TABLE_KEYS, b64, constants, icons, lang, loot,  # noqa: E402
                      rarity, read, set_args, tooltip_args)
 
 NS = "mythicrelics"
@@ -91,7 +91,7 @@ if __name__ == "__main__":
                      for name in ORDER if os.path.exists(os.path.join(FABRIC_ASSETS, "trinkets", name + ".json"))},
         "wornModels": {name: json.loads(read(os.path.join(ASSETS, "models", "item", name + "_worn.json")))
                        for name in ORDER if os.path.exists(os.path.join(ASSETS, "models", "item", name + "_worn.json"))},
-        "wornPalette": b64(os.path.join(ASSETS, "textures", "item", "worn_palette.png")),
+        "wornPalette": b64(palette_path("worn_palette")),
         "wornTextures": {name: b64(os.path.join(ASSETS, "textures", "item", "worn", name + ".png"))
                          for name in ORDER if os.path.exists(os.path.join(ASSETS, "textures", "item", "worn", name + ".png"))},
     }

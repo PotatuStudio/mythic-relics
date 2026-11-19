@@ -14,7 +14,6 @@ import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TimedMobStatus;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

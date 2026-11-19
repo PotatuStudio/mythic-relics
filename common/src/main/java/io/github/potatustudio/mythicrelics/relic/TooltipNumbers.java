@@ -10,11 +10,6 @@ public final class TooltipNumbers {
 		return value == Math.floor(value) ? Integer.toString((int) value) : Double.toString(value);
 	}
 
-	/** Como {@link #fmt(double)}, pero redondeado a un decimal. */
-	public static String fmtTenths(double value) {
-		return value == Math.floor(value) ? Integer.toString((int) value) : Double.toString(Math.round(value * 10) / 10.0);
-	}
-
 	/** Nivel de efecto como en vanilla (Absorción II). */
 	public static String roman(int level) {
 		return switch (level) {

@@ -12,7 +12,7 @@ Para que se vea sobre la capa de la skin hay que sobresalir al menos 0,5 px (0,7
 se pueden llevar a la vez en la misma parte no deben compartir planos (parpadean): por eso el anillo va más afuera que
 las vendas.
 
-Escribe (common) models/item/<reliquia>_worn.json, textures/item/worn_palette.png e items/<reliquia>.json, y (fabric)
+Escribe (common) models/item/<reliquia>_worn.json, tools/model-gen/palettes/worn_palette.png e items/<reliquia>.json, y (fabric)
 trinkets/<reliquia>.json. La definición del ítem usa el modelo puesto en el contexto de display "none", el que usan
 Trinkets (render "model"/"item") y el renderizador de Curios en NeoForge; en el resto (inventario, mano, suelo) usa el
 ícono. Así NeoForge no necesita registrar modelos extra.
@@ -25,7 +25,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from mclib import H, png  # noqa: E402
-from moddata import ASSETS, FABRIC_ASSETS  # noqa: E402
+from moddata import ASSETS, FABRIC_ASSETS, palette_path  # noqa: E402
 
 NS = "mythicrelics"
 # Paleta de 8x8 casillas de 2x2 px (una por color). Cada cara de un elemento toma el centro de su casilla.
@@ -970,7 +970,7 @@ TEXTURED = set(WORN)   # todas
 
 if __name__ == "__main__":
     import worn_texture  # noqa: E402
-    png(os.path.join(ASSETS, "textures", "item", "worn_palette.png"), palette())
+    png(palette_path("worn_palette"), palette())
     os.makedirs(os.path.join(ASSETS, "textures", "item", "worn"), exist_ok=True)
     for name, (make, render) in WORN.items():
         m = make()
