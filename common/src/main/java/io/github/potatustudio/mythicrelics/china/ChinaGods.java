@@ -11,9 +11,11 @@ import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TimedMobStatus;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
@@ -60,8 +62,24 @@ public final class ChinaGods {
 	public static final int XIRANG_RESCUE_COOLDOWN = 6000;
 
 	public static final String TALISMAN_TAG = MythicRelics.MOD_ID + ".talisman";
-	/** No-muerto con un talismán pegado -> tick del juego en que se despega. */
-	private static final Map<UUID, Long> SEALED = new HashMap<>();
+	/** No-muerto con un talismán pegado (sin IA): el papel sigue a la cabeza; al despegarse, ceniza. */
+	private static final TimedMobStatus SEALED = new TimedMobStatus(TALISMAN_TAG, new TimedMobStatus.Hooks() {
+		@Override
+		public void active(ServerLevel level, Mob mob, long now, long until) {
+			UUID id = TALISMAN_PAPER.get(mob.getUUID());
+			if (id != null && level.getEntity(id) instanceof Display.ItemDisplay paper) {
+				placePaper(paper, mob);
+			}
+			if (now % 10 == 0) {
+				level.sendParticles(ParticleTypes.WAX_ON, mob.getX(), mob.getEyeY() + 0.2, mob.getZ(), 1, 0.1, 0.1, 0.1, 0.0);
+			}
+		}
+
+		@Override
+		public void released(ServerLevel level, Mob mob) {
+			level.sendParticles(ParticleTypes.ASH, mob.getX(), mob.getEyeY(), mob.getZ(), 10, 0.2, 0.2, 0.2, 0.02);
+		}
+	});
 	/** El papel pegado en la frente de cada no-muerto sellado (una entidad de visualización de ítem). */
 	private static final Map<UUID, UUID> TALISMAN_PAPER = new HashMap<>();
 	private static final String PAPER_TAG = MythicRelics.MOD_ID + ".talisman_paper";
@@ -77,9 +95,7 @@ public final class ChinaGods {
 	// ---- Talismanes -------------------------------------------------------------------------------------------------
 
 	static void seal(ServerLevel level, Mob mob) {
-		mob.setNoAi(true);
-		mob.addTag(TALISMAN_TAG);
-		SEALED.put(mob.getUUID(), level.getGameTime() + TALISMAN_TICKS);
+		SEALED.apply(level, mob, TALISMAN_TICKS);
 		Display.ItemDisplay paper = EntityTypes.ITEM_DISPLAY.create(level, EntitySpawnReason.TRIGGERED);
 		if (paper != null) {
 			ItemStack stack = new ItemStack(ModItems.FU_TALISMANS.get());
@@ -103,28 +119,29 @@ public final class ChinaGods {
 		paper.snapTo(at.x, at.y, at.z, mob.getYHeadRot(), 0.0f);
 	}
 
-	private static void removePaper(ServerLevel level, UUID mob) {
+	/**
+	 * Quita el papel de un sello que terminó. La entrada se borra siempre; si el papel está en un chunk descargado, se
+	 * descarta al cargarse (no queda en el mapa, ver {@link #onEntityAdded}).
+	 */
+	private static void removePaper(MinecraftServer server, UUID mob) {
 		UUID id = TALISMAN_PAPER.remove(mob);
-		if (id != null && level.getEntity(id) instanceof Display.ItemDisplay paper) {
-			paper.discard();
+		if (id == null) {
+			return;
 		}
-	}
-
-	private static void unseal(Mob mob) {
-		mob.setNoAi(false);
-		mob.removeTag(TALISMAN_TAG);
+		for (ServerLevel level : server.getAllLevels()) {
+			if (level.getEntity(id) instanceof Display.ItemDisplay paper) {
+				paper.discard();
+				return;
+			}
+		}
 	}
 
 	private static EventResult onEntityAdded(Entity entity, Level level) {
 		// Papeles que quedaron de una sesión anterior (el talismán ya no está): se quitan.
+		// (un mob con el talismán vencido lo suelta TimedMobStatus al cargarse).
 		if (!level.isClientSide() && entity instanceof Display.ItemDisplay paper && paper.entityTags().contains(PAPER_TAG)
 				&& !TALISMAN_PAPER.containsValue(paper.getUUID())) {
-			paper.discard();
-			return EventResult.pass();
-		}
-		// Si el servidor se cerró con un talismán pegado, al cargarlo se despega.
-		if (!level.isClientSide() && entity instanceof Mob mob && mob.entityTags().contains(TALISMAN_TAG) && !SEALED.containsKey(mob.getUUID())) {
-			unseal(mob);
+			return EventResult.interruptFalse();
 		}
 		return EventResult.pass();
 	}
@@ -176,31 +193,12 @@ public final class ChinaGods {
 	}
 
 	private static void tick(MinecraftServer server) {
-		long now = server.overworld().getGameTime();
-		Iterator<Map.Entry<UUID, Long>> it = SEALED.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<UUID, Long> e = it.next();
-			boolean expired = e.getValue() <= now;
-			for (ServerLevel level : server.getAllLevels()) {
-				if (level.getEntity(e.getKey()) instanceof Mob mob) {
-					if (expired || !mob.isAlive()) {
-						unseal(mob);
-						removePaper(level, mob.getUUID());
-						level.sendParticles(ParticleTypes.ASH, mob.getX(), mob.getEyeY(), mob.getZ(), 10, 0.2, 0.2, 0.2, 0.02);
-					} else {
-						UUID id = TALISMAN_PAPER.get(mob.getUUID());
-						if (id != null && level.getEntity(id) instanceof Display.ItemDisplay paper) {
-							placePaper(paper, mob);
-						}
-						if (now % 10 == 0) {
-							level.sendParticles(ParticleTypes.WAX_ON, mob.getX(), mob.getEyeY() + 0.2, mob.getZ(), 1, 0.1, 0.1, 0.1, 0.0);
-						}
-					}
-					break;
+		// Papeles de sellos que terminaron (también con el mob en un chunk descargado).
+		if (!TALISMAN_PAPER.isEmpty()) {
+			for (UUID mob : List.copyOf(TALISMAN_PAPER.keySet())) {
+				if (!SEALED.isActive(mob)) {
+					removePaper(server, mob);
 				}
-			}
-			if (expired) {
-				it.remove();
 			}
 		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
@@ -223,7 +221,7 @@ public final class ChinaGods {
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
 		ServerState.perPlayer(SAFE_GROUND);
-		ServerState.clearOnStop(SEALED);
+		
 		ServerState.clearOnStop(TALISMAN_PAPER);
 	}
 }

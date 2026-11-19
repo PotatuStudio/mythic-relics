@@ -93,6 +93,14 @@ public final class NorseGods {
 		EntityEvent.LIVING_DEATH.register(NorseGods::onDeath);
 		BlockEvent.BREAK.register(NorseGods::onBreak);
 		TickEvent.SERVER_POST.register(NorseGods::tick);
+		// Un bote de Skíðblaðnir que vuelve al mundo (se guardó con el jugador que salió montado) se pliega igual al
+		// quedar vacío.
+		EntityEvent.ADD.register((entity, level) -> {
+			if (!level.isClientSide() && entity.entityTags().contains(SKIDBLADNIR_TAG)) {
+				SHIPS.add(entity.getUUID());
+			}
+			return EventResult.pass();
+		});
 		TickEvent.SERVER_POST.register(MimirHead::tick);
 		TickEvent.SERVER_POST.register(OdinRavensItem::tick);
 		MimirHead.init();

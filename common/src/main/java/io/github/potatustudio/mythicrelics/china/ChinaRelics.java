@@ -1,5 +1,7 @@
 package io.github.potatustudio.mythicrelics.china;
 
+import io.github.potatustudio.mythicrelics.relic.HitEffects;
+import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
@@ -97,8 +99,6 @@ public final class ChinaRelics {
 
 	/** Jugador en ascenso lunar -> tick del juego en que termina. */
 	private static final Map<UUID, Long> LUNAR = new HashMap<>();
-	/** Evita que el barrido del Ruyi se barra a sí mismo. */
-	private static final ThreadLocal<Boolean> RUYI_SWEEPING = ThreadLocal.withInitial(() -> false);
 
 	private ChinaRelics() {
 	}
@@ -128,21 +128,20 @@ public final class ChinaRelics {
 		if (source.is(DamageTypeTags.IS_LIGHTNING) && WornRelics.isWearing(self, ModItems.FIVE_COLOR_STONE)) {
 			return 0;
 		}
-		if (source.getEntity() instanceof Player attacker && source.getDirectEntity() == attacker && !RUYI_SWEEPING.get()
+		if (source.getEntity() instanceof Player attacker && source.getDirectEntity() == attacker
 				&& RuyiJinguBangItem.isExtended(attacker.getMainHandItem(), attacker.level().getGameTime())) {
 			// Ruyi estirado: golpes al doble que barren a los de alrededor.
 			amount *= 2.0f;
 			if (attacker.level() instanceof ServerLevel level) {
-				RUYI_SWEEPING.set(true);
-				try {
+				// El barrido sale solo si el golpe principal entra (ver HitEffects).
+				float sweep = amount * 0.5f;
+				HitEffects.onLanded(self, () -> {
 					for (LivingEntity near : level.getEntitiesOfClass(LivingEntity.class, self.getBoundingBox().inflate(RUYI_SWEEP_RADIUS),
 							e -> e != self && e != attacker && e.isAlive() && !Allies.isFriend(attacker, e))) {
-						near.hurtServer(level, level.damageSources().playerAttack(attacker), amount * 0.5f);
+						near.hurtServer(level, RelicDamage.byPlayer(level, null, attacker), sweep);
 					}
-				} finally {
-					RUYI_SWEEPING.set(false);
-				}
-				level.sendParticles(ParticleTypes.SWEEP_ATTACK, self.getX(), self.getY(0.5), self.getZ(), 3, 0.8, 0.2, 0.8, 0.0);
+					level.sendParticles(ParticleTypes.SWEEP_ATTACK, self.getX(), self.getY(0.5), self.getZ(), 3, 0.8, 0.2, 0.8, 0.0);
+				});
 			}
 		}
 		if (fromHouYi(source) && isSun(self)) {

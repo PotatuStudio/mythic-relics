@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.greece;
 
+import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
@@ -135,7 +136,7 @@ public class ZeusThunderboltItem extends RelicItem {
 	private static void hit(ServerLevel level, Player player, Vec3 point, LivingEntity target) {
 		bolt(level, point, player);
 		target.setInvulnerableTime(0);   // cada rayo cuenta, aunque caiga sobre el mismo enemigo
-		target.hurtServer(level, level.damageSources().playerAttack(player), GreeceLegends.ZEUS_DAMAGE);
+		target.hurtServer(level, RelicDamage.byPlayer(level, null, player), GreeceLegends.ZEUS_DAMAGE);
 		chain(level, player, target);
 	}
 
@@ -167,7 +168,7 @@ public class ZeusThunderboltItem extends RelicItem {
 		if (first == null) {
 			return;
 		}
-		first.hurtServer(level, level.damageSources().playerAttack(player), GreeceLegends.ZEUS_DAMAGE);
+		first.hurtServer(level, RelicDamage.byPlayer(level, null, player), GreeceLegends.ZEUS_DAMAGE);
 		chain(level, player, first);
 	}
 
@@ -183,7 +184,7 @@ public class ZeusThunderboltItem extends RelicItem {
 			Vec3 to = e.position().add(0, e.getBbHeight() * 0.6, 0);
 			arc(level, last, to);
 			e.setInvulnerableTime(0);
-			e.hurtServer(level, level.damageSources().playerAttack(player), GreeceLegends.ZEUS_CHAIN_DAMAGE);
+			e.hurtServer(level, RelicDamage.byPlayer(level, null, player), GreeceLegends.ZEUS_CHAIN_DAMAGE);
 			last = to;
 		}
 	}

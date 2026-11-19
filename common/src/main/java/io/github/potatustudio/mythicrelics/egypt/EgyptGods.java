@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.egypt;
 
+import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
@@ -299,10 +300,14 @@ public final class EgyptGods {
 			return;
 		}
 		float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) * FLAIL_SWEEP_DAMAGE;
+		// El barrido no es un golpe de la mano (no gasta la cólera ni cuenta para Gram), pero sí lleva el bono de set.
+		if (RelicSets.OSIRIS.isComplete(player)) {
+			damage *= 1.0f + RelicSets.WEAPON_BONUS;
+		}
 		double r2 = FLAIL_SWEEP_RADIUS * FLAIL_SWEEP_RADIUS;
 		for (LivingEntity other : level.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(FLAIL_SWEEP_RADIUS),
 				e -> e != player && e != target && e.isAlive() && e.distanceToSqr(player) <= r2 && !Allies.isFriend(player, e))) {
-			other.hurtServer(level, player.damageSources().playerAttack(player), damage);
+			other.hurtServer(level, RelicDamage.byPlayer(level, null, player), damage);
 		}
 		level.sendParticles(ParticleTypes.SWEEP_ATTACK, player.getX(), player.getY() + 1.0, player.getZ(), 3, 1.0, 0.2, 1.0, 0);
 		RelicFx.sound(level, player, SoundEvents.PLAYER_ATTACK_SWEEP, 1.0f, 0.8f);

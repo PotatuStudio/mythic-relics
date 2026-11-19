@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.norse;
 
+import io.github.potatustudio.mythicrelics.relic.HitEffects;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
 import dev.architectury.event.events.common.EntityEvent;
@@ -18,7 +19,9 @@ import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
@@ -180,6 +183,10 @@ public final class NorseSagas {
 
 	/** Dáinsleif: el herido no se cura (lo consulta el mixin de {@code heal}). */
 	public static boolean healBlocked(LivingEntity e) {
+		// WOUNDS es del servidor: el cliente no lo lee (otro hilo).
+		if (e.level().isClientSide()) {
+			return false;
+		}
 		Wound w = WOUNDS.get(e);
 		return w != null && e.level().getGameTime() < w.noHealUntil();
 	}
@@ -409,38 +416,52 @@ public final class NorseSagas {
 	 * Cuando la estocada queda lista suena un aviso corto.
 	 */
 	private static float gramHit(ServerLevel level, Player attacker, LivingEntity target, float amount) {
+		// Los golpes se cuentan solo si entran (frames de invulnerabilidad, escudo): ver HitEffects.
 		int hits = GRAM_HITS.getOrDefault(attacker.getUUID(), 0);
 		if (hits < GRAM_HITS_PER_THRUST) {
-			GRAM_HITS.put(attacker.getUUID(), hits + 1);
-			if (hits + 1 == GRAM_HITS_PER_THRUST) {
-				RelicFx.sound(level, attacker, SoundEvents.EXPERIENCE_ORB_PICKUP, 0.5f, 0.6f);
-			}
+			HitEffects.onLanded(target, () -> {
+				int now = GRAM_HITS.getOrDefault(attacker.getUUID(), 0) + 1;
+				GRAM_HITS.put(attacker.getUUID(), now);
+				if (now == GRAM_HITS_PER_THRUST) {
+					RelicFx.sound(level, attacker, SoundEvents.EXPERIENCE_ORB_PICKUP, 0.5f, 0.6f);
+				}
+			});
 			return amount;
 		}
-		GRAM_HITS.put(attacker.getUUID(), 0);
 		float bonus = GRAM_THRUST_BONUS * (target.getMaxHealth() >= GRAM_BIG_HEALTH ? 2.0f : 1.0f);
-		Vec3 look = attacker.getLookAngle();
-		target.push(look.x * 0.5, 0.2, look.z * 0.5);
-		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.5), target.getZ(), 20, 0.3, 0.4, 0.3, 0.4);
-		level.sendParticles(ParticleTypes.ENCHANTED_HIT, target.getX(), target.getY(0.5), target.getZ(), 12, 0.3, 0.4, 0.3, 0.3);
-		RelicFx.sound(level, target, SoundEvents.ANVIL_LAND, 0.6f, 1.5f);
+		HitEffects.onLanded(target, () -> {
+			GRAM_HITS.put(attacker.getUUID(), 0);
+			Vec3 look = attacker.getLookAngle();
+			target.push(look.x * 0.5, 0.2, look.z * 0.5);
+			level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.5), target.getZ(), 20, 0.3, 0.4, 0.3, 0.4);
+			level.sendParticles(ParticleTypes.ENCHANTED_HIT, target.getX(), target.getY(0.5), target.getZ(), 12, 0.3, 0.4, 0.3, 0.3);
+			RelicFx.sound(level, target, SoundEvents.ANVIL_LAND, 0.6f, 1.5f);
+		});
 		return amount * (1.0f + bonus);
 	}
 
 	/** Dáinsleif: los heridos sangran medio corazón por segundo. */
 	private static void bleed() {
+		// Primero se decide quién sangra y después se daña: si el daño mata, onDeath toca WOUNDS y no puede hacerlo
+		// en medio del recorrido (ConcurrentModificationException en el tick del servidor).
+		List<LivingEntity> bleeding = new ArrayList<>();
 		WOUNDS.entrySet().removeIf(e -> {
 			LivingEntity target = e.getKey();
 			long now = target.level().getGameTime();
 			if (!target.isAlive() || now >= e.getValue().noHealUntil()) {
 				return true;
 			}
-			if (now < e.getValue().bleedUntil() && target.level() instanceof ServerLevel level) {
-				target.hurtServer(level, level.damageSources().magic(), DAINSLEIF_BLEED_DAMAGE);
-				level.sendParticles(ParticleTypes.DAMAGE_INDICATOR, target.getX(), target.getY(0.6), target.getZ(), 3, 0.2, 0.3, 0.2, 0.05);
+			if (now < e.getValue().bleedUntil()) {
+				bleeding.add(target);
 			}
 			return false;
 		});
+		for (LivingEntity target : bleeding) {
+			if (target.isAlive() && target.level() instanceof ServerLevel level) {
+				target.hurtServer(level, level.damageSources().magic(), DAINSLEIF_BLEED_DAMAGE);
+				level.sendParticles(ParticleTypes.DAMAGE_INDICATOR, target.getX(), target.getY(0.6), target.getZ(), 3, 0.2, 0.3, 0.2, 0.05);
+			}
+		}
 	}
 
 	/** Números de los tooltips de la tercera tanda nórdica. */

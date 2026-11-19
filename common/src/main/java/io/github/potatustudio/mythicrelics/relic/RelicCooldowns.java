@@ -40,7 +40,8 @@ public final class RelicCooldowns extends SavedData {
 
 	private static final Identifier NO_DISPLAY = MythicRelics.id("none");
 	private static final Codec<RelicCooldowns> CODEC = Entry.CODEC.listOf().xmap(RelicCooldowns::new, RelicCooldowns::entries);
-	// Los datos son propios del mod: el tipo de corrección de vanilla no los toca (misma versión, sin reglas para ellos).
+	// Los datos son propios del mod. SavedDataType exige un tipo de corrección (26.3 lo usa sin revisar nulo al leer):
+	// con la misma versión de datos no corre ninguna regla de vanilla sobre ellos.
 	private static final SavedDataType<RelicCooldowns> TYPE = new SavedDataType<>(MythicRelics.id("cooldowns"), RelicCooldowns::new,
 			CODEC, DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
 
@@ -62,19 +63,33 @@ public final class RelicCooldowns extends SavedData {
 	}
 
 	public static void init() {
-		// Al entrar, el ícono vuelve a mostrar la recarga que quedaba.
-		PlayerEvent.PLAYER_JOIN.register(player -> {
-			long now = now(player.level().getServer());
-			Map<String, Entry> mine = get(player.level().getServer()).byPlayer.get(player.getUUID());
-			if (mine == null) {
-				return;
-			}
-			for (Entry e : mine.values()) {
-				if (e.until() > now && !e.display().equals(NO_DISPLAY)) {
-					player.getCooldowns().addCooldown(e.display(), (int) Math.min(Integer.MAX_VALUE, e.until() - now));
-				}
+		// Al entrar y al reaparecer (el jugador nuevo no trae las recargas vanilla), el ícono vuelve a mostrar la recarga
+		// que quedaba; las recargas de ítem guardadas aquí vuelven a contar también para isOnCooldown.
+		PlayerEvent.PLAYER_JOIN.register(RelicCooldowns::restore);
+		PlayerEvent.PLAYER_RESPAWN.register((player, conqueredEnd, reason) -> restore(player));
+		// Al cerrar el mundo se olvidan las recargas vencidas (también de jugadores que no vuelven).
+		ServerState.onStopping(server -> {
+			RelicCooldowns data = get(server);
+			long now = now(server);
+			data.byPlayer.values().forEach(m -> m.values().removeIf(e -> e.until() <= now));
+			if (data.byPlayer.values().removeIf(Map::isEmpty)) {
+				data.setDirty();
 			}
 		});
+	}
+
+	private static void restore(ServerPlayer player) {
+		long now = now(player.level().getServer());
+		Map<String, Entry> mine = get(player.level().getServer()).byPlayer.get(player.getUUID());
+		if (mine == null) {
+			return;
+		}
+		mine.values().removeIf(e -> e.until() <= now);
+		for (Entry e : mine.values()) {
+			if (!e.display().equals(NO_DISPLAY)) {
+				player.getCooldowns().addCooldown(e.display(), (int) Math.min(Integer.MAX_VALUE, e.until() - now));
+			}
+		}
 	}
 
 	private static RelicCooldowns get(MinecraftServer server) {

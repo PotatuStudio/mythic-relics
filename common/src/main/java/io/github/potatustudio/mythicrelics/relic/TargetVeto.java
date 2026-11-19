@@ -1,9 +1,11 @@
 package io.github.potatustudio.mythicrelics.relic;
 
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import dev.architectury.event.events.common.TickEvent;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,10 +28,39 @@ public final class TargetVeto {
 	/** Ticks tras un golpe del jugador en que el no-muerto sí puede devolverlo (set de Anubis). */
 	public static final int ANUBIS_PROVOKED_TICKS = 200;
 	/** Mob dormido por la lira -> tick del juego en que despierta. */
-	private static final Map<UUID, Long> LULLED = new ConcurrentHashMap<>();
+	private static final Map<UUID, Long> LULLED = new HashMap<>();
 
 	private TargetVeto() {
 	}
+
+	/**
+	 * Los mobs con cerebro (zoglin, hoglin, piglin…) no usan {@code getTarget}: guardan el objetivo en la memoria
+	 * {@code ATTACK_TARGET}. Cada 2 ticks, cerca de quien tiene un veto (o si hay mobs dormidos por la lira), se les
+	 * borra el objetivo negado.
+	 */
+	public static void init() {
+		TickEvent.SERVER_POST.register(server -> {
+			if (server.getTickCount() % 2 != 0) {
+				return;
+			}
+			boolean lulled = !LULLED.isEmpty();
+			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+				if (!lulled && !WornRelics.isWearing(player, ModItems.MUMMY_WRAPS) && !RelicSets.ANUBIS.isComplete(player)) {
+					continue;
+				}
+				for (Mob mob : player.level().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(BRAIN_RADIUS),
+						m -> m.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET))) {
+					LivingEntity target = mob.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null);
+					if (blocks(mob, target)) {
+						mob.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
+					}
+				}
+			}
+		});
+	}
+
+	/** Radio en que se revisan los mobs con cerebro (el de seguimiento de los hostiles es menor). */
+	private static final double BRAIN_RADIUS = 32.0;
 
 	public static void lull(Mob mob, long until) {
 		// Se poda de vez en cuando: los mobs que mueren o se descargan no vuelven a consultar y dejaban su entrada.
@@ -40,6 +71,7 @@ public final class TargetVeto {
 		LULLED.put(mob.getUUID(), until);
 	}
 
+	/** Solo del servidor (blocks() no consulta en el cliente). */
 	public static boolean isLulled(Mob mob) {
 		Long until = LULLED.get(mob.getUUID());
 		if (until == null) {

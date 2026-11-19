@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.greece;
 
+import io.github.potatustudio.mythicrelics.relic.HitEffects;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
@@ -49,12 +50,15 @@ public class HarpeItem extends RelicItem {
 				|| !(attacker.level() instanceof ServerLevel level)) {
 			return amount;
 		}
+		// La marca va antes (la muerte ocurre dentro del golpe); la recarga y los efectos, solo si el golpe entra.
 		BEHEADING.add(target);
-		RelicCooldowns.start(attacker, stack, GreeceLegends.HARPE_COOLDOWN);
-		level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY(0.8), target.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
-		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.8), target.getZ(), 20, 0.3, 0.3, 0.3, 0.4);
-		RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_SWEEP, 1.2f, 0.6f);
-		RelicFx.sound(level, target, SoundEvents.SHEEP_SHEAR, 1.0f, 0.5f);
+		HitEffects.onLanded(target, () -> {
+			RelicCooldowns.start(attacker, stack, GreeceLegends.HARPE_COOLDOWN);
+			level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY(0.8), target.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+			level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.8), target.getZ(), 20, 0.3, 0.3, 0.3, 0.4);
+			RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_SWEEP, 1.2f, 0.6f);
+			RelicFx.sound(level, target, SoundEvents.SHEEP_SHEAR, 1.0f, 0.5f);
+		}, () -> BEHEADING.remove(target));
 		return Math.max(amount, target.getHealth() + 100.0f);
 	}
 }

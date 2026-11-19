@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.entity;
 
+import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import io.github.potatustudio.mythicrelics.norse.NorseSagas;
 import java.util.UUID;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -259,7 +260,7 @@ public class FreyrSword extends Mob {
 			return;
 		}
 		float damage = NorseSagas.freyrDamage(player, target);
-		target.hurtServer(level, level.damageSources().playerAttack(player), damage);
+		target.hurtServer(level, RelicDamage.byPlayer(level, this, player), damage);
 		Vec3 push = target.position().subtract(player.position()).multiply(1, 0, 1).normalize().scale(thrust ? 0.7 : 0.4);
 		target.push(push.x, thrust ? 0.3 : 0.2, push.z);
 		Vec3 c = center(target);

@@ -1,5 +1,6 @@
 package io.github.potatustudio.mythicrelics.greece;
 
+import io.github.potatustudio.mythicrelics.relic.HitEffects;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
@@ -180,14 +181,18 @@ public final class GreeceLegends {
 
 	/** Si tiene la cólera cargada, el golpe hace +{@link #WRATH_BONUS} y manda lejos al golpeado. */
 	private static float releaseWrath(Player attacker, LivingEntity target, float amount) {
-		if (WRATH_UNTIL.remove(attacker.getUUID()) == null || !(attacker.level() instanceof ServerLevel level)) {
+		if (!WRATH_UNTIL.containsKey(attacker.getUUID()) || !(attacker.level() instanceof ServerLevel level)) {
 			return amount;
 		}
-		level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.6), target.getZ(), 30, 0.4, 0.4, 0.4, 0.3);
-		Vec3 push = target.position().subtract(attacker.position()).multiply(1, 0, 1).normalize();
-		target.push(push.x * WRATH_KNOCKBACK, 0.45, push.z * WRATH_KNOCKBACK);
-		target.needsSync = true;
-		RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1.2f, 0.7f);
+		// La cólera se gasta solo si el golpe entra (ver HitEffects).
+		HitEffects.onLanded(target, () -> {
+			WRATH_UNTIL.remove(attacker.getUUID());
+			level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.6), target.getZ(), 30, 0.4, 0.4, 0.4, 0.3);
+			Vec3 push = target.position().subtract(attacker.position()).multiply(1, 0, 1).normalize();
+			target.push(push.x * WRATH_KNOCKBACK, 0.45, push.z * WRATH_KNOCKBACK);
+			target.needsSync = true;
+			RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_KNOCKBACK, 1.2f, 0.7f);
+		});
 		return amount * (1.0f + WRATH_BONUS);
 	}
 

@@ -8,6 +8,7 @@ import io.github.potatustudio.mythicrelics.entity.ThrownRelic;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TimedMobStatus;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
@@ -83,14 +84,21 @@ public final class NorseRelics {
 
 	private static final Identifier FIST_ID = MythicRelics.id("jarngreipr_fist");
 	private static final Identifier BELT_KNOCKBACK_ID = MythicRelics.id("megingjord_knockback");
-	/** Mob atado con Gleipnir -> tick del juego en que se suelta. */
-	private static final Map<UUID, Long> BOUND = new HashMap<>();
+	/** Mob atado con Gleipnir (sin IA); hilos de luz mientras dura. */
+	private static final TimedMobStatus BOUND = new TimedMobStatus(BOUND_TAG, new TimedMobStatus.Hooks() {
+		@Override
+		public void active(ServerLevel level, Mob mob, long now, long until) {
+			if (now % 5 == 0) {
+				level.sendParticles(ParticleTypes.END_ROD, mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), 2,
+						mob.getBbWidth() * 0.5, mob.getBbHeight() * 0.3, mob.getBbWidth() * 0.5, 0.0);
+			}
+		}
+	});
 
 	private NorseRelics() {
 	}
 
 	public static void init() {
-		EntityEvent.ADD.register(NorseRelics::onEntityAdded);
 		TickEvent.SERVER_POST.register(NorseRelics::tick);
 	}
 
@@ -112,47 +120,12 @@ public final class NorseRelics {
 	// ---- Gleipnir ---------------------------------------------------------------------------------------------------
 
 	static void bind(ServerLevel level, Mob mob) {
-		mob.setNoAi(true);
-		mob.addTag(BOUND_TAG);
-		BOUND.put(mob.getUUID(), level.getGameTime() + GLEIPNIR_TICKS);
-	}
-
-	private static void release(Mob mob) {
-		mob.setNoAi(false);
-		mob.removeTag(BOUND_TAG);
-	}
-
-	private static EventResult onEntityAdded(Entity entity, Level level) {
-		// Si el servidor se cerró con un mob atado, al cargarlo se suelta.
-		if (!level.isClientSide() && entity instanceof Mob mob && mob.entityTags().contains(BOUND_TAG) && !BOUND.containsKey(mob.getUUID())) {
-			release(mob);
-		}
-		return EventResult.pass();
+		BOUND.apply(level, mob, GLEIPNIR_TICKS);
 	}
 
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------
 
 	private static void tick(MinecraftServer server) {
-		long now = server.overworld().getGameTime();
-		Iterator<Map.Entry<UUID, Long>> it = BOUND.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<UUID, Long> e = it.next();
-			boolean expired = e.getValue() <= now;
-			for (ServerLevel level : server.getAllLevels()) {
-				if (level.getEntity(e.getKey()) instanceof Mob mob) {
-					if (expired) {
-						release(mob);
-					} else if (now % 5 == 0) {
-						level.sendParticles(ParticleTypes.END_ROD, mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), 2,
-								mob.getBbWidth() * 0.5, mob.getBbHeight() * 0.3, mob.getBbWidth() * 0.5, 0.0);
-					}
-					break;
-				}
-			}
-			if (expired) {
-				it.remove();
-			}
-		}
 		long day = server.overworld().getOverworldClockTime() / 24000L;
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			boolean gloves = WornRelics.isWearing(player, ModItems.JARNGREIPR);
@@ -203,10 +176,5 @@ public final class NorseRelics {
 		TooltipArgs.register("gleipnir", GLEIPNIR_TICKS / 20, GLEIPNIR_COOLDOWN / 20, Math.round(GLEIPNIR_DAMAGE_TAKEN * 100),
 				GLEIPNIR_BOSS_TICKS / 20);
 		TooltipArgs.register("idunn_apples", IDUNN_REGEN_TICKS / 20, IDUNN_ABSORPTION_TICKS / 20 / 60, IDUNN_MAX);
-	}
-
-	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
-	static {
-		ServerState.clearOnStop(BOUND);
 	}
 }

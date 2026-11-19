@@ -100,6 +100,7 @@ public final class RomeRelics {
 		EntityEvent.LIVING_CHECK_SPAWN.register(RomeRelics::checkSpawn);
 		InteractionEvent.RIGHT_CLICK_BLOCK.register(RomeRelics::onUseBlock);
 		BlockEvent.BREAK.register(RomeRelics::onBreak);
+		BlockEvent.BREAK.register(VestaLampItem::onBreak);
 		TickEvent.SERVER_POST.register(RomeRelics::tick);
 	}
 
@@ -153,8 +154,12 @@ public final class RomeRelics {
 	}
 
 	private static EventResult onUseBlock(Player player, InteractionHand hand, BlockPos pos, Direction face) {
-		if (!(player.level() instanceof ServerLevel level) || player.isShiftKeyDown() && player.getItemInHand(hand).is(ModItems.JANUS_KEY.get())) {
+		if (player.isShiftKeyDown() && player.getItemInHand(hand).is(ModItems.JANUS_KEY.get())) {
 			return EventResult.pass();
+		}
+		if (!(player.level() instanceof ServerLevel level)) {
+			// En el cliente: no predice abrir lo que tiene el candado de otro (el servidor lo niega igual).
+			return JanusLocks.clientLockedAgainst(player.level(), pos, player) ? EventResult.interruptFalse() : EventResult.pass();
 		}
 		if (JanusLocks.lockedAgainst(level, pos, player)) {
 			player.sendOverlayMessage(lockedBy(level, JanusLocks.owner(level, pos)));

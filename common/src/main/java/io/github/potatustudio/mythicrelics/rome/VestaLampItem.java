@@ -1,5 +1,8 @@
 package io.github.potatustudio.mythicrelics.rome;
 
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.Level;
+import dev.architectury.event.EventResult;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicItem;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
@@ -53,6 +56,20 @@ public class VestaLampItem extends RelicItem {
 		level.sendParticles(ParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 20, 0.3, 0.3, 0.3, 0.02);
 		level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 0.8f, 0.8f);
 		return InteractionResult.SUCCESS;
+	}
+
+	/**
+	 * Romper el fuego del hogar lo apaga sin soltar carbón (no es una fogata de verdad) y lo olvida: si después se pone
+	 * otra fogata en el mismo lugar, ya no se borra al vencer.
+	 */
+	static EventResult onBreak(Level level, BlockPos pos, BlockState state, ServerPlayer player) {
+		if (!(level instanceof ServerLevel server) || !state.is(Blocks.CAMPFIRE)
+				|| !HEARTHS.removeIf(h -> h.level() == server && h.pos().equals(pos))) {
+			return EventResult.pass();
+		}
+		server.removeBlock(pos, false);
+		server.sendParticles(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.01);
+		return EventResult.interruptFalse();
 	}
 
 	/** Apaga los fuegos del hogar que ya cumplieron su tiempo (si siguen ahí). */

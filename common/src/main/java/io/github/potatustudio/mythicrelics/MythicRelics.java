@@ -17,6 +17,8 @@ import io.github.potatustudio.mythicrelics.registry.ModEffects;
 import io.github.potatustudio.mythicrelics.registry.ModEntities;
 import io.github.potatustudio.mythicrelics.registry.ModItems;
 import io.github.potatustudio.mythicrelics.registry.ModLoot;
+import io.github.potatustudio.mythicrelics.relic.HitEffects;
+import io.github.potatustudio.mythicrelics.relic.TargetVeto;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.SafeLanding;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
@@ -43,6 +45,8 @@ public final class MythicRelics {
 		ModEntities.init();
 		ModLoot.init();
 		ServerState.init();
+		HitEffects.init();
+		TargetVeto.init();
 		Minions.init();
 		RelicCooldowns.init();
 		SafeLanding.init();

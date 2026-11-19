@@ -1,5 +1,9 @@
 package io.github.potatustudio.mythicrelics.rome;
 
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
+import io.github.potatustudio.mythicrelics.registry.ModItems;
+import io.github.potatustudio.mythicrelics.mixin.ItemDisplayAccessor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.potatustudio.mythicrelics.MythicRelics;
@@ -114,13 +118,25 @@ public final class JanusLocks extends SavedData {
 
 	private static final String PADLOCK_TAG = MythicRelics.MOD_ID + ".padlock";
 
-	/** Candado dorado que cuelga de la cara del bloque cerrado: un ítem en exhibición (se guarda con el mundo). */
-	private static void hangPadlock(ServerLevel level, Vec3 at, Direction face) {
+	/** Clave del dueño en los datos del ítem del candado (la ve el cliente, ver {@link #clientLockedAgainst}). */
+	private static final String OWNER_KEY = "owner";
+
+	/**
+	 * Candado dorado que cuelga de la cara del bloque cerrado: un ítem en exhibición (se guarda con el mundo). El ítem
+	 * lleva el dueño, así el cliente sabe que no puede abrir y no hace la animación de abrir antes de que el servidor la
+	 * niegue.
+	 */
+	private static void hangPadlock(ServerLevel level, Vec3 at, Direction face, UUID owner) {
 		CompoundTag tag = new CompoundTag();
 		tag.putString("id", "minecraft:item_display");
 		CompoundTag item = new CompoundTag();
 		item.putString("id", MythicRelics.id("padlock").toString());
 		item.putInt("count", 1);
+		CompoundTag components = new CompoundTag();
+		CompoundTag custom = new CompoundTag();
+		custom.putString(OWNER_KEY, owner.toString());
+		components.put("minecraft:custom_data", custom);
+		item.put("components", components);
 		tag.put("item", item);
 		tag.putString("item_display", "fixed");
 		CompoundTag transform = new CompoundTag();
@@ -156,6 +172,22 @@ public final class JanusLocks extends SavedData {
 		return list;
 	}
 
+	/**
+	 * Cliente: ¿hay un candado de otro jugador colgando de ese bloque? Los candados anteriores a este cambio no llevan
+	 * dueño: para esos decide solo el servidor.
+	 */
+	public static boolean clientLockedAgainst(Level level, BlockPos pos, Player player) {
+		for (Display.ItemDisplay d : level.getEntitiesOfClass(Display.ItemDisplay.class, new AABB(pos).inflate(0.6, 1.6, 0.6),
+				e -> ((ItemDisplayAccessor) e).mythicrelics$getItemStack().is(ModItems.PADLOCK.get()))) {
+			CustomData data = ((ItemDisplayAccessor) d).mythicrelics$getItemStack().get(DataComponents.CUSTOM_DATA);
+			String owner = data == null ? "" : data.copyTag().getStringOr(OWNER_KEY, "");
+			if (!owner.isEmpty() && !owner.equals(player.getUUID().toString())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/** Quita los candados que cuelgan de ese bloque (y de su otra mitad). */
 	private static void removePadlocks(ServerLevel level, List<BlockPos> keys) {
 		for (BlockPos key : keys) {
@@ -167,7 +199,7 @@ public final class JanusLocks extends SavedData {
 	}
 
 	static void lock(ServerLevel level, BlockPos pos, Player player, Direction face, Vec3 at) {
-		hangPadlock(level, at, face);
+		hangPadlock(level, at, face, player.getUUID());
 		JanusLocks data = get(level);
 		for (BlockPos key : keys(level, pos)) {
 			data.locks.put(GlobalPos.of(level.dimension(), key), player.getUUID());

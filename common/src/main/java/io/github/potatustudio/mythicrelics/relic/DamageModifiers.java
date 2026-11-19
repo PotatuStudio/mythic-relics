@@ -37,6 +37,7 @@ public final class DamageModifiers {
 	}
 
 	public static float incoming(LivingEntity self, DamageSource source, float amount) {
+		HitEffects.begin(self);
 		for (Modifier m : INCOMING) {
 			amount = m.apply(self, source, amount);
 		}

@@ -12,6 +12,9 @@ public interface ItemDisplayAccessor {
 	@Invoker("setItemStack")
 	void mythicrelics$setItemStack(ItemStack item);
 
+	@Invoker("getItemStack")
+	ItemStack mythicrelics$getItemStack();
+
 	@Invoker("setItemTransform")
 	void mythicrelics$setItemTransform(ItemDisplayContext transform);
 }

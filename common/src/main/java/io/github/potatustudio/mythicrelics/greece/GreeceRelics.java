@@ -16,6 +16,7 @@ import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.SafeLanding;
 import io.github.potatustudio.mythicrelics.relic.RelicSets;
 import io.github.potatustudio.mythicrelics.relic.ServerState;
+import io.github.potatustudio.mythicrelics.relic.TimedMobStatus;
 import io.github.potatustudio.mythicrelics.relic.TooltipArgs;
 import io.github.potatustudio.mythicrelics.relic.WornRelics;
 import java.util.HashMap;
@@ -74,6 +75,8 @@ public final class GreeceRelics {
 
 	public static final int HADES_STILL_TICKS = 40;
 	private static final double HADES_MAX_SPEED = 0.12;
+	/** Duración de la invisibilidad del yelmo (se renueva cada segundo mientras sigue quieto). */
+	private static final int HADES_EFFECT_TICKS = 40;
 	/** Velocidad agachado extra con el yelmo puesto (como un nivel de Pies Sigilosos). */
 	public static final double HADES_SNEAK_SPEED = 0.15;
 	private static final Identifier HADES_SNEAK_ID = Identifier.fromNamespaceAndPath("mythicrelics", "hades_sneak");
@@ -103,7 +106,26 @@ public final class GreeceRelics {
 	private static final Map<UUID, int[]> HADES_STILL = new HashMap<>();
 	private static final Map<UUID, Boolean> HADES_INVISIBLE = new HashMap<>();
 	/** Mob petrificado -> tick del juego en que se libera. */
-	private static final Map<UUID, Long> PETRIFIED = new HashMap<>();
+	private static final TimedMobStatus PETRIFIED = new TimedMobStatus(PETRIFIED_TAG, new TimedMobStatus.Hooks() {
+		/** Se va agrietando: cada vez caen más esquirlas y suena a piedra que cruje. */
+		@Override
+		public void active(ServerLevel level, Mob mob, long now, long until) {
+			double progress = 1.0 - (until - now) / (double) MEDUSA_TICKS;
+			int every = progress < 0.5 ? 10 : progress < 0.8 ? 5 : 2;
+			if (now % every == 0) {
+				level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
+						mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), 2 + (int) (progress * 6), 0.25, 0.4, 0.25, 0.0);
+				if (progress > 0.6 && now % 20 == 0) {
+					level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_HIT, SoundSource.HOSTILE, 0.8f, 0.5f);
+				}
+			}
+		}
+
+		@Override
+		public void released(ServerLevel level, Mob mob) {
+			shatter(level, mob);
+		}
+	});
 	/** Mirada de Medusa: mob -> {ticks acumulados en la mirada, último tick en que la recibió}. */
 	private static final Map<UUID, long[]> GAZE = new HashMap<>();
 
@@ -120,7 +142,15 @@ public final class GreeceRelics {
 		if (Platform.getEnvironment() == Env.SERVER) {
 			NetworkManager.registerS2CPayloadType(PetrifyPayload.TYPE, PetrifyPayload.CODEC);
 		}
-		EntityEvent.ADD.register(GreeceRelics::onEntityAdded);
+		// Quien empieza a ver a un mob petrificado (llega después, o el mob se recarga) lo ve de piedra.
+		EntityEvent.START_TRACKING.register((entity, player) -> {
+			if (entity instanceof Mob mob && PETRIFIED.has(mob) && entity.level() instanceof ServerLevel level) {
+				long left = PETRIFIED.remaining(mob, level.getGameTime());
+				if (left > 0) {
+					NetworkManager.sendToPlayer(player, new PetrifyPayload(mob.getId(), true, (int) left));
+				}
+			}
+		});
 		EntityEvent.LIVING_DEATH.register((victim, source) -> {
 			if (victim instanceof Mob mob && mob.entityTags().contains(PETRIFIED_TAG) && mob.level() instanceof ServerLevel level) {
 				crumble(level, mob, source);
@@ -201,8 +231,10 @@ public final class GreeceRelics {
 				player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ILLUSIONER_MIRROR_MOVE,
 						SoundSource.PLAYERS, 0.6f, 0.7f);
 			}
-			if (still[0] % 20 == 0 || !player.hasEffect(MobEffects.INVISIBILITY)) {
-				player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 40, 0, false, false, true));
+			// Si ya es invisible por otra causa (una poción), el yelmo no la toca: ni la renueva ni la quita.
+			MobEffectInstance current = player.getEffect(MobEffects.INVISIBILITY);
+			if (current == null || (isHadesInvisibility(current) && still[0] % 20 == 0)) {
+				player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, HADES_EFFECT_TICKS, 0, false, false, true));
 			}
 			if (still[0] % 10 == 0) {
 				// Los mobs pierden tu rastro.
@@ -213,9 +245,17 @@ public final class GreeceRelics {
 		}
 	}
 
+	/** La invisibilidad que pone el yelmo: corta y sin partículas (la de una poción dura más y se ve). */
+	private static boolean isHadesInvisibility(MobEffectInstance effect) {
+		return !effect.isVisible() && !effect.isAmbient() && effect.getDuration() <= HADES_EFFECT_TICKS;
+	}
+
 	private static void breakInvisibility(ServerPlayer player) {
 		if (HADES_INVISIBLE.remove(player.getUUID()) != null) {
-			player.removeEffect(MobEffects.INVISIBILITY);
+			MobEffectInstance current = player.getEffect(MobEffects.INVISIBILITY);
+			if (current != null && isHadesInvisibility(current)) {
+				player.removeEffect(MobEffects.INVISIBILITY);
+			}
 		}
 		HADES_STILL.remove(player.getUUID());
 	}
@@ -288,29 +328,23 @@ public final class GreeceRelics {
 
 	/** Petrifica a un mob {@link #MEDUSA_TICKS} ticks: queda quieto y se ve de piedra, que se va agrietando. */
 	private static void petrify(ServerLevel level, Mob mob) {
-		mob.setNoAi(true);
+		PETRIFIED.apply(level, mob, MEDUSA_TICKS);
 		mob.setDeltaMovement(Vec3.ZERO);
-		mob.addTag(PETRIFIED_TAG);
-		PETRIFIED.put(mob.getUUID(), level.getGameTime() + MEDUSA_TICKS);
 		sync(level, mob, true);
 		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
 				mob.getX(), mob.getY() + mob.getBbHeight() / 2, mob.getZ(), 30, 0.3, 0.5, 0.3, 0.1);
 		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_PLACE, SoundSource.HOSTILE, 1.0f, 0.6f);
 	}
 
-	private static void release(Mob mob) {
-		mob.setNoAi(false);
-		mob.removeTag(PETRIFIED_TAG);
-		if (mob.level() instanceof ServerLevel level) {
-			sync(level, mob, false);
-			// Se libera: la piedra estalla en esquirlas.
-			double cy = mob.getY() + mob.getBbHeight() / 2;
-			level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
-					mob.getX(), cy, mob.getZ(), 40, mob.getBbWidth() * 0.4, mob.getBbHeight() * 0.4, mob.getBbWidth() * 0.4, 0.2);
-			level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GRAVEL.defaultBlockState()),
-					mob.getX(), cy, mob.getZ(), 15, 0.3, 0.5, 0.3, 0.1);
-			level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1.0f, 0.8f);
-		}
+	/** Se libera: el mob vuelve a su color y la piedra estalla en esquirlas. */
+	private static void shatter(ServerLevel level, Mob mob) {
+		sync(level, mob, false);
+		double cy = mob.getY() + mob.getBbHeight() / 2;
+		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
+				mob.getX(), cy, mob.getZ(), 40, mob.getBbWidth() * 0.4, mob.getBbHeight() * 0.4, mob.getBbWidth() * 0.4, 0.2);
+		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GRAVEL.defaultBlockState()),
+				mob.getX(), cy, mob.getZ(), 15, 0.3, 0.5, 0.3, 0.1);
+		level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_BREAK, SoundSource.HOSTILE, 1.0f, 0.8f);
 	}
 
 	/** Avisa a los jugadores cercanos para que el mob se dibuje de piedra (o vuelva a su color). */
@@ -321,7 +355,7 @@ public final class GreeceRelics {
 
 	/** Lo que muere petrificado se derrumba: polvo de piedra, el doble de botín y a veces su estatua. */
 	private static void crumble(ServerLevel level, Mob mob, DamageSource source) {
-		PETRIFIED.remove(mob.getUUID());
+		PETRIFIED.clear(mob);
 		sync(level, mob, false);
 		double cy = mob.getY() + mob.getBbHeight() / 2;
 		level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
@@ -351,50 +385,12 @@ public final class GreeceRelics {
 		return amount;
 	}
 
-	private static EventResult onEntityAdded(Entity entity, Level level) {
-		// Si el servidor se cerró con un mob petrificado, al cargarlo se libera (si no, quedaría sin IA para siempre).
-		if (!level.isClientSide() && entity instanceof Mob mob && mob.entityTags().contains(PETRIFIED_TAG)
-				&& !PETRIFIED.containsKey(mob.getUUID())) {
-			release(mob);
-		}
-		return EventResult.pass();
-	}
-
 	// ---- Cada tick ---------------------------------------------------------------------------------------------------
 
 	private static void tick(MinecraftServer server) {
 		long now = server.overworld().getGameTime();
 		// La mirada se olvida si el mob sale del cono.
 		GAZE.values().removeIf(g -> now - g[1] > 5);
-		Iterator<Map.Entry<UUID, Long>> it = PETRIFIED.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<UUID, Long> e = it.next();
-			if (e.getValue() > now) {
-				// Se va agrietando: cada vez caen más esquirlas y suena a piedra que cruje.
-				double progress = 1.0 - (e.getValue() - now) / (double) MEDUSA_TICKS;
-				int every = progress < 0.5 ? 10 : progress < 0.8 ? 5 : 2;
-				if (now % every == 0) {
-					for (ServerLevel level : server.getAllLevels()) {
-						if (level.getEntity(e.getKey()) instanceof Mob mob) {
-							level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()),
-									mob.getX(), mob.getY() + mob.getBbHeight() * 0.5, mob.getZ(), 2 + (int) (progress * 6), 0.25, 0.4, 0.25, 0.0);
-							if (progress > 0.6 && now % 20 == 0) {
-								level.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.STONE_HIT, SoundSource.HOSTILE, 0.8f, 0.5f);
-							}
-							break;
-						}
-					}
-				}
-				continue;
-			}
-			for (ServerLevel level : server.getAllLevels()) {
-				if (level.getEntity(e.getKey()) instanceof Mob mob) {
-					release(mob);
-					break;
-				}
-			}
-			it.remove();
-		}
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			boolean sandals = WornRelics.isWearing(player, ModItems.HERMES_SANDALS);
 			setModifier(player, Attributes.MOVEMENT_SPEED, HERMES_SPEED_ID, sandals ? HERMES_SPEED : 0,
@@ -420,6 +416,6 @@ public final class GreeceRelics {
 	// Ciclo de vida: qué se olvida al desconectarse un jugador y al cerrar el mundo (relic/ServerState).
 	static {
 		ServerState.perPlayer(HADES_STILL, HADES_INVISIBLE);
-		ServerState.clearOnStop(PETRIFIED, GAZE);
+		ServerState.clearOnStop(GAZE);
 	}
 }

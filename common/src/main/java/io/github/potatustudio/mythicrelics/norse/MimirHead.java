@@ -1,5 +1,7 @@
 package io.github.potatustudio.mythicrelics.norse;
 
+import net.minecraft.world.level.Level;
+import net.minecraft.resources.ResourceKey;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import io.github.potatustudio.mythicrelics.MythicRelics;
@@ -192,6 +194,8 @@ public final class MimirHead {
 	/** Lo que busca cada jugador con Mímir en la mano. */
 	private static final class Guide {
 		BlockPos target;
+		/** Dimensión del tesoro: si el jugador cambia de dimensión, la guía se acaba sin decir «llegaste». */
+		ResourceKey<Level> dimension;
 		Component name;
 		long nextScan;
 	}
@@ -231,6 +235,7 @@ public final class MimirHead {
 	 */
 	static boolean ask(ServerLevel level, ServerPlayer player) {
 		Guide g = new Guide();
+		g.dimension = level.dimension();
 		scan(level, player, g);
 		RelicFx.sound(level, player, SoundEvents.SOUL_ESCAPE.value(), 0.7f, 0.6f);
 		if (g.target == null) {
@@ -254,11 +259,11 @@ public final class MimirHead {
 		if (g == null || g.target == null) {
 			return;
 		}
-		boolean gone = value(level.getBlockState(g.target)) == 0 && !isChest(level, g.target);
-		if (level.getGameTime() > g.nextScan || player.level() != level) {
+		if (level.getGameTime() > g.nextScan || !level.dimension().equals(g.dimension)) {
 			GUIDES.remove(player.getUUID());
 			return;
 		}
+		boolean gone = value(level.getBlockState(g.target)) == 0 && !isChest(level, g.target);
 		if (gone || player.getEyePosition().distanceTo(Vec3.atCenterOf(g.target)) < ARRIVED) {
 			GUIDES.remove(player.getUUID());
 			player.sendOverlayMessage(Component.translatable("message.mythicrelics.mimir_arrived").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));

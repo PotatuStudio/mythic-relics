@@ -1,10 +1,12 @@
 package io.github.potatustudio.mythicrelics.china;
 
+import io.github.potatustudio.mythicrelics.relic.RelicDamage;
 import io.github.potatustudio.mythicrelics.minion.Minions;
 import io.github.potatustudio.mythicrelics.relic.Allies;
 import io.github.potatustudio.mythicrelics.relic.RelicCooldowns;
 import io.github.potatustudio.mythicrelics.relic.RelicFx;
 import io.github.potatustudio.mythicrelics.relic.RelicItem;
+import java.util.UUID;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
@@ -144,6 +146,8 @@ public class PurpleGoldGourdItem extends RelicItem {
 		if (entity == null) {
 			return null;
 		}
+		// Un UUID nuevo: si la calabaza se duplicó (creativo), el segundo mob no choca con el primero y se pierde.
+		entity.setUUID(UUID.randomUUID());
 		level.addFreshEntity(entity);
 		level.sendParticles(ParticleTypes.PORTAL, at.x, at.y + 0.5, at.z, 30, 0.3, 0.5, 0.3, 0.3);
 		level.playSound(null, at.x, at.y, at.z, SoundEvents.BOTTLE_EMPTY, SoundSource.PLAYERS, 1.0f, 0.7f);
@@ -164,7 +168,7 @@ public class PurpleGoldGourdItem extends RelicItem {
 		Entity mob = release(level, stack, tag, player.position(), player.getYRot());
 		if (mob instanceof LivingEntity living) {
 			living.setInvulnerableTime(0);
-			living.hurtServer(level, level.damageSources().playerAttack(player), Float.MAX_VALUE);
+			living.hurtServer(level, RelicDamage.byPlayer(level, null, player), Float.MAX_VALUE);
 			if (living.isAlive()) {
 				living.discard();
 			}
@@ -176,11 +180,31 @@ public class PurpleGoldGourdItem extends RelicItem {
 
 	@Override
 	protected void appendExtraLines(ItemStack stack, Consumer<Component> tooltip) {
-		CompoundTag tag = data(stack);
-		if (tag != null) {
-			tooltip.accept(Component.translatable("tooltip.mythicrelics.gourd_inside", Component.translatable(tag.getStringOr(TYPE_NAME, "")))
+		String name = capturedName(stack);
+		if (name != null) {
+			tooltip.accept(Component.translatable("tooltip.mythicrelics.gourd_inside", Component.translatable(name))
 					.withStyle(ChatFormatting.LIGHT_PURPLE));
 		}
+	}
+
+	/** Último nombre leído: el tooltip se arma en cada cuadro y copiar todo el NBT del mob cada vez es caro. */
+	private record NameCache(CustomData data, @Nullable String name) {
+	}
+
+	private static volatile @Nullable NameCache lastName;
+
+	private static @Nullable String capturedName(ItemStack stack) {
+		CustomData custom = stack.get(DataComponents.CUSTOM_DATA);
+		if (custom == null) {
+			return null;
+		}
+		NameCache cache = lastName;
+		if (cache == null || cache.data() != custom) {
+			CompoundTag tag = custom.copyTag();
+			cache = new NameCache(custom, tag.contains(CAPTURED) ? tag.getStringOr(TYPE_NAME, "") : null);
+			lastName = cache;
+		}
+		return cache.name();
 	}
 
 	@Override
