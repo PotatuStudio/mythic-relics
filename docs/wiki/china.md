@@ -7,15 +7,15 @@ Los dragones chinos (long) no tienen alas ni escupen fuego: vuelan entre las nub
 
 | | Reliquia | Espacio | Rareza | Dónde |
 |---|---|---|---|---|
-| ![](img/ruyi_jingu_bang.png) | [Ruyi Jingu Bang](#ruyi-jingu-bang) | mano (arma) | épica | Ruinas submarinas grandes: 4 % por cofre |
-| ![](img/monkey_king_hairs.png) | [Pelos del Rey Mono](#monkey-king-hairs) | mano | épica | Templos de la jungla: 4 % por cofre |
-| ![](img/purple_gold_gourd.png) | [Calabaza roja de oro púrpura](#purple-gold-gourd) | mano | épica | Mazmorras: 3 % por cofre |
-| ![](img/dragon_pearl.png) | [Perla del dragón](#dragon-pearl) | mano | épica | Ruinas submarinas chicas: 3 % por cofre; Arena sospechosa de ruinas oceánicas cálidas: 1 % por bloque cepillado |
-| ![](img/hou_yi_bow.png) | [Arco de Hou Yi](#hou-yi-bow) | mano (arma) | épica | Fortalezas del Nether: 4 % por cofre |
-| ![](img/change_elixir.png) | [Elixir de Chang'e](#change-elixir) | mano | épica | Ciudades del End: 3 % por cofre |
-| ![](img/five_color_stone.png) | [Piedra de cinco colores](#five-color-stone) | cinturón | rara | Arena y grava sospechosas comunes de ruinas de los senderos: 1 % por bloque cepillado |
-| ![](img/fu_talismans.png) | [Talismanes de papel](#fu-talismans) | mano | rara | Mazmorras: 4 % por cofre |
-| ![](img/xirang_sack.png) | [Saco de Xirang](#xirang-sack) | mano | rara | Arena y grava sospechosas de ruinas de los senderos: 1.5 % por bloque cepillado |
+| ![](img/ruyi_jingu_bang.png) | [Ruyi Jingu Bang](#ruyi-jingu-bang) | mano (arma) | épica | Ruinas submarinas grandes: 8 % por cofre |
+| ![](img/monkey_king_hairs.png) | [Pelos del Rey Mono](#monkey-king-hairs) | mano | épica | Templos de la jungla: 8 % por cofre |
+| ![](img/purple_gold_gourd.png) | [Calabaza roja de oro púrpura](#purple-gold-gourd) | mano | épica | Mazmorras: 6 % por cofre |
+| ![](img/dragon_pearl.png) | [Perla del dragón](#dragon-pearl) | mano | épica | Ruinas submarinas chicas: 6 % por cofre; Arena sospechosa de ruinas oceánicas cálidas: 2 % por bloque cepillado |
+| ![](img/hou_yi_bow.png) | [Arco de Hou Yi](#hou-yi-bow) | mano (arma) | épica | Fortalezas del Nether: 8 % por cofre |
+| ![](img/change_elixir.png) | [Elixir de Chang'e](#change-elixir) | mano | épica | Ciudades del End: 6 % por cofre |
+| ![](img/five_color_stone.png) | [Piedra de cinco colores](#five-color-stone) | cinturón | rara | Arena y grava sospechosas comunes de ruinas de los senderos: 2 % por bloque cepillado |
+| ![](img/fu_talismans.png) | [Talismanes de papel](#fu-talismans) | mano | rara | Mazmorras: 8 % por cofre |
+| ![](img/xirang_sack.png) | [Saco de Xirang](#xirang-sack) | mano | rara | Arena y grava sospechosas de ruinas de los senderos: 3 % por bloque cepillado |
 
 <a id="ruyi-jingu-bang"></a>
 ## Ruyi Jingu Bang
@@ -31,7 +31,7 @@ Los dragones chinos (long) no tienen alas ni escupen fuego: vuelan entre las nub
 **Mito.** El bastón del Rey Mono. Era la columna de hierro con que el Rey Dragón del Mar del Este medía la profundidad del océano; pesaba 13.500 jin y obedecía a Sun Wukong.  
 Crecía hasta el cielo o se encogía hasta caber detrás de su oreja. Es de hierro negro con un aro de oro en cada punta.
 
-**Dónde encontrarla.** **Ruinas submarinas grandes**: 4 % por cofre
+**Dónde encontrarla.** **Ruinas submarinas grandes**: 8 % por cofre
 
 <a id="monkey-king-hairs"></a>
 ## Pelos del Rey Mono
@@ -47,7 +47,7 @@ Crecía hasta el cielo o se encogía hasta caber detrás de su oreja. Es de hier
 **Mito.** Sun Wukong se arrancaba un puñado de pelos, los masticaba, los soplaba y gritaba «¡Cambia!»: cada pelo se volvía un mono igual a él que peleaba a su lado.  
 Así enfrentó solo a los ejércitos del Cielo.
 
-**Dónde encontrarla.** **Templos de la jungla**: 4 % por cofre
+**Dónde encontrarla.** **Templos de la jungla**: 8 % por cofre
 
 <a id="purple-gold-gourd"></a>
 ## Calabaza roja de oro púrpura
@@ -64,7 +64,7 @@ Así enfrentó solo a los ejércitos del Cielo.
 **Mito.** El tesoro de los demonios Cuerno de Oro y Cuerno de Plata en Viaje al Oeste. Si la calabaza decía tu nombre y respondías, quedabas atrapado dentro, y a las pocas horas te disolvías. Wukong cayó en ella y escapó con un engaño.  
 Su nombre, zijin hong hulu, es «calabaza roja de oro púrpura»: el oro púrpura es un oro rojizo, no el color morado.
 
-**Dónde encontrarla.** **Mazmorras**: 3 % por cofre
+**Dónde encontrarla.** **Mazmorras**: 6 % por cofre
 
 <a id="dragon-pearl"></a>
 ## Perla del dragón
@@ -81,7 +81,7 @@ Su nombre, zijin hong hulu, es «calabaza roja de oro púrpura»: el oro púrpur
 **Mito.** Los dragones chinos (long) no escupen fuego ni tienen alas: vuelan entre las nubes, traen la lluvia y gobiernan los mares y los ríos.  
 Tienen cuernos de ciervo, cuello de serpiente, escamas de carpa y garras de águila, y en el arte persiguen una perla llameante, fuente de su poder.
 
-**Dónde encontrarla.** **Ruinas submarinas chicas**: 3 % por cofre; **Arena sospechosa de ruinas oceánicas cálidas**: 1 % por bloque cepillado
+**Dónde encontrarla.** **Ruinas submarinas chicas**: 6 % por cofre; **Arena sospechosa de ruinas oceánicas cálidas**: 2 % por bloque cepillado
 
 <a id="hou-yi-bow"></a>
 ## Arco de Hou Yi
@@ -97,7 +97,7 @@ Tienen cuernos de ciervo, cuello de serpiente, escamas de carpa y garras de águ
 **Mito.** Cuando diez soles salieron juntos y quemaban la Tierra, el arquero Hou Yi derribó nueve con su arco rojo y sus flechas blancas, regalo del emperador del cielo.  
 Cada sol era un cuervo dorado de tres patas, que cayó a tierra.
 
-**Dónde encontrarla.** **Fortalezas del Nether**: 4 % por cofre
+**Dónde encontrarla.** **Fortalezas del Nether**: 8 % por cofre
 
 <a id="change-elixir"></a>
 ## Elixir de Chang'e
@@ -113,7 +113,7 @@ Cada sol era un cuervo dorado de tres patas, que cayó a tierra.
 
 **Mito.** La Reina Madre del Oeste le dio a Hou Yi el elixir de la inmortalidad. Su esposa Chang'e se lo bebió, se volvió ligera y flotó hasta la Luna, donde vive todavía con el Conejo de Jade.
 
-**Dónde encontrarla.** **Ciudades del End**: 3 % por cofre
+**Dónde encontrarla.** **Ciudades del End**: 6 % por cofre
 
 <a id="five-color-stone"></a>
 ## Piedra de cinco colores
@@ -128,7 +128,7 @@ Cada sol era un cuervo dorado de tres patas, que cayó a tierra.
 **Mito.** Cuando el pilar del cielo se rompió y el firmamento se agrietó, la diosa Nüwa fundió piedras de cinco colores y con ellas lo remendó.  
 Una de las que sobraron es la piedra de «Sueño en el pabellón rojo».
 
-**Dónde encontrarla.** **Arena y grava sospechosas comunes de ruinas de los senderos**: 1 % por bloque cepillado
+**Dónde encontrarla.** **Arena y grava sospechosas comunes de ruinas de los senderos**: 2 % por bloque cepillado
 
 <a id="fu-talismans"></a>
 ## Talismanes de papel
@@ -143,7 +143,7 @@ Una de las que sobraron es la piedra de «Sueño en el pabellón rojo».
 **Mito.** Los fu, talismanes de papel amarillo escritos con tinta bermellón por los sacerdotes taoístas.  
 En el folclore, uno pegado en la frente de un jiangshi (el cadáver que salta) lo deja inmóvil.
 
-**Dónde encontrarla.** **Mazmorras**: 4 % por cofre
+**Dónde encontrarla.** **Mazmorras**: 8 % por cofre
 
 <a id="xirang-sack"></a>
 ## Saco de Xirang
@@ -157,4 +157,4 @@ En el folclore, uno pegado en la frente de un jiangshi (el cadáver que salta) l
 
 **Mito.** El xirang era la tierra que crecía sola. Gun la robó del Cielo para contener el Gran Diluvio; su hijo Yu el Grande la usó para levantar diques y abrir canales hasta domar las aguas.
 
-**Dónde encontrarla.** **Arena y grava sospechosas de ruinas de los senderos**: 1.5 % por bloque cepillado
+**Dónde encontrarla.** **Arena y grava sospechosas de ruinas de los senderos**: 3 % por bloque cepillado

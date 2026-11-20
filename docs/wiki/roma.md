@@ -7,13 +7,13 @@ Roma no dejó estructuras en el mundo: cada reliquia está donde su mito calza.
 
 | | Reliquia | Espacio | Rareza | Dónde |
 |---|---|---|---|---|
-| ![](img/wolf_bulla.png) | [Bulla de la Loba](#wolf-bulla) | collar | rara | Casas de aldeas de taiga: 4 % por cofre |
-| ![](img/ancile.png) | [Ancile](#ancile) | mano secundaria | épica | Puestos de saqueadores: 4 % por cofre |
-| ![](img/palladium.png) | [Paladio](#palladium) | bloque (se coloca) | épica | Templos de aldea: 3 % por cofre |
-| ![](img/janus_key.png) | [Llave de Jano](#janus-key) | mano | rara | Portales en ruinas: 3 % por cofre |
-| ![](img/vesta_lamp.png) | [Lámpara de Vesta](#vesta-lamp) | mano secundaria | rara | Casas de aldeas de llanura: 3 % por cofre |
-| ![](img/sibylline_books.png) | [Libros sibilinos](#sibylline-books) | mano | épica | Bibliotecas de la fortaleza: 4 % por cofre |
-| ![](img/augur_lituus.png) | [Lítuo del augur](#augur-lituus) | mano | rara | Templos de la jungla: 4 % por cofre |
+| ![](img/wolf_bulla.png) | [Bulla de la Loba](#wolf-bulla) | collar | rara | Casas de aldeas de taiga: 8 % por cofre |
+| ![](img/ancile.png) | [Ancile](#ancile) | mano secundaria | épica | Puestos de saqueadores: 8 % por cofre |
+| ![](img/palladium.png) | [Paladio](#palladium) | bloque (se coloca) | épica | Templos de aldea: 6 % por cofre |
+| ![](img/janus_key.png) | [Llave de Jano](#janus-key) | mano | rara | Portales en ruinas: 6 % por cofre |
+| ![](img/vesta_lamp.png) | [Lámpara de Vesta](#vesta-lamp) | mano secundaria | rara | Casas de aldeas de llanura: 6 % por cofre |
+| ![](img/sibylline_books.png) | [Libros sibilinos](#sibylline-books) | mano | épica | Bibliotecas de la fortaleza: 8 % por cofre |
+| ![](img/augur_lituus.png) | [Lítuo del augur](#augur-lituus) | mano | rara | Templos de la jungla: 8 % por cofre |
 
 <a id="wolf-bulla"></a>
 ## Bulla de la Loba
@@ -30,7 +30,7 @@ Roma no dejó estructuras en el mundo: cada reliquia está donde su mito calza.
 **Mito.** Una loba amamantó a Rómulo y Remo junto al Tíber, y por eso la loba es el símbolo de Roma.  
 Los niños romanos llevaban al cuello una bulla, un relicario contra el mal, hasta hacerse adultos.
 
-**Dónde encontrarla.** **Casas de aldeas de taiga**: 4 % por cofre
+**Dónde encontrarla.** **Casas de aldeas de taiga**: 8 % por cofre
 
 <a id="ancile"></a>
 ## Ancile
@@ -46,7 +46,7 @@ Los niños romanos llevaban al cuello una bulla, un relicario contra el mal, has
 **Mito.** En tiempos del rey Numa cayó del cielo un escudo de Marte en forma de ocho: mientras Roma lo guardara, no caería.  
 Numa mandó hacer once copias idénticas para que nadie supiera cuál robar.
 
-**Dónde encontrarla.** **Puestos de saqueadores**: 4 % por cofre
+**Dónde encontrarla.** **Puestos de saqueadores**: 8 % por cofre
 
 <a id="palladium"></a>
 ## Paladio
@@ -60,7 +60,7 @@ Numa mandó hacer once copias idénticas para que nadie supiera cuál robar.
 **Mito.** Estatuilla de madera de Palas que protegía Troya: la ciudad no podía caer mientras la guardara.  
 Eneas la llevó a Italia y los romanos la custodiaban en el templo de Vesta.
 
-**Dónde encontrarla.** **Templos de aldea**: 3 % por cofre
+**Dónde encontrarla.** **Templos de aldea**: 6 % por cofre
 
 <a id="janus-key"></a>
 ## Llave de Jano
@@ -76,7 +76,7 @@ Eneas la llevó a Italia y los romanos la custodiaban en el templo de Vesta.
 **Mito.** Jano, el dios de dos caras, guardaba las puertas, los comienzos y los pasos: una cara mira atrás y la otra adelante.  
 Se lo representaba con una llave; su templo se abría en guerra y se cerraba en paz.
 
-**Dónde encontrarla.** **Portales en ruinas**: 3 % por cofre
+**Dónde encontrarla.** **Portales en ruinas**: 6 % por cofre
 
 <a id="vesta-lamp"></a>
 ## Lámpara de Vesta
@@ -93,7 +93,7 @@ Se lo representaba con una llave; su templo se abría en guerra y se cerraba en 
 **Mito.** Vesta era la diosa del hogar. Su fuego sagrado ardía siempre en su templo, cuidado por las vestales.  
 Si se apagaba, era un presagio terrible para Roma.
 
-**Dónde encontrarla.** **Casas de aldeas de llanura**: 3 % por cofre
+**Dónde encontrarla.** **Casas de aldeas de llanura**: 6 % por cofre
 
 <a id="sibylline-books"></a>
 ## Libros sibilinos
@@ -110,7 +110,7 @@ Si se apagaba, era un presagio terrible para Roma.
 **Mito.** La sibila de Cumas le ofreció nueve libros de profecías al rey Tarquinio. Como no quiso pagar, quemó tres, y luego tres más; el rey terminó pagando el precio completo por los últimos tres.  
 Roma los consultaba en las crisis.
 
-**Dónde encontrarla.** **Bibliotecas de la fortaleza**: 4 % por cofre
+**Dónde encontrarla.** **Bibliotecas de la fortaleza**: 8 % por cofre
 
 <a id="augur-lituus"></a>
 ## Lítuo del augur
@@ -128,4 +128,4 @@ Roma los consultaba en las crisis.
 **Mito.** Los augures leían la voluntad de los dioses en el vuelo de las aves, y marcaban el cielo con el lítuo, un bastón curvo.  
 Rómulo ganó a Remo el derecho a fundar Roma porque vio doce buitres y su hermano solo seis.
 
-**Dónde encontrarla.** **Templos de la jungla**: 4 % por cofre
+**Dónde encontrarla.** **Templos de la jungla**: 8 % por cofre

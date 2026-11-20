@@ -7,26 +7,26 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 
 | | Reliquia | Espacio | Rareza | Dónde |
 |---|---|---|---|---|
-| ![](img/hermes_sandals.png) | [Sandalias aladas de Hermes](#hermes-sandals) | zapatos | épica | Arena y grava sospechosas de ruinas de los senderos: 2 % por bloque cepillado |
-| ![](img/hades_helm.png) | [Yelmo de Hades](#hades-helm) | sombrero | épica | Fortalezas del Nether: 4 % por cofre |
-| ![](img/athena_aegis.png) | [Égida de Atenea](#athena-aegis) | mano secundaria | rara | Recompensas de cámaras de desafío: 3 % por cofre |
-| ![](img/medusa_head.png) | [Cabeza de Medusa](#medusa-head) | mano secundaria | épica | Arena sospechosa de ruinas oceánicas cálidas: 1.5 % por bloque cepillado |
-| ![](img/ariadne_thread.png) | [Hilo de Ariadna](#ariadne-thread) | mano | rara | Pasillos de la fortaleza: 6 % por cofre; Bibliotecas de la fortaleza: 6 % por cofre |
-| ![](img/charon_obol.png) | [Óbolo de Caronte](#charon-obol) | inventario | rara | Fortalezas del Nether: 5 % por cofre; Arena y grava sospechosas de ruinas de los senderos: 3 % por bloque cepillado |
-| ![](img/orpheus_lyre.png) | [Lira de Orfeo](#orpheus-lyre) | mano | épica | Ciudades antiguas: 3 % por cofre |
-| ![](img/icarus_wings.png) | [Alas de Ícaro](#icarus-wings) | espalda | épica | Grava sospechosa de ruinas oceánicas frías: 1.5 % por bloque cepillado |
-| ![](img/golden_fleece.png) | [Vellocino de oro](#golden-fleece) | capa | épica | Casas de pastor: 4 % por cofre; Tesoros de naufragios: 2 % por cofre |
-| ![](img/cerberus_collar.png) | [Collar de Cerbero](#cerberus-collar) | collar | épica | Tesoros de bastiones: 3 % por cofre; Bastiones: 3 % por cofre; Puentes de bastiones: 3 % por cofre; Establos de hoglins: 3 % por cofre |
-| ![](img/pandora_jar.png) | [Jarra de Pandora](#pandora-jar) | mano | épica | Mansiones del bosque: 5 % por cofre |
-| ![](img/styx_water.png) | [Agua del Estigia](#styx-water) | mano | épica | Ciudades antiguas: 2 % por cofre |
-| ![](img/prometheus_fennel.png) | [Hinojo de Prometeo](#prometheus-fennel) | mano | rara | Portales en ruinas: 3 % por cofre |
-| ![](img/zeus_thunderbolt.png) | [Rayo de Zeus](#zeus-thunderbolt) | mano (arma) | épica | Bóvedas ominosas de cámaras de desafío: 1.5 % por cofre |
-| ![](img/nemean_lion_skin.png) | [Piel del león de Nemea](#nemean-lion-skin) | capa | épica | Recompensas de cámaras de desafío: 3 % por cofre |
-| ![](img/achilles_shield.png) | [Escudo de Aquiles](#achilles-shield) | mano secundaria | épica | Tesoros de naufragios: 3 % por cofre |
-| ![](img/harpe.png) | [Harpe](#harpe) | mano (arma) | épica | Arena y grava sospechosas de ruinas de los senderos: 1.5 % por bloque cepillado |
-| ![](img/golden_bridle.png) | [Brida de oro de Atenea](#golden-bridle) | mano | épica | Templos de la jungla: 3 % por cofre |
-| ![](img/apple_of_discord.png) | [Manzana de la Discordia](#apple-of-discord) | mano | rara | Puestos de saqueadores: 3 % por cofre |
-| ![](img/talos_nail.png) | [Clavo de bronce de Talos](#talos-nail) | mano | épica | Ciudades antiguas: 2 % por cofre |
+| ![](img/hermes_sandals.png) | [Sandalias aladas de Hermes](#hermes-sandals) | zapatos | épica | Arena y grava sospechosas de ruinas de los senderos: 4 % por bloque cepillado |
+| ![](img/hades_helm.png) | [Yelmo de Hades](#hades-helm) | sombrero | épica | Fortalezas del Nether: 8 % por cofre |
+| ![](img/athena_aegis.png) | [Égida de Atenea](#athena-aegis) | mano secundaria | rara | Recompensas de cámaras de desafío: 6 % por cofre |
+| ![](img/medusa_head.png) | [Cabeza de Medusa](#medusa-head) | mano secundaria | épica | Arena sospechosa de ruinas oceánicas cálidas: 3 % por bloque cepillado |
+| ![](img/ariadne_thread.png) | [Hilo de Ariadna](#ariadne-thread) | mano | rara | Pasillos de la fortaleza: 12 % por cofre; Bibliotecas de la fortaleza: 12 % por cofre |
+| ![](img/charon_obol.png) | [Óbolo de Caronte](#charon-obol) | inventario | rara | Fortalezas del Nether: 10 % por cofre; Arena y grava sospechosas de ruinas de los senderos: 6 % por bloque cepillado |
+| ![](img/orpheus_lyre.png) | [Lira de Orfeo](#orpheus-lyre) | mano | épica | Ciudades antiguas: 6 % por cofre |
+| ![](img/icarus_wings.png) | [Alas de Ícaro](#icarus-wings) | espalda | épica | Grava sospechosa de ruinas oceánicas frías: 3 % por bloque cepillado |
+| ![](img/golden_fleece.png) | [Vellocino de oro](#golden-fleece) | capa | épica | Casas de pastor: 8 % por cofre; Tesoros de naufragios: 4 % por cofre |
+| ![](img/cerberus_collar.png) | [Collar de Cerbero](#cerberus-collar) | collar | épica | Tesoros de bastiones: 6 % por cofre; Bastiones: 6 % por cofre; Puentes de bastiones: 6 % por cofre; Establos de hoglins: 6 % por cofre |
+| ![](img/pandora_jar.png) | [Jarra de Pandora](#pandora-jar) | mano | épica | Mansiones del bosque: 10 % por cofre |
+| ![](img/styx_water.png) | [Agua del Estigia](#styx-water) | mano | épica | Ciudades antiguas: 4 % por cofre |
+| ![](img/prometheus_fennel.png) | [Hinojo de Prometeo](#prometheus-fennel) | mano | rara | Portales en ruinas: 6 % por cofre |
+| ![](img/zeus_thunderbolt.png) | [Rayo de Zeus](#zeus-thunderbolt) | mano (arma) | épica | Bóvedas ominosas de cámaras de desafío: 3 % por cofre |
+| ![](img/nemean_lion_skin.png) | [Piel del león de Nemea](#nemean-lion-skin) | capa | épica | Recompensas de cámaras de desafío: 6 % por cofre |
+| ![](img/achilles_shield.png) | [Escudo de Aquiles](#achilles-shield) | mano secundaria | épica | Tesoros de naufragios: 6 % por cofre |
+| ![](img/harpe.png) | [Harpe](#harpe) | mano (arma) | épica | Arena y grava sospechosas de ruinas de los senderos: 3 % por bloque cepillado |
+| ![](img/golden_bridle.png) | [Brida de oro de Atenea](#golden-bridle) | mano | épica | Templos de la jungla: 6 % por cofre |
+| ![](img/apple_of_discord.png) | [Manzana de la Discordia](#apple-of-discord) | mano | rara | Puestos de saqueadores: 6 % por cofre |
+| ![](img/talos_nail.png) | [Clavo de bronce de Talos](#talos-nail) | mano | épica | Ciudades antiguas: 4 % por cofre |
 
 <a id="hermes-sandals"></a>
 ## Sandalias aladas de Hermes
@@ -44,7 +44,7 @@ Perseo armó su equipo con los regalos de los dioses para vencer a Medusa.
 **Mito.** Hermes, mensajero de los dioses, volaba con sus sandalias aladas. También guiaba las almas de los muertos al inframundo.  
 Se las prestó a Perseo para ir a buscar a Medusa.
 
-**Dónde encontrarla.** **Arena y grava sospechosas de ruinas de los senderos**: 2 % por bloque cepillado
+**Dónde encontrarla.** **Arena y grava sospechosas de ruinas de los senderos**: 4 % por bloque cepillado
 
 <a id="hades-helm"></a>
 ## Yelmo de Hades
@@ -62,7 +62,7 @@ Se las prestó a Perseo para ir a buscar a Medusa.
 **Mito.** Los cíclopes forjaron para Hades un yelmo que vuelve invisible a quien lo lleva.  
 Atenea y Perseo también lo usaron; con él, Perseo escapó de las gorgonas.
 
-**Dónde encontrarla.** **Fortalezas del Nether**: 4 % por cofre
+**Dónde encontrarla.** **Fortalezas del Nether**: 8 % por cofre
 
 <a id="athena-aegis"></a>
 ## Égida de Atenea
@@ -78,7 +78,7 @@ Atenea y Perseo también lo usaron; con él, Perseo escapó de las gorgonas.
 **Mito.** La égida, la piel de cabra de Zeus que llevaba Atenea, tenía el gorgoneion, el rostro de Medusa que aterraba a los enemigos.  
 Atenea le dio a Perseo el escudo pulido para no mirar a Medusa.
 
-**Dónde encontrarla.** **Recompensas de cámaras de desafío**: 3 % por cofre
+**Dónde encontrarla.** **Recompensas de cámaras de desafío**: 6 % por cofre
 
 <a id="medusa-head"></a>
 ## Cabeza de Medusa
@@ -94,7 +94,7 @@ Atenea le dio a Perseo el escudo pulido para no mirar a Medusa.
 **Mito.** Medusa, la gorgona, convertía en piedra a quien la miraba.  
 Perseo la decapitó mirándola en el reflejo del escudo de Atenea, y usó su cabeza como arma.
 
-**Dónde encontrarla.** **Arena sospechosa de ruinas oceánicas cálidas**: 1.5 % por bloque cepillado
+**Dónde encontrarla.** **Arena sospechosa de ruinas oceánicas cálidas**: 3 % por bloque cepillado
 
 <a id="ariadne-thread"></a>
 ## Hilo de Ariadna
@@ -109,7 +109,7 @@ Perseo la decapitó mirándola en el reflejo del escudo de Atenea, y usó su cab
 
 **Mito.** Ariadna le dio a Teseo un ovillo de hilo para entrar al laberinto del Minotauro y encontrar la salida.
 
-**Dónde encontrarla.** **Pasillos de la fortaleza**: 6 % por cofre; **Bibliotecas de la fortaleza**: 6 % por cofre
+**Dónde encontrarla.** **Pasillos de la fortaleza**: 12 % por cofre; **Bibliotecas de la fortaleza**: 12 % por cofre
 
 <a id="charon-obol"></a>
 ## Óbolo de Caronte
@@ -124,7 +124,7 @@ Perseo la decapitó mirándola en el reflejo del escudo de Atenea, y usó su cab
 **Mito.** Los griegos ponían un óbolo en la boca de sus muertos para pagarle a Caronte el cruce hacia el Hades. Sin pago, el alma vagaba cien años en la orilla.  
 El de Atenas llevaba la lechuza de Atenea.
 
-**Dónde encontrarla.** **Fortalezas del Nether**: 5 % por cofre; **Arena y grava sospechosas de ruinas de los senderos**: 3 % por bloque cepillado
+**Dónde encontrarla.** **Fortalezas del Nether**: 10 % por cofre; **Arena y grava sospechosas de ruinas de los senderos**: 6 % por bloque cepillado
 
 <a id="orpheus-lyre"></a>
 ## Lira de Orfeo
@@ -139,7 +139,7 @@ El de Atenas llevaba la lechuza de Atenea.
 **Mito.** La música de Orfeo encantaba a animales, árboles y piedras.  
 Bajó al inframundo por Eurídice y con su lira conmovió a Hades y adormeció a sus guardianes.
 
-**Dónde encontrarla.** **Ciudades antiguas**: 3 % por cofre
+**Dónde encontrarla.** **Ciudades antiguas**: 6 % por cofre
 
 <a id="icarus-wings"></a>
 ## Alas de Ícaro
@@ -155,7 +155,7 @@ Bajó al inframundo por Eurídice y con su lira conmovió a Hades y adormeció a
 **Mito.** Dédalo, el arquitecto del laberinto, hizo alas de plumas pegadas con cera para escapar de Creta con su hijo Ícaro.  
 Le advirtió que no volara muy alto, porque el sol derrite la cera, ni muy bajo, porque el mar moja las plumas. Ícaro subió demasiado y cayó al mar.
 
-**Dónde encontrarla.** **Grava sospechosa de ruinas oceánicas frías**: 1.5 % por bloque cepillado
+**Dónde encontrarla.** **Grava sospechosa de ruinas oceánicas frías**: 3 % por bloque cepillado
 
 <a id="golden-fleece"></a>
 ## Vellocino de oro
@@ -170,7 +170,7 @@ Le advirtió que no volara muy alto, porque el sol derrite la cera, ni muy bajo,
 **Mito.** Es la piel del carnero alado de oro Crisómalo, colgada de un roble en la Cólquide y vigilada por un dragón que nunca dormía.  
 Jasón y los argonautas la buscaron porque traerla era la prueba para reclamar el trono: era el símbolo del rey legítimo.
 
-**Dónde encontrarla.** **Casas de pastor**: 4 % por cofre; **Tesoros de naufragios**: 2 % por cofre
+**Dónde encontrarla.** **Casas de pastor**: 8 % por cofre; **Tesoros de naufragios**: 4 % por cofre
 
 <a id="cerberus-collar"></a>
 ## Collar de Cerbero
@@ -186,7 +186,7 @@ Jasón y los argonautas la buscaron porque traerla era la prueba para reclamar e
 **Mito.** Cerbero, el perro de tres cabezas, guardaba la puerta del Hades: dejaba entrar a los muertos y no dejaba salir a nadie.  
 Capturarlo fue el último de los doce trabajos de Heracles, que lo sacó encadenado.
 
-**Dónde encontrarla.** **Tesoros de bastiones**: 3 % por cofre; **Bastiones**: 3 % por cofre; **Puentes de bastiones**: 3 % por cofre; **Establos de hoglins**: 3 % por cofre
+**Dónde encontrarla.** **Tesoros de bastiones**: 6 % por cofre; **Bastiones**: 6 % por cofre; **Puentes de bastiones**: 6 % por cofre; **Establos de hoglins**: 6 % por cofre
 
 <a id="pandora-jar"></a>
 ## Jarra de Pandora
@@ -205,7 +205,7 @@ Capturarlo fue el último de los doce trabajos de Heracles, que lo sacó encaden
 **Mito.** Zeus le dio a Pandora, la primera mujer, una jarra que no debía abrir. Al abrirla salieron todos los males del mundo; solo la Esperanza quedó dentro.  
 Era un pithos, una jarra: la «caja» viene de una mala traducción.
 
-**Dónde encontrarla.** **Mansiones del bosque**: 5 % por cofre
+**Dónde encontrarla.** **Mansiones del bosque**: 10 % por cofre
 
 <a id="styx-water"></a>
 ## Agua del Estigia
@@ -221,7 +221,7 @@ Era un pithos, una jarra: la «caja» viene de una mala traducción.
 **Mito.** Tetis sumergió a su hijo Aquiles en el río Estigia para hacerlo invulnerable. Lo sostuvo del talón, que quedó sin mojar.  
 En Troya, Paris lo mató con una flecha en el talón.
 
-**Dónde encontrarla.** **Ciudades antiguas**: 2 % por cofre
+**Dónde encontrarla.** **Ciudades antiguas**: 4 % por cofre
 
 <a id="prometheus-fennel"></a>
 ## Hinojo de Prometeo
@@ -238,7 +238,7 @@ En Troya, Paris lo mató con una flecha en el talón.
 **Mito.** El titán Prometeo robó el fuego de los dioses escondiendo una brasa en un tallo hueco de hinojo, y se lo dio a los humanos junto con las artes.  
 Zeus lo encadenó a una roca, donde un águila le comía el hígado cada día.
 
-**Dónde encontrarla.** **Portales en ruinas**: 3 % por cofre
+**Dónde encontrarla.** **Portales en ruinas**: 6 % por cofre
 
 <a id="zeus-thunderbolt"></a>
 ## Rayo de Zeus
@@ -256,7 +256,7 @@ Zeus lo encadenó a una roca, donde un águila le comía el hígado cada día.
 **Mito.** El keraunos: lo forjaron los cíclopes Brontes, Estéropes y Arges cuando Zeus los liberó del Tártaro.  
 Con él Zeus venció a los titanes y luego a Tifón.
 
-**Dónde encontrarla.** **Bóvedas ominosas de cámaras de desafío**: 1.5 % por cofre
+**Dónde encontrarla.** **Bóvedas ominosas de cámaras de desafío**: 3 % por cofre
 
 <a id="nemean-lion-skin"></a>
 ## Piel del león de Nemea
@@ -272,7 +272,7 @@ Con él Zeus venció a los titanes y luego a Tifón.
 **Mito.** El primero de los doce trabajos de Heracles: ningún arma atravesaba la piel del león de Nemea.  
 Heracles lo estranguló, lo desolló con sus propias garras y se puso la piel de armadura, con la cabeza del león como yelmo.
 
-**Dónde encontrarla.** **Recompensas de cámaras de desafío**: 3 % por cofre
+**Dónde encontrarla.** **Recompensas de cámaras de desafío**: 6 % por cofre
 
 <a id="achilles-shield"></a>
 ## Escudo de Aquiles
@@ -287,7 +287,7 @@ Heracles lo estranguló, lo desolló con sus propias garras y se puso la piel de
 **Mito.** Hefesto lo forjó en una noche a pedido de Tetis, con el mundo entero grabado: el cielo, una ciudad en paz y otra en guerra, cosechas y danzas, y el río Océano en el borde.  
 La Ilíada empieza con «Canta, oh diosa, la cólera de Aquiles».
 
-**Dónde encontrarla.** **Tesoros de naufragios**: 3 % por cofre
+**Dónde encontrarla.** **Tesoros de naufragios**: 6 % por cofre
 
 <a id="harpe"></a>
 ## Harpe
@@ -306,7 +306,7 @@ La Ilíada empieza con «Canta, oh diosa, la cólera de Aquiles».
 **Mito.** La hoz de adamante: Gea se la dio a Cronos para castrar a Urano.  
 Más tarde Hermes se la entregó a Perseo, que con ella cortó la cabeza de Medusa.
 
-**Dónde encontrarla.** **Arena y grava sospechosas de ruinas de los senderos**: 1.5 % por bloque cepillado
+**Dónde encontrarla.** **Arena y grava sospechosas de ruinas de los senderos**: 3 % por bloque cepillado
 
 <a id="golden-bridle"></a>
 ## Brida de oro de Atenea
@@ -323,7 +323,7 @@ Más tarde Hermes se la entregó a Perseo, que con ella cortó la cabeza de Medu
 **Mito.** Belerofonte durmió en el templo de Atenea y la diosa le dio en sueños una brida de oro; con ella montó a Pegaso, el caballo alado nacido del cuello de Medusa.  
 Juntos mataron a la Quimera, pero cuando quiso subir al Olimpo, Zeus mandó un tábano que hizo caer a Belerofonte.
 
-**Dónde encontrarla.** **Templos de la jungla**: 3 % por cofre
+**Dónde encontrarla.** **Templos de la jungla**: 6 % por cofre
 
 <a id="apple-of-discord"></a>
 ## Manzana de la Discordia
@@ -339,7 +339,7 @@ Juntos mataron a la Quimera, pero cuando quiso subir al Olimpo, Zeus mandó un t
 **Mito.** Eris, la diosa de la discordia, no fue invitada a la boda de Peleo y Tetis y lanzó entre los invitados una manzana de oro «para la más bella».  
 Hera, Atenea y Afrodita se la disputaron; Paris eligió a Afrodita y así empezó la guerra de Troya.
 
-**Dónde encontrarla.** **Puestos de saqueadores**: 3 % por cofre
+**Dónde encontrarla.** **Puestos de saqueadores**: 6 % por cofre
 
 <a id="talos-nail"></a>
 ## Clavo de bronce de Talos
@@ -356,7 +356,7 @@ Hera, Atenea y Afrodita se la disputaron; Paris eligió a Afrodita y así empez�
 **Mito.** Talos era un hombre de bronce que Hefesto hizo para guardar Creta: daba tres vueltas a la isla cada día, tiraba rocas a los barcos y abrazaba al rojo a quien desembarcaba.  
 Tenía una sola vena de ícor cerrada con un clavo de bronce en el tobillo; Medea se lo quitó y Talos se desangró.
 
-**Dónde encontrarla.** **Ciudades antiguas**: 2 % por cofre
+**Dónde encontrarla.** **Ciudades antiguas**: 4 % por cofre
 
 ## Set de Perseo
 

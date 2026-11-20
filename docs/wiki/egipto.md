@@ -7,19 +7,19 @@ Mientras más poderosa la reliquia, más difícil es dar con ella.
 
 | | Reliquia | Espacio | Rareza | Dónde |
 |---|---|---|---|---|
-| ![](img/golden_scarab.png) | [Escarabajo dorado](#golden-scarab) | cinturón | rara | Pirámides del desierto: 3.5 % por cofre (≈ 13.3 % por pirámide) |
-| ![](img/eye_of_horus.png) | [Ojo de Horus](#eye-of-horus) | cara | rara | Pirámides del desierto: 2.5 % por cofre (≈ 9.6 % por pirámide) |
-| ![](img/ankh.png) | [Anj](#ankh) | collar | poco común | Pirámides del desierto: 3 % por cofre (≈ 11.5 % por pirámide); Casas de aldeas del desierto: 3 % por cofre |
-| ![](img/mummy_wraps.png) | [Vendas de momia](#mummy-wraps) | guantes | poco común | Pirámides del desierto: 4 % por cofre (≈ 15.1 % por pirámide) |
-| ![](img/anubis_scepter.png) | [Cetro was de Anubis](#anubis-scepter) | mano (arma) | épica | Pirámides del desierto: 2 % por cofre (≈ 7.8 % por pirámide) |
-| ![](img/jackal_mask.png) | [Máscara de chacal](#jackal-mask) | cara | rara | Pirámides del desierto: 3 % por cofre (≈ 11.5 % por pirámide) |
-| ![](img/jackal_ring.png) | [Anillo de los chacales](#jackal-ring) | anillo | rara | Pirámides del desierto: 2.5 % por cofre (≈ 9.6 % por pirámide) |
-| ![](img/ra_disk.png) | [Disco solar de Ra](#ra-disk) | sombrero | épica | Arena sospechosa de pirámides del desierto: 1.5 % por bloque cepillado |
-| ![](img/bastet_amulet.png) | [Amuleto de Bastet](#bastet-amulet) | collar | rara | Arena sospechosa de pozos del desierto: 5 % por bloque cepillado; Casas de aldeas del desierto: 4 % por cofre |
-| ![](img/thoth_palette.png) | [Paleta de escriba de Thot](#thoth-palette) | mano secundaria | rara | Arena sospechosa de pirámides del desierto: 3 % por bloque cepillado |
-| ![](img/osiris_crook.png) | [Cayado de Osiris](#osiris-crook) | mano secundaria | épica | Pirámides del desierto: 2 % por cofre (≈ 7.8 % por pirámide) |
-| ![](img/osiris_flail.png) | [Mayal de Osiris](#osiris-flail) | mano (arma) | épica | Pirámides del desierto: 2 % por cofre (≈ 7.8 % por pirámide) |
-| ![](img/sekhmet_claws.png) | [Garras de Sekhmet](#sekhmet-claws) | guantes | épica | Arena sospechosa de pirámides del desierto: 1.5 % por bloque cepillado |
+| ![](img/golden_scarab.png) | [Escarabajo dorado](#golden-scarab) | cinturón | rara | Pirámides del desierto: 7 % por cofre (≈ 25.2 % por pirámide) |
+| ![](img/eye_of_horus.png) | [Ojo de Horus](#eye-of-horus) | cara | rara | Pirámides del desierto: 5 % por cofre (≈ 18.5 % por pirámide) |
+| ![](img/ankh.png) | [Anj](#ankh) | collar | poco común | Pirámides del desierto: 6 % por cofre (≈ 21.9 % por pirámide); Casas de aldeas del desierto: 6 % por cofre |
+| ![](img/mummy_wraps.png) | [Vendas de momia](#mummy-wraps) | guantes | poco común | Pirámides del desierto: 8 % por cofre (≈ 28.4 % por pirámide) |
+| ![](img/anubis_scepter.png) | [Cetro was de Anubis](#anubis-scepter) | mano (arma) | épica | Pirámides del desierto: 4 % por cofre (≈ 15.1 % por pirámide) |
+| ![](img/jackal_mask.png) | [Máscara de chacal](#jackal-mask) | cara | rara | Pirámides del desierto: 6 % por cofre (≈ 21.9 % por pirámide) |
+| ![](img/jackal_ring.png) | [Anillo de los chacales](#jackal-ring) | anillo | rara | Pirámides del desierto: 5 % por cofre (≈ 18.5 % por pirámide) |
+| ![](img/ra_disk.png) | [Disco solar de Ra](#ra-disk) | sombrero | épica | Arena sospechosa de pirámides del desierto: 3 % por bloque cepillado |
+| ![](img/bastet_amulet.png) | [Amuleto de Bastet](#bastet-amulet) | collar | rara | Arena sospechosa de pozos del desierto: 10 % por bloque cepillado; Casas de aldeas del desierto: 8 % por cofre |
+| ![](img/thoth_palette.png) | [Paleta de escriba de Thot](#thoth-palette) | mano secundaria | rara | Arena sospechosa de pirámides del desierto: 6 % por bloque cepillado |
+| ![](img/osiris_crook.png) | [Cayado de Osiris](#osiris-crook) | mano secundaria | épica | Pirámides del desierto: 4 % por cofre (≈ 15.1 % por pirámide) |
+| ![](img/osiris_flail.png) | [Mayal de Osiris](#osiris-flail) | mano (arma) | épica | Pirámides del desierto: 4 % por cofre (≈ 15.1 % por pirámide) |
+| ![](img/sekhmet_claws.png) | [Garras de Sekhmet](#sekhmet-claws) | guantes | épica | Arena sospechosa de pirámides del desierto: 3 % por bloque cepillado |
 
 <a id="golden-scarab"></a>
 ## Escarabajo dorado
@@ -35,7 +35,7 @@ Mientras más poderosa la reliquia, más difícil es dar con ella.
 **Mito.** Jepri, el dios escarabajo, empujaba el sol por el cielo como el escarabajo pelotero empuja su bola, y lo hacía renacer cada mañana.  
 Los egipcios llevaban amuletos de escarabajo como símbolo de renacimiento y protección.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 3.5 % por cofre (≈ 13.3 % por pirámide)
+**Dónde encontrarla.** **Pirámides del desierto**: 7 % por cofre (≈ 25.2 % por pirámide)
 
 <a id="eye-of-horus"></a>
 ## Ojo de Horus
@@ -51,7 +51,7 @@ Los egipcios llevaban amuletos de escarabajo como símbolo de renacimiento y pro
 **Mito.** En su lucha por el trono, Set le arrancó un ojo a Horus, y Thot lo sanó.  
 El wedjat, el ojo restaurado, se volvió el amuleto de la protección, la sanación y la plenitud.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 2.5 % por cofre (≈ 9.6 % por pirámide)
+**Dónde encontrarla.** **Pirámides del desierto**: 5 % por cofre (≈ 18.5 % por pirámide)
 
 <a id="ankh"></a>
 ## Anj
@@ -65,7 +65,7 @@ El wedjat, el ojo restaurado, se volvió el amuleto de la protección, la sanaci
 
 **Mito.** La llave de la vida. Los dioses aparecen acercándolo a la nariz de los faraones para darles el aliento de la vida eterna.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 3 % por cofre (≈ 11.5 % por pirámide); **Casas de aldeas del desierto**: 3 % por cofre
+**Dónde encontrarla.** **Pirámides del desierto**: 6 % por cofre (≈ 21.9 % por pirámide); **Casas de aldeas del desierto**: 6 % por cofre
 
 <a id="mummy-wraps"></a>
 ## Vendas de momia
@@ -80,7 +80,7 @@ El wedjat, el ojo restaurado, se volvió el amuleto de la protección, la sanaci
 **Mito.** Los embalsamadores envolvían el cuerpo en cientos de metros de lino para preservarlo en la otra vida.  
 Los husks del desierto reconocen esas vendas como propias.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 4 % por cofre (≈ 15.1 % por pirámide)
+**Dónde encontrarla.** **Pirámides del desierto**: 8 % por cofre (≈ 28.4 % por pirámide)
 
 <a id="anubis-scepter"></a>
 ## Cetro was de Anubis
@@ -96,7 +96,7 @@ Los husks del desierto reconocen esas vendas como propias.
 **Mito.** El cetro *was*, rematado por la cabeza de un animal y con la base en horquilla, lo llevaban los dioses como símbolo de poder.  
 En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la pluma de Maat: ese es su juicio.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 2 % por cofre (≈ 7.8 % por pirámide)
+**Dónde encontrarla.** **Pirámides del desierto**: 4 % por cofre (≈ 15.1 % por pirámide)
 
 <a id="jackal-mask"></a>
 ## Máscara de chacal
@@ -112,7 +112,7 @@ En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la 
 
 **Mito.** Anubis guiaba a las almas de los muertos hasta el juicio. Los sacerdotes que embalsamaban usaban máscaras de chacal para encarnarlo.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 3 % por cofre (≈ 11.5 % por pirámide)
+**Dónde encontrarla.** **Pirámides del desierto**: 6 % por cofre (≈ 21.9 % por pirámide)
 
 <a id="jackal-ring"></a>
 ## Anillo de los chacales
@@ -128,7 +128,7 @@ En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la 
 
 **Mito.** Los chacales rondaban los cementerios del desierto. Por eso los egipcios hicieron de Anubis, el dios con cabeza de chacal, el guardián de las tumbas.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 2.5 % por cofre (≈ 9.6 % por pirámide)
+**Dónde encontrarla.** **Pirámides del desierto**: 5 % por cofre (≈ 18.5 % por pirámide)
 
 <a id="ra-disk"></a>
 ## Disco solar de Ra
@@ -144,7 +144,7 @@ En la Sala de las Dos Verdades, Anubis pesaba el corazón del difunto contra la 
 **Mito.** Ra, dios del sol, cruza el cielo de día en su barca y de noche atraviesa la Duat, el inframundo, donde lucha contra Apep, la serpiente del caos; cada mañana renace con el amanecer.  
 Cuando los humanos se rebelaron, mandó contra ellos a su Ojo, la diosa leona Sekhmet, que los arrasó.
 
-**Dónde encontrarla.** **Arena sospechosa de pirámides del desierto**: 1.5 % por bloque cepillado
+**Dónde encontrarla.** **Arena sospechosa de pirámides del desierto**: 3 % por bloque cepillado
 
 <a id="bastet-amulet"></a>
 ## Amuleto de Bastet
@@ -159,7 +159,7 @@ Cuando los humanos se rebelaron, mandó contra ellos a su Ojo, la diosa leona Se
 **Mito.** Bastet, la diosa gata, protegía el hogar, a las madres y a los niños. Los egipcios veneraban a los gatos porque cazaban serpientes y ratas.  
 Al principio, Bastet era una leona guerrera, como Sekhmet.
 
-**Dónde encontrarla.** **Arena sospechosa de pozos del desierto**: 5 % por bloque cepillado; **Casas de aldeas del desierto**: 4 % por cofre
+**Dónde encontrarla.** **Arena sospechosa de pozos del desierto**: 10 % por bloque cepillado; **Casas de aldeas del desierto**: 8 % por cofre
 
 <a id="thoth-palette"></a>
 ## Paleta de escriba de Thot
@@ -176,7 +176,7 @@ Al principio, Bastet era una leona guerrera, como Sekhmet.
 **Mito.** Thot, el dios ibis de la escritura, la sabiduría y la luna, era el escriba de los dioses: inventó los jeroglíficos y en el juicio de los muertos anota el peso del corazón.  
 Los escribas escribían con cálamos y tinta roja y negra, que guardaban en su paleta.
 
-**Dónde encontrarla.** **Arena sospechosa de pirámides del desierto**: 3 % por bloque cepillado
+**Dónde encontrarla.** **Arena sospechosa de pirámides del desierto**: 6 % por bloque cepillado
 
 <a id="osiris-crook"></a>
 ## Cayado de Osiris
@@ -195,7 +195,7 @@ Los escribas escribían con cálamos y tinta roja y negra, que guardaban en su p
 **Mito.** Osiris, rey de Egipto, fue asesinado por su hermano Set y devuelto a la vida por Isis. Se volvió señor del más allá y dios de la agricultura y de la crecida del Nilo.  
 El cayado, del pastor que guía, es una de las insignias del faraón.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 2 % por cofre (≈ 7.8 % por pirámide)
+**Dónde encontrarla.** **Pirámides del desierto**: 4 % por cofre (≈ 15.1 % por pirámide)
 
 <a id="osiris-flail"></a>
 ## Mayal de Osiris
@@ -212,7 +212,7 @@ El cayado, del pastor que guía, es una de las insignias del faraón.
 **Mito.** El mayal es la otra insignia del faraón. Su origen se discute: herramienta para trillar el grano, espantamoscas de pastor o utensilio para recoger resina.  
 Junto al cayado, simboliza el poder y la abundancia que Osiris traía con el Nilo.
 
-**Dónde encontrarla.** **Pirámides del desierto**: 2 % por cofre (≈ 7.8 % por pirámide)
+**Dónde encontrarla.** **Pirámides del desierto**: 4 % por cofre (≈ 15.1 % por pirámide)
 
 <a id="sekhmet-claws"></a>
 ## Garras de Sekhmet
@@ -229,7 +229,7 @@ Junto al cayado, simboliza el poder y la abundancia que Osiris traía con el Nil
 **Mito.** Sekhmet, la leona de la guerra, «la Poderosa». Ra la envió a castigar a los humanos y entró en un frenesí de sangre; solo la detuvieron llenando los campos de cerveza teñida de rojo, que bebió creyendo que era sangre.  
 También era diosa de la sanación, y se decía que su aliento era el viento caliente del desierto.
 
-**Dónde encontrarla.** **Arena sospechosa de pirámides del desierto**: 1.5 % por bloque cepillado
+**Dónde encontrarla.** **Arena sospechosa de pirámides del desierto**: 3 % por bloque cepillado
 
 ## Set de Anubis
 

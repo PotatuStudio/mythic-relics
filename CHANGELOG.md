@@ -27,6 +27,8 @@ el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecra
   - Muninn y los libros sibilinos avisan sobre la barra, no en el chat.
 
 ### Changed
+- Todas las reliquias aparecen el doble de seguido: cada probabilidad de cofre y de cepillado se duplicó (el
+  códice, la wiki y JEI ya muestran los números nuevos).
 - Espada de Freyr: la de la espalda es la misma que pelea (empuñadura calcada y mismo tamaño, ~1,27 bloques), sin el
   tahalí que la cruzaba; mientras pelea, en la espalda queda la vaina vacía (propiedad `mythicrelics:freyr_drawn`).
 - Harpe y cetro de Anubis: el golpe que mata también cuenta como ejecución (antes solo si el mob ya estaba bajo el 25 %).

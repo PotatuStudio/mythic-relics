@@ -7,27 +7,27 @@ Están donde su mito calza: el frío del norte, las minas de los enanos y las pr
 
 | | Reliquia | Espacio | Rareza | Dónde |
 |---|---|---|---|---|
-| ![](img/mjolnir.png) | [Mjölnir](#mjolnir) | mano (arma) | épica | Bóvedas ominosas de cámaras de desafío: 2 % por cofre |
-| ![](img/jarngreipr.png) | [Járngreipr](#jarngreipr) | guantes | rara | Minas abandonadas: 3 % por cofre |
-| ![](img/megingjord.png) | [Megingjörð](#megingjord) | cinturón | rara | Iglús: 6 % por cofre |
-| ![](img/gungnir.png) | [Gungnir](#gungnir) | mano (arma) | épica | Ciudades del End: 3 % por cofre |
-| ![](img/draupnir.png) | [Draupnir](#draupnir) | anillo | épica | Tesoros enterrados: 6 % por cofre |
-| ![](img/gjallarhorn.png) | [Gjallarhorn](#gjallarhorn) | mano | épica | Puestos de saqueadores: 4 % por cofre |
-| ![](img/gleipnir.png) | [Gleipnir](#gleipnir) | mano | épica | Ciudades antiguas: 3 % por cofre |
-| ![](img/idunn_apples.png) | [Manzanas de Iðunn](#idunn-apples) | mano | épica | Casas de aldeas nevadas: 4 % por cofre |
-| ![](img/sleipnir_horseshoe.png) | [Herradura de Sleipnir](#sleipnir-horseshoe) | mano | épica | Casas de aldeas de sabana: 4 % por cofre |
-| ![](img/odin_ravens.png) | [Huginn y Muninn](#odin-ravens) | mano | épica | Ciudades del End: 3 % por cofre |
-| ![](img/brisingamen.png) | [Brísingamen](#brisingamen) | collar | épica | Minas abandonadas: 2 % por cofre |
-| ![](img/skidbladnir.png) | [Skíðblaðnir](#skidbladnir) | mano | épica | Provisiones de naufragios: 4 % por cofre |
-| ![](img/mimir_head.png) | [Cabeza de Mímir](#mimir-head) | mano secundaria | épica | Cruces de la fortaleza: 4 % por cofre |
-| ![](img/andvaranaut.png) | [Andvaranaut](#andvaranaut) | anillo | épica | Tesoros de bastiones: 3 % por cofre |
-| ![](img/odrerir.png) | [Óðrerir](#odrerir) | mano | rara | Casas de aldeas de taiga: 3 % por cofre |
-| ![](img/gram.png) | [Gram](#gram) | mano (arma) | épica | Armeros de aldea: 2 % por cofre |
-| ![](img/tyrfing.png) | [Tyrfing](#tyrfing) | mano (arma) | épica | Tesoros de bastiones: 2 % por cofre |
-| ![](img/dainsleif.png) | [Dáinsleif](#dainsleif) | mano (arma) | épica | Ciudades antiguas: 3 % por cofre |
-| ![](img/freyr_sword.png) | [Espada de Freyr](#freyr-sword) | espalda | épica | Mansiones del bosque: 3 % por cofre |
-| ![](img/falcon_cloak.png) | [Manto de plumas de halcón](#falcon-cloak) | espalda | épica | Casas de aldeas de taiga: 3 % por cofre |
-| ![](img/mistletoe_dart.png) | [Dardo de muérdago](#mistletoe-dart) | mano (arma) | épica | Mansiones del bosque: 3 % por cofre |
+| ![](img/mjolnir.png) | [Mjölnir](#mjolnir) | mano (arma) | épica | Bóvedas ominosas de cámaras de desafío: 4 % por cofre |
+| ![](img/jarngreipr.png) | [Járngreipr](#jarngreipr) | guantes | rara | Minas abandonadas: 6 % por cofre |
+| ![](img/megingjord.png) | [Megingjörð](#megingjord) | cinturón | rara | Iglús: 12 % por cofre |
+| ![](img/gungnir.png) | [Gungnir](#gungnir) | mano (arma) | épica | Ciudades del End: 6 % por cofre |
+| ![](img/draupnir.png) | [Draupnir](#draupnir) | anillo | épica | Tesoros enterrados: 12 % por cofre |
+| ![](img/gjallarhorn.png) | [Gjallarhorn](#gjallarhorn) | mano | épica | Puestos de saqueadores: 8 % por cofre |
+| ![](img/gleipnir.png) | [Gleipnir](#gleipnir) | mano | épica | Ciudades antiguas: 6 % por cofre |
+| ![](img/idunn_apples.png) | [Manzanas de Iðunn](#idunn-apples) | mano | épica | Casas de aldeas nevadas: 8 % por cofre |
+| ![](img/sleipnir_horseshoe.png) | [Herradura de Sleipnir](#sleipnir-horseshoe) | mano | épica | Casas de aldeas de sabana: 8 % por cofre |
+| ![](img/odin_ravens.png) | [Huginn y Muninn](#odin-ravens) | mano | épica | Ciudades del End: 6 % por cofre |
+| ![](img/brisingamen.png) | [Brísingamen](#brisingamen) | collar | épica | Minas abandonadas: 4 % por cofre |
+| ![](img/skidbladnir.png) | [Skíðblaðnir](#skidbladnir) | mano | épica | Provisiones de naufragios: 8 % por cofre |
+| ![](img/mimir_head.png) | [Cabeza de Mímir](#mimir-head) | mano secundaria | épica | Cruces de la fortaleza: 8 % por cofre |
+| ![](img/andvaranaut.png) | [Andvaranaut](#andvaranaut) | anillo | épica | Tesoros de bastiones: 6 % por cofre |
+| ![](img/odrerir.png) | [Óðrerir](#odrerir) | mano | rara | Casas de aldeas de taiga: 6 % por cofre |
+| ![](img/gram.png) | [Gram](#gram) | mano (arma) | épica | Armeros de aldea: 4 % por cofre |
+| ![](img/tyrfing.png) | [Tyrfing](#tyrfing) | mano (arma) | épica | Tesoros de bastiones: 4 % por cofre |
+| ![](img/dainsleif.png) | [Dáinsleif](#dainsleif) | mano (arma) | épica | Ciudades antiguas: 6 % por cofre |
+| ![](img/freyr_sword.png) | [Espada de Freyr](#freyr-sword) | espalda | épica | Mansiones del bosque: 6 % por cofre |
+| ![](img/falcon_cloak.png) | [Manto de plumas de halcón](#falcon-cloak) | espalda | épica | Casas de aldeas de taiga: 6 % por cofre |
+| ![](img/mistletoe_dart.png) | [Dardo de muérdago](#mistletoe-dart) | mano (arma) | épica | Mansiones del bosque: 6 % por cofre |
 
 <a id="mjolnir"></a>
 ## Mjölnir
@@ -44,7 +44,7 @@ Están donde su mito calza: el frío del norte, las minas de los enanos y las pr
 **Mito.** El martillo de Thor lo forjaron los enanos Brokkr y Sindri. Loki, convertido en tábano, picó a Brokkr en el párpado y por eso el mango quedó corto.  
 Mjölnir nunca falla y siempre vuelve a la mano de Thor.
 
-**Dónde encontrarla.** **Bóvedas ominosas de cámaras de desafío**: 2 % por cofre
+**Dónde encontrarla.** **Bóvedas ominosas de cámaras de desafío**: 4 % por cofre
 
 <a id="jarngreipr"></a>
 ## Járngreipr
@@ -60,7 +60,7 @@ Mjölnir nunca falla y siempre vuelve a la mano de Thor.
 
 **Mito.** Los guantes de hierro de Thor. Los necesitaba para empuñar a Mjölnir, que ardía al rojo cuando volvía de un lanzamiento.
 
-**Dónde encontrarla.** **Minas abandonadas**: 3 % por cofre
+**Dónde encontrarla.** **Minas abandonadas**: 6 % por cofre
 
 <a id="megingjord"></a>
 ## Megingjörð
@@ -75,7 +75,7 @@ Mjölnir nunca falla y siempre vuelve a la mano de Thor.
 
 **Mito.** El cinturón de fuerza de Thor: al ceñírselo, su fuerza divina se duplicaba.
 
-**Dónde encontrarla.** **Iglús**: 6 % por cofre
+**Dónde encontrarla.** **Iglús**: 12 % por cofre
 
 <a id="gungnir"></a>
 ## Gungnir
@@ -89,7 +89,7 @@ Mjölnir nunca falla y siempre vuelve a la mano de Thor.
 **Mito.** La lanza de Odín, forjada por los hijos de Ivaldi. Nunca falla su blanco.  
 Odín la lanzó sobre el ejército de los vanir para comenzar la primera guerra del mundo.
 
-**Dónde encontrarla.** **Ciudades del End**: 3 % por cofre
+**Dónde encontrarla.** **Ciudades del End**: 6 % por cofre
 
 <a id="draupnir"></a>
 ## Draupnir
@@ -102,7 +102,7 @@ Odín la lanzó sobre el ejército de los vanir para comenzar la primera guerra 
 
 **Mito.** El anillo de oro de Odín, forjado por los mismos enanos que Mjölnir. Cada nueve noches goteaban de él ocho anillos iguales.
 
-**Dónde encontrarla.** **Tesoros enterrados**: 6 % por cofre
+**Dónde encontrarla.** **Tesoros enterrados**: 12 % por cofre
 
 <a id="gjallarhorn"></a>
 ## Gjallarhorn
@@ -118,7 +118,7 @@ Odín la lanzó sobre el ejército de los vanir para comenzar la primera guerra 
 **Mito.** El cuerno de Heimdall, el guardián del puente Bifröst que todo lo ve y todo lo oye.  
 Su toque se oye en los nueve mundos y anunciará el Ragnarök.
 
-**Dónde encontrarla.** **Puestos de saqueadores**: 4 % por cofre
+**Dónde encontrarla.** **Puestos de saqueadores**: 8 % por cofre
 
 <a id="gleipnir"></a>
 ## Gleipnir
@@ -135,7 +135,7 @@ Su toque se oye en los nueve mundos y anunciará el Ragnarök.
 **Mito.** La única atadura que pudo con el lobo Fenrir. La hicieron los enanos con seis cosas que no existen: el ruido de los pasos del gato, la barba de la mujer, las raíces de la montaña, los tendones del oso, el aliento del pez y la saliva del pájaro.  
 Era fina y suave como una cinta de seda.
 
-**Dónde encontrarla.** **Ciudades antiguas**: 3 % por cofre
+**Dónde encontrarla.** **Ciudades antiguas**: 6 % por cofre
 
 <a id="idunn-apples"></a>
 ## Manzanas de Iðunn
@@ -150,7 +150,7 @@ Era fina y suave como una cinta de seda.
 **Mito.** La diosa Iðunn guardaba en una cesta las manzanas que mantenían jóvenes a los dioses.  
 Cuando el gigante Þjazi la raptó, los dioses empezaron a envejecer.
 
-**Dónde encontrarla.** **Casas de aldeas nevadas**: 4 % por cofre
+**Dónde encontrarla.** **Casas de aldeas nevadas**: 8 % por cofre
 
 <a id="sleipnir-horseshoe"></a>
 ## Herradura de Sleipnir
@@ -167,7 +167,7 @@ Cuando el gigante Þjazi la raptó, los dioses empezaron a envejecer.
 **Mito.** Sleipnir, el caballo de ocho patas de Odín, era el más rápido de todos. Galopaba por el aire y sobre el mar.  
 Hermóðr lo montó para bajar hasta Hel a pedir por Balder.
 
-**Dónde encontrarla.** **Casas de aldeas de sabana**: 4 % por cofre
+**Dónde encontrarla.** **Casas de aldeas de sabana**: 8 % por cofre
 
 <a id="odin-ravens"></a>
 ## Huginn y Muninn
@@ -182,7 +182,7 @@ Hermóðr lo montó para bajar hasta Hel a pedir por Balder.
 
 **Mito.** Los cuervos de Odín, Pensamiento y Memoria. Cada mañana vuelan por todo el mundo y al volver le cuentan al oído todo lo que vieron.
 
-**Dónde encontrarla.** **Ciudades del End**: 3 % por cofre
+**Dónde encontrarla.** **Ciudades del End**: 6 % por cofre
 
 <a id="brisingamen"></a>
 ## Brísingamen
@@ -197,7 +197,7 @@ Hermóðr lo montó para bajar hasta Hel a pedir por Balder.
 **Mito.** El collar de la diosa Freyja, forjado por cuatro enanos.  
 Freyja era diosa del amor y la fertilidad, y recibía en su salón a la mitad de los guerreros caídos en batalla.
 
-**Dónde encontrarla.** **Minas abandonadas**: 2 % por cofre
+**Dónde encontrarla.** **Minas abandonadas**: 4 % por cofre
 
 <a id="skidbladnir"></a>
 ## Skíðblaðnir
@@ -211,7 +211,7 @@ Freyja era diosa del amor y la fertilidad, y recibía en su salón a la mitad de
 
 **Mito.** El barco del dios Freyr, hecho por los hijos de Ivaldi. Cabían todos los dioses con sus armas, siempre tenía viento a favor y se plegaba como un pañuelo para llevarlo en el bolsillo.
 
-**Dónde encontrarla.** **Provisiones de naufragios**: 4 % por cofre
+**Dónde encontrarla.** **Provisiones de naufragios**: 8 % por cofre
 
 <a id="mimir-head"></a>
 ## Cabeza de Mímir
@@ -228,7 +228,7 @@ Freyja era diosa del amor y la fertilidad, y recibía en su salón a la mitad de
 **Mito.** Mímir era el más sabio de los dioses. Cuando los vanir lo decapitaron, Odín untó su cabeza con hierbas para que no se pudriera y le cantó encantamientos.  
 Así la cabeza hablaba y le contaba a Odín lo que nadie más sabía.
 
-**Dónde encontrarla.** **Cruces de la fortaleza**: 4 % por cofre
+**Dónde encontrarla.** **Cruces de la fortaleza**: 8 % por cofre
 
 <a id="andvaranaut"></a>
 ## Andvaranaut
@@ -243,7 +243,7 @@ Así la cabeza hablaba y le contaba a Odín lo que nadie más sabía.
 **Mito.** El anillo del enano Andvari, que hacía crecer el oro. Cuando Loki se lo robó, Andvari lo maldijo: traería la ruina a todos sus dueños.  
 Así fue con Hreidmar, con Fafnir y con Sigurd.
 
-**Dónde encontrarla.** **Tesoros de bastiones**: 3 % por cofre
+**Dónde encontrarla.** **Tesoros de bastiones**: 6 % por cofre
 
 <a id="odrerir"></a>
 ## Óðrerir
@@ -258,7 +258,7 @@ Así fue con Hreidmar, con Fafnir y con Sigurd.
 **Mito.** El hidromiel de la poesía, hecho con la sangre del sabio Kvasir: quien lo bebía se volvía poeta o erudito.  
 Odín se lo robó a los gigantes convertido en águila.
 
-**Dónde encontrarla.** **Casas de aldeas de taiga**: 3 % por cofre
+**Dónde encontrarla.** **Casas de aldeas de taiga**: 6 % por cofre
 
 <a id="gram"></a>
 ## Gram
@@ -273,7 +273,7 @@ Odín se lo robó a los gigantes convertido en águila.
 **Mito.** Odín clavó una espada en el árbol Barnstokkr y solo Sigmund pudo sacarla. El herrero Regin reforjó sus pedazos para Sigurd: Gram partió el yunque de un golpe.  
 Con ella Sigurd mató al dragón Fáfnir desde un foso, hiriéndolo desde abajo.
 
-**Dónde encontrarla.** **Armeros de aldea**: 2 % por cofre
+**Dónde encontrarla.** **Armeros de aldea**: 4 % por cofre
 
 <a id="tyrfing"></a>
 ## Tyrfing
@@ -289,7 +289,7 @@ Con ella Sigurd mató al dragón Fáfnir desde un foso, hiriéndolo desde abajo.
 **Mito.** El rey Svafrlami obligó a los enanos Dvalinn y Durinn a forjarle una espada que no fallara nunca: brillaba como el fuego y cortaba hierro como tela.  
 Pero la maldijeron: cada vez que se desenvainara tendría que matar a un hombre.
 
-**Dónde encontrarla.** **Tesoros de bastiones**: 2 % por cofre
+**Dónde encontrarla.** **Tesoros de bastiones**: 4 % por cofre
 
 <a id="dainsleif"></a>
 ## Dáinsleif
@@ -303,7 +303,7 @@ Pero la maldijeron: cada vez que se desenvainara tendría que matar a un hombre.
 **Mito.** La espada del rey Högni en la batalla de los Hjaðningar, que no termina nunca: cada noche la valquiria Hildr revive a los caídos.  
 La forjaron los enanos y sus heridas nunca sanaban.
 
-**Dónde encontrarla.** **Ciudades antiguas**: 3 % por cofre
+**Dónde encontrarla.** **Ciudades antiguas**: 6 % por cofre
 
 <a id="freyr-sword"></a>
 ## Espada de Freyr
@@ -320,7 +320,7 @@ La forjaron los enanos y sus heridas nunca sanaban.
 **Mito.** Freyr, el señor del sol de verano y de Álfheimr, tenía una espada que peleaba sola contra los gigantes si la llevaba alguien sabio.  
 Se la dio a Skírnir para pedir la mano de Gerðr; por eso en el Ragnarök enfrentará a Surtr solo con un asta de ciervo.
 
-**Dónde encontrarla.** **Mansiones del bosque**: 3 % por cofre
+**Dónde encontrarla.** **Mansiones del bosque**: 6 % por cofre
 
 <a id="falcon-cloak"></a>
 ## Manto de plumas de halcón
@@ -336,7 +336,7 @@ Se la dio a Skírnir para pedir la mano de Gerðr; por eso en el Ragnarök enfre
 **Mito.** Freyja tenía un manto de plumas de halcón que convertía en halcón a quien se lo ponía.  
 Loki se lo pidió prestado para buscar el martillo que le robaron a Thor y para rescatar a Iðunn, que llevó de vuelta a Asgard convertida en nuez.
 
-**Dónde encontrarla.** **Casas de aldeas de taiga**: 3 % por cofre
+**Dónde encontrarla.** **Casas de aldeas de taiga**: 6 % por cofre
 
 <a id="mistletoe-dart"></a>
 ## Dardo de muérdago
@@ -351,7 +351,7 @@ Loki se lo pidió prestado para buscar el martillo que le robaron a Thor y para 
 **Mito.** Frigg hizo jurar a todas las cosas que no dañarían a su hijo Baldr; solo dejó fuera al muérdago, que le pareció demasiado joven.  
 Loki, disfrazado de anciana, le sacó el secreto, hizo un dardo de muérdago y se lo puso en la mano al ciego Höðr, que lo lanzó y mató a Baldr.
 
-**Dónde encontrarla.** **Mansiones del bosque**: 3 % por cofre
+**Dónde encontrarla.** **Mansiones del bosque**: 6 % por cofre
 
 ## Set de Thor
 
