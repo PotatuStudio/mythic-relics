@@ -455,7 +455,7 @@ function render() {
     el.textContent = UI[lang][el.dataset.i18n];
   });
   document.getElementById("btnWalk").textContent = walking ? UI[lang].stop : UI[lang].walk;
-  document.getElementById("tabTitle").textContent = tr("itemGroup.mythicrelics.main");
+  document.getElementById("tabTitle").textContent = tr("itemGroup.mythicrelics." + culture);
   document.getElementById("langEs").setAttribute("aria-pressed", String(lang === "es_es"));
   document.getElementById("langEn").setAttribute("aria-pressed", String(lang === "en_us"));
   if (typeof renderStageText === "function") renderStageText();
