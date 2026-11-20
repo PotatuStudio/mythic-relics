@@ -99,3 +99,23 @@ tasks.register("downloadShaderpacks") {
 	}
 }
 tasks.matching { it.name == "runClient" }.configureEach { dependsOn "downloadShaderpacks" }
+
+// Prueba automática de cliente (NeoForge no trae una como la de Fabric): RELIC_TEST=1 ./gradlew :neoforge:runClient
+// Abre una copia de run/world (el mundo que crea :neoforge:runServer) en run/saves/relictest; ver NeoForgeClientTest.
+tasks.register("prepareRelicTest", Sync) {
+	group = "mythicrelics"
+	description = "Copia run/world a run/saves/relictest para la prueba automática"
+	from("run/world") { exclude "session.lock" }
+	into("run/saves/relictest")
+	doFirst {
+		if (!file("run/world/level.dat").exists()) {
+			throw new GradleException("Falta run/world: corre una vez ./gradlew :neoforge:runServer para crearlo")
+		}
+	}
+}
+tasks.matching { it.name == "runClient" }.configureEach {
+	if (System.getenv("RELIC_TEST") == "1") {
+		dependsOn "prepareRelicTest"
+		environment("RELIC_TEST", "1")
+	}
+}

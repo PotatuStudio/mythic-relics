@@ -12,6 +12,12 @@ aprobación del usuario. Ayudantes nuevos en `relic/`: `RelicDamage` (daño del 
 Medusa + Gleipnir, candados entre dos jugadores, Muninn y la sibila sobre la barra.
 
 ## Para retomar (sesión del 2026-11-14 y 15)
+
+**Prueba automática de NeoForge (2026-11-19)**: `RELIC_TEST=1 ./gradlew :neoforge:runClient`
+(`neoforge/.../client/NeoForgeClientTest`, la misma que en Misfit). Abre una copia de `run/world` (la crea
+`:neoforge:runServer`), arma los tooltips de las 73 reliquias, pone cada accesorio con Curios comprobando `WornRelics` y
+saca capturas en `run/screenshots/relic-test`; registro en `run/relic-test/registro.txt`. Pasó entera (24 accesorios) y
+las capturas calzan con las de Fabric.
 Rama de trabajo: `main`. Todo lo de esta sesión está subido. Hecho, en orden:
 - Paquete de refactors completo (`docs/REFACTOR.md`), con los opcionales (geometría por entidad, resúmenes `.summary`).
 - **Prueba automática de cliente** (`./gradlew :fabric:runClientGameTest`): abre el juego solo, prueba cada reliquia y deja

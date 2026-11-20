@@ -19,6 +19,8 @@ public final class MythicRelicsNeoForgeClient {
 	public static void init(IEventBus modBus) {
 		MythicRelicsClient.init();
 		modBus.addListener(FMLClientSetupEvent.class, event -> registerCurioRenderers());
+		// Solo con RELIC_TEST=1 (RELIC_TEST=1 ./gradlew :neoforge:runClient): prueba automática.
+		NeoForgeClientTest.initIfRequested();
 		modBus.addListener(RegisterConditionalItemModelPropertyEvent.class,
 				event -> event.register(FreyrDrawn.ID, FreyrDrawn.MAP_CODEC));
 		modBus.addListener(RegisterRangeSelectItemModelPropertyEvent.class,
