@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -79,7 +80,7 @@ public final class JanusLocks extends SavedData {
 	}
 
 	/** Las posiciones que representan ese bloque: la mitad de abajo de una puerta; las dos mitades de un cofre doble. */
-	private static List<BlockPos> keys(ServerLevel level, BlockPos pos) {
+	private static List<BlockPos> keys(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		List<BlockPos> out = new ArrayList<>();
 		if (state.getBlock() instanceof DoorBlock && state.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER) {
@@ -122,11 +123,17 @@ public final class JanusLocks extends SavedData {
 	private static final String OWNER_KEY = "owner";
 
 	/**
+	 * Clave del bloque cerrado en los datos del ítem del candado (la primera de {@link #keys}): así cada candado se sabe
+	 * de qué bloque es y quitar uno no se lleva los de las puertas o cofres vecinos.
+	 */
+	private static final String POS_KEY = "pos";
+
+	/**
 	 * Candado dorado que cuelga de la cara del bloque cerrado: un ítem en exhibición (se guarda con el mundo). El ítem
 	 * lleva el dueño, así el cliente sabe que no puede abrir y no hace la animación de abrir antes de que el servidor la
 	 * niegue.
 	 */
-	private static void hangPadlock(ServerLevel level, Vec3 at, Direction face, UUID owner) {
+	private static void hangPadlock(ServerLevel level, Vec3 at, Direction face, UUID owner, BlockPos key) {
 		CompoundTag tag = new CompoundTag();
 		tag.putString("id", "minecraft:item_display");
 		CompoundTag item = new CompoundTag();
@@ -135,6 +142,7 @@ public final class JanusLocks extends SavedData {
 		CompoundTag components = new CompoundTag();
 		CompoundTag custom = new CompoundTag();
 		custom.putString(OWNER_KEY, owner.toString());
+		custom.putLong(POS_KEY, key.asLong());
 		components.put("minecraft:custom_data", custom);
 		item.put("components", components);
 		tag.put("item", item);
@@ -177,8 +185,12 @@ public final class JanusLocks extends SavedData {
 	 * dueño: para esos decide solo el servidor.
 	 */
 	public static boolean clientLockedAgainst(Level level, BlockPos pos, Player player) {
+		List<BlockPos> keys = keys(level, pos);
 		for (Display.ItemDisplay d : level.getEntitiesOfClass(Display.ItemDisplay.class, new AABB(pos).inflate(0.6, 1.6, 0.6),
 				e -> ((ItemDisplayAccessor) e).mythicrelics$getItemStack().is(ModItems.PADLOCK.get()))) {
+			if (!belongsTo(level, d, keys)) {
+				continue;
+			}
 			CustomData data = ((ItemDisplayAccessor) d).mythicrelics$getItemStack().get(DataComponents.CUSTOM_DATA);
 			String owner = data == null ? "" : data.copyTag().getStringOr(OWNER_KEY, "");
 			if (!owner.isEmpty() && !owner.equals(player.getUUID().toString())) {
@@ -188,20 +200,45 @@ public final class JanusLocks extends SavedData {
 		return false;
 	}
 
-	/** Quita los candados que cuelgan de ese bloque (y de su otra mitad). */
+	/**
+	 * ¿Ese candado es de este bloque? Los nuevos llevan su bloque en los datos; los anteriores a ese cambio, solo si
+	 * cuelgan pegados al bloque (o a la mitad de arriba de la puerta).
+	 */
+	private static boolean belongsTo(Level level, Display.ItemDisplay padlock, List<BlockPos> keys) {
+		CustomData data = ((ItemDisplayAccessor) padlock).mythicrelics$getItemStack().get(DataComponents.CUSTOM_DATA);
+		Optional<Long> saved = data == null ? Optional.empty() : data.copyTag().getLong(POS_KEY);
+		if (saved.isPresent()) {
+			return keys.stream().anyMatch(k -> k.asLong() == saved.get());
+		}
+		for (BlockPos key : keys) {
+			AABB box = new AABB(key);
+			if (level.getBlockState(key).getBlock() instanceof DoorBlock) {
+				box = box.expandTowards(0, 1, 0);
+			}
+			if (box.inflate(0.06).contains(padlock.position())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** Quita los candados que cuelgan de ese bloque (y de su otra mitad), sin tocar los de los bloques vecinos. */
 	private static void removePadlocks(ServerLevel level, List<BlockPos> keys) {
 		for (BlockPos key : keys) {
 			for (Display.ItemDisplay d : level.getEntitiesOfClass(Display.ItemDisplay.class,
 					new AABB(key).inflate(0.6, 1.6, 0.6), e -> e.entityTags().contains(PADLOCK_TAG))) {
-				d.discard();
+				if (belongsTo(level, d, keys)) {
+					d.discard();
+				}
 			}
 		}
 	}
 
 	static void lock(ServerLevel level, BlockPos pos, Player player, Direction face, Vec3 at) {
-		hangPadlock(level, at, face, player.getUUID());
+		List<BlockPos> keys = keys(level, pos);
+		hangPadlock(level, at, face, player.getUUID(), keys.get(0));
 		JanusLocks data = get(level);
-		for (BlockPos key : keys(level, pos)) {
+		for (BlockPos key : keys) {
 			data.locks.put(GlobalPos.of(level.dimension(), key), player.getUUID());
 		}
 		data.setDirty();

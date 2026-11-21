@@ -57,7 +57,9 @@ public class HarpeItem extends RelicItem {
 			level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY(0.8), target.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
 			level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(0.8), target.getZ(), 20, 0.3, 0.3, 0.3, 0.4);
 			RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_SWEEP, 1.2f, 0.6f);
-			RelicFx.sound(level, target, SoundEvents.SHEEP_SHEAR, 1.0f, 0.5f);
+			// Tajo seco (las tijeras a tono bajo sonaban como la mecha de un creeper).
+			RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_CRIT, 1.0f, 0.8f);
+			RelicFx.sound(level, target, SoundEvents.PLAYER_ATTACK_STRONG, 1.0f, 0.7f);
 		}, () -> BEHEADING.remove(target));
 		return Math.max(amount, target.getHealth() + 100.0f);
 	}

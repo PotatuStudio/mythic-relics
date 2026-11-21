@@ -4,15 +4,14 @@
  ],
  "render": [
   {
-   "type": "model",
+   "type": "item",
    "model_part": "body",
-   "model": "mythicrelics:item/freyr_sword_worn",
+   "display_context": "none",
    "offset": [
     0,
     0,
     0
-   ],
-   "centered": true
+   ]
   }
  ]
 }
