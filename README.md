@@ -6,6 +6,9 @@ Minecraft Java **26.3** (Fabric y NeoForge).
 Como en *Artifacts*, las reliquias no se fabrican: se encuentran en estructuras que calzan con su cultura (las
 egipcias, en las pirámides del desierto).
 
+**Descarga:** [CurseForge](https://www.curseforge.com/minecraft/mc-mods/mythic-relics) ·
+[Modrinth](https://modrinth.com/mod/mythic-relics) · **Video:** [presentación en YouTube](https://youtu.be/5MVoUWDlgzw)
+
 ## Requisitos
 Minecraft 26.3, Java 25 y [Architectury API](https://modrinth.com/mod/architectury-api) 22.0.5 o superior. Además,
 según el loader:
