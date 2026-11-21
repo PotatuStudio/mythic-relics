@@ -13,7 +13,9 @@ inglés porque es la audiencia de CurseForge; el mod trae `en_us` y `es_es`.
 | Additional categories | Armor, Tools, and Weapons · Magic · Mobs |
 | License | **MIT License** |
 | Logo | `media/icon-512.png` (512×512, CurseForge lo reduce a 400×400) |
-| Issues / Source / Wiki | Vacíos mientras el repo sea privado (un link roto es motivo de rechazo) |
+| Source | `https://github.com/PotatuStudio/mythic-relics` (repo público desde el 2026-11-20) |
+| Issues | `https://github.com/PotatuStudio/mythic-relics/issues` (se configura en legacy.curseforge.com → Settings → Issues → External) |
+| Wiki | `https://github.com/PotatuStudio/mythic-relics/tree/main/docs/wiki` |
 | Allow comments | Sí |
 | Distribution (modpacks/apps de terceros) | Sí |
 
