@@ -47,9 +47,9 @@ CurseForge, en Modrinth cada versión necesita un número distinto, por eso llev
 
 | Campo | Fabric | NeoForge |
 |---|---|---|
-| Archivo | `fabric/build/libs/mythicrelics-fabric-0.1.0+26.3.jar` | `neoforge/build/libs/mythicrelics-neoforge-0.1.0+26.3.jar` |
-| Version name | `Mythic Relics 0.1.0 (Fabric 26.3)` | `Mythic Relics 0.1.0 (NeoForge 26.3)` |
-| Version number | `0.1.0+26.3-fabric` | `0.1.0+26.3-neoforge` |
+| Archivo | `fabric/build/libs/mythicrelics-fabric-0.1.1+26.3.jar` | `neoforge/build/libs/mythicrelics-neoforge-0.1.1+26.3.jar` |
+| Version name | `Mythic Relics 0.1.1 (Fabric 26.3)` | `Mythic Relics 0.1.1 (NeoForge 26.3)` |
+| Version number | `0.1.1+26.3-fabric` | `0.1.1+26.3-neoforge` |
 | Release channel | **Beta** | **Beta** |
 | Loaders | Fabric | NeoForge |
 | Game versions | 26.3 | 26.3 |

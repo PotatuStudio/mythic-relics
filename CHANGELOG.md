@@ -3,7 +3,13 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/);
 el proyecto usa [SemVer](https://semver.org/lang/es/) con la versión de Minecraft como metadato (`0.1.0+26.3`).
 
-## [Unreleased]
+## [0.1.1] - 2026-11-21
+### Fixed
+- Llave de Jano: quitar un candado ya no borra los candados de las puertas o cofres vecinos.
+- Harpe: la decapitación ya no suena como la mecha de un creeper.
+- Espada de Freyr en Fabric: al desenvainarla, en la espalda queda la vaina vacía (antes seguía la espada envainada).
+
+## [0.1.0] - primera beta pública
 ### Added
 - Proyecto inicial desde mod-template, con Trinkets Updated (Fabric) y Curios (NeoForge).
 - Reliquias de cinco mitologías: Egipto, Grecia, Roma, nórdicos y China (70 reliquias), con sets, aliados, monturas,
