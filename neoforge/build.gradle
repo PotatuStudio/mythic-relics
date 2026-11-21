@@ -117,5 +117,10 @@ tasks.matching { it.name == "runClient" }.configureEach {
 	if (System.getenv("RELIC_TEST") == "1") {
 		dependsOn "prepareRelicTest"
 		environment("RELIC_TEST", "1")
+		// Modo galería (RELIC_TEST=1 RELIC_GALLERY=1): fotos de las monturas a 1920x1080 sin interfaz.
+		if (System.getenv("RELIC_GALLERY") == "1") {
+			environment("RELIC_GALLERY", "1")
+			args("--width", "1920", "--height", "1080")
+		}
 	}
 }
