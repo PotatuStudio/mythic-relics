@@ -43,5 +43,7 @@ replay_*.log
 .playwright-mcp/
 __pycache__/
 
-# Claude Code (permisos locales)
-.claude/settings.local.json
+# Claude Code (configuración e instrucciones locales: no van al repo)
+.claude/
+CLAUDE.md
+CLAUDE.local.md
